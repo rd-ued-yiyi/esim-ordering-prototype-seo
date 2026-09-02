@@ -246,6 +246,14 @@ subs = {
     # KKday 商品 243815 商品说明图文全图（10 张，内联自包含）
     **{("{{IMG_KK_%d}}" % i): img_datauri("intro/g%02d.webp" % i) for i in range(1, 11)},
     "{{PICTO_tours}}":     svg("picto_tours", "picto"),
+    # SIM卡/WIFI 頁（Figma 2033-108656 舊主題頁截圖還原）：hero 為同一張 KKday 活動主圖；商品圖自截圖裁切
+    "{{IMG_SW_HERO}}":     img_datauri("simwifi/hero.webp"),
+    "{{IMG_SW_C1}}":       img_datauri("simwifi/c1.webp"),
+    "{{IMG_SW_C2}}":       img_datauri("simwifi/c2.webp"),
+    "{{IMG_SW_C3}}":       img_datauri("simwifi/c3.webp"),
+    "{{IMG_SW_MEGA}}":     png_datauri("simwifi/megaphone.png"),  # 公告列喇叭（自截圖抠色，#13A3B6）
+    "{{IC_searchGrey}}":   svg("search", recolor=("#212121", "#727272")),  # 搜尋 pill 放大鏡 $color-text-dark
+    "{{IC_arrowRightCyan}}": svg("arrowRight", recolor=("#26BEC9", "#13A3B6")),  # 公告列 chevron
     "{{PICTO_cruise}}":    svg("picto_cruise", "picto"),
     "{{PICTO_travel}}":    svg("picto_travel", "picto"),
 }

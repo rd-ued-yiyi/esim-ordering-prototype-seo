@@ -1634,10 +1634,84 @@
   .cxl-row .ic { width: 20px; height: 20px; }
   .cxl-note { font-size: 12px; line-height: 18px; color: var(--kk-text-medium); margin-top: 12px; display: flex; gap: 6px; }
   .cxl-note .ic { width: 14px; height: 14px; flex: 0 0 auto; margin-top: 2px; }
+
+  /* ================= 主題頁 Mweb header tabs（Figma 2167-58441 / 2167-60295）=================
+     白色 56px 條：返回圓鈕 + eSIM / SIM卡·WIFI 兩個 KKTab Item + 右側 32px 佔位（Figma 中搜尋 CTA opacity 0，
+     為 space-between 對稱）。header 不透明蓋在 hero 頂部（HeroBg 被遮部分與 Figma 一致），
+     故此類頁 .app 取消頂部 padding、由 header 自帶安全區。 */
+  .app.tabs-top { padding-top: 0; }
+  .mheader--tabs {
+    align-items: center; background: #fff; z-index: 3;
+    height: 56px; box-sizing: content-box; padding: 0 16px;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .mheader--tabs .nav-circle { box-shadow: none; }
+  .mheader--tabs .tabs-sp { width: 32px; height: 32px; flex: 0 0 auto; }
+  /* KKTab Item：pt12 + 文字 24 + gap10 + 底線 2 = 48，垂直居中於 56 */
+  .kk-tab { display: flex; flex-direction: column; align-items: stretch; padding: 12px 12px 0; }
+  .kk-tab .lb { font-size: 16px; line-height: 24px; font-weight: 400; color: var(--kk-text-darker); text-align: center; white-space: nowrap; }
+  .kk-tab .ul { display: block; height: 2px; margin-top: 10px; border-radius: 2px 2px 0 0; background: transparent; }
+  .kk-tab.sel .lb { font-weight: 600; color: #13A3B6; }
+  .kk-tab.sel .ul { background: var(--kk-primary-medium); }
+  /* 主題頁標題塊：Figma con pt 24（原 8 是配合浮動返回鈕的舊版） */
+  .app.tabs-top [data-screen="home"] .title-block { padding-top: 24px; }
+
+  /* ================= SCREEN: SIM卡/WIFI（Figma 2033-108656「旧主题页」＝現行頁截圖 + 新 tab header）=================
+     依截圖還原為可滾動 HTML：商品圖為截圖裁切（含原有地點 pill / 收藏心形），其餘元素以 DS token 重建。 */
+  [data-screen="simwifi"] { background: var(--kk-surface-lighter); min-height: 100vh; padding-bottom: 40px; }
+  .sw-hero {
+    position: relative; height: 275px; overflow: hidden;
+    background: #7a9aa6 url("{{IMG_SW_HERO}}") center 35% / cover no-repeat;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sw-hero::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28); }
+  .sw-hero-in { position: relative; width: 100%; padding: 0 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #fff; text-align: center; }
+  .sw-h1 { font-size: 20px; line-height: 28px; font-weight: 600; }
+  .sw-sub { font-size: 14px; line-height: 22px; }
+  .sw-search {
+    margin-top: 12px; width: 100%; height: 44px; border-radius: var(--r-circle); background: #fff;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    color: var(--kk-text-dark); font-size: 15px; line-height: 22px; box-shadow: var(--el-action);
+  }
+  .sw-search .ic { display: flex; align-items: center; justify-content: center; }
+  .sw-ann {
+    width: 100%; display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+    background: var(--kk-primary-lighter); color: #13A3B6; font-size: 14px; line-height: 22px; text-align: left;
+  }
+  .sw-ann .t { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sw-ann .mg img { width: 100%; height: 100%; display: block; }
+  .sw-ann .ic { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .sw-chips { display: flex; gap: 10px; padding: 16px 16px 12px; overflow-x: auto; scrollbar-width: none; }
+  .sw-chips::-webkit-scrollbar { display: none; }
+  .sw-chip {
+    flex: 0 0 auto; display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px;
+    border: 1px solid var(--kk-border-light); border-radius: var(--r-circle); background: #fff;
+    font-size: 14px; line-height: 20px; color: var(--kk-text-darker);
+  }
+  .sw-chip .ic { display: flex; align-items: center; justify-content: center; }
+  .sw-chip.sel { border-color: var(--kk-primary-medium); color: #13A3B6; }
+  .sw-count { padding: 0 16px 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .sw-count i { font-style: normal; color: var(--kk-primary-medium); font-size: 15px; }
+  .sw-list { display: flex; flex-direction: column; gap: 8px; }
+  .sw-card { background: #fff; padding: 12px 13px 16px; display: flex; flex-direction: column; gap: 8px; align-items: stretch; text-align: left; width: 100%; }
+  .sw-card .im { display: block; width: 100%; aspect-ratio: 800 / 435; object-fit: cover; border-radius: var(--r-lg); }
+  .sw-card .tt { font-size: 15px; line-height: 22px; color: var(--kk-text-darker); }
+  .sw-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .sw-tag { font-size: 12px; line-height: 16px; padding: 2px 6px; border-radius: var(--r-sm); background: #EAF4FE; color: #2D84D6; }
+  .sw-tag.b { font-weight: 600; }
+  .sw-rate { display: flex; align-items: center; gap: 4px; font-size: 13px; line-height: 18px; color: var(--kk-text-darker); }
+  .sw-rate .ic { display: flex; align-items: center; justify-content: center; }
+  .sw-rate .sep { color: var(--kk-text-light); margin: 0 2px; }
+  .sw-price { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+  .sw-off { display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 3px; background: var(--kk-text-critical); color: #fff; font-size: 11px; line-height: 16px; }
+  .sw-was { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); text-decoration: line-through; }
+  .sw-now { font-size: 13px; line-height: 20px; font-weight: 700; color: var(--kk-text-darker); }
+  .sw-now b { font-size: 17px; }
+  .sw-now small { font-size: 13px; font-weight: 400; margin-left: 2px; }
 </style>
 
 <div class="esim-root">
-  <div class="app"><!-- 初始＝eSIM 主頁（需 hero 背景）；進 plans 頁時由 go() 加上 no-hero -->
+  <div class="app tabs-top"><!-- 初始＝eSIM 主頁（需 hero 背景）；進 plans 頁時由 go() 加上 no-hero -->
 
     <!-- hero 背景：home / destination 兩屏共享（同一份，避免 SVG id 衝突） -->
     {{HERO_SVG}}
@@ -1645,11 +1719,14 @@
     <!-- ============ SCREEN: eSIM 主頁（合併後的起始頁；模擬首頁已移除）============ -->
     <section class="screen is-active" data-screen="home">
 
-      <!-- header -->
-      <div class="mheader">
+      <!-- header：返回 + eSIM / SIM卡·WIFI 主題 tab（Figma 2167-58441） -->
+      <div class="mheader mheader--tabs">
         <button class="nav-circle" data-action="back" aria-label="返回">
           <span class="ic ic-20">{{IC_back}}</span>
         </button>
+        <button class="kk-tab sel" data-action="tab-esim"><span class="lb">eSIM</span><span class="ul"></span></button>
+        <button class="kk-tab" data-action="tab-simwifi"><span class="lb">SIM卡/WIFI</span><span class="ul"></span></button>
+        <span class="tabs-sp" aria-hidden="true"></span>
       </div>
 
       <!-- 內容 -->
@@ -1762,6 +1839,64 @@
 
         </div><!-- /page -->
       </div><!-- /con -->
+    </section>
+
+    <!-- ============ SCREEN: SIM卡/WIFI（舊主題頁，Figma 2033-108656）============ -->
+    <section class="screen" data-screen="simwifi">
+      <!-- header：返回 + eSIM / SIM卡·WIFI 主題 tab（Figma 2167-58441） -->
+      <div class="mheader mheader--tabs">
+        <button class="nav-circle" data-action="back" aria-label="返回">
+          <span class="ic ic-20">{{IC_back}}</span>
+        </button>
+        <button class="kk-tab" data-action="tab-esim"><span class="lb">eSIM</span><span class="ul"></span></button>
+        <button class="kk-tab sel" data-action="tab-simwifi"><span class="lb">SIM卡/WIFI</span><span class="ul"></span></button>
+        <span class="tabs-sp" aria-hidden="true"></span>
+      </div>
+
+      <div class="sw-hero">
+        <div class="sw-hero-in">
+          <div class="sw-h1">eSIM、SIM卡、WiFi 分享器</div>
+          <div class="sw-sub">KKday 特搜各國高速 eSIM、SIM卡、熱點分享 WiFi 分享器租借，特選商品提供即時訂購、機場急速取件服務！</div>
+          <button class="sw-search" data-action="sw-demo"><span class="ic ic-16">{{IC_searchGrey}}</span><span class="t">請選擇目的地以及領取地</span></button>
+        </div>
+      </div>
+
+      <button class="sw-ann" data-action="sw-demo">
+        <span class="ic ic-20 mg"><img alt="" src="{{IMG_SW_MEGA}}"></span>
+        <span class="t">免翻牆！中港澳旅遊必備！eSIM 支援 ChatGPT…</span>
+        <span class="ic ic-16"><span class="rot90 ic">{{IC_arrowRightCyan}}</span></span>
+      </button>
+
+      <div class="sw-chips">
+        <button class="sw-chip" data-action="sw-demo"><span class="ic ic-16">{{IC_filterDark}}</span>更多條件</button>
+        <button class="sw-chip" data-action="sw-demo"><span class="ic ic-16">{{IC_calendarGrey}}</span>日期</button>
+        <button class="sw-chip sel" data-action="sw-demo"><span class="ic ic-16">{{IC_sortAmountCyan}}</span>排序</button>
+      </div>
+      <div class="sw-count"><i>907</i> 搜尋結果</div>
+
+      <div class="sw-list">
+          <button class="sw-card" data-action="sw-demo">
+            <img class="im" alt="" src="{{IMG_SW_C1}}">
+            <div class="tt">【50% OFF】日本 eSIM 無限流量 Rakuten / KDDI / Docomo</div>
+            <div class="sw-tags"><span class="sw-tag">即買即用</span><span class="sw-tag b">KKgift</span></div>
+            <div class="sw-rate"><span class="ic ic-14">{{IC_star}}</span>4.1 (19,521)<span class="sep">|</span>400K+ 個已訂購</div>
+            <div class="sw-price"><span class="sw-off">50% OFF</span><span class="sw-was">JPY 159</span><span class="sw-now">JPY <b>79</b><small>起</small></span></div>
+          </button>
+          <button class="sw-card" data-action="sw-demo">
+            <img class="im" alt="" src="{{IMG_SW_C2}}">
+            <div class="tt">KDDI 5G 高速原生日本eSIM|支援ChatGPT</div>
+            <div class="sw-tags"><span class="sw-tag">即買即用</span><span class="sw-tag b">KKgift</span></div>
+            <div class="sw-rate"><span class="ic ic-14">{{IC_star}}</span>4.5 (3,479)<span class="sep">|</span>80K+ 個已訂購</div>
+            <div class="sw-price"><span class="sw-now">JPY <b>893</b><small>起</small></span></div>
+          </button>
+          <button class="sw-card" data-action="sw-demo">
+            <img class="im" alt="" src="{{IMG_SW_C3}}">
+            <div class="tt">【超人氣熱銷 50% OFF】中港澳 5G eSIM・嚴選電信商・全面支援 AI・免翻牆</div>
+            <div class="sw-tags"><span class="sw-tag">即買即用</span><span class="sw-tag b">KKgift</span></div>
+            <div class="sw-rate"><span class="ic ic-14">{{IC_star}}</span>4.7 (8,214)<span class="sep">|</span>200K+ 個已訂購</div>
+            <div class="sw-price"><span class="sw-off">50% OFF</span><span class="sw-was">JPY 112</span><span class="sw-now">JPY <b>56</b><small>起</small></span></div>
+          </button>
+      </div>
     </section>
 
     <!-- ============ SCREEN: 目的地頁 ============ -->
@@ -2611,7 +2746,8 @@
     document.querySelectorAll('.screen').forEach(function (s) {
       s.classList.toggle('is-active', s.getAttribute('data-screen') === name);
     });
-    document.querySelector('.app').classList.toggle('no-hero', name === 'plans' || name === 'kkhome');
+    document.querySelector('.app').classList.toggle('no-hero', name === 'plans' || name === 'kkhome' || name === 'simwifi');
+    document.querySelector('.app').classList.toggle('tabs-top', name === 'home' || name === 'simwifi');  // 主題 tab header 自帶安全區
     document.querySelector('.esim-root').classList.toggle('kkh-lock', name === 'kkhome');  // 模擬首頁鎖高、不可滾動
     window.scrollTo(0, 0);
     // 重新進入目的地頁（如從列表返回）時把選中流量檔、選中天數 chip 滾回可視區，避免選中項落在螢幕外
@@ -3471,6 +3607,9 @@
       else if (a === 'back-plans') go('destination');
       else if (a === 'enter-esim') go('home');            // 首頁 eSIM 入口 → eSIM 主頁
       else if (a === 'kkh-demo') toast('原型僅提供 eSIM 訂購流程');
+      else if (a === 'tab-esim') { if (current !== 'home') go('home'); }
+      else if (a === 'tab-simwifi') { if (current !== 'simwifi') go('simwifi'); }
+      else if (a === 'sw-demo') toast('原型僅提供 eSIM 訂購流程');
     });
   });
 
@@ -3495,7 +3634,7 @@
   // ================= 滾動置頂 header =================
   function onPageScroll() {
     var y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    document.getElementById('pageHeader').classList.toggle('show', y > 120 && current !== 'plans');
+    document.getElementById('pageHeader').classList.toggle('show', y > 120 && current !== 'plans' && current !== 'simwifi');
     var ph = document.querySelector('.pl-head');
     if (ph) ph.classList.toggle('scrolled', y > 4 && current === 'plans');
   }
