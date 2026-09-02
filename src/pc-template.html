@@ -1,0 +1,315 @@
+<!-- eSIM 訂購流程原型 · PC 版（獨立頁 pc.html）-->
+<!-- Figma 2123-57034 PC 主題頁（eSIM）＋ 2140-57763 PC SIM卡/WIFI 頁（現行頁截圖 + 貼在搜尋卡上方的 tab 條）-->
+<style>
+  :root {
+    --kk-primary-medium: #26BEC9; --kk-primary-button: #1AB6C1; --kk-primary-dark: #13A3B6; --kk-primary-darker: #068B9F;
+    --kk-surface-lighter: #F7FAFC; --kk-surface-medium: #E6E9ED; --kk-surface-darker: #9C9DA0;
+    --kk-text-darker: #212121; --kk-text-dark: #727272; --kk-text-medium: #9C9DA0; --kk-text-light: #BABBBE;
+    --kk-border-lighter: #E6E9ED; --kk-border-light: #D5D6DB;
+    --font-tc: "PingFang TC","PingFang SC",-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; }
+  body { font-family: var(--font-tc); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; min-width: 1440px; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: inherit; }
+  img { display: block; }
+  .ic { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .ic > img { max-width: 100%; max-height: 100%; }
+  .ic-14 { width: 14px; height: 14px; } .ic-18 { width: 18px; height: 18px; } .ic-20 { width: 20px; height: 20px; }
+  .ic-24 { width: 24px; height: 24px; } .ic-32 { width: 32px; height: 32px; } .ic-36 { width: 36px; height: 36px; }
+  .col { width: 1140px; margin: 0 auto; }
+
+  /* ---------- 螢幕路由 ---------- */
+  .pc-screen { display: none; }
+  .pc-screen.is-active { display: block; }
+  body.on-simwifi { background: #FAFAFA; }
+
+  /* ---------- 搜尋卡上方 tab 條（Figma 2123-57542 / 2140-57839）：PC 端 eSIM ↔ SIM卡/WIFI 的切換方式 ---------- */
+  .pc-tabs { display: inline-flex; align-items: flex-start; background: var(--kk-surface-medium); border-radius: 8px 8px 0 0; }
+  .pc-tab { padding: 12px 24px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); border-radius: 0 8px 0 0; white-space: nowrap; }
+  .pc-tab:first-child { border-radius: 8px 0 0 0; }
+  .pc-tab.sel { background: #fff; color: var(--kk-primary-dark); font-weight: 600; border-radius: 8px 8px 0 0; }
+
+  /* ================= eSIM 主題頁 ================= */
+  /* header 60 */
+  .pc-header { height: 60px; background: #fff; }
+  .pc-header .col { height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .pc-logo { width: 100px; height: 40px; }
+  .pc-right { display: flex; align-items: flex-start; }
+  .pc-right .it { display: flex; align-items: center; gap: 4px; padding: 20px 15px; color: var(--kk-text-dark); white-space: nowrap; }
+  .pc-right .it.app { color: var(--kk-primary-darker); }
+  .pc-right .avatar { padding: 9px 0 9px 9px; }
+  .pc-right .avatar img { width: 42px; height: 42px; border-radius: 999px; }
+  /* 分類導航 60：項目列在 y20..40，選中項 4px 底條貼齊底部 */
+  .pc-cat { height: 60px; background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
+  .pc-cat .col { position: relative; height: 60px; }
+  .pc-cat-list { position: absolute; left: 0; top: 20px; width: 1116px; display: flex; align-items: flex-start; overflow: hidden; }
+  .pc-cat-item { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .pc-cat-item .tx { padding: 0 14px; border-right: 1px solid var(--kk-border-light); white-space: nowrap; color: var(--kk-text-darker); }
+  .pc-cat-item:last-child .tx { border-right: 0; }
+  .pc-cat-item.sel .tx { color: var(--kk-primary-medium); }
+  .pc-cat-item .bar { width: 100%; height: 4px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; visibility: hidden; }
+  .pc-cat-item.sel .bar { visibility: visible; }
+  .pc-cat-fade { position: absolute; right: 24px; top: 0; width: 80px; height: 60px; background: linear-gradient(to left, #fff, rgba(255,255,255,0)); pointer-events: none; }
+  .pc-cat-more { position: absolute; right: 0; top: 18px; }
+
+  /* hero 406：灰色蒙版底（設計稿 stock 照片以 $color-background-surface-darker 蒙版覆蓋） */
+  .pc-hero { height: 406px; background: var(--kk-surface-darker); }
+  .pc-hero .col { position: relative; height: 406px; }
+  .pc-hero .h1 { position: absolute; left: 0; top: 84.7px; color: #fff; font-size: 28px; line-height: 36px; font-weight: 600; white-space: nowrap; }
+  .pc-hero .sub { position: absolute; left: 0; top: 128.7px; color: #fff; width: 327px; }
+  .pc-search { position: absolute; left: 0; top: 171.4px; display: flex; flex-direction: column; align-items: flex-start; }
+  .pc-card {
+    width: 1140px; background: #fff; border-radius: 0 8px 8px 8px; box-shadow: 0 1px 2px rgba(38,50,56,.12);
+    padding: 16px; display: flex; gap: 16px; align-items: flex-end;
+  }
+  .pc-sel { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .pc-sel .lb { color: var(--kk-text-darker); }
+  .pc-sel .box {
+    height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 12px; width: 100%;
+    background: #fff; border: 1px solid var(--kk-border-light); border-radius: 8px;
+  }
+  .pc-sel .ph { flex: 1 1 0; min-width: 0; color: var(--kk-text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pc-btn { height: 48px; padding: 12px 24px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; white-space: nowrap; }
+
+  /* 中段：麵包屑 + 卡片（淺灰底） */
+  .pc-mid { background: var(--kk-surface-lighter); padding-bottom: 24px; }
+  .pc-crumb { padding: 24px 0; display: flex; align-items: center; gap: 4px; }
+  .pc-crumb .home { color: var(--kk-primary-darker); }
+  .pc-crumb .cur { color: var(--kk-text-medium); }
+  .pc-box { background: #fff; border-radius: 16px; padding: 20px 16px; display: flex; flex-direction: column; gap: 20px; }
+  .pc-box + .pc-box { margin-top: 16px; }
+  .pc-box .ttl { font-size: 18px; line-height: 26px; font-weight: 600; }
+  .pc-benefits { display: flex; gap: 20px; align-items: center; }
+  .pc-benefit { flex: 1 1 0; min-width: 0; display: flex; gap: 20px; align-items: center; }
+  .pc-benefit .tx { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .pc-benefit .tx b { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .pc-benefit .tx span { color: var(--kk-text-dark); }
+  .pc-guides { display: flex; gap: 16px; }
+  .pc-guide { flex: 1 1 0; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: 1px solid var(--kk-border-lighter); border-radius: 8px; }
+
+  /* 常見問題（白底） */
+  .pc-faq { padding: 24px 0; }
+  .pc-faq .col { display: flex; flex-direction: column; gap: 24px; }
+  .pc-faq-head { display: flex; align-items: center; gap: 24px; }
+  .pc-faq-head .t { flex: 1 1 0; font-size: 22px; line-height: 28px; font-weight: 600; }
+  .pc-faq-head .more { font-size: 16px; line-height: 24px; font-weight: 500; text-decoration: underline; }
+  .pc-faq-list { display: flex; flex-direction: column; gap: 8px; }
+  .pc-faq-item { border-bottom: 1px solid var(--kk-border-lighter); }
+  .pc-faq-item:last-child { border-bottom: 0; }
+  .pc-faq-q { width: 100%; display: flex; align-items: center; gap: 16px; padding: 12px 0; }
+  .pc-faq-q .q { flex: 1 1 0; font-size: 16px; line-height: 24px; font-weight: 600; }
+  .pc-faq-q .chev { transition: transform .2s ease; }
+  .pc-faq-item.open .pc-faq-q .chev { transform: rotate(180deg); }
+  .pc-faq-a { display: none; padding: 0 0 12px; }
+  .pc-faq-item.open .pc-faq-a { display: block; }
+
+  /* footer */
+  .pc-foot { background: #444; padding: 50px 80px; color: #fff; }
+  .pc-foot-top { display: flex; align-items: flex-start; justify-content: space-between; }
+  .pc-social { display: flex; gap: 4px; }
+  .pc-edm { width: 464px; text-align: right; font-size: 14px; line-height: 27px; color: #F4F4F4; }
+  .pc-edm small { display: block; font-size: 12px; line-height: 27px; color: #999; }
+  .pc-edm small u { text-decoration: none; color: #ccc; }
+  .pc-sub { position: relative; width: 391px; height: 42px; }
+  .pc-sub .in { width: 380px; height: 42px; background: #fff; border: 1px solid #E1E1E1; border-radius: 4px; padding: 0 15px; display: flex; align-items: center; color: #ccc; }
+  .pc-sub .go { position: absolute; right: 0; top: 0; width: 111px; height: 42px; background: var(--kk-primary-medium); color: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+  .pc-foot-line { height: 1px; background: #5A5A5A; margin: 38px 0 28px; }
+  .pc-foot-cols { display: grid; grid-template-columns: repeat(4, 242px); column-gap: 104px; }
+  .pc-foot-col h4 { font-size: 16px; line-height: 24px; font-weight: 400; color: rgba(255,255,255,.4); margin-bottom: 16px; }
+  .pc-foot-col a { display: block; color: #E6E6E6; line-height: 20px; margin-bottom: 4px; }
+  .pc-pay { display: flex; flex-wrap: wrap; gap: 8px; width: 242px; }
+  .pc-pay .ic { width: 42px; height: 26px; }
+  .pc-foot-bottom { background: #333; padding: 32px 80px; display: flex; gap: 170px; color: #999; }
+  .pc-foot-bottom p { line-height: 20px; margin-bottom: 4px; }
+  .pc-foot-bottom .c1 { min-width: 258px; } .pc-foot-bottom .c2 { min-width: 280px; }
+  .pc-foot-bottom p { white-space: nowrap; }
+  .pc-foot-bottom .copy { font-size: 12px; }
+
+  /* ================= SIM卡/WIFI 頁（現行 PC 頁截圖 + tab 條，Figma 2140-57763）================= */
+  .pc-sw { position: relative; width: 1440px; margin: 0 auto; background: #FAFAFA; }
+  .pc-sw img.shot { width: 1440px; }
+  /* tab 條位置：Figma 1512 寬版面 left 299.88 / top 199.39 → 換算 1440 寬 */
+  .pc-sw .pc-tabs { position: absolute; left: 285.6px; top: 189.9px; }
+
+  /* toast */
+  .pc-toast {
+    position: fixed; left: 50%; bottom: 48px; transform: translateX(-50%) translateY(8px);
+    background: rgba(33,33,33,.92); color: #fff; font-size: 14px; line-height: 20px;
+    padding: 10px 16px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; z-index: 99;
+  }
+  .pc-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+
+<!-- ============ eSIM 主題頁（PC） ============ -->
+<section class="pc-screen is-active" data-pc="esim">
+  <header class="pc-header">
+    <div class="col">
+      <span class="pc-logo">{{PC_logo}}</span>
+      <div class="pc-right">
+        <button class="it app" data-toast="pc"><span class="ic ic-18">{{PC_mobile}}</span>下載 App 享優惠</button>
+        <button class="it" data-toast="pc">繁體中文<span class="ic ic-18">{{PC_arrowDown18}}</span></button>
+        <button class="it" data-toast="pc">TWD<span class="ic ic-18">{{PC_arrowDown18}}</span></button>
+        <button class="avatar" data-toast="pc"><img alt="" src="{{PC_avatar}}"></button>
+      </div>
+    </div>
+  </header>
+  <nav class="pc-cat">
+    <div class="col">
+      <div class="pc-cat-list">
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">住宿</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">景點門票</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">觀光行程</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">美食 &amp; 生鮮</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">戶外活動</span><span class="bar"></span></button>
+        <button class="pc-cat-item sel" data-toast="pc"><span class="tx">eSIM/WIFI</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">台灣高鐵國旅聯票</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">全球租車</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">舒壓 &amp; 放鬆</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">伴手禮</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">活動 &amp; 展覽</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">工作坊 &amp; 在地文化</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">旅行服務</span><span class="bar"></span></button>
+      </div>
+      <span class="pc-cat-fade"></span>
+      <button class="pc-cat-more ic ic-24" data-toast="pc" aria-label="更多分類">{{PC_arrowRight24}}</button>
+    </div>
+  </nav>
+
+  <div class="pc-hero">
+    <div class="col">
+      <div class="h1">eSIM</div>
+      <div class="sub">輕鬆出發，無憂暢遊全球</div>
+      <div class="pc-search">
+        <!-- 切換方式：tab 條貼在搜尋卡上方 -->
+        <div class="pc-tabs">
+          <button class="pc-tab sel" data-pc-go="esim">eSIM</button>
+          <button class="pc-tab" data-pc-go="simwifi">SIM卡/WIFI</button>
+        </div>
+        <div class="pc-card">
+          <div class="pc-sel"><div class="lb">目的地</div>
+            <button class="box" data-toast="pc"><span class="ic ic-20">{{PC_location20}}</span><span class="ph">請選擇目的地</span><span class="ic ic-20">{{PC_arrowDown20}}</span></button></div>
+          <div class="pc-sel"><div class="lb">用卡天數</div>
+            <button class="box" data-toast="pc"><span class="ic ic-20">{{PC_calendar20}}</span><span class="ph">請選擇天數</span><span class="ic ic-20">{{PC_arrowDown20}}</span></button></div>
+          <div class="pc-sel"><div class="lb">流量</div>
+            <button class="box" data-toast="pc"><span class="ic ic-20">{{PC_swap20}}</span><span class="ph">請選擇流量</span><span class="ic ic-20">{{PC_arrowDown20}}</span></button></div>
+          <button class="pc-btn" data-toast="pc">搜尋套餐</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pc-mid">
+    <div class="col">
+      <div class="pc-crumb"><span class="home">首頁</span><span class="ic ic-14">{{PC_arrowRight14}}</span><span class="cur">eSIM</span></div>
+      <div class="pc-box">
+        <div class="ttl">為什麼選擇KKday？</div>
+        <div class="pc-benefits">
+          <div class="pc-benefit"><span class="ic ic-32">{{PICTO_tours}}</span><div class="tx"><b>簡單易用</b><span>透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</span></div></div>
+          <div class="pc-benefit"><span class="ic ic-32">{{PICTO_cruise}}</span><div class="tx"><b>靈活彈性</b><span>天數與流量自由組合，行程有變也能隨時加購延長。</span></div></div>
+          <div class="pc-benefit"><span class="ic ic-32">{{PICTO_travel}}</span><div class="tx"><b>80+ 國家覆蓋</b><span>一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</span></div></div>
+          <div class="pc-benefit"><span class="ic ic-32">{{PICTO_tours}}</span><div class="tx"><b>客服支援</b><span>24 小時中文客服線上，安裝與連線問題隨時協助。</span></div></div>
+        </div>
+      </div>
+      <div class="pc-box">
+        <div class="ttl">eSIM 安裝指南</div>
+        <div class="pc-guides">
+          <button class="pc-guide" data-toast="pc"><span class="ic ic-24">{{PC_apple}}</span>iOS</button>
+          <button class="pc-guide" data-toast="pc"><span class="ic ic-24">{{PC_android}}</span>Android</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pc-faq">
+    <div class="col">
+      <div class="pc-faq-head"><div class="t">常見問題</div><button class="more" data-toast="pc">查看更多</button></div>
+      <div class="pc-faq-list">
+        <div class="pc-faq-item">
+          <button class="pc-faq-q"><span class="q">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+          <div class="pc-faq-a">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 &gt; 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
+        </div>
+        <div class="pc-faq-item open">
+          <button class="pc-faq-q"><span class="q">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+          <div class="pc-faq-a">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
+        </div>
+        <div class="pc-faq-item">
+          <button class="pc-faq-q"><span class="q">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+          <div class="pc-faq-a">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
+        </div>
+        <div class="pc-faq-item">
+          <button class="pc-faq-q"><span class="q">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+          <div class="pc-faq-a">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday APP 聯絡 24 小時線上客服。</div>
+        </div>
+        <div class="pc-faq-item">
+          <button class="pc-faq-q"><span class="q">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+          <div class="pc-faq-a">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="pc-foot">
+      <div class="pc-foot-top">
+        <div class="pc-social">
+          <span class="ic ic-36">{{PC_social1}}</span><span class="ic ic-36">{{PC_social2}}</span><span class="ic ic-36">{{PC_social3}}</span><span class="ic ic-36">{{PC_social4}}</span><span class="ic ic-36">{{PC_social5}}</span>
+        </div>
+        <div class="pc-edm">即刻訂閱KKday EDM！搶先獲得用戶限定優惠及最新熱門景點旅遊資訊！<small>訂閱即代表你同意我們的<u>使用者條款</u>和本公司<u>隱私權保護政策</u></small></div>
+        <div class="pc-sub"><div class="in">請輸入電郵地址</div><button class="go" data-toast="pc">訂閱</button></div>
+      </div>
+      <div class="pc-foot-line"></div>
+      <div class="pc-foot-cols">
+        <div class="pc-foot-col"><h4>認識KKday</h4><a>關於KKday</a><a>使用者條款</a><a>隱私權保護政策</a><a>常見問題及協助</a><a>媒體報導</a></div>
+        <div class="pc-foot-col"><h4>給各位旅遊家</h4><a>三大保證</a><a>官方 Blog</a><a>KKday Points 介紹</a><a>兌換贈品</a><a>點數卡兌換</a></div>
+        <div class="pc-foot-col"><h4>KKday 合作夥伴</h4><a>成為供應商</a><a>供應商登入</a><a>同業合作</a><a>大聯盟夥伴</a><a>人才招募</a></div>
+        <div class="pc-foot-col"><h4>付款方式</h4>
+          <div class="pc-pay"><span class="ic">{{PC_pay1}}</span><span class="ic">{{PC_pay2}}</span><span class="ic">{{PC_pay3}}</span><span class="ic">{{PC_pay4}}</span><span class="ic">{{PC_pay5}}</span><span class="ic">{{PC_pay6}}</span><span class="ic">{{PC_pay7}}</span><span class="ic">{{PC_pay8}}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="pc-foot-bottom">
+      <div class="c1"><p>旅遊產品由 酷遊天國際旅行社股份有限公司 提供</p><p>代表人：許嘉恆</p><p>統一編號：24977417</p><p>旅行業註冊編號：交觀綜第 220200 號</p><p>品保協會會員編號：北2167號</p><p>其他產品由 酷遊天股份有限公司 提供</p><p>統一編號：24547579</p></div>
+      <div class="c2"><p>聯絡地址：台灣台北市內湖區新湖一路128巷15號5樓</p><p>聯絡電話：02-7741-7450 或 0971-532-770</p><p>傳真 02-8791-4607</p><p>E-mail：service@kkday.com</p></div>
+      <div class="c3"><p class="copy">COPYRIGHT © 2021 KKday All rights reserved.</p></div>
+    </div>
+  </footer>
+</section>
+
+<!-- ============ SIM卡/WIFI 頁（PC）：現行頁截圖三段 + tab 條 ============ -->
+<section class="pc-screen" data-pc="simwifi">
+  <div class="pc-sw" data-toast="old">
+    <img class="shot" alt="" src="{{PC_SW1}}">
+    <img class="shot" alt="" src="{{PC_SW2}}">
+    <img class="shot" alt="" src="{{PC_SW3}}">
+    <div class="pc-tabs">
+      <button class="pc-tab" data-pc-go="esim">eSIM</button>
+      <button class="pc-tab sel" data-pc-go="simwifi">SIM卡/WIFI</button>
+    </div>
+  </div>
+</section>
+
+<div class="pc-toast" id="pcToast" role="status"></div>
+
+<script>
+  var TOAST = { pc: 'PC 版原型僅示範 eSIM / SIM卡·WIFI 切換', old: '維持舊版現狀' };
+  var toastTimer = null;
+  function toast(msg) {
+    var el = document.getElementById('pcToast');
+    el.textContent = msg; el.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.classList.remove('show'); }, 1800);
+  }
+  function goPC(name) {
+    document.querySelectorAll('.pc-screen').forEach(function (s) { s.classList.toggle('is-active', s.getAttribute('data-pc') === name); });
+    document.body.classList.toggle('on-simwifi', name === 'simwifi');
+    window.scrollTo(0, 0);
+  }
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-pc-go]');
+    if (go) { e.stopPropagation(); goPC(go.getAttribute('data-pc-go')); return; }
+    var q = e.target.closest('.pc-faq-q');
+    if (q) { q.parentElement.classList.toggle('open'); return; }
+    var t = e.target.closest('[data-toast]');
+    if (t) toast(TOAST[t.getAttribute('data-toast')] || t.getAttribute('data-toast'));
+  });
+</script>

@@ -8,7 +8,8 @@ KKday eSIM B2C 主题及订购流程改造的**可点击原型**，用于可用�
 
 ## 结构
 
-- `index.html` — 自包含成品（资产全内联，直接部署即可），由构建脚本产出
+- `index.html` — 手机版自包含成品（资产全内联，直接部署即可），由构建脚本产出
+- `pc.html` — PC 版自包含成品（eSIM 主题页 + SIM卡/WIFI 页，搜索卡上方 tab 互切），由 `src/pc-template.html` 产出
 - `src/template.html` — 可编辑模板，用 `{{TOKEN}}` 占位资产
 - `build.py` — 把 `assets/` 内的 SVG/PNG 内联进模板，产出 `index.html`
 - `assets/` — 从 Figma / 设计系统导出的图标、pictogram、hero 插画

@@ -286,3 +286,60 @@ DOC = (
 
 (ROOT / "index.html").write_text(DOC, encoding="utf-8")
 print(f"index.html 生成完成 ({len(DOC):,} 字符)")
+
+
+# ===================== PC 版（pc.html）=====================
+# Figma 2123-57034（PC 主题页）+ 2140-57763（PC SIM卡/WIFI 页 = 现行页截图 + tab 条）。
+# 独立文件：与手机版 index.html 互不影响；共用 assets/ 与上面的 svg()/file_img() 等 helper 和 subs 里的通用 token。
+PC_TPL = (ROOT / "src" / "pc-template.html").read_text(encoding="utf-8")
+def pc_img(name):  # assets/pc 下 Figma 导出的 svg → data-URI <img>（保留 intrinsic 尺寸）
+    return file_img("assets/pc/" + name)
+# 付款方式 8 个 logo（JKO 为 png，其余 svg）
+PC_PAY = ["imgVisaIncLogo.svg","imgMastercardLogo2.svg","imgPaymentIcon.svg","imgGroup40.svg","imgFrame.svg","imgIcBookingLinepay.svg","imgIcJko.png","imgGroup36.svg"]
+def pc_pay(n):
+    if n.endswith(".png"):
+        return f'<img alt="" src="{png_datauri("pc/" + n)}" width="42" height="26">'
+    return pc_img(n)
+pc_subs = {
+    **{("{{PC_pay%d}}" % i): pc_pay(n) for i, n in enumerate(PC_PAY, 1)},
+    "{{PC_logo}}":          pc_img("imgFrame20152.svg"),
+    "{{PC_mobile}}":        pc_img("imgMobileAlt.svg"),
+    "{{PC_arrowDown18}}":   pc_img("imgIcArrowDownLine.svg"),
+    "{{PC_arrowRight24}}":  pc_img("imgIcArrowRightLine.svg"),
+    "{{PC_arrowRight14}}":  pc_img("imgIcArrowRightLine1.svg"),
+    "{{PC_arrowDown20}}":   pc_img("imgIcArrowDownLine1.svg"),
+    "{{PC_location20}}":    pc_img("imgIcLocationLine.svg"),
+    "{{PC_calendar20}}":    pc_img("imgIcCalendarLine.svg"),
+    "{{PC_swap20}}":        pc_img("imgIcSwapVerticalLine.svg"),
+    "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
+    "{{PC_avatar}}":        png_datauri("pc/imgEllipse2.png"),
+    "{{PC_apple}}":         pc_img("imgIcAppleLogoFill.svg"),
+    "{{PC_android}}":       pc_img("imgIcAndroidLogoFill.svg"),
+    **{("{{PC_social%d}}" % i): pc_img(n) for i, n in enumerate(["imgGroup13.svg","imgGroup12.svg","imgGroup14.svg","imgGroup9.svg","imgGroup7.svg"], 1)},
+    # SIM卡/WIFI 页三段截图（0.5x，1512 宽，按 Figma 组合裁切）
+    "{{PC_SW1}}":           img_datauri("pc/sw1.webp"),
+    "{{PC_SW2}}":           img_datauri("pc/sw2.webp"),
+    "{{PC_SW3}}":           img_datauri("pc/sw3.webp"),
+}
+pc_out = PC_TPL
+for k, v in {**subs, **pc_subs}.items():
+    pc_out = pc_out.replace(k, v)
+leftover = re.findall(r"\{\{[^}]+\}\}", pc_out)
+if leftover:
+    raise SystemExit(f"pc.html 未替换的 token: {set(leftover)}")
+PC_DOC = (
+    "<!doctype html>\n"
+    '<html lang="zh-Hant">\n'
+    "<head>\n"
+    '<meta charset="utf-8">\n'
+    '<meta name="viewport" content="width=1440">\n'
+    '<meta name="theme-color" content="#26BEC9">\n'
+    "<title>eSIM · KKday（PC）</title>\n"
+    "</head>\n"
+    "<body>\n"
+    f"{pc_out}\n"
+    "</body>\n"
+    "</html>\n"
+)
+(ROOT / "pc.html").write_text(PC_DOC, encoding="utf-8")
+print(f"pc.html 生成完成 ({len(PC_DOC):,} 字符)")
