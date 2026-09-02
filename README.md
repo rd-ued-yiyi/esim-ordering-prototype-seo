@@ -2,7 +2,7 @@
 
 KKday eSIM B2C 主题及订购流程改造的**可点击原型**，用于可用性测试。移动端，按 Figma 高保真还原，视觉基于 KKday Web Design System tokens。
 
-线上（GitHub Pages）：https://rd-ued-yiyi.github.io/esim-ordering-prototype-SEO/
+线上（GitHub Pages）：https://rd-ued-yiyi.github.io/esim-ordering-prototype-seo/
 
 本仓库是 [esim-ordering-prototype](https://github.com/rd-ued-yiyi/esim-ordering-prototype) 在 `40fc6ed` 处的独立副本，用于 SEO 方向的改造，与原型主线互不影响。
 
