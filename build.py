@@ -324,9 +324,6 @@ pc_subs = {
     "{{PC_apple}}":         pc_img("imgIcAppleLogoFill.svg"),
     "{{PC_android}}":       pc_img("imgIcAndroidLogoFill.svg"),
     **{("{{PC_social%d}}" % i): pc_img(n) for i, n in enumerate(["imgGroup13.svg","imgGroup12.svg","imgGroup14.svg","imgGroup9.svg","imgGroup7.svg"], 1)},
-    # 探索更多：現行 PC 頁截圖組合（Figma 2357-115994，1512 寬 0.5x）+ 搜尋條圖（2357-115993）
-    "{{PC_EXPLORE}}":        img_datauri("pc/explore.webp"),
-    "{{PC_EXPLORE_SEARCH}}": img_datauri("pc/exploreSearch.webp"),
 }
 pc_out = PC_TPL
 for k, v in {**subs, **pc_subs}.items():
