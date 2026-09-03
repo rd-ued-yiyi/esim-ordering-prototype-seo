@@ -3779,8 +3779,20 @@
     });
   }
   // 搜尋卡 tab：SIM卡 / WIFI分享器 → 勾選通訊產品並平滑錨定到當前頁的探索更多（tab 本身保持 eSIM）
+  // 目的地頁已選目的地 → 同步帶入探索更多「目的地及領取地」的目的地（單選）；名稱不同者以別名表映射，區域（亞洲通/東南亞…）無對應則不帶
+  var EX_DEST_ALIAS = { '澳大利亞': '澳洲', '迪拜': '阿聯酋', '阿拉伯聯合大公國': '阿聯酋', '印度尼西亞': '印尼', '沙烏地': '沙烏地阿拉伯', '紐西蘭': '紐西蘭', '澳門': '澳門' };
+  function exMapDest(name) {
+    if (!name) return null;
+    var all = []; EX_PLACE.dest.forEach(function (g) { all = all.concat(g[1]); });
+    if (all.indexOf(name) >= 0) return name;
+    var a = EX_DEST_ALIAS[name]; if (a && all.indexOf(a) >= 0) return a;
+    for (var i = 0; i < all.length; i++) if (name.indexOf(all[i]) >= 0 || all[i].indexOf(name) >= 0) return all[i];  // 部分匹配（如「日本本州」→ 日本）
+    return null;
+  }
   function exAnchor(type) {
-    exState.f.type = [type]; renderExplore();
+    exState.f.type = [type];
+    if (current === 'destination') { var md = exMapDest(destRaw()); if (md) exState.dest = md; }
+    renderExplore();
     var sec = document.querySelector('.screen.is-active .explore'); if (!sec) return;
     var startY = window.scrollY || document.documentElement.scrollTop || 0;
     var maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
