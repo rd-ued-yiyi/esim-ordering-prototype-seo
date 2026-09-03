@@ -324,10 +324,9 @@ pc_subs = {
     "{{PC_apple}}":         pc_img("imgIcAppleLogoFill.svg"),
     "{{PC_android}}":       pc_img("imgIcAndroidLogoFill.svg"),
     **{("{{PC_social%d}}" % i): pc_img(n) for i, n in enumerate(["imgGroup13.svg","imgGroup12.svg","imgGroup14.svg","imgGroup9.svg","imgGroup7.svg"], 1)},
-    # SIM卡/WIFI 页三段截图（0.5x，1512 宽，按 Figma 组合裁切）
-    "{{PC_SW1}}":           img_datauri("pc/sw1.webp"),
-    "{{PC_SW2}}":           img_datauri("pc/sw2.webp"),
-    "{{PC_SW3}}":           img_datauri("pc/sw3.webp"),
+    # 探索更多：現行 PC 頁截圖組合（Figma 2357-115994，1512 寬 0.5x）+ 搜尋條圖（2357-115993）
+    "{{PC_EXPLORE}}":        img_datauri("pc/explore.webp"),
+    "{{PC_EXPLORE_SEARCH}}": img_datauri("pc/exploreSearch.webp"),
 }
 pc_out = PC_TPL
 for k, v in {**subs, **pc_subs}.items():

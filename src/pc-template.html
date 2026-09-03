@@ -20,15 +20,20 @@
   .col { width: 1140px; margin: 0 auto; }
 
   /* ---------- 螢幕路由 ---------- */
-  .pc-screen { display: none; }
-  .pc-screen.is-active { display: block; }
-  body.on-simwifi { background: #FAFAFA; }
 
-  /* ---------- 搜尋卡上方 tab 條（Figma 2123-57542 / 2140-57839）：PC 端 eSIM ↔ SIM卡/WIFI 的切換方式 ---------- */
-  .pc-tabs { display: inline-flex; align-items: flex-start; background: var(--kk-surface-medium); border-radius: 8px 8px 0 0; }
-  .pc-tab { padding: 12px 24px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); border-radius: 0 8px 0 0; white-space: nowrap; }
-  .pc-tab:first-child { border-radius: 8px 0 0 0; }
-  .pc-tab.sel { background: #fff; color: var(--kk-primary-dark); font-weight: 600; border-radius: 8px 8px 0 0; }
+  /* ---------- 搜尋卡上方 tab bar（Figma 2357-116464，同 mweb TabBarCard）：eSIM｜SIM卡｜WIFI分享器 ----------
+     淺灰條 + 白底選中 tab（上圓角 16、右下 8px 內凹補角）+ 青色底線；SIM卡 / WIFI分享器 → 平滑錨定到「探索更多」，tab 保持 eSIM */
+  .pc-tabs { display: inline-flex; align-items: stretch; background: var(--kk-surface-light); border-radius: 16px 16px 0 0; }
+  .pc-tab { position: relative; width: 104px; display: flex; justify-content: center; padding: 12px; }
+  .pc-tab .tb-in { display: flex; flex-direction: column; align-items: stretch; }
+  .pc-tab .lb { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); text-align: center; white-space: nowrap; }
+  .pc-tab .ul { display: none; height: 2px; margin-top: 10px; border-radius: 2px 2px 0 0; background: var(--kk-primary-medium); }
+  .pc-tab.sel { background: #fff; border-radius: 16px 16px 0 0; padding-bottom: 0; }
+  .pc-tab.sel .lb { font-weight: 600; color: var(--kk-primary-dark); }
+  .pc-tab.sel .ul { display: block; }
+  .pc-tab.sel::after { content: ''; position: absolute; right: -8px; bottom: 0; width: 8px; height: 8px;
+    background: radial-gradient(circle at 100% 0, transparent 7.5px, #fff 8px); }
+  .pc-tab:not(.sel):hover .lb { color: var(--kk-primary-dark); }
 
   /* ================= eSIM 主題頁 ================= */
   /* header 60 */
@@ -60,7 +65,7 @@
   .pc-hero .sub { position: absolute; left: 0; top: 128.7px; color: #fff; width: 327px; }
   .pc-search { position: absolute; left: 0; top: 171.4px; display: flex; flex-direction: column; align-items: flex-start; }
   .pc-card {
-    width: 1140px; background: #fff; border-radius: 0 8px 8px 8px; box-shadow: 0 1px 2px rgba(38,50,56,.12);
+    width: 1140px; background: #fff; border-radius: 0 16px 16px 16px; box-shadow: 0 1px 2px rgba(38,50,56,.12);
     padding: 16px; display: flex; gap: 16px; align-items: flex-end;
   }
   .pc-sel { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
@@ -126,11 +131,15 @@
   .pc-foot-bottom p { white-space: nowrap; }
   .pc-foot-bottom .copy { font-size: 12px; }
 
-  /* ================= SIM卡/WIFI 頁（現行 PC 頁截圖 + tab 條，Figma 2140-57763）================= */
-  .pc-sw { position: relative; width: 1440px; margin: 0 auto; background: #FAFAFA; }
-  .pc-sw img.shot { width: 1440px; }
-  /* tab 條位置：Figma 1512 寬版面 left 299.88 / top 199.39 → 換算 1440 寬 */
-  .pc-sw .pc-tabs { position: absolute; left: 285.6px; top: 189.9px; }
+  /* ================= 探索更多（Figma 2357-115991 / 2357-115994）：常見問題下方，#FAFAFA 通欄 =================
+     標題 24/30 + 說明 16/24；搜尋條與商品列表為現行 PC 頁截圖（左欄含「商品類別」面板），點擊 toast 維持舊版現狀 */
+  .pc-explore { background: #FAFAFA; padding-top: 48px; }
+  .pc-explore .col { display: flex; flex-direction: column; gap: 8px; }
+  .pc-ex-title { font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-ex-desc { font-size: 16px; line-height: 24px; color: var(--kk-text-dark); }
+  .pc-ex-search { display: block; width: 832px; height: 62px; margin-top: 14px; cursor: pointer; }
+  .pc-ex-shots { display: block; width: 1440px; margin: 0 auto; cursor: pointer; }
+  .pc-explore .tail { height: 108px; }
 
   /* toast */
   .pc-toast {
@@ -142,7 +151,7 @@
 </style>
 
 <!-- ============ eSIM 主題頁（PC） ============ -->
-<section class="pc-screen is-active" data-pc="esim">
+<section class="pc-page">
   <header class="pc-header">
     <div class="col">
       <span class="pc-logo">{{PC_logo}}</span>
@@ -178,13 +187,14 @@
 
   <div class="pc-hero">
     <div class="col">
-      <div class="h1">eSIM</div>
+      <div class="h1">全球上網</div>
       <div class="sub">輕鬆出發，無憂暢遊全球</div>
       <div class="pc-search">
         <!-- 切換方式：tab 條貼在搜尋卡上方 -->
-        <div class="pc-tabs">
-          <button class="pc-tab sel" data-pc-go="esim">eSIM</button>
-          <button class="pc-tab" data-pc-go="simwifi">SIM卡/WIFI</button>
+        <div class="pc-tabs" role="tablist">
+          <button class="pc-tab sel" role="tab"><span class="tb-in"><span class="lb">eSIM</span><span class="ul"></span></span></button>
+          <button class="pc-tab" role="tab" data-pc-anchor="sim"><span class="tb-in"><span class="lb">SIM卡</span></span></button>
+          <button class="pc-tab" role="tab" data-pc-anchor="wifi"><span class="tb-in"><span class="lb">WIFI分享器</span></span></button>
         </div>
         <div class="pc-card">
           <div class="pc-sel"><div class="lb">目的地</div>
@@ -249,6 +259,17 @@
     </div>
   </div>
 
+  <!-- 探索更多（Figma 2357-115991 + 2357-115994） -->
+  <section class="pc-explore" id="pcExplore">
+    <div class="col">
+      <div class="pc-ex-title">探索更多</div>
+      <p class="pc-ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
+      <img class="pc-ex-search" alt="" src="{{PC_EXPLORE_SEARCH}}" data-toast="old">
+    </div>
+    <img class="pc-ex-shots" alt="" src="{{PC_EXPLORE}}" data-toast="old">
+    <div class="tail"></div>
+  </section>
+
   <footer>
     <div class="pc-foot">
       <div class="pc-foot-top">
@@ -276,19 +297,6 @@
   </footer>
 </section>
 
-<!-- ============ SIM卡/WIFI 頁（PC）：現行頁截圖三段 + tab 條 ============ -->
-<section class="pc-screen" data-pc="simwifi">
-  <div class="pc-sw" data-toast="old">
-    <img class="shot" alt="" src="{{PC_SW1}}">
-    <img class="shot" alt="" src="{{PC_SW2}}">
-    <img class="shot" alt="" src="{{PC_SW3}}">
-    <div class="pc-tabs">
-      <button class="pc-tab" data-pc-go="esim">eSIM</button>
-      <button class="pc-tab sel" data-pc-go="simwifi">SIM卡/WIFI</button>
-    </div>
-  </div>
-</section>
-
 <div class="pc-toast" id="pcToast" role="status"></div>
 
 <script>
@@ -299,14 +307,25 @@
     el.textContent = msg; el.classList.add('show');
     clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.classList.remove('show'); }, 1800);
   }
-  function goPC(name) {
-    document.querySelectorAll('.pc-screen').forEach(function (s) { s.classList.toggle('is-active', s.getAttribute('data-pc') === name); });
-    document.body.classList.toggle('on-simwifi', name === 'simwifi');
-    window.scrollTo(0, 0);
+  // SIM卡 / WIFI分享器：平滑錨定到探索更多（rAF 自繪，tab 保持 eSIM）
+  function anchorExplore() {
+    var sec = document.getElementById('pcExplore');
+    var startY = window.scrollY || document.documentElement.scrollTop || 0;
+    var maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    var top = Math.min(maxY, sec.getBoundingClientRect().top + startY - 24);
+    var t0 = null, dur = 520;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur); k = 1 - Math.pow(1 - k, 3);
+      window.scrollTo(0, Math.round(startY + (top - startY) * k));
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+    setTimeout(function () { window.scrollTo(0, top); }, dur + 60);
   }
   document.addEventListener('click', function (e) {
-    var go = e.target.closest('[data-pc-go]');
-    if (go) { e.stopPropagation(); goPC(go.getAttribute('data-pc-go')); return; }
+    var go = e.target.closest('[data-pc-anchor]');
+    if (go) { e.stopPropagation(); anchorExplore(); return; }
     var q = e.target.closest('.pc-faq-q');
     if (q) { q.parentElement.classList.toggle('open'); return; }
     var t = e.target.closest('[data-toast]');
