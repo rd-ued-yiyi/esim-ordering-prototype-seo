@@ -2776,18 +2776,18 @@
   // 價格參照 2026 台灣市售亞洲 eSIM 行情（每日固定 1GB≈NT$25-30/天；總流量對齊 Airalo/Nomad 檔位價；
   // 無限流量按降速後網速分檔 NT$45-168/天，最高檔=全程不限速）
   var PLANS = {
-    daily:     { note: '每日重置，用完降速',
+    daily:     { note: '每天固定額度，隔日重新計算',
                  opts: [ { t: '500MB/天', per: 52 }, { t: '1GB/天', per: 82 }, { t: '2GB/天', per: 132 },
                          { t: '3GB/天', per: 172 }, { t: '4GB/天', per: 208 }, { t: '5GB/天', per: 242 },
                          { t: '6GB/天', per: 272 }, { t: '7GB/天', per: 298 }, { t: '8GB/天', per: 322 },
                          { t: '10GB/天', per: 372 } ] },
-    total:     { note: '總流量用完即停，可隨時加購',
+    total:     { note: '整趟共用一個額度，用多用少自己分配',
                  opts: [ { t: '共1GB', price: 149, gb: 1 }, { t: '共2GB', price: 219, gb: 2 },
                          { t: '共3GB', price: 289, gb: 3 }, { t: '共5GB', price: 399, gb: 5 },
                          { t: '共10GB', price: 619, gb: 10 }, { t: '共20GB', price: 999, gb: 20 },
                          { t: '共30GB', price: 1290, gb: 30 }, { t: '共50GB', price: 1790, gb: 50 },
                          { t: '共80GB', price: 2490, gb: 80 }, { t: '共100GB', price: 2990, gb: 100 } ] },
-    unlimited: { note: '不限流量，達公平使用量後降速',
+    unlimited: { note: '沒有額度上限，天天放心用',
                  opts: [ { t: '無限不降速', per: 168 }, { t: '無限流量高速', per: 128 },
                          { t: '無限到量降速', per: 78 }, { t: '無限流量輕速', per: 45 } ] }  // 四檔：不降速 / 高速 / 到量降速 / 輕速
   };
