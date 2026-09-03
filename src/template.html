@@ -2786,7 +2786,7 @@
                          { t: '共10GB', price: 619, gb: 10 }, { t: '共20GB', price: 999, gb: 20 },
                          { t: '共30GB', price: 1290, gb: 30 }, { t: '共50GB', price: 1790, gb: 50 },
                          { t: '共80GB', price: 2490, gb: 80 }, { t: '共100GB', price: 2990, gb: 100 } ] },
-    unlimited: { note: '不限流量，達公平使用量後降至標示網速',
+    unlimited: { note: '不限流量，達公平使用量後降速',
                  opts: [ { t: '無限不降速', per: 168 }, { t: '無限到量降速', per: 78 } ] }  // 僅保留兩檔：全程不限速 / 達公平使用量後降速
   };
   function daysDiscount(d) { return d >= 30 ? 0.85 : d >= 15 ? 0.9 : d >= 7 ? 0.95 : 1; }
