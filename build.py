@@ -251,7 +251,15 @@ subs = {
     "{{IMG_SW_C1}}":       img_datauri("simwifi/c1.webp"),
     "{{IMG_SW_C2}}":       img_datauri("simwifi/c2.webp"),
     "{{IMG_SW_C3}}":       img_datauri("simwifi/c3.webp"),
-    "{{IMG_SW_MEGA}}":     png_datauri("simwifi/megaphone.png"),  # 公告列喇叭（自截圖抠色，#13A3B6）
+    "{{IMG_SW_MEGA}}":     png_datauri("simwifi/megaphone.png"),
+    # 探索更多（Figma 2326-110720）：Figma 導出圖示 + 仿真商品圖（16:9 webp）
+    "{{IC_bars}}":          file_img("assets/explore/bars.svg"),           # header 漢堡 ic_bars_line_semibold
+    "{{IC_sparkles}}":      file_img("assets/explore/sparkles.svg"),       # 探索更多 ic_sparkles_fill
+    "{{IC_heart}}":         file_img("assets/explore/heart.svg"),          # 商品卡收藏 Wishlist Icon（白描邊）
+    "{{IC_starFill16}}":    file_img("assets/explore/starFill.svg"),       # 評分 ic_star_fill 16
+    "{{IC_thumbsUpColor}}": file_img("assets/explore/thumbsUpColor.svg"),  # 「N% 旅客推薦」標籤 ic_thumbsUp_color
+    "{{IC_locationLineCyan}}": svg("locationLine", recolor=("#26BEC9", "#13A3B6")),  # 篩選 chip 選中態地點 icon
+    **{("{{IMG_SW_%s}}" % k.upper()): img_datauri("simwifi/%s.webp" % k) for k in ["p1", "p2", "p4", "p5", "p6", "wifi1", "wifi2"]},  # 公告列喇叭（自截圖抠色，#13A3B6）
     "{{IC_searchGrey}}":   svg("search", recolor=("#212121", "#727272")),  # 搜尋 pill 放大鏡 $color-text-dark
     "{{IC_arrowRightCyan}}": svg("arrowRight", recolor=("#26BEC9", "#13A3B6")),  # 公告列 chevron
     "{{PICTO_cruise}}":    svg("picto_cruise", "picto"),

@@ -217,7 +217,7 @@
   /* ---------- 內容區 ---------- */
   .con { position: relative; z-index: 1; padding-bottom: 40px; }
   .title-block { padding: 8px 24px 0; color: #fff; }
-  .title-block .t-h4 { font-size: 28px; line-height: 36px; }  /* 主題頁 eSIM 標題（Figma 648-806：Semibold 28/36） */
+  .title-block .t-h4 { font-size: 24px; line-height: 30px; }  /* 主題頁標題「全球上網」（Figma 2326-110720：Semibold 24/30） */
   .title-block .sub { margin-top: 8px; }
 
   .page { display: flex; flex-direction: column; gap: 16px; padding: 20px 16px 0; }
@@ -262,14 +262,14 @@
   .guide-tabs { display: flex; gap: 8px; }
   .guide-tab {
     flex: 1 1 0; min-width: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px;  /* Figma 2326 GuideCard：icon + 文字同行 */
     padding: 16px 12px 12px;
     border: 1px solid var(--kk-border-lighter); border-radius: var(--r-lg);
     background: #fff; cursor: pointer;
   }
   .guide-tab .lbl { color: var(--kk-text-darker); }
-  .guide-tab .ic { width: 32px; height: 32px; }  /* 安裝指南 tile 圖示按設計稿放大 */
-  .guide-tab .ic svg { width: 32px; height: 32px; display: block; }
+  .guide-tab .ic { width: 24px; height: 24px; }
+  .guide-tab .ic svg { width: 24px; height: 24px; display: block; }
 
   /* ---------- faq card ---------- */
   .faq-head { display: flex; align-items: center; gap: 20px; }
@@ -1635,83 +1635,94 @@
   .cxl-note { font-size: 12px; line-height: 18px; color: var(--kk-text-medium); margin-top: 12px; display: flex; gap: 6px; }
   .cxl-note .ic { width: 14px; height: 14px; flex: 0 0 auto; margin-top: 2px; }
 
-  /* ================= 主題頁 Mweb header tabs（Figma 2167-58441 / 2167-60295）=================
-     白色 56px 條：返回圓鈕 + eSIM / SIM卡·WIFI 兩個 KKTab Item + 右側 32px 佔位（Figma 中搜尋 CTA opacity 0，
-     為 space-between 對稱）。header 不透明蓋在 hero 頂部（HeroBg 被遮部分與 Figma 一致），
-     故此類頁 .app 取消頂部 padding、由 header 自帶安全區。 */
-  .app.tabs-top { padding-top: 0; }
-  .mheader--tabs {
-    align-items: center; background: #fff; z-index: 3;
-    height: 56px; box-sizing: content-box; padding: 0 16px;
-    padding-top: env(safe-area-inset-top, 0px);
-  }
-  .mheader--tabs .nav-circle { box-shadow: none; }
-  .mheader--tabs .tabs-sp { width: 32px; height: 32px; flex: 0 0 auto; }
-  /* KKTab Item：pt12 + 文字 24 + gap10 + 底線 2 = 48，垂直居中於 56 */
-  .kk-tab { display: flex; flex-direction: column; align-items: stretch; padding: 12px 12px 0; }
-  .kk-tab .lb { font-size: 16px; line-height: 24px; font-weight: 400; color: var(--kk-text-darker); text-align: center; white-space: nowrap; }
-  .kk-tab .ul { display: block; height: 2px; margin-top: 10px; border-radius: 2px 2px 0 0; background: transparent; }
-  .kk-tab.sel .lb { font-weight: 600; color: #13A3B6; }
-  .kk-tab.sel .ul { background: var(--kk-primary-medium); }
-  /* 主題頁標題塊：Figma con pt 24（原 8 是配合浮動返回鈕的舊版） */
-  .app.tabs-top [data-screen="home"] .title-block { padding-top: 24px; }
+  /* ================= 搜尋卡 tab bar（Figma 2326-110720 TabBarCard）：eSIM｜SIM卡｜WIFI分享器 =================
+     外層淺灰底 + hero 陰影；選中 tab 白底、上圓角 16、右下 8px 內凹補角（folder tab），下方白卡左上角直角接合。
+     SIM卡 / WIFI分享器 不切頁：點擊 → 平滑錨定到底部「探索更多」並自動勾選對應「通訊產品」篩選；tab 保持 eSIM。 */
+  .tabcard { background: var(--kk-surface-light); border-radius: var(--r-xl); box-shadow: var(--el-hero-card); overflow: hidden; }
+  .tabbar { display: flex; align-items: stretch; }
+  .tb-tab { flex: 1 1 0; min-width: 0; position: relative; display: flex; justify-content: center; padding: 12px; }
+  .tb-in { display: flex; flex-direction: column; align-items: stretch; }
+  .tb-tab .lb { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); text-align: center; white-space: nowrap; }
+  .tb-tab .ul { display: none; height: 2px; margin-top: 10px; border-radius: 2px 2px 0 0; background: var(--kk-primary-medium); }
+  .tb-tab.sel { background: #fff; border-radius: var(--r-xl) var(--r-xl) 0 0; padding-bottom: 0; }
+  .tb-tab.sel .lb { font-weight: 600; color: #13A3B6; }
+  .tb-tab.sel .ul { display: block; }
+  .tb-tab.sel::after { content: ''; position: absolute; right: -8px; bottom: 0; width: 8px; height: 8px;
+    background: radial-gradient(circle at 100% 0, transparent 7.5px, #fff 8px); }
+  .tb-tab:not(.sel):active .lb { opacity: .55; }
+  .tabcard .dest-card { box-shadow: none; border-radius: 0 var(--r-xl) var(--r-xl) var(--r-xl); }
 
-  /* ================= SCREEN: SIM卡/WIFI（Figma 2033-108656「旧主题页」＝現行頁截圖 + 新 tab header）=================
-     依截圖還原為可滾動 HTML：商品圖為截圖裁切（含原有地點 pill / 收藏心形），其餘元素以 DS token 重建。 */
-  [data-screen="simwifi"] { background: var(--kk-surface-lighter); min-height: 100vh; padding-bottom: 40px; }
-  .sw-hero {
-    position: relative; height: 275px; overflow: hidden;
-    background: #7a9aa6 url("{{IMG_SW_HERO}}") center 35% / cover no-repeat;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .sw-hero::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28); }
-  .sw-hero-in { position: relative; width: 100%; padding: 0 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #fff; text-align: center; }
-  .sw-h1 { font-size: 20px; line-height: 28px; font-weight: 600; }
-  .sw-sub { font-size: 14px; line-height: 22px; }
-  .sw-search {
-    margin-top: 12px; width: 100%; height: 44px; border-radius: var(--r-circle); background: #fff;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    color: var(--kk-text-dark); font-size: 15px; line-height: 22px; box-shadow: var(--el-action);
-  }
-  .sw-search .ic { display: flex; align-items: center; justify-content: center; }
-  .sw-ann {
-    width: 100%; display: flex; align-items: center; gap: 8px; padding: 12px 16px;
-    background: var(--kk-primary-lighter); color: #13A3B6; font-size: 14px; line-height: 22px; text-align: left;
-  }
-  .sw-ann .t { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sw-ann .mg img { width: 100%; height: 100%; display: block; }
-  .sw-ann .ic { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
-  .sw-chips { display: flex; gap: 10px; padding: 16px 16px 12px; overflow-x: auto; scrollbar-width: none; }
-  .sw-chips::-webkit-scrollbar { display: none; }
-  .sw-chip {
-    flex: 0 0 auto; display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px;
-    border: 1px solid var(--kk-border-light); border-radius: var(--r-circle); background: #fff;
-    font-size: 14px; line-height: 20px; color: var(--kk-text-darker);
-  }
-  .sw-chip .ic { display: flex; align-items: center; justify-content: center; }
-  .sw-chip.sel { border-color: var(--kk-primary-medium); color: #13A3B6; }
-  .sw-count { padding: 0 16px 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .sw-count i { font-style: normal; color: var(--kk-primary-medium); font-size: 15px; }
-  .sw-list { display: flex; flex-direction: column; gap: 8px; }
-  .sw-card { background: #fff; padding: 12px 13px 16px; display: flex; flex-direction: column; gap: 8px; align-items: stretch; text-align: left; width: 100%; }
-  .sw-card .im { display: block; width: 100%; aspect-ratio: 800 / 435; object-fit: cover; border-radius: var(--r-lg); }
-  .sw-card .tt { font-size: 15px; line-height: 22px; color: var(--kk-text-darker); }
-  .sw-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-  .sw-tag { font-size: 12px; line-height: 16px; padding: 2px 6px; border-radius: var(--r-sm); background: #EAF4FE; color: #2D84D6; }
-  .sw-tag.b { font-weight: 600; }
-  .sw-rate { display: flex; align-items: center; gap: 4px; font-size: 13px; line-height: 18px; color: var(--kk-text-darker); }
-  .sw-rate .ic { display: flex; align-items: center; justify-content: center; }
-  .sw-rate .sep { color: var(--kk-text-light); margin: 0 2px; }
-  .sw-price { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
-  .sw-off { display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 3px; background: var(--kk-text-critical); color: #fff; font-size: 11px; line-height: 16px; }
-  .sw-was { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); text-decoration: line-through; }
-  .sw-now { font-size: 13px; line-height: 20px; font-weight: 700; color: var(--kk-text-darker); }
-  .sw-now b { font-size: 17px; }
-  .sw-now small { font-size: 13px; font-weight: 400; margin-left: 2px; }
+  /* 為什麼選擇 KKday：兩列橫向滑動（Figma 2326：每列 250 寬、2 項；卡內負邊距讓滾動帶貼齊卡邊） */
+  .benefit-scroll { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+  .benefit-scroll::-webkit-scrollbar { display: none; }
+  .benefit-col { flex: 0 0 250px; display: flex; flex-direction: column; gap: 20px; }
+
+  /* ================= 探索更多（Figma 2326-110720「探索更多」）：主題頁/目的地頁底部通欄白底區塊 ================= */
+  [data-screen="home"] .con, [data-screen="destination"] .con { padding-bottom: 0; }
+  .explore { margin-top: 20px; background: #fff; border-radius: 32px 32px 0 0;
+    padding: 20px 16px calc(48px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 20px; }
+  .ex-head { display: flex; flex-direction: column; gap: 16px; }
+  .ex-title { display: flex; align-items: center; gap: 8px; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
+  .ex-title .ic img { width: 24px; height: 24px; }
+  .ex-desc { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .ex-filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+  .ex-filters::-webkit-scrollbar { display: none; }
+  .ex-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 12px 0 8px; max-width: 230px;
+    background: #fff; border: 1px solid var(--kk-border-light); border-radius: var(--r-circle);
+    font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
+  .ex-chip .lb { overflow: hidden; text-overflow: ellipsis; }
+  .ex-chip .ic img { width: 16px; height: 16px; }
+  .ex-chip .ic-sel { display: none; }
+  .ex-chip.sel { border-color: var(--kk-primary-medium); color: #13A3B6; }
+  .ex-chip.sel .ic-def { display: none; }
+  .ex-chip.sel .ic-sel { display: inline-flex; }
+  .ex-chip .badge { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px;
+    border-radius: 8px; background: #13A3B6; color: #fff; font-size: 11px; line-height: 16px; font-weight: 600; }
+  .ex-list { display: flex; flex-direction: column; gap: 32px; }
+  .ex-empty { padding: 32px 0; text-align: center; color: var(--kk-text-medium); font-size: 14px; line-height: 20px; }
+  /* 商品卡（Figma Product Card）：16:9 圖 + 上下漸層 + 收藏心形；標題 16/24 Semibold；評分行；屬性標籤；價格 + 折扣標 */
+  .ex-card { display: flex; flex-direction: column; gap: 12px; width: 100%; text-align: left; }
+  .ex-photo { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 16 / 9; background: var(--kk-surface-light); }
+  .ex-photo img.ph { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ex-photo::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,.3) 0%, rgba(0,0,0,0) 26%), linear-gradient(180deg, rgba(0,0,0,0) 77%, rgba(0,0,0,.3) 100%); }
+  .ex-heart { position: absolute; right: 12px; top: 12px; width: 20px; height: 20px; z-index: 1; }
+  .ex-heart img { width: 20px; height: 20px; display: block; }
+  .ex-body { display: flex; flex-direction: column; gap: 16px; }
+  .ex-hd { display: flex; flex-direction: column; gap: 8px; }
+  .ex-name { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ex-rate { display: flex; align-items: baseline; gap: 4px; }
+  .ex-rate .ic { align-self: center; } .ex-rate .ic img { width: 16px; height: 16px; display: block; }
+  .ex-rate b { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .ex-rate span { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ex-tags { display: flex; gap: 4px; padding-top: 2px; overflow: hidden; }
+  .ex-tag { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; padding: 2px 4px; border-radius: var(--r-sm);
+    background: var(--kk-surface-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); white-space: nowrap; }
+  .ex-tag img { width: 16px; height: 16px; display: block; }
+  .ex-foot { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .ex-price { display: flex; align-items: baseline; gap: 4px; }
+  .ex-price .now { font-family: "Helvetica Neue", Helvetica, Arial, var(--font-tc); font-size: 16px; line-height: 16px; font-weight: 700; color: var(--kk-text-darker); }
+  .ex-price .from { font-size: 14px; line-height: 14px; color: var(--kk-text-darker); }
+  .ex-price .was { font-family: "Helvetica Neue", Helvetica, Arial, var(--font-tc); font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }
+  .ex-off { display: inline-flex; align-items: center; padding: 2px 4px; border-radius: var(--r-sm); background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
+  /* 目的地及領取地 / 篩選 sheet（Figma 2357-114854 / 2357-114862）：分組 pill，選中＝實底青色 */
+  .exp-sec { padding: 20px 24px 12px; }
+  .exp-sec + .exp-sec { border-top: 8px solid var(--kk-surface-light); }
+  .exp-h { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin-bottom: 12px; }
+  .exp-g { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); margin: 4px 0 8px; }
+  .exp-opts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .exp-pill { padding: 6px 12px; border-radius: var(--r-circle); background: var(--kk-surface-light); font-size: 13px; line-height: 18px; color: var(--kk-text-dark); }
+  .exp-pill.sel { background: var(--kk-primary-medium); color: #fff; }
+  .exf-sec { padding: 0 24px 20px; }
+  .exf-sec .exp-h { margin-bottom: 12px; }
+  .exf-body { padding-top: 8px; }
+  .exf-price { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); margin: 0 0 12px; }
+  .exf-sec .fs-range { margin: 0 8px 8px; }
 </style>
 
 <div class="esim-root">
-  <div class="app tabs-top"><!-- 初始＝eSIM 主頁（需 hero 背景）；進 plans 頁時由 go() 加上 no-hero -->
+  <div class="app"><!-- 初始＝eSIM 主頁（需 hero 背景）；進 plans 頁時由 go() 加上 no-hero -->
 
     <!-- hero 背景：home / destination 兩屏共享（同一份，避免 SVG id 衝突） -->
     {{HERO_SVG}}
@@ -1719,26 +1730,29 @@
     <!-- ============ SCREEN: eSIM 主頁（合併後的起始頁；模擬首頁已移除）============ -->
     <section class="screen is-active" data-screen="home">
 
-      <!-- header：返回 + eSIM / SIM卡·WIFI 主題 tab（Figma 2167-58441） -->
-      <div class="mheader mheader--tabs">
-        <button class="nav-circle" data-action="back" aria-label="返回">
-          <span class="ic ic-20">{{IC_back}}</span>
+      <!-- header：hero 上懸浮選單鈕（Figma 2326-110720 Mweb header ic_bars_line_semibold） -->
+      <div class="mheader">
+        <button class="nav-circle" data-action="menu" aria-label="選單">
+          <span class="ic ic-20">{{IC_bars}}</span>
         </button>
-        <button class="kk-tab sel" data-action="tab-esim"><span class="lb">eSIM</span><span class="ul"></span></button>
-        <button class="kk-tab" data-action="tab-simwifi"><span class="lb">SIM卡/WIFI</span><span class="ul"></span></button>
-        <span class="tabs-sp" aria-hidden="true"></span>
       </div>
 
       <!-- 內容 -->
       <div class="con">
         <div class="title-block">
-          <div class="t-h4">eSIM</div>
+          <div class="t-h4">全球上網</div>
           <div class="sub t-body-md">輕鬆出發，無憂暢遊全球</div>
         </div>
 
         <div class="page">
 
-          <!-- 目的地卡 -->
+          <!-- 搜尋卡：tab bar（eSIM｜SIM卡｜WIFI分享器）+ 目的地卡 -->
+          <div class="tabcard">
+            <div class="tabbar" role="tablist">
+              <button class="tb-tab sel" data-tb="esim" role="tab"><span class="tb-in"><span class="lb">eSIM</span><span class="ul"></span></span></button>
+              <button class="tb-tab" data-tb="sim" role="tab"><span class="tb-in"><span class="lb">SIM卡</span></span></button>
+              <button class="tb-tab" data-tb="wifi" role="tab"><span class="tb-in"><span class="lb">WIFI分享器</span></span></button>
+            </div>
           <div class="card dest-card">
             <button class="search-bar" data-action="pick-destination">
               <span class="ic ic-24">{{IC_location}}</span>
@@ -1768,27 +1782,32 @@
               <div class="chips-row" id="homeHistChips"></div>
             </div>
           </div>
+          </div><!-- /tabcard -->
 
-          <!-- 為什麼選擇 KKday -->
+          <!-- 為什麼選擇 KKday（Figma 2326：兩列橫向滑動，每列 2 項） -->
           <div class="card card--pad-v">
             <div class="stack-20">
               <div class="t-h6 card-title">為什麼選擇KKday？</div>
-              <div class="stack-20">
-                <div class="benefit-row">
-                  <span class="ic ic-32">{{PICTO_tours}}</span>
-                  <div class="txt"><div class="t-subtitle-lg">簡單易用</div><div class="desc t-body-md">透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</div></div>
+              <div class="benefit-scroll">
+                <div class="benefit-col">
+                  <div class="benefit-row">
+                    <span class="ic ic-32">{{PICTO_tours}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">簡單易用</div><div class="desc t-body-md">透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</div></div>
+                  </div>
+                  <div class="benefit-row">
+                    <span class="ic ic-32">{{PICTO_cruise}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">靈活彈性</div><div class="desc t-body-md">天數與流量自由組合，行程有變也能隨時加購延長。</div></div>
+                  </div>
                 </div>
-                <div class="benefit-row">
-                  <span class="ic ic-32">{{PICTO_cruise}}</span>
-                  <div class="txt"><div class="t-subtitle-lg">靈活彈性</div><div class="desc t-body-md">天數與流量自由組合，行程有變也能隨時加購延長。</div></div>
-                </div>
-                <div class="benefit-row">
-                  <span class="ic ic-32">{{PICTO_travel}}</span>
-                  <div class="txt"><div class="t-subtitle-lg">80+ 國家覆蓋</div><div class="desc t-body-md">一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</div></div>
-                </div>
-                <div class="benefit-row">
-                  <span class="ic ic-32">{{PICTO_tours}}</span>
-                  <div class="txt"><div class="t-subtitle-lg">客服支援</div><div class="desc t-body-md">24 小時中文客服線上，安裝與連線問題隨時協助。</div></div>
+                <div class="benefit-col">
+                  <div class="benefit-row">
+                    <span class="ic ic-32">{{PICTO_travel}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">80+ 國家覆蓋</div><div class="desc t-body-md">一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</div></div>
+                  </div>
+                  <div class="benefit-row">
+                    <span class="ic ic-32">{{PICTO_tours}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">客服支援</div><div class="desc t-body-md">24 小時中文客服線上，安裝與連線問題隨時協助。</div></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1805,98 +1824,31 @@
             </div>
           </div>
 
-          <!-- 常見問題 -->
+          <!-- 常見問題（Figma 2326 FAQ Card：僅標題 + 查看更多） -->
           <div class="card card--pad-v">
-            <div class="stack-20">
-              <div class="faq-head">
-                <span class="ttl t-h6 card-title">常見問題</span>
-                <span class="faq-more t-link-md" data-action="faq-more">檢視更多</span>
-              </div>
-              <div class="faq-list">
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 > 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday APP 聯絡 24 小時線上客服。</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
-                </div>
-              </div>
+            <div class="faq-head">
+              <span class="ttl t-h6 card-title">常見問題</span>
+              <span class="faq-more t-link-md" data-action="faq-more">查看更多</span>
             </div>
           </div>
 
         </div><!-- /page -->
+
+        <!-- 探索更多（Figma 2326-110720）：通欄白底、上圓角 32；篩選 chip 開 bottom sheet；商品卡由 JS 依 EX_PRODUCTS 渲染 -->
+        <section class="explore">
+          <div class="ex-head">
+            <div class="ex-title"><span class="ic ic-24">{{IC_sparkles}}</span><span>探索更多</span></div>
+            <p class="ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
+          </div>
+          <div class="ex-filters">
+            <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
+            <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">篩選</span><span class="badge" hidden></span></button>
+            <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
+            <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
+          </div>
+          <div class="ex-list"></div>
+        </section>
       </div><!-- /con -->
-    </section>
-
-    <!-- ============ SCREEN: SIM卡/WIFI（舊主題頁，Figma 2033-108656）============ -->
-    <section class="screen" data-screen="simwifi">
-      <!-- header：返回 + eSIM / SIM卡·WIFI 主題 tab（Figma 2167-58441） -->
-      <div class="mheader mheader--tabs">
-        <button class="nav-circle" data-action="back" aria-label="返回">
-          <span class="ic ic-20">{{IC_back}}</span>
-        </button>
-        <button class="kk-tab" data-action="tab-esim"><span class="lb">eSIM</span><span class="ul"></span></button>
-        <button class="kk-tab sel" data-action="tab-simwifi"><span class="lb">SIM卡/WIFI</span><span class="ul"></span></button>
-        <span class="tabs-sp" aria-hidden="true"></span>
-      </div>
-
-      <div class="sw-hero">
-        <div class="sw-hero-in">
-          <div class="sw-h1">eSIM、SIM卡、WiFi 分享器</div>
-          <div class="sw-sub">KKday 特搜各國高速 eSIM、SIM卡、熱點分享 WiFi 分享器租借，特選商品提供即時訂購、機場急速取件服務！</div>
-          <button class="sw-search" data-action="sw-demo"><span class="ic ic-16">{{IC_searchGrey}}</span><span class="t">請選擇目的地以及領取地</span></button>
-        </div>
-      </div>
-
-      <button class="sw-ann" data-action="sw-demo">
-        <span class="ic ic-20 mg"><img alt="" src="{{IMG_SW_MEGA}}"></span>
-        <span class="t">免翻牆！中港澳旅遊必備！eSIM 支援 ChatGPT…</span>
-        <span class="ic ic-16"><span class="rot90 ic">{{IC_arrowRightCyan}}</span></span>
-      </button>
-
-      <div class="sw-chips">
-        <button class="sw-chip" data-action="sw-demo"><span class="ic ic-16">{{IC_filterDark}}</span>更多條件</button>
-        <button class="sw-chip" data-action="sw-demo"><span class="ic ic-16">{{IC_calendarGrey}}</span>日期</button>
-        <button class="sw-chip sel" data-action="sw-demo"><span class="ic ic-16">{{IC_sortAmountCyan}}</span>排序</button>
-      </div>
-      <div class="sw-count"><i>907</i> 搜尋結果</div>
-
-      <div class="sw-list">
-          <button class="sw-card" data-action="sw-demo">
-            <img class="im" alt="" src="{{IMG_SW_C1}}">
-            <div class="tt">【50% OFF】日本 eSIM 無限流量 Rakuten / KDDI / Docomo</div>
-            <div class="sw-tags"><span class="sw-tag">即買即用</span><span class="sw-tag b">KKgift</span></div>
-            <div class="sw-rate"><span class="ic ic-14">{{IC_star}}</span>4.1 (19,521)<span class="sep">|</span>400K+ 個已訂購</div>
-            <div class="sw-price"><span class="sw-off">50% OFF</span><span class="sw-was">JPY 159</span><span class="sw-now">JPY <b>79</b><small>起</small></span></div>
-          </button>
-          <button class="sw-card" data-action="sw-demo">
-            <img class="im" alt="" src="{{IMG_SW_C2}}">
-            <div class="tt">KDDI 5G 高速原生日本eSIM|支援ChatGPT</div>
-            <div class="sw-tags"><span class="sw-tag">即買即用</span><span class="sw-tag b">KKgift</span></div>
-            <div class="sw-rate"><span class="ic ic-14">{{IC_star}}</span>4.5 (3,479)<span class="sep">|</span>80K+ 個已訂購</div>
-            <div class="sw-price"><span class="sw-now">JPY <b>893</b><small>起</small></span></div>
-          </button>
-          <button class="sw-card" data-action="sw-demo">
-            <img class="im" alt="" src="{{IMG_SW_C3}}">
-            <div class="tt">【超人氣熱銷 50% OFF】中港澳 5G eSIM・嚴選電信商・全面支援 AI・免翻牆</div>
-            <div class="sw-tags"><span class="sw-tag">即買即用</span><span class="sw-tag b">KKgift</span></div>
-            <div class="sw-rate"><span class="ic ic-14">{{IC_star}}</span>4.7 (8,214)<span class="sep">|</span>200K+ 個已訂購</div>
-            <div class="sw-price"><span class="sw-off">50% OFF</span><span class="sw-was">JPY 112</span><span class="sw-now">JPY <b>56</b><small>起</small></span></div>
-          </button>
-      </div>
     </section>
 
     <!-- ============ SCREEN: 目的地頁 ============ -->
@@ -1921,7 +1873,13 @@
 
         <div class="page">
 
-          <!-- 搜尋卡 2 -->
+          <!-- 搜尋卡 2：tab bar + 天數/流量卡 -->
+          <div class="tabcard">
+            <div class="tabbar" role="tablist">
+              <button class="tb-tab sel" data-tb="esim" role="tab"><span class="tb-in"><span class="lb">eSIM</span><span class="ul"></span></span></button>
+              <button class="tb-tab" data-tb="sim" role="tab"><span class="tb-in"><span class="lb">SIM卡</span></span></button>
+              <button class="tb-tab" data-tb="wifi" role="tab"><span class="tb-in"><span class="lb">WIFI分享器</span></span></button>
+            </div>
           <div class="card dest-card">
             <div class="inline-note">
               <span class="ic ic-16">{{IC_checkCircle}}</span>
@@ -1966,27 +1924,32 @@
 
             <button class="cta enabled" id="searchCta">搜尋套餐</button>
           </div>
+          </div><!-- /tabcard -->
 
-          <!-- 為什麼選擇 KKday -->
+          <!-- 為什麼選擇 KKday（Figma 2326：兩列橫向滑動，每列 2 項） -->
           <div class="card card--pad-v">
             <div class="stack-20">
               <div class="t-h6 card-title">為什麼選擇KKday？</div>
-              <div class="stack-20">
-                <div class="benefit-row">
-                  <span class="ic ic-32">{{PICTO_tours}}</span>
-                  <div class="txt"><div class="t-subtitle-lg">簡單易用</div><div class="desc t-body-md">透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</div></div>
+              <div class="benefit-scroll">
+                <div class="benefit-col">
+                  <div class="benefit-row">
+                    <span class="ic ic-32">{{PICTO_tours}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">簡單易用</div><div class="desc t-body-md">透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</div></div>
+                  </div>
+                  <div class="benefit-row">
+                    <span class="ic ic-32">{{PICTO_cruise}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">靈活彈性</div><div class="desc t-body-md">天數與流量自由組合，行程有變也能隨時加購延長。</div></div>
+                  </div>
                 </div>
-                <div class="benefit-row">
-                  <span class="ic ic-32">{{PICTO_cruise}}</span>
-                  <div class="txt"><div class="t-subtitle-lg">靈活彈性</div><div class="desc t-body-md">天數與流量自由組合，行程有變也能隨時加購延長。</div></div>
-                </div>
-                <div class="benefit-row">
-                  <span class="ic ic-32">{{PICTO_travel}}</span>
-                  <div class="txt"><div class="t-subtitle-lg">80+ 國家覆蓋</div><div class="desc t-body-md">一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</div></div>
-                </div>
-                <div class="benefit-row">
-                  <span class="ic ic-32">{{PICTO_tours}}</span>
-                  <div class="txt"><div class="t-subtitle-lg">客服支援</div><div class="desc t-body-md">24 小時中文客服線上，安裝與連線問題隨時協助。</div></div>
+                <div class="benefit-col">
+                  <div class="benefit-row">
+                    <span class="ic ic-32">{{PICTO_travel}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">80+ 國家覆蓋</div><div class="desc t-body-md">一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</div></div>
+                  </div>
+                  <div class="benefit-row">
+                    <span class="ic ic-32">{{PICTO_tours}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">客服支援</div><div class="desc t-body-md">24 小時中文客服線上，安裝與連線問題隨時協助。</div></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2003,39 +1966,30 @@
             </div>
           </div>
 
-          <!-- 常見問題 -->
+          <!-- 常見問題（Figma 2326 FAQ Card：僅標題 + 查看更多） -->
           <div class="card card--pad-v">
-            <div class="stack-20">
-              <div class="faq-head">
-                <span class="ttl t-h6 card-title">常見問題</span>
-                <span class="faq-more t-link-md" data-action="faq-more">檢視更多</span>
-              </div>
-              <div class="faq-list">
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 > 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday APP 聯絡 24 小時線上客服。</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
-                  <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
-                </div>
-              </div>
+            <div class="faq-head">
+              <span class="ttl t-h6 card-title">常見問題</span>
+              <span class="faq-more t-link-md" data-action="faq-more">查看更多</span>
             </div>
           </div>
 
         </div><!-- /page -->
+
+        <!-- 探索更多（Figma 2326-110720）：通欄白底、上圓角 32；篩選 chip 開 bottom sheet；商品卡由 JS 依 EX_PRODUCTS 渲染 -->
+        <section class="explore">
+          <div class="ex-head">
+            <div class="ex-title"><span class="ic ic-24">{{IC_sparkles}}</span><span>探索更多</span></div>
+            <p class="ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
+          </div>
+          <div class="ex-filters">
+            <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
+            <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">篩選</span><span class="badge" hidden></span></button>
+            <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
+            <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
+          </div>
+          <div class="ex-list"></div>
+        </section>
       </div><!-- /con -->
     </section>
 
@@ -2122,7 +2076,7 @@
   <!-- 滾動置頂 header -->
   <div class="page-header" id="pageHeader">
     <button class="ph-back" data-action="back" aria-label="返回"><span class="ic ic-24">{{IC_back}}</span></button>
-    <span class="ph-title">eSIM</span>
+    <span class="ph-title">全球上網</span>
     <span class="ph-spacer"></span>
   </div>
 
@@ -2482,6 +2436,30 @@
     <div class="sort-list" id="sortList"></div>
   </div>
 
+  <!-- 探索更多：目的地及領取地 sheet（Figma 2357-114854）目的地單選、領取/郵寄地多選 -->
+  <div class="bsheet tall" id="exPlaceSheet">
+    <div class="bs-handle"></div>
+    <div class="bs-bar">
+      <button class="bs-close" data-bs-close aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button>
+      <span class="bs-title">搜尋</span>
+      <button class="fs-clear" id="exPlaceClear">全部清除</button>
+    </div>
+    <div class="bs-body"><div id="exPlaceBody"></div></div>
+    <div class="fs-foot"><button class="cta" id="exPlaceApply">搜尋</button></div>
+  </div>
+
+  <!-- 探索更多：篩選 sheet（Figma 2357-114862）通訊產品 / 領取方式 / 商品特性 / 旅遊天數 / 價錢 -->
+  <div class="bsheet tall" id="exFilterSheet">
+    <div class="bs-handle"></div>
+    <div class="bs-bar">
+      <button class="bs-close" data-bs-close aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button>
+      <span class="bs-title">搜尋</span>
+      <button class="fs-clear" id="exFilterClear">全部清除</button>
+    </div>
+    <div class="bs-body"><div class="exf-body" id="exFilterBody"></div></div>
+    <div class="fs-foot"><button class="cta" id="exFilterApply">搜尋</button></div>
+  </div>
+
   <!-- 總篩選 sheet（Figma 970-50754） -->
   <div class="bsheet tall" id="filterSheet">
     <div class="bs-handle"></div>
@@ -2747,7 +2725,6 @@
       s.classList.toggle('is-active', s.getAttribute('data-screen') === name);
     });
     document.querySelector('.app').classList.toggle('no-hero', name === 'plans' || name === 'kkhome' || name === 'simwifi');
-    document.querySelector('.app').classList.toggle('tabs-top', name === 'home' || name === 'simwifi');  // 主題 tab header 自帶安全區
     document.querySelector('.esim-root').classList.toggle('kkh-lock', name === 'kkhome');  // 模擬首頁鎖高、不可滾動
     window.scrollTo(0, 0);
     // 重新進入目的地頁（如從列表返回）時把選中流量檔、選中天數 chip 滾回可視區，避免選中項落在螢幕外
@@ -3607,11 +3584,203 @@
       else if (a === 'back-plans') go('destination');
       else if (a === 'enter-esim') go('home');            // 首頁 eSIM 入口 → eSIM 主頁
       else if (a === 'kkh-demo') toast('原型僅提供 eSIM 訂購流程');
-      else if (a === 'tab-esim') { if (current !== 'home') go('home'); }
-      else if (a === 'tab-simwifi') { if (current !== 'simwifi') go('simwifi'); }
-      else if (a === 'sw-demo') toast('維持舊版現狀');
+      else if (a === 'menu') toast('選單（原型未提供）');
     });
   });
+
+  // ================= 探索更多（Figma 2326-110720）=================
+  // 主題頁 / 目的地頁底部共用同一份狀態與資料；搜尋卡 tab「SIM卡 / WIFI分享器」→ exAnchor：勾選通訊產品 + 平滑錨定
+  var EX_ICONS = { heart: '{{IC_heart}}', star: '{{IC_starFill16}}', thumb: '{{IC_thumbsUpColor}}' };
+  // 仿真商品（圖：KKday 真實商品圖 / 沙灘主視覺裁切；文案仿真，價格 NT$）
+  var EX_PRODUCTS = [
+    { img: '{{IMG_SW_C3}}', type: 'eSIM', title: '中港澳 5G eSIM・嚴選電信商・全面支援 AI・免翻牆', rating: 4.5, reviews: 426, bought: '1K+', week: 15, rec: 91, tags: ['4天前可免費取消', '立即確認', '夜景'], now: 2045, was: 2272 },
+    { img: '{{IMG_SW_C1}}', type: 'eSIM', title: '日本 eSIM 無限流量・Rakuten / KDDI / Docomo 三大電信・支援 ChatGPT', rating: 4.7, reviews: 2318, bought: '100K+', week: 320, rec: 95, tags: ['免費取消', '即買即用', '立即確認'], now: 1180, was: 1475 },
+    { img: '{{IMG_SW_P1}}', type: 'SIM Card', title: '台灣遠傳電信 4G/5G 無限流量 SIM 卡・可通話簡訊・桃園機場領取', rating: 4.6, reviews: 1151, bought: '10K+', week: 96, rec: 92, tags: ['出發前可免費取消', '即買即用', '機場領取'], now: 249, was: 498 },
+    { img: '{{IMG_SW_WIFI1}}', type: 'WiFi', title: '日本 WiFi 分享器租借・4G 無限流量・桃園機場取還', rating: 4.6, reviews: 2860, bought: '60K+', week: 188, rec: 94, tags: ['免費取消', '機場領取', '可分享 5 台'], now: 99, was: 129 },
+    { img: '{{IMG_SW_C2}}', type: 'eSIM', title: 'KDDI 5G 高速原生日本 eSIM・不限速不降速・支援 ChatGPT', rating: 4.8, reviews: 3479, bought: '80K+', week: 268, rec: 97, tags: ['即買即用', '立即確認', '可加值'], now: 893, was: null },
+    { img: '{{IMG_SW_P5}}', type: 'SIM Card', title: '韓國 SIM 卡・SKT 原生網路 5G/4G 無限流量・可通話・送 T-money', rating: 4.7, reviews: 9925, bought: '100K+', week: 410, rec: 96, tags: ['1天前可免費取消', '即買即用', '含語音通話'], now: 133, was: 165 },
+    { img: '{{IMG_SW_P2}}', type: 'eSIM', title: '中國網卡・無需翻牆 每日高速 / 總量方案 eSIM・優惠 5 折', rating: 4.4, reviews: 1627, bought: '50K+', week: 142, rec: 89, tags: ['即買即用', '立即確認'], now: 39, was: 78 },
+    { img: '{{IMG_SW_WIFI2}}', type: 'WiFi', title: '韓國 WiFi 蛋・5G 高速無限流量・首爾仁川機場領取', rating: 4.5, reviews: 1204, bought: '30K+', week: 75, rec: 90, tags: ['免費取消', '機場領取', '輕量型'], now: 89, was: null },
+    { img: '{{IMG_SW_P4}}', type: 'SIM Card', title: '日本 SIM 卡・Docomo / IIJ / KDDI / Softbank 5G・香港寄送到府', rating: 4.3, reviews: 180, bought: '1K+', week: 23, rec: 86, tags: ['3天前可免費取消', '郵寄', '可加值'], now: 156, was: 312 },
+    { img: '{{IMG_SW_P6}}', type: 'eSIM', title: '泰國 eSIM・TrueMove H 5G 高速・可用 TikTok・即買即用', rating: 4.6, reviews: 1135, bought: '70K+', week: 210, rec: 93, tags: ['即買即用', '立即確認', '吃到飽不斷網'], now: 151, was: 240 }
+  ];
+  var EX_SORTS = ['KKday推薦', '價格低到高', '高評分優先', '高銷量優先'];  // 與報價頁排序 sheet 同款
+  var EX_PLACE = {
+    dest: [
+      ['東北亞', ['日本', '韓國', '台灣', '中國', '香港', '澳門']],
+      ['東南亞', ['泰國', '菲律賓', '越南', '新加坡', '馬來西亞', '印尼', '柬埔寨', '寮國', '峇里島']],
+      ['南亞/中東', ['印度', '尼泊爾', '卡達', '沙烏地阿拉伯', '阿聯酋']],
+      ['非洲', ['埃及', '肯亞', '摩洛哥']],
+      ['歐洲', ['法國', '德國', '英國', '西班牙', '奧地利', '義大利', '荷蘭', '瑞士', '克羅埃西亞', '捷克', '俄羅斯', '挪威', '希臘', '匈牙利', '丹麥', '土耳其', '芬蘭', '葡萄牙', '冰島', '比利時', '愛爾蘭', '愛沙尼亞', '馬爾他', '立陶宛', '烏克蘭']],
+      ['大洋洲', ['澳洲', '紐西蘭']],
+      ['美洲', ['美國', '加拿大', '關島', '墨西哥', '塞班島']]
+    ],
+    pickup: [
+      ['台灣', ['台灣 – 所有城市', '台北', '台中', '高雄', '新北市']],
+      ['港澳', ['港澳 – 所有城市', '香港', '澳門']],
+      ['日本', ['日本 – 所有城市', '東京', '大阪', '京都']],
+      ['韓國', ['韓國 – 所有城市', '首爾', '釜山', '江原道']]
+    ]
+  };
+  var EX_FILTER_CATS = [
+    { key: 'type', label: '通訊產品', opts: ['WiFi', 'SIM Card', 'eSIM'] },
+    { key: 'pickup', label: '領取方式', opts: ['機場領取', '門市領取', '郵寄', 'QRcode'] },
+    { key: 'feat', label: '商品特性', opts: ['含語音通話', '可加值', '吃到飽不斷網', '輕量型'] },
+    { key: 'days', label: '旅遊天數', opts: ['1-7天', '8-14天', '15天以上'] }
+  ];
+  var EX_PMIN = 1, EX_PMAX = 404;
+  function exEmpty() { return { type: [], pickup: [], feat: [], days: [], pmin: EX_PMIN, pmax: EX_PMAX }; }
+  var exState = { f: exEmpty(), dest: null, pickups: [], date: null, sort: 0 };
+  var exDraft = null, exPlaceDraft = null;
+  function exFilterCount(f) { return f.type.length + f.pickup.length + f.feat.length + f.days.length + ((f.pmin > EX_PMIN || f.pmax < EX_PMAX) ? 1 : 0); }
+  function exBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
+  function exVisible() {
+    // 通訊產品實際過濾商品；其餘條件（領取方式/特性/天數/價錢/地點/日期）為仿真，僅反映在 chip 計數與選中態
+    var list = EX_PRODUCTS.filter(function (p) { return !exState.f.type.length || exState.f.type.indexOf(p.type) >= 0; });
+    if (exState.sort === 1) list.sort(function (a, b) { return a.now - b.now; });
+    else if (exState.sort === 2) list.sort(function (a, b) { return b.rating - a.rating; });
+    else if (exState.sort === 3) list.sort(function (a, b) { return exBoughtNum(b.bought) - exBoughtNum(a.bought); });
+    return list;
+  }
+  function exMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
+  function exCardHTML(p) {
+    var off = p.was ? Math.round((1 - p.now / p.was) * 100) : 0;
+    var tags = '<span class="ex-tag">' + EX_ICONS.thumb + p.rec + '% 旅客推薦</span>' + p.tags.map(function (s) { return '<span class="ex-tag">' + s + '</span>'; }).join('');
+    return '<button class="ex-card">' +
+      '<div class="ex-photo"><img class="ph" alt="" src="' + p.img + '"><span class="ex-heart">' + EX_ICONS.heart + '</span></div>' +
+      '<div class="ex-body"><div class="ex-hd"><div class="ex-name"></div>' +
+      '<div class="ex-rate"><span class="ic">' + EX_ICONS.star + '</span><b>' + p.rating.toFixed(1) + '</b><span>(' + p.reviews.toLocaleString('en-US') + ')・' + p.bought + ' 個已訂購・近 7 日預訂 ' + p.week + ' 次</span></div>' +
+      '<div class="ex-tags">' + tags + '</div></div>' +
+      '<div class="ex-foot"><div class="ex-price"><span class="now">' + exMoney(p.now) + '</span><span class="from">起</span>' + (p.was ? '<span class="was">' + exMoney(p.was) + '</span>' : '') + '</div>' +
+      (off ? '<span class="ex-off">' + off + '% OFF</span>' : '') + '</div></div></button>';
+  }
+  function exOpenDetail(p) {
+    // 複用套餐詳情 modal：以列表頁商品為底，覆蓋卡面顯示欄位（標題/評分/銷量/價格）
+    var base = buildPlans()[EX_PRODUCTS.indexOf(p) % 8];
+    openDetail(Object.assign({}, base, { title: p.title, rating: p.rating, reviews: p.reviews, bought: p.bought + ' 已購', now: p.now, was: p.was, promo: p.was ? 'pct' : null, perDay: p.now }));
+  }
+  function renderExplore() {
+    var list = exVisible();
+    document.querySelectorAll('.explore').forEach(function (sec) {
+      var box = sec.querySelector('.ex-list'); box.innerHTML = '';
+      if (!list.length) box.appendChild(el('<div class="ex-empty">沒有符合條件的商品</div>'));
+      list.forEach(function (p) {
+        var c = el(exCardHTML(p)); c.querySelector('.ex-name').textContent = p.title;
+        c.addEventListener('click', function () { exOpenDetail(p); });
+        box.appendChild(c);
+      });
+      var pl = [exState.dest].concat(exState.pickups).filter(Boolean).join(' · ');
+      var place = sec.querySelector('[data-ex="place"]'); place.classList.toggle('sel', !!pl); place.querySelector('.lb').textContent = pl || '目的地及領取地';
+      var n = exFilterCount(exState.f), fil = sec.querySelector('[data-ex="filter"]'); fil.classList.toggle('sel', n > 0);
+      var bd = fil.querySelector('.badge'); bd.hidden = n === 0; bd.textContent = n;
+      var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date); dt.querySelector('.lb').textContent = exState.date ? exState.date.label : '日期';
+      var so = sec.querySelector('[data-ex="sort"]'); so.classList.toggle('sel', exState.sort !== 0); so.querySelector('.lb').textContent = exState.sort ? EX_SORTS[exState.sort] : '排序';
+    });
+  }
+  // 搜尋卡 tab：SIM卡 / WIFI分享器 → 勾選通訊產品並平滑錨定到當前頁的探索更多（tab 本身保持 eSIM）
+  function exAnchor(type) {
+    exState.f.type = [type]; renderExplore();
+    var sec = document.querySelector('.screen.is-active .explore'); if (!sec) return;
+    var top = sec.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop || 0) - 8;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+  document.querySelectorAll('.tb-tab[data-tb]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-tb');
+      if (k === 'sim') exAnchor('SIM Card'); else if (k === 'wifi') exAnchor('WiFi');
+    });
+  });
+  // 篩選 chips
+  document.querySelectorAll('.ex-chip').forEach(function (c) {
+    c.addEventListener('click', function () {
+      var k = c.getAttribute('data-ex');
+      if (k === 'place') exOpenPlace();
+      else if (k === 'filter') exOpenFilter();
+      else if (k === 'date') { dateReturn = 'explore'; openDateSheet(); }
+      else if (k === 'sort') exOpenSort();
+    });
+  });
+  // 排序：與報價頁同一個 sheet（#bsSort），改綁探索更多的排序狀態
+  function exOpenSort() {
+    var box = document.getElementById('sortList'); box.innerHTML = '';
+    EX_SORTS.forEach(function (n, i) {
+      var it = el('<button class="sort-item"><span class="sname"></span><span class="sradio' + (i === exState.sort ? ' on' : '') + '"></span></button>');
+      it.querySelector('.sname').textContent = n;
+      it.addEventListener('click', function () { exState.sort = i; renderExplore(); closeSheets(); });
+      box.appendChild(it);
+    });
+    openSheet(document.getElementById('bsSort'));
+  }
+  // 目的地及領取地 sheet：目的地單選、領取/郵寄地多選
+  function exRenderPlace() {
+    var body = document.getElementById('exPlaceBody'); body.innerHTML = '';
+    function section(h, groups, single) {
+      var s = el('<div class="exp-sec"><div class="exp-h"></div></div>'); s.querySelector('.exp-h').textContent = h;
+      groups.forEach(function (g) {
+        var gh = el('<div class="exp-g"></div>'); gh.textContent = g[0]; s.appendChild(gh);
+        var row = el('<div class="exp-opts"></div>');
+        g[1].forEach(function (o) {
+          var on = single ? exPlaceDraft.dest === o : exPlaceDraft.pickups.indexOf(o) >= 0;
+          var b = el('<button class="exp-pill' + (on ? ' sel' : '') + '"></button>'); b.textContent = o;
+          b.addEventListener('click', function () {
+            if (single) exPlaceDraft.dest = on ? null : o;
+            else { var a = exPlaceDraft.pickups, i = a.indexOf(o); if (i >= 0) a.splice(i, 1); else a.push(o); }
+            exRenderPlace();
+          });
+          row.appendChild(b);
+        });
+        s.appendChild(row);
+      });
+      body.appendChild(s);
+    }
+    section('請選擇目的地', EX_PLACE.dest, true);
+    section('請選擇領取/郵寄地', EX_PLACE.pickup, false);
+  }
+  function exOpenPlace() {
+    exPlaceDraft = { dest: exState.dest, pickups: exState.pickups.slice() };
+    exRenderPlace(); openSheet(document.getElementById('exPlaceSheet'));
+    document.querySelector('#exPlaceSheet .bs-body').scrollTop = 0;
+  }
+  document.getElementById('exPlaceClear').addEventListener('click', function () { exPlaceDraft = { dest: null, pickups: [] }; exRenderPlace(); });
+  document.getElementById('exPlaceApply').addEventListener('click', function () { exState.dest = exPlaceDraft.dest; exState.pickups = exPlaceDraft.pickups.slice(); closeSheets(); renderExplore(); });
+  // 篩選 sheet：四組多選 + 價錢雙滑塊（HKD 1–404）
+  function exRenderFilter() {
+    var body = document.getElementById('exFilterBody'); body.innerHTML = '';
+    EX_FILTER_CATS.forEach(function (cat) {
+      var sec = el('<div class="exf-sec"><div class="exp-h"></div><div class="exp-opts"></div></div>'); sec.querySelector('.exp-h').textContent = cat.label;
+      var opts = sec.querySelector('.exp-opts');
+      cat.opts.forEach(function (o) {
+        var on = exDraft[cat.key].indexOf(o) >= 0;
+        var b = el('<button class="exp-pill' + (on ? ' sel' : '') + '"></button>'); b.textContent = o;
+        b.addEventListener('click', function () { var a = exDraft[cat.key], i = a.indexOf(o); if (i >= 0) a.splice(i, 1); else a.push(o); exRenderFilter(); });
+        opts.appendChild(b);
+      });
+      body.appendChild(sec);
+    });
+    var ps = el('<div class="exf-sec"><div class="exp-h">價錢 (HKD)</div><div class="exf-price"></div>' +
+      '<div class="fs-range"><div class="track"></div><div class="fill"></div>' +
+      '<input type="range" class="rmin" min="' + EX_PMIN + '" max="' + EX_PMAX + '" step="1"><input type="range" class="rmax" min="' + EX_PMIN + '" max="' + EX_PMAX + '" step="1"></div></div>');
+    var rmin = ps.querySelector('.rmin'), rmax = ps.querySelector('.rmax'), fill = ps.querySelector('.fill'), val = ps.querySelector('.exf-price');
+    rmin.value = exDraft.pmin; rmax.value = exDraft.pmax;
+    function upd() {
+      var span = EX_PMAX - EX_PMIN;
+      fill.style.left = ((exDraft.pmin - EX_PMIN) / span * 100) + '%';
+      fill.style.right = (100 - (exDraft.pmax - EX_PMIN) / span * 100) + '%';
+      val.textContent = exDraft.pmin + ' – ' + exDraft.pmax;
+    }
+    rmin.addEventListener('input', function () { exDraft.pmin = Math.min(+rmin.value, exDraft.pmax - 1); rmin.value = exDraft.pmin; upd(); });
+    rmax.addEventListener('input', function () { exDraft.pmax = Math.max(+rmax.value, exDraft.pmin + 1); rmax.value = exDraft.pmax; upd(); });
+    upd();
+    body.appendChild(ps);
+  }
+  function exOpenFilter() {
+    exDraft = JSON.parse(JSON.stringify(exState.f));
+    exRenderFilter(); openSheet(document.getElementById('exFilterSheet'));
+    document.querySelector('#exFilterSheet .bs-body').scrollTop = 0;
+  }
+  document.getElementById('exFilterClear').addEventListener('click', function () { exDraft = exEmpty(); exRenderFilter(); });
+  document.getElementById('exFilterApply').addEventListener('click', function () { exState.f = JSON.parse(JSON.stringify(exDraft)); closeSheets(); renderExplore(); });
+  renderExplore();
 
   syncVariantUI();  // 固定 data-variant=A（單一版本）
 
@@ -4543,7 +4712,7 @@
             commitDate({ y: yy, m: mm, d: d, label: mm + '月' + d + '日' });
           });
         })(yy, mm, d);
-        var cur = (dateReturn === 'outer' ? fState.date : (fDraft && fDraft.date));
+        var cur = dateReturn === 'explore' ? exState.date : (dateReturn === 'outer' ? fState.date : (fDraft && fDraft.date));
         if (cur && typeof cur === 'object' && cur.y === yy && cur.m === mm && cur.d === d) cell.classList.add('sel');
         grid.appendChild(cell);
       }
@@ -4572,6 +4741,7 @@
       orderState.flight = orderState.flight || {}; orderState.flight.date = pick.label; orderState.flight._date = pick;
       closeSheets();
     }
+    else if (dateReturn === 'explore') { exState.date = pick; closeSheets(); renderExplore(); }  // 探索更多「日期」chip
     else { fState.date = pick; closeSheets(); renderPlans(); window.scrollTo(0, 0); }
   }
 
