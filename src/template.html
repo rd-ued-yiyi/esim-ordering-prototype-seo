@@ -1226,6 +1226,8 @@
   }
   .page-header.show { opacity: 1; pointer-events: auto; box-shadow: var(--el-fixed); }
   .page-header .ph-back { display: flex; align-items: center; }
+  .page-header .ph-menu { width: 24px; justify-content: center; }
+  .page-header.on-home .ph-return, .page-header:not(.on-home) .ph-menu { display: none; }
   .page-header .ph-title {
     flex: 1 1 0; min-width: 0; text-align: center; padding: 0 20px;
     font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker);
@@ -2074,8 +2076,10 @@
   </div>
 
   <!-- 滾動置頂 header -->
-  <div class="page-header" id="pageHeader">
-    <button class="ph-back" data-action="back" aria-label="返回"><span class="ic ic-24">{{IC_back}}</span></button>
+  <div class="page-header on-home" id="pageHeader">
+    <!-- 主題頁：漢堡選單（與 hero 上懸浮鈕一致）；目的地頁：返回 -->
+    <button class="ph-back ph-menu" data-action="menu" aria-label="選單"><span class="ic ic-20">{{IC_bars}}</span></button>
+    <button class="ph-back ph-return" data-action="back" aria-label="返回"><span class="ic ic-24">{{IC_back}}</span></button>
     <span class="ph-title">全球上網</span>
     <span class="ph-spacer"></span>
   </div>
@@ -2725,7 +2729,8 @@
       s.classList.toggle('is-active', s.getAttribute('data-screen') === name);
     });
     document.querySelector('.app').classList.toggle('no-hero', name === 'plans' || name === 'kkhome' || name === 'simwifi');
-    document.querySelector('.esim-root').classList.toggle('kkh-lock', name === 'kkhome');  // 模擬首頁鎖高、不可滾動
+    document.querySelector('.esim-root').classList.toggle('kkh-lock', name === 'kkhome');
+    document.getElementById('pageHeader').classList.toggle('on-home', name === 'home');  // 置頂 header 左鈕：主題頁漢堡、其他頁返回  // 模擬首頁鎖高、不可滾動
     window.scrollTo(0, 0);
     // 重新進入目的地頁（如從列表返回）時把選中流量檔、選中天數 chip 滾回可視區，避免選中項落在螢幕外
     if (name === 'destination') {

@@ -1235,6 +1235,8 @@
   }
   .page-header.show { opacity: 1; pointer-events: auto; box-shadow: var(--el-fixed); }
   .page-header .ph-back { display: flex; align-items: center; }
+  .page-header .ph-menu { width: 24px; justify-content: center; }
+  .page-header.on-home .ph-return, .page-header:not(.on-home) .ph-menu { display: none; }
   .page-header .ph-title {
     flex: 1 1 0; min-width: 0; text-align: center; padding: 0 20px;
     font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker);
@@ -2175,8 +2177,10 @@
   </div>
 
   <!-- 滾動置頂 header -->
-  <div class="page-header" id="pageHeader">
-    <button class="ph-back" data-action="back" aria-label="返回"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjcuOTE2NjciIGhlaWdodD0iMTQuMTY2NyIgdmlld0JveD0iMCAwIDcuOTE2NjcgMTQuMTY2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjY3MjU5IDAuMjQ0MDc4QzcuOTk4MDMgMC41Njk1MTUgNy45OTgwMyAxLjA5NzE1IDcuNjcyNTkgMS40MjI1OUwyLjAxMTg0IDcuMDgzMzNMNy42NzI1OSAxMi43NDQxQzcuOTk4MDMgMTMuMDY5NSA3Ljk5ODAzIDEzLjU5NzIgNy42NzI1OSAxMy45MjI2QzcuMzQ3MTUgMTQuMjQ4IDYuODE5NTEgMTQuMjQ4IDYuNDk0MDggMTMuOTIyNkwwLjI0NDA3OCA3LjY3MjU5Qy0wLjA4MTM1OTIgNy4zNDcxNSAtMC4wODEzNTkyIDYuODE5NTEgMC4yNDQwNzggNi40OTQwOEw2LjQ5NDA4IDAuMjQ0MDc4QzYuODE5NTEgLTAuMDgxMzU5MiA3LjM0NzE1IC0wLjA4MTM1OTIgNy42NzI1OSAwLjI0NDA3OFoiIGZpbGw9IiMyMTIxMjEiLz4KPC9zdmc+" width="7.92" height="14.17"></span></button>
+  <div class="page-header on-home" id="pageHeader">
+    <!-- 主題頁：漢堡選單（與 hero 上懸浮鈕一致）；目的地頁：返回 -->
+    <button class="ph-back ph-menu" data-action="menu" aria-label="選單"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2JhcnNfbGluZV9zZW1pYm9sZCI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIuMjkxNjcgMTBDMi4yOTE2NyA5LjUzOTc2IDIuNjY0NzYgOS4xNjY2NyAzLjEyNSA5LjE2NjY3SDE2Ljg3NUMxNy4zMzUyIDkuMTY2NjcgMTcuNzA4MyA5LjUzOTc2IDE3LjcwODMgMTBDMTcuNzA4MyAxMC40NjAyIDE3LjMzNTIgMTAuODMzMyAxNi44NzUgMTAuODMzM0gzLjEyNUMyLjY2NDc2IDEwLjgzMzMgMi4yOTE2NyAxMC40NjAyIDIuMjkxNjcgMTBaIiBmaWxsPSIjMjEyMTIxIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMi4yOTE2NyA1QzIuMjkxNjcgNC41Mzk3NiAyLjY2NDc2IDQuMTY2NjcgMy4xMjUgNC4xNjY2N0gxNi44NzVDMTcuMzM1MiA0LjE2NjY3IDE3LjcwODMgNC41Mzk3NiAxNy43MDgzIDVDMTcuNzA4MyA1LjQ2MDI0IDE3LjMzNTIgNS44MzMzMyAxNi44NzUgNS44MzMzM0gzLjEyNUMyLjY2NDc2IDUuODMzMzMgMi4yOTE2NyA1LjQ2MDI0IDIuMjkxNjcgNVoiIGZpbGw9IiMyMTIxMjEiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yLjI5MTY3IDE1QzIuMjkxNjcgMTQuNTM5OCAyLjY2NDc2IDE0LjE2NjcgMy4xMjUgMTQuMTY2N0gxNi44NzVDMTcuMzM1MiAxNC4xNjY3IDE3LjcwODMgMTQuNTM5OCAxNy43MDgzIDE1QzE3LjcwODMgMTUuNDYwMiAxNy4zMzUyIDE1LjgzMzMgMTYuODc1IDE1LjgzMzNIMy4xMjVDMi42NjQ3NiAxNS44MzMzIDIuMjkxNjcgMTUuNDYwMiAyLjI5MTY3IDE1WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+CjwvZz4KPC9zdmc+" width="20" height="20"></span></button>
+    <button class="ph-back ph-return" data-action="back" aria-label="返回"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjcuOTE2NjciIGhlaWdodD0iMTQuMTY2NyIgdmlld0JveD0iMCAwIDcuOTE2NjcgMTQuMTY2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjY3MjU5IDAuMjQ0MDc4QzcuOTk4MDMgMC41Njk1MTUgNy45OTgwMyAxLjA5NzE1IDcuNjcyNTkgMS40MjI1OUwyLjAxMTg0IDcuMDgzMzNMNy42NzI1OSAxMi43NDQxQzcuOTk4MDMgMTMuMDY5NSA3Ljk5ODAzIDEzLjU5NzIgNy42NzI1OSAxMy45MjI2QzcuMzQ3MTUgMTQuMjQ4IDYuODE5NTEgMTQuMjQ4IDYuNDk0MDggMTMuOTIyNkwwLjI0NDA3OCA3LjY3MjU5Qy0wLjA4MTM1OTIgNy4zNDcxNSAtMC4wODEzNTkyIDYuODE5NTEgMC4yNDQwNzggNi40OTQwOEw2LjQ5NDA4IDAuMjQ0MDc4QzYuODE5NTEgLTAuMDgxMzU5MiA3LjM0NzE1IC0wLjA4MTM1OTIgNy42NzI1OSAwLjI0NDA3OFoiIGZpbGw9IiMyMTIxMjEiLz4KPC9zdmc+" width="7.92" height="14.17"></span></button>
     <span class="ph-title">全球上網</span>
     <span class="ph-spacer"></span>
   </div>
@@ -2826,7 +2830,8 @@
       s.classList.toggle('is-active', s.getAttribute('data-screen') === name);
     });
     document.querySelector('.app').classList.toggle('no-hero', name === 'plans' || name === 'kkhome' || name === 'simwifi');
-    document.querySelector('.esim-root').classList.toggle('kkh-lock', name === 'kkhome');  // 模擬首頁鎖高、不可滾動
+    document.querySelector('.esim-root').classList.toggle('kkh-lock', name === 'kkhome');
+    document.getElementById('pageHeader').classList.toggle('on-home', name === 'home');  // 置頂 header 左鈕：主題頁漢堡、其他頁返回  // 模擬首頁鎖高、不可滾動
     window.scrollTo(0, 0);
     // 重新進入目的地頁（如從列表返回）時把選中流量檔、選中天數 chip 滾回可視區，避免選中項落在螢幕外
     if (name === 'destination') {
