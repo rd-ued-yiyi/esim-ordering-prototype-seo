@@ -3537,6 +3537,7 @@
     } catch (e) {}
     renderHomeHist();
     closeModal();
+    exState.dest = exMapDest(name); renderExplore();  // 選好目的地即同步到探索更多「目的地」（可映射者帶入，區域等無對應則清空）
     if (current === 'plans') {
       renderPlans();          // 留在列表頁，按新目的地重新整理
       go('plans');
