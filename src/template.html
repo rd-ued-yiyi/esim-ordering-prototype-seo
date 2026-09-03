@@ -3693,6 +3693,7 @@
       if (k < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
+    setTimeout(function () { window.scrollTo(0, top); }, dur + 60);  // 保險：背景分頁 rAF 被節流時仍到位
   }
   document.querySelectorAll('.tb-tab[data-tb]').forEach(function (b) {
     b.addEventListener('click', function () {
