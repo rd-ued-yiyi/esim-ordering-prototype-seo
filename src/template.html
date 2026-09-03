@@ -1669,6 +1669,9 @@
   .ex-desc { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .ex-filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
   .ex-filters::-webkit-scrollbar { display: none; }
+  /* 捲過 filter 列後置頂（.app 有 overflow-x:hidden，position:sticky 失效 → JS 切 .pinned 改 fixed，wrap 佔位防跳動） */
+  .ex-filters.pinned { position: fixed; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; z-index: 29;
+    margin: 0; padding: 8px 16px; background: #fff; box-shadow: 0 2px 8px rgba(38,50,56,.08); }
   .ex-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 12px 0 8px; max-width: 230px;
     background: #fff; border: 1px solid var(--kk-border-light); border-radius: var(--r-circle);
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
@@ -1842,12 +1845,12 @@
             <div class="ex-title"><span class="ic ic-24">{{IC_sparkles}}</span><span>探索更多</span></div>
             <p class="ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
           </div>
-          <div class="ex-filters">
+          <div class="ex-filters-wrap"><div class="ex-filters">
             <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
             <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">篩選</span><span class="badge" hidden></span></button>
             <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
             <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
-          </div>
+          </div></div>
           <div class="ex-list"></div>
         </section>
       </div><!-- /con -->
@@ -1984,12 +1987,12 @@
             <div class="ex-title"><span class="ic ic-24">{{IC_sparkles}}</span><span>探索更多</span></div>
             <p class="ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
           </div>
-          <div class="ex-filters">
+          <div class="ex-filters-wrap"><div class="ex-filters">
             <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
             <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">篩選</span><span class="badge" hidden></span></button>
             <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
             <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
-          </div>
+          </div></div>
           <div class="ex-list"></div>
         </section>
       </div><!-- /con -->
@@ -3671,7 +3674,7 @@
       if (!list.length) box.appendChild(el('<div class="ex-empty">沒有符合條件的商品</div>'));
       list.forEach(function (p) {
         var c = el(exCardHTML(p)); c.querySelector('.ex-name').textContent = p.title;
-        c.addEventListener('click', function () { exOpenDetail(p); });
+        c.addEventListener('click', function () { toast('維持舊版現狀'); });  // 探索更多商品維持舊版，不接新詳情頁
         box.appendChild(c);
       });
       var pl = [exState.dest].concat(exState.pickups).filter(Boolean).join(' · ');
@@ -3834,6 +3837,19 @@
     document.getElementById('pageHeader').classList.toggle('show', y > 120 && current !== 'plans' && current !== 'simwifi');
     var ph = document.querySelector('.pl-head');
     if (ph) ph.classList.toggle('scrolled', y > 4 && current === 'plans');
+    exStickyUpdate();
+  }
+  // 探索更多 filter 列：捲動超過後固定在置頂 header 下方，直到探索更多區塊捲出視窗
+  function exStickyUpdate() {
+    var sec = document.querySelector('.screen.is-active .explore'); if (!sec) return;
+    var wrap = sec.querySelector('.ex-filters-wrap'), f = wrap.firstElementChild;
+    var hdr = document.getElementById('pageHeader');
+    var top = hdr.classList.contains('show') ? hdr.offsetHeight : 0;
+    var wr = wrap.getBoundingClientRect(), sr = sec.getBoundingClientRect();
+    var pin = wr.top < top && sr.bottom > top + f.offsetHeight + 40;
+    if (pin && !f.classList.contains('pinned')) { wrap.style.height = f.offsetHeight + 'px'; f.classList.add('pinned'); }
+    else if (!pin && f.classList.contains('pinned')) { f.classList.remove('pinned'); wrap.style.height = ''; }
+    if (pin) f.style.top = top + 'px';
   }
   window.addEventListener('scroll', onPageScroll, { passive: true });
   document.addEventListener('scroll', onPageScroll, { passive: true });
