@@ -3681,8 +3681,18 @@
   function exAnchor(type) {
     exState.f.type = [type]; renderExplore();
     var sec = document.querySelector('.screen.is-active .explore'); if (!sec) return;
-    var top = sec.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop || 0) - 8;
-    window.scrollTo({ top: top, behavior: 'smooth' });
+    var startY = window.scrollY || document.documentElement.scrollTop || 0;
+    var maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    var top = Math.min(maxY, sec.getBoundingClientRect().top + startY - 8);
+    // 自繪平滑捲動（rAF + ease-out）：內嵌/舊版瀏覽器對 scrollTo({behavior:'smooth'}) 支援不穩，逐幀 scrollTo 最可靠
+    var t0 = null, dur = 520;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur); k = 1 - Math.pow(1 - k, 3);
+      window.scrollTo(0, Math.round(startY + (top - startY) * k));
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
   document.querySelectorAll('.tb-tab[data-tb]').forEach(function (b) {
     b.addEventListener('click', function () {
