@@ -321,7 +321,13 @@
     font-size: 12px; line-height: 16px; color: var(--kk-text-darker);
   }
   .inline-note .ic { margin-top: 0; }
-  .inline-note--info { background: #F2FAFF; }  /* 資訊提示藍底（Figma 1116-91131：background-info-lighter #F2FAFF） */
+  .inline-note--info { background: #F2FAFF; }
+  /* 目的地頁裝置支援提示（Figma 2357-114863）：padding 12/16、icon 16、文字 14/20、第二行底線連結 Semibold */
+  .inline-note--dev { padding: 12px 16px; gap: 8px; font-size: 14px; line-height: 20px; }
+  .inline-note--dev .ic { width: 16px; height: 16px; margin-top: 2px; }
+  .inline-note--dev .ic img { width: 16px; height: 16px; }
+  .inline-note--dev .txt { display: flex; flex-direction: column; gap: 4px; }
+  .inline-note--dev .lnk { align-self: flex-start; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); text-decoration: underline; }  /* 資訊提示藍底（Figma 1116-91131：background-info-lighter #F2FAFF） */
 
   .field-head { display: flex; align-items: center; gap: 8px; width: 100%; }
   .field-head .label-lg { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
@@ -1989,9 +1995,13 @@
               <button class="tb-tab" data-tb="wifi" role="tab"><span class="tb-in"><span class="lb">WIFI分享器</span></span></button>
             </div>
           <div class="card dest-card">
-            <div class="inline-note">
+            <!-- 裝置支援提示（Figma 2357-114863）：淺青底、勾選 icon、兩行（說明 + 底線連結） -->
+            <div class="inline-note inline-note--dev">
               <span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE5LjUiIGhlaWdodD0iMTkuNSIgdmlld0JveD0iMCAwIDE5LjUgMTkuNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTkuNzUgMEM3LjgyMTY0IDAgNS45MzY1NyAwLjU3MTgyOCA0LjMzMzE5IDEuNjQzMTdDMi43Mjk4MiAyLjcxNDUyIDEuNDgwMTMgNC4yMzcyNiAwLjc0MjE3OSA2LjAxODg0QzAuMDA0MjI0NDkgNy44MDA0MiAtMC4xODg4NTggOS43NjA4MiAwLjE4NzM0OCAxMS42NTIxQzAuNTYzNTU0IDEzLjU0MzQgMS40OTIxNSAxNS4yODA3IDIuODU1NzEgMTYuNjQ0M0M0LjIxOTI4IDE4LjAwNzkgNS45NTY1NiAxOC45MzY1IDcuODQ3ODcgMTkuMzEyN0M5LjczOTE5IDE5LjY4ODkgMTEuNjk5NiAxOS40OTU4IDEzLjQ4MTIgMTguNzU3OEMxNS4yNjI3IDE4LjAxOTkgMTYuNzg1NSAxNi43NzAyIDE3Ljg1NjggMTUuMTY2OEMxOC45MjgyIDEzLjU2MzQgMTkuNSAxMS42Nzg0IDE5LjUgOS43NUMxOS40OTcgNy4xNjUwNiAxOC40Njg4IDQuNjg2ODQgMTYuNjQxIDIuODU5MDFDMTQuODEzMiAxLjAzMTE4IDEyLjMzNDkgMC4wMDI5ODc2MyA5Ljc1IDBWMFpNMTQuMzkzNiA4LjA0MjcyTDguODkzMDcgMTMuMjkyN0M4Ljc1MzIyIDEzLjQyNTggOC41Njc1NiAxMy41IDguMzc0NTIgMTMuNUM4LjE4MTQ3IDEzLjUgNy45OTU4MiAxMy40MjU4IDcuODU1OTYgMTMuMjkyN0w1LjEwNjQ1IDEwLjY2NzdDNC45NjI4IDEwLjUzMDEgNC44Nzk2NSAxMC4zNDExIDQuODc1MjQgMTAuMTQyM0M0Ljg3MDg0IDkuOTQzNDEgNC45NDU1NSA5Ljc1MDkyIDUuMDgyOTcgOS42MDcxQzUuMjIwMzggOS40NjMyOCA1LjQwOTI3IDkuMzc5ODkgNS42MDgxMyA5LjM3NTIzQzUuODA2OTkgOS4zNzA1OCA1Ljk5OTU2IDkuNDQ1MDQgNi4xNDM1NiA5LjU4MjI4TDguMzc0NTIgMTEuNzEyOUwxMy4zNTY0IDYuOTU3MjhDMTMuNTAwNCA2LjgyMDA0IDEzLjY5MyA2Ljc0NTU4IDEzLjg5MTkgNi43NTAyM0MxNC4wOTA3IDYuNzU0ODkgMTQuMjc5NiA2LjgzODI4IDE0LjQxNyA2Ljk4MjFDMTQuNTU0NSA3LjEyNTkyIDE0LjYyOTIgNy4zMTg0MSAxNC42MjQ4IDcuNTE3MjdDMTQuNjIwNCA3LjcxNjE0IDE0LjUzNzIgNy45MDUxMyAxNC4zOTM2IDguMDQyNzJWOC4wNDI3MloiIGZpbGw9IiMyNkJFQzkiLz4KPC9zdmc+" width="19.50" height="19.50"></span>
-              <span>此裝置支援使用 eSIM</span>
+              <div class="txt">
+                <span>此裝置支援使用 eSIM</span>
+                <button class="lnk" data-action="compat">查看全部相容裝置</button>
+              </div>
             </div>
 
             <div class="group-24">
@@ -3697,6 +3707,7 @@
       else if (a === 'enter-esim') go('home');            // 首頁 eSIM 入口 → eSIM 主頁
       else if (a === 'kkh-demo') toast('原型僅提供 eSIM 訂購流程');
       else if (a === 'menu') toast('選單（原型未提供）');
+      else if (a === 'compat') toast('相容裝置列表（原型未提供）');
     });
   });
 

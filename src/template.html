@@ -312,7 +312,13 @@
     font-size: 12px; line-height: 16px; color: var(--kk-text-darker);
   }
   .inline-note .ic { margin-top: 0; }
-  .inline-note--info { background: #F2FAFF; }  /* 資訊提示藍底（Figma 1116-91131：background-info-lighter #F2FAFF） */
+  .inline-note--info { background: #F2FAFF; }
+  /* 目的地頁裝置支援提示（Figma 2357-114863）：padding 12/16、icon 16、文字 14/20、第二行底線連結 Semibold */
+  .inline-note--dev { padding: 12px 16px; gap: 8px; font-size: 14px; line-height: 20px; }
+  .inline-note--dev .ic { width: 16px; height: 16px; margin-top: 2px; }
+  .inline-note--dev .ic img { width: 16px; height: 16px; }
+  .inline-note--dev .txt { display: flex; flex-direction: column; gap: 4px; }
+  .inline-note--dev .lnk { align-self: flex-start; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); text-decoration: underline; }  /* 資訊提示藍底（Figma 1116-91131：background-info-lighter #F2FAFF） */
 
   .field-head { display: flex; align-items: center; gap: 8px; width: 100%; }
   .field-head .label-lg { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
@@ -1888,9 +1894,13 @@
               <button class="tb-tab" data-tb="wifi" role="tab"><span class="tb-in"><span class="lb">WIFI分享器</span></span></button>
             </div>
           <div class="card dest-card">
-            <div class="inline-note">
+            <!-- 裝置支援提示（Figma 2357-114863）：淺青底、勾選 icon、兩行（說明 + 底線連結） -->
+            <div class="inline-note inline-note--dev">
               <span class="ic ic-16">{{IC_checkCircle}}</span>
-              <span>此裝置支援使用 eSIM</span>
+              <div class="txt">
+                <span>此裝置支援使用 eSIM</span>
+                <button class="lnk" data-action="compat">查看全部相容裝置</button>
+              </div>
             </div>
 
             <div class="group-24">
@@ -3596,6 +3606,7 @@
       else if (a === 'enter-esim') go('home');            // 首頁 eSIM 入口 → eSIM 主頁
       else if (a === 'kkh-demo') toast('原型僅提供 eSIM 訂購流程');
       else if (a === 'menu') toast('選單（原型未提供）');
+      else if (a === 'compat') toast('相容裝置列表（原型未提供）');
     });
   });
 
