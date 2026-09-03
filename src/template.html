@@ -3705,7 +3705,8 @@
     var sec = document.querySelector('.screen.is-active .explore'); if (!sec) return;
     var startY = window.scrollY || document.documentElement.scrollTop || 0;
     var maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    var top = Math.min(maxY, sec.getBoundingClientRect().top + startY - 8);
+    var hdrH = document.getElementById('pageHeader').offsetHeight || 44;  // 錨定後置頂 header 會顯示，目標位置預留其高度，避免標題被遮
+    var top = Math.min(maxY, sec.getBoundingClientRect().top + startY - hdrH - 8);
     // 自繪平滑捲動（rAF + ease-out）：內嵌/舊版瀏覽器對 scrollTo({behavior:'smooth'}) 支援不穩，逐幀 scrollTo 最可靠
     var t0 = null, dur = 520;
     function step(ts) {
