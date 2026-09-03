@@ -275,17 +275,22 @@
   .faq-head { display: flex; align-items: center; gap: 20px; }
   .faq-head .ttl { flex: 1 1 0; min-width: 0; }
   .faq-more { color: var(--kk-text-darker); cursor: pointer; white-space: nowrap; }
-  .faq-list { display: flex; flex-direction: column; }
-  .faq-item { border-bottom: 1px solid var(--kk-border-lighter); }
-  .faq-item:last-child { border-bottom: 0; }
+  .faq-list { display: flex; flex-direction: column; gap: 8px; }  /* Figma 2326-111089：項目 py12、間距 8、分隔線 */
+  .faq-item { border-bottom: 1px solid var(--kk-border-lighter); padding-bottom: 8px; }
+  .faq-list.compact .faq-item.extra { display: none; }  /* 預設只顯示前 2 條 */
+  .faq-expand { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; padding-top: 4px;
+    font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .faq-expand .chev { transition: transform .2s ease; }
+  .faq-expand .chev img { width: 16px; height: 16px; }
+  .faq-list:not(.compact) .faq-expand .chev { transform: rotate(180deg); }
   .faq-q {
     display: flex; align-items: center; gap: 16px;
-    padding: 20px 0; cursor: pointer; width: 100%; background: none; border: 0; text-align: left;  /* Figma 行節奏 64（20+24+20） */
+    padding: 12px 0; cursor: pointer; width: 100%; background: none; border: 0; text-align: left;  /* Figma 2326-111089：py12 */
   }
   .faq-q .qtext { flex: 1 1 0; min-width: 0; color: var(--kk-text-darker); }
   .faq-q .chev { transition: transform .2s ease; }
   .faq-item.open .faq-q .chev { transform: rotate(180deg); }
-  .faq-a { display: none; padding: 0 0 20px; color: var(--kk-text-darker); }
+  .faq-a { display: none; padding: 0 0 12px; color: var(--kk-text-darker); }
   .faq-item.open .faq-a { display: block; }
 
   /* ================= 目的地頁 ================= */
@@ -1837,11 +1842,36 @@
             </div>
           </div>
 
-          <!-- 常見問題（Figma 2326 FAQ Card：僅標題 + 查看更多） -->
+          <!-- 常見問題（Figma 2326-111089 FAQ Card）：預設顯示 2 條，「展開更多」展開全部；每條可展開答案 -->
           <div class="card card--pad-v">
-            <div class="faq-head">
-              <span class="ttl t-h6 card-title">常見問題</span>
-              <span class="faq-more t-link-md" data-action="faq-more">查看更多</span>
+            <div class="stack-20">
+              <div class="faq-head">
+                <span class="ttl t-h6 card-title">常見問題</span>
+                <span class="faq-more t-link-md" data-action="faq-more">查看更多</span>
+              </div>
+              <div class="faq-list compact">
+                <div class="faq-item">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 > 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
+                </div>
+                <div class="faq-item extra">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
+                </div>
+                <div class="faq-item extra">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday APP 聯絡 24 小時線上客服。</div>
+                </div>
+                <div class="faq-item extra">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
+                </div>
+                <button class="faq-expand"><span class="lb">展開更多</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+              </div>
             </div>
           </div>
 
@@ -1983,11 +2013,36 @@
             </div>
           </div>
 
-          <!-- 常見問題（Figma 2326 FAQ Card：僅標題 + 查看更多） -->
+          <!-- 常見問題（Figma 2326-111089 FAQ Card）：預設顯示 2 條，「展開更多」展開全部；每條可展開答案 -->
           <div class="card card--pad-v">
-            <div class="faq-head">
-              <span class="ttl t-h6 card-title">常見問題</span>
-              <span class="faq-more t-link-md" data-action="faq-more">查看更多</span>
+            <div class="stack-20">
+              <div class="faq-head">
+                <span class="ttl t-h6 card-title">常見問題</span>
+                <span class="faq-more t-link-md" data-action="faq-more">查看更多</span>
+              </div>
+              <div class="faq-list compact">
+                <div class="faq-item">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 > 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
+                </div>
+                <div class="faq-item extra">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
+                </div>
+                <div class="faq-item extra">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday APP 聯絡 24 小時線上客服。</div>
+                </div>
+                <div class="faq-item extra">
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
+                </div>
+                <button class="faq-expand"><span class="lb">展開更多</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+              </div>
             </div>
           </div>
 
@@ -3825,6 +3880,13 @@
   document.getElementById('exFilterApply').addEventListener('click', function () { exState.f = JSON.parse(JSON.stringify(exDraft)); closeSheets(); renderExplore(); });
   renderExplore();
 
+  // 常見問題：展開更多 / 收起（兩屏各一份）
+  document.querySelectorAll('.faq-expand').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var list = b.closest('.faq-list'); var open = list.classList.toggle('compact');
+      b.querySelector('.lb').textContent = open ? '展開更多' : '收起';
+    });
+  });
   syncVariantUI();  // 固定 data-variant=A（單一版本）
 
   // 首頁目的地 chip → 進入目的地頁（亞洲通/東南亞/北歐地區等區域按區域型別處理）
