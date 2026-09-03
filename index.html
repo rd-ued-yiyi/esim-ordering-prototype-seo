@@ -1680,7 +1680,9 @@
   .ex-filters::-webkit-scrollbar { display: none; }
   /* 捲過 filter 列後置頂（.app 有 overflow-x:hidden，position:sticky 失效 → JS 切 .pinned 改 fixed，wrap 佔位防跳動） */
   .ex-filters.pinned { position: fixed; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; z-index: 29;
-    margin: 0; padding: 8px 16px; background: #fff; box-shadow: 0 2px 8px rgba(38,50,56,.08); }
+    margin: 0; padding: 8px 16px; background: #fff; }
+  .page-header.show.no-shadow { box-shadow: none; }  /* filter 列置頂時 header 與 filter 之間不要陰影 */
+  .ex-chip .badge[hidden] { display: none; }  /* 計數為 0 時隱藏（class 的 display 會蓋過 UA 的 [hidden]） */
   .ex-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 12px 0 8px; max-width: 230px;
     background: #fff; border: 1px solid var(--kk-border-light); border-radius: var(--r-circle);
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
@@ -3950,6 +3952,7 @@
     var pin = wr.top < top && sr.bottom > top + f.offsetHeight + 40;
     if (pin && !f.classList.contains('pinned')) { wrap.style.height = f.offsetHeight + 'px'; f.classList.add('pinned'); }
     else if (!pin && f.classList.contains('pinned')) { f.classList.remove('pinned'); wrap.style.height = ''; }
+    hdr.classList.toggle('no-shadow', pin);
     if (pin) f.style.top = top + 'px';
   }
   window.addEventListener('scroll', onPageScroll, { passive: true });
