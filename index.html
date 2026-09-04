@@ -1008,8 +1008,7 @@
   .det-cond { display: flex; align-items: center; gap: 6px;
     font-size: 14px; line-height: 20px; font-weight: 600; color: #13A3B6; }
   .det-cond .ic { width: 20px; height: 20px; }
-  .det-title { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker);
-    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; }  /* 標題一律 1 行，超出尾部省略（避免換行留白） */
+  .det-title { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); word-break: break-word; }  /* 標題完整顯示、可換行（不再夾 1 行） */
   .det-sec .pkg-hr { margin: 24px 0; }
   /* 首屏政策 icon+text：20px 圖示 + 6px gap（Figma 902-41283，調整後）；距上方方案卡 20px（Figma 1009-43085） */
   /* 詳情頁政策行文字全深色（Figma 1249-109383：不按狀況高亮，僅「立即確認」icon 保留青色，見 DET_PERK_ICONS） */
