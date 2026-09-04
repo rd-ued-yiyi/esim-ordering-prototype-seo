@@ -4968,8 +4968,8 @@
     // 到量網速：依所選計費方式 / 無限流量檔位（每日：當日額度用完；總量：額度用完；無限：達公平使用量）
     document.getElementById('dtThrottle').textContent = state.tab === 'unlimited'
       ? ({ '無限不降速': '不降速，全程維持高速', '無限流量高速': '達公平使用量後降至 3 Mbps', '無限到量降速': '達公平使用量後降至 1 Mbps', '無限流量輕速': '達公平使用量後降至 256 Kbps' })[state.plan] || '達公平使用量後降速'
-      : state.tab === 'total' ? '額度用完後降至 128 Kbps，可加購恢復高速'
-      : '當日額度用完後降至 128 Kbps，隔日恢復高速';
+      : state.tab === 'total' ? '額度用完後停止連線，加購後恢復'  // 與傳輸規格「用完即止（可隨時加購）」一致
+      : '當日額度用完後降至 256 Kbps，隔日恢復高速';  // 與傳輸規格「超量後限速 256Kbps」一致
     document.getElementById('dtActivate').textContent = '抵達' + (multi ? '目的地' : dest) + '後掃碼安裝，自動連線當地網路';
     document.getElementById('dtCalc').textContent = '首次成功連網後開始計算，以當地時間 00:00 為每日分界';
     document.getElementById('dtValid').textContent = '啟用後連續 ' + d + ' 天';
