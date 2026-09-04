@@ -2334,6 +2334,7 @@
           <div class="tr"><div class="td-k">網路資源</div><div class="td-v" id="dtNet"></div></div>
           <div class="tr"><div class="td-k">IP型別</div><div class="td-v" id="dtIp"></div></div>
           <div class="tr"><div class="td-k">傳輸規格</div><div class="td-v" id="dtTrans"></div></div>
+          <div class="tr"><div class="td-k">到量網速</div><div class="td-v" id="dtThrottle"></div></div>
         </div>
       </section>
 
@@ -4964,6 +4965,11 @@
     document.getElementById('dtNet').textContent = sp.net;  // 本地 / 漫遊
     document.getElementById('dtIp').textContent = sp.ip === '本地IP' ? '本地 IP（當地出口）' : '漫遊 IP（內建 VPN 出口）';
     document.getElementById('dtTrans').textContent = detTransSpec();
+    // 到量網速：依所選計費方式 / 無限流量檔位（每日：當日額度用完；總量：額度用完；無限：達公平使用量）
+    document.getElementById('dtThrottle').textContent = state.tab === 'unlimited'
+      ? ({ '無限不降速': '不降速，全程維持高速', '無限流量高速': '達公平使用量後降至 3 Mbps', '無限到量降速': '達公平使用量後降至 1 Mbps', '無限流量輕速': '達公平使用量後降至 256 Kbps' })[state.plan] || '達公平使用量後降速'
+      : state.tab === 'total' ? '額度用完後降至 128 Kbps，可加購恢復高速'
+      : '當日額度用完後降至 128 Kbps，隔日恢復高速';
     document.getElementById('dtActivate').textContent = '抵達' + (multi ? '目的地' : dest) + '後掃碼安裝，自動連線當地網路';
     document.getElementById('dtCalc').textContent = '首次成功連網後開始計算，以當地時間 00:00 為每日分界';
     document.getElementById('dtValid').textContent = '啟用後連續 ' + d + ' 天';
