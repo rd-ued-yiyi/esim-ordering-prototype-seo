@@ -1695,7 +1695,7 @@
   /* 捲過 filter bar 後整組置頂（.app 有 overflow-x:hidden，position:sticky 失效 → JS 切 .pinned 改 fixed，wrap 佔位防跳動）
      Figma 2551-114032：header 下白底、px16、底部留 12 */
   .ex-filterbar.pinned { position: fixed; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; z-index: 29;
-    margin: 0; padding: 8px 16px 12px; background: #fff; box-sizing: border-box; }
+    margin: 0; padding: 0 16px 12px; background: #fff; box-sizing: border-box; }  /* Figma 2551-114032：頂貼 header、底留 12 */
   .page-header.show.no-shadow { box-shadow: none; }  /* filter 列置頂時 header 與 filter 之間不要陰影 */
   .ex-chip .badge[hidden] { display: none; }  /* 計數為 0 時隱藏（class 的 display 會蓋過 UA 的 [hidden]） */
   /* 上排條件項（Figma 5578-11491 select item）：文字 14/20 + 14px semibold 圖標，gap2 px2，最寬 140 */
