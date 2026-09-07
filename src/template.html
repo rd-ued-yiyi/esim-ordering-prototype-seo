@@ -275,10 +275,12 @@
   .faq-head { display: flex; align-items: center; gap: 20px; }
   .faq-head .ttl { flex: 1 1 0; min-width: 0; }
   .faq-more { color: var(--kk-text-darker); cursor: pointer; white-space: nowrap; }
-  .faq-list { display: flex; flex-direction: column; gap: 8px; }  /* Figma 2326-111089：項目 py12、間距 8、分隔線 */
-  .faq-item { border-bottom: 1px solid var(--kk-border-lighter); padding-bottom: 8px; }
+  .faq-list { display: flex; flex-direction: column; gap: 8px; }  /* Figma 2538-30543：項目 py12、項間分隔線、末項無底線 */
+  .faq-item + .faq-item { border-top: 1px solid var(--kk-border-lighter); padding-top: 8px; }
   .faq-list.compact .faq-item.extra { display: none; }  /* 預設只顯示前 2 條 */
-  .faq-expand { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; padding-top: 4px;
+  /* 展開列：貫穿整卡的頁脚條（全出血 343、高 52、上方全寬分隔線、下方無留白，Figma 2543:35168） */
+  .faq-expand { display: flex; align-items: center; justify-content: center; gap: 4px;
+    margin: 0 -16px -20px; padding: 16px 0; border-top: 1px solid var(--kk-border-lighter);
     font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .faq-expand .chev { transition: transform .2s ease; }
   .faq-expand .chev img { width: 16px; height: 16px; }
@@ -904,8 +906,9 @@
   .fs-sec .fs-h--tip .fs-info img { width: 16px; height: 16px; }
   .fs-opts { display: flex; flex-wrap: wrap; gap: 12px; }
   /* 篩選選項 pill（圓角膠囊，多選/單選高亮） */
+  /* Figma Chip 組件（2551-62556 內同款）：py8 px12＋內層 px4 → 高 38、文字內距 16 */
   .fopt { display: inline-flex; align-items: center; gap: 4px; box-sizing: border-box;
-    min-height: 40px; padding: 8px 16px; border-radius: 999px;
+    padding: 8px 16px; border-radius: 999px;
     border: 1px solid var(--kk-border-light); background: #fff;
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; cursor: pointer; }
   .fopt.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: #13A3B6; }  /* 選中態不加粗 */
@@ -1246,7 +1249,7 @@
   /* ================= bottom sheet 通用 ================= */
   .bs-mask {
     position: fixed; inset: 0; z-index: 50;
-    background: rgba(33,33,33,.6);
+    background: rgba(0,0,0,.4);  /* Figma KKBottomSheet 遮罩 */
     opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s;
   }
   .bs-mask.open { opacity: 1; visibility: visible; }
@@ -1262,17 +1265,20 @@
   /* 第二層（子）bottom sheet：遮罩疊在第一層 sheet 之上、子 sheet 再疊其上；關子 sheet 不影響母 sheet */
   .bs-mask--2 { z-index: 52; }
   .bsheet.bs-sub { z-index: 53; }
-  .bs-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--kk-border-light); margin: 8px auto 0; flex: 0 0 auto; }
+  /* Header Reigon 共 68px：grabber 區 20（py-8 + 4）+ wrapper 48（px-24, gap-8）。
+     左 icon 槽與右 actions 槽同寬 64px，讓標題光學居中（Figma 5883:2824）。 */
+  .bs-handle { width: 40px; height: 4px; border-radius: 2px; background: var(--kk-border-light); margin: 8px auto; flex: 0 0 auto; }
   .bs-bar {
-    display: flex; align-items: center; height: 44px; padding: 4px 24px; flex: 0 0 auto;
+    display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 24px; flex: 0 0 auto;
   }
-  .bs-bar .bs-close { display: flex; align-items: center; }
+  .bs-bar .bs-close { display: flex; align-items: center; width: 64px; height: 24px; flex: 0 0 auto; }
   .bs-bar .bs-title {
-    flex: 1 1 0; min-width: 0; text-align: center; padding: 0 20px;
+    flex: 1 1 0; min-width: 0; text-align: center; padding: 0;
     font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .bs-bar .bs-spacer { width: 24px; }
+  .bs-bar .bs-spacer { width: 64px; flex: 0 0 auto; }
+  .bs-bar .fs-clear { width: 64px; flex: 0 0 auto; text-align: right; }
   .bs-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
   .bs-foot { flex: 0 0 auto; padding: 16px 24px calc(16px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--kk-border-lighter); }
   #bsRegion.info .bs-foot { display: none; }  /* 詳情頁適用範圍＝資訊態，無確定按鈕 */
@@ -1663,9 +1669,9 @@
   .tabcard .dest-card { box-shadow: none; border-radius: 0 var(--r-xl) var(--r-xl) var(--r-xl); }
 
   /* 為什麼選擇 KKday：兩列橫向滑動（Figma 2326：每列 250 寬、2 項；卡內負邊距讓滾動帶貼齊卡邊） */
-  .benefit-scroll { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
-  .benefit-scroll::-webkit-scrollbar { display: none; }
-  .benefit-col { flex: 0 0 250px; display: flex; flex-direction: column; gap: 20px; }
+  /* 優勢列表：單欄縱向 4 項，項距 20（Figma 2538-30541 Benefits Card 343×418；舊版兩欄橫滑已廢除） */
+  .benefit-scroll { display: flex; flex-direction: column; gap: 20px; }
+  .benefit-col { display: flex; flex-direction: column; gap: 20px; }
 
   /* ================= 探索更多（Figma 2326-110720「探索更多」）：主題頁/目的地頁底部通欄白底區塊 ================= */
   [data-screen="home"] .con, [data-screen="destination"] .con { padding-bottom: 0; }
@@ -1674,10 +1680,9 @@
   .ex-head { display: flex; flex-direction: column; gap: 16px; }
   .ex-title { display: flex; align-items: center; gap: 8px; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
   .ex-title .ic img { width: 24px; height: 24px; }
-  .ex-desc { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  /* 上排條件 chip + 下排通訊產品快篩 chip，兩排間距 8（Figma 2538-30531） */
-  .ex-filterbar { display: flex; flex-direction: column; gap: 8px; }
-  .ex-filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+  /* 上排條件列 + 下排通訊產品快篩 chip，兩排間距 12（Figma 2538-30531） */
+  .ex-filterbar { display: flex; flex-direction: column; gap: 12px; }
+  .ex-filters { display: flex; align-items: center; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
   .ex-filters::-webkit-scrollbar { display: none; }
   .ex-quick { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
   .ex-quick::-webkit-scrollbar { display: none; }
@@ -1687,9 +1692,13 @@
     margin: 0; padding: 8px 16px; background: #fff; }
   .page-header.show.no-shadow { box-shadow: none; }  /* filter 列置頂時 header 與 filter 之間不要陰影 */
   .ex-chip .badge[hidden] { display: none; }  /* 計數為 0 時隱藏（class 的 display 會蓋過 UA 的 [hidden]） */
-  .ex-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 12px 0 8px; max-width: 230px;
-    background: #fff; border: 1px solid var(--kk-border-light); border-radius: var(--r-circle);
+  /* 上排條件項（Figma 2538-30531）：純文字＋下拉箭頭，無邊框無底色；項間 1px 竖分隔線 */
+  .ex-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; max-width: 230px;
+    background: none; border: 0; padding: 0;
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
+  .ex-chip + .ex-chip { margin-left: 12px; padding-left: 13px; position: relative; }
+  .ex-chip + .ex-chip::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 1px; height: 14px; background: var(--kk-border-light); }
   .ex-chip .lb { overflow: hidden; text-overflow: ellipsis; }
   .ex-chip .ic img { width: 16px; height: 16px; }
   .ex-chip .ic-sel { display: none; }
@@ -1879,7 +1888,7 @@
                   <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
                   <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
                 </div>
-                <button class="faq-expand"><span class="lb">展開更多</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+                <button class="faq-expand"><span class="lb">展開</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
               </div>
             </div>
           </div>
@@ -1890,15 +1899,15 @@
         <section class="explore">
           <div class="ex-head">
             <div class="ex-title"><span class="ic ic-24">{{IC_sparkles}}</span><span>探索更多</span></div>
-            <p class="ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
           </div>
           <!-- filter bar（Figma 2538-30531）：上排條件 chip + 下排通訊產品快篩 chip -->
           <div class="ex-filterbar">
+            <!-- 上排：純文字＋下拉箭頭＋竖分隔線（Figma 2538-30531，非描邊胶囊）；僅首項帶定位 icon -->
             <div class="ex-filters-wrap"><div class="ex-filters">
               <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
-              <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">更多條件</span><span class="badge" hidden></span></button>
-              <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
-              <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
+              <button class="ex-chip" data-ex="filter"><span class="lb">更多條件</span><span class="badge" hidden></span><span class="ic ic-16 chev ic-def">{{IC_arrowDown}}</span><span class="ic ic-16 chev ic-sel">{{IC_arrowDownCyan}}</span></button>
+              <button class="ex-chip" data-ex="date"><span class="lb">日期</span><span class="ic ic-16 chev ic-def">{{IC_arrowDown}}</span><span class="ic ic-16 chev ic-sel">{{IC_arrowDownCyan}}</span></button>
+              <button class="ex-chip" data-ex="sort"><span class="lb">排序</span><span class="ic ic-16 chev ic-def">{{IC_arrowDown}}</span><span class="ic ic-16 chev ic-sel">{{IC_arrowDownCyan}}</span></button>
             </div></div>
             <!-- 通訊產品快篩：原本在「更多條件」sheet 內，Figma 已移到外層（多選，空選＝全部） -->
             <div class="ex-quick">
@@ -2059,7 +2068,7 @@
                   <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
                   <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
                 </div>
-                <button class="faq-expand"><span class="lb">展開更多</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+                <button class="faq-expand"><span class="lb">展開</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
               </div>
             </div>
           </div>
@@ -2070,15 +2079,15 @@
         <section class="explore">
           <div class="ex-head">
             <div class="ex-title"><span class="ic ic-24">{{IC_sparkles}}</span><span>探索更多</span></div>
-            <p class="ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
           </div>
           <!-- filter bar（Figma 2538-30531）：上排條件 chip + 下排通訊產品快篩 chip -->
           <div class="ex-filterbar">
+            <!-- 上排：純文字＋下拉箭頭＋竖分隔線（Figma 2538-30531，非描邊胶囊）；僅首項帶定位 icon -->
             <div class="ex-filters-wrap"><div class="ex-filters">
               <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
-              <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">更多條件</span><span class="badge" hidden></span></button>
-              <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
-              <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
+              <button class="ex-chip" data-ex="filter"><span class="lb">更多條件</span><span class="badge" hidden></span><span class="ic ic-16 chev ic-def">{{IC_arrowDown}}</span><span class="ic ic-16 chev ic-sel">{{IC_arrowDownCyan}}</span></button>
+              <button class="ex-chip" data-ex="date"><span class="lb">日期</span><span class="ic ic-16 chev ic-def">{{IC_arrowDown}}</span><span class="ic ic-16 chev ic-sel">{{IC_arrowDownCyan}}</span></button>
+              <button class="ex-chip" data-ex="sort"><span class="lb">排序</span><span class="ic ic-16 chev ic-def">{{IC_arrowDown}}</span><span class="ic ic-16 chev ic-sel">{{IC_arrowDownCyan}}</span></button>
             </div></div>
             <!-- 通訊產品快篩：原本在「更多條件」sheet 內，Figma 已移到外層（多選，空選＝全部） -->
             <div class="ex-quick">
@@ -2596,7 +2605,8 @@
       <span class="bs-spacer"></span>
     </div>
     <div class="cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
-    <div class="cal-body" id="calBody" style="padding-bottom:calc(16px + env(safe-area-inset-bottom, 0px));"></div>
+    <div class="cal-body" id="calBody"></div>
+    <div class="fs-foot"><button class="cta" id="calApply">確定</button></div>
   </div>
 
   <!-- 折扣券 bottom sheet（參考 KKday 商品頁；領取成功後置灰，全部領取後橫幅消失） -->
@@ -3934,7 +3944,7 @@
   document.querySelectorAll('.faq-expand').forEach(function (b) {
     b.addEventListener('click', function () {
       var list = b.closest('.faq-list'); var open = list.classList.toggle('compact');
-      b.querySelector('.lb').textContent = open ? '展開更多' : '收起';
+      b.querySelector('.lb').textContent = open ? '展開' : '收起';
     });
   });
   syncVariantUI();  // 固定 data-variant=A（單一版本）
@@ -4859,8 +4869,9 @@
 
   // 使用日期日曆（970-49610）；dateReturn 記錄來源以便回填草稿並返回
   var calPick = null, dateReturn = null;
-  function buildCalendar() {
+  function buildCalendar(keepScroll) {
     var body = document.getElementById('calBody');
+    var sc = keepScroll ? body.scrollTop : 0;  // 改選後重繪不要跳回月曆頂端
     body.innerHTML = '';
     var now = new Date();  // 從當天起算，往後顯示一年（12 個月）
     var base = { y: now.getFullYear(), m: now.getMonth() + 1, today: now.getDate() };
@@ -4878,26 +4889,36 @@
         var cls = 'cal-cell' + (past ? ' past' : ' pick') + (isToday ? ' today' : '');
         var cell = el('<div class="' + cls + '"><span>' + d + '</span></div>');
         if (!past) (function (yy, mm, d) {
-          cell.addEventListener('click', function () {  // 點選即確定（無 footer 確認）
-            commitDate({ y: yy, m: mm, d: d, label: mm + '月' + d + '日' });
+          cell.addEventListener('click', function () {  // 點選只暫存草稿，footer「確定」才寫回（Figma 2551-62818）
+            calPick = { y: yy, m: mm, d: d, label: mm + '月' + d + '日' };
+            buildCalendar(true);
           });
         })(yy, mm, d);
-        var cur = dateReturn === 'explore' ? exState.date : (dateReturn === 'outer' ? fState.date : (fDraft && fDraft.date));
-        if (cur && typeof cur === 'object' && cur.y === yy && cur.m === mm && cur.d === d) cell.classList.add('sel');
+        if (calPick && calPick.y === yy && calPick.m === mm && calPick.d === d) cell.classList.add('sel');
         grid.appendChild(cell);
       }
       body.appendChild(mon);
     }
+    if (keepScroll) body.scrollTop = sc;
+    document.getElementById('calApply').disabled = !calPick;  // 未選日期時「確定」置灰
   }
   function openDateSheet() {
+    // 以來源目前的日期為草稿起點；未選過就是 null（「確定」置灰）
+    calPick = dateReturn === 'explore' ? exState.date
+      : dateReturn === 'orderUse' ? orderState.useDate
+      : dateReturn === 'flight' ? flDate
+      : dateReturn === 'outer' ? fState.date
+      : (fDraft && fDraft.date) || null;
+    if (calPick && typeof calPick !== 'object') calPick = null;
     buildCalendar();
     openSheet(document.getElementById('dateSheet'));
     var cb = document.getElementById('calBody');
     requestAnimationFrame(function () {
-      var t = cb.querySelector('.cal-cell.today');
+      var t = cb.querySelector('.cal-cell.sel') || cb.querySelector('.cal-cell.today');
       if (t) cb.scrollTop = t.offsetParent ? t.offsetParent.offsetTop - 8 : 0;
     });
   }
+  document.getElementById('calApply').addEventListener('click', function () { if (calPick) commitDate(calPick); });
   // 點選日期即確定：寫回來源草稿/狀態並關閉日曆、返回來源
   function commitDate(pick) {
     document.getElementById('dateSheet').classList.remove('open');
