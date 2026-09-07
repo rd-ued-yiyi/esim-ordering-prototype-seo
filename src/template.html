@@ -879,15 +879,13 @@
   .cond-sum { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin-bottom: 12px; }
   .cond-foot .cta { background: var(--kk-primary-button); color: #fff; }
 
-  .sort-list { padding: 4px 0 16px; }
-  .sort-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 24px; text-align: left; }
-  .sort-item .sname { flex: 1 1 0; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .sradio { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--kk-border-light); position: relative; flex: 0 0 auto; }
-  .sradio.on { background: var(--kk-primary-medium); border-color: var(--kk-primary-medium); }
-  .sradio.on::after {
-    content: ''; position: absolute; left: 5.5px; top: 2.5px;
-    width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
-  }
+  /* 排序 sheet（Figma 2551-117887）：item px24 py12 gap16、文字 body-lg 16/24、
+     選中＝24px ic_checkCircle_fill，未選＝24px 空心圓 */
+  .sort-list { padding: 24px 0; }
+  .sort-item { display: flex; align-items: center; gap: 16px; width: 100%; padding: 12px 24px; text-align: left; }
+  .sort-item .sname { flex: 1 1 0; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
+  .sradio { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--kk-border-light); flex: 0 0 auto; box-sizing: border-box; }
+  .sort-item .sradio-on { flex: 0 0 auto; }
 
   /* ================= 篩選 sheet（總篩選 970-50754 / 單類目 984-14319 / 日期 970-49610） ================= */
   .bsheet.tall { max-height: 88vh; }
@@ -926,7 +924,7 @@
   .fs-range input[type=range]::-moz-range-thumb { pointer-events: auto;
     width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 1px solid var(--kk-border-light);
     box-shadow: 0 1px 4px rgba(38,50,56,.2); cursor: pointer; }
-  .fs-foot { flex: 0 0 auto; padding: 12px 24px calc(12px + env(safe-area-inset-bottom, 0px));
+  .fs-foot { flex: 0 0 auto; padding: 16px 24px calc(16px + env(safe-area-inset-bottom, 0px));
     border-top: 1px solid var(--kk-border-lighter); }
   .fs-foot .cta { background: var(--kk-primary-button); color: #fff; }
   .fs-foot .cta:disabled { background: rgba(26,182,193,.4); color: rgba(255,255,255,.6); }  /* 0 結果禁用（Figma 1004-42393） */
@@ -1677,8 +1675,13 @@
   .ex-title { display: flex; align-items: center; gap: 8px; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
   .ex-title .ic img { width: 24px; height: 24px; }
   .ex-desc { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  /* 上排條件 chip + 下排通訊產品快篩 chip，兩排間距 8（Figma 2538-30531） */
+  .ex-filterbar { display: flex; flex-direction: column; gap: 8px; }
   .ex-filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
   .ex-filters::-webkit-scrollbar { display: none; }
+  .ex-quick { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+  .ex-quick::-webkit-scrollbar { display: none; }
+  .ex-quick .fopt { flex: 0 0 auto; }
   /* 捲過 filter 列後置頂（.app 有 overflow-x:hidden，position:sticky 失效 → JS 切 .pinned 改 fixed，wrap 佔位防跳動） */
   .ex-filters.pinned { position: fixed; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; z-index: 29;
     margin: 0; padding: 8px 16px; background: #fff; }
@@ -1724,18 +1727,25 @@
   .ex-price .was { font-family: "Helvetica Neue", Helvetica, Arial, var(--font-tc); font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }
   .ex-off { display: inline-flex; align-items: center; padding: 2px 4px; border-radius: var(--r-sm); background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
   /* 目的地及領取地 / 篩選 sheet（Figma 2357-114854 / 2357-114862）：分組 pill，選中＝實底青色 */
-  .exp-sec { padding: 20px 24px 12px; }
-  .exp-sec + .exp-sec { border-top: 8px solid var(--kk-surface-light); }
+  /* 目的地以及領取地 sheet（Figma 2551-63376 / 2551-115310）：body pad 24/20、所有區塊間距 20 */
+  .exp-body { display: flex; flex-direction: column; gap: 20px; padding: 24px 20px; }
+  .exp-t { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }  /* 區塊大標 h6 */
+  .exp-grp { display: flex; flex-direction: column; gap: 16px; }
+  .exp-div { height: 1px; background: var(--kk-border-lighter); }
+  .exp-note { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .exp-note .ic { flex: 0 0 auto; }
   .exp-h { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin-bottom: 12px; }
-  .exp-g { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); margin: 4px 0 8px; }
-  .exp-opts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-  .exp-pill { padding: 6px 12px; border-radius: var(--r-circle); background: var(--kk-surface-light); font-size: 13px; line-height: 18px; color: var(--kk-text-dark); }
-  .exp-pill.sel { background: var(--kk-primary-medium); color: #fff; }
-  .exf-sec { padding: 0 24px 20px; }
-  .exf-sec .exp-h { margin-bottom: 12px; }
-  .exf-body { padding-top: 8px; }
-  .exf-price { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); margin: 0 0 12px; }
-  .exf-sec .fs-range { margin: 0 8px 8px; }
+  .exp-g { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin: 0; }  /* 區域小標 subtitle-lg */
+  .exp-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* 更多條件 sheet（Figma 2551-62556）：body pad 24/20、組距 20 + 組間 1px 分隔線、組內 title→chips 16 */
+  .exf-body { display: flex; flex-direction: column; gap: 20px; padding: 24px 20px; }
+  .exf-sec { display: flex; flex-direction: column; gap: 16px; padding: 0; }
+  .exf-sec + .exf-sec { border-top: 1px solid var(--kk-border-lighter); padding-top: 20px; }
+  .exf-sec .exp-h { margin: 0; }
+  .exf-hd { display: flex; flex-direction: column; }  /* 價格區間：標題 + 區間值貼齊 */
+  .exf-sec .fs-price-val { margin: 0; }
+  .exf-sec .exp-opts { gap: 8px; margin: 0; }
+  .exf-sec .fs-range { margin: 0; }
 </style>
 
 <div class="esim-root">
@@ -1882,12 +1892,21 @@
             <div class="ex-title"><span class="ic ic-24">{{IC_sparkles}}</span><span>探索更多</span></div>
             <p class="ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
           </div>
-          <div class="ex-filters-wrap"><div class="ex-filters">
-            <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
-            <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">篩選</span><span class="badge" hidden></span></button>
-            <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
-            <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
-          </div></div>
+          <!-- filter bar（Figma 2538-30531）：上排條件 chip + 下排通訊產品快篩 chip -->
+          <div class="ex-filterbar">
+            <div class="ex-filters-wrap"><div class="ex-filters">
+              <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
+              <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">更多條件</span><span class="badge" hidden></span></button>
+              <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
+              <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
+            </div></div>
+            <!-- 通訊產品快篩：原本在「更多條件」sheet 內，Figma 已移到外層（多選，空選＝全部） -->
+            <div class="ex-quick">
+              <button class="fopt" data-exq="eSIM">eSIM</button>
+              <button class="fopt" data-exq="SIM Card">SIM 卡</button>
+              <button class="fopt" data-exq="WiFi">WIFI</button>
+            </div>
+          </div>
           <div class="ex-list"></div>
         </section>
       </div><!-- /con -->
@@ -2053,12 +2072,21 @@
             <div class="ex-title"><span class="ic ic-24">{{IC_sparkles}}</span><span>探索更多</span></div>
             <p class="ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
           </div>
-          <div class="ex-filters-wrap"><div class="ex-filters">
-            <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
-            <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">篩選</span><span class="badge" hidden></span></button>
-            <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
-            <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
-          </div></div>
+          <!-- filter bar（Figma 2538-30531）：上排條件 chip + 下排通訊產品快篩 chip -->
+          <div class="ex-filterbar">
+            <div class="ex-filters-wrap"><div class="ex-filters">
+              <button class="ex-chip" data-ex="place"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLineCyan}}</span><span class="lb">目的地及領取地</span></button>
+              <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">更多條件</span><span class="badge" hidden></span></button>
+              <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendarGrey}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyan}}</span><span class="lb">日期</span></button>
+              <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
+            </div></div>
+            <!-- 通訊產品快篩：原本在「更多條件」sheet 內，Figma 已移到外層（多選，空選＝全部） -->
+            <div class="ex-quick">
+              <button class="fopt" data-exq="eSIM">eSIM</button>
+              <button class="fopt" data-exq="SIM Card">SIM 卡</button>
+              <button class="fopt" data-exq="WiFi">WIFI</button>
+            </div>
+          </div>
           <div class="ex-list"></div>
         </section>
       </div><!-- /con -->
@@ -2511,28 +2539,28 @@
     <div class="sort-list" id="sortList"></div>
   </div>
 
-  <!-- 探索更多：目的地及領取地 sheet（Figma 2357-114854）目的地單選、領取/郵寄地多選 -->
+  <!-- 探索更多：目的地以及領取地 sheet（Figma 2551-63376 未選 / 2551-115310 已選）目的地單選、領取/郵寄地多選 -->
   <div class="bsheet tall" id="exPlaceSheet">
     <div class="bs-handle"></div>
     <div class="bs-bar">
       <button class="bs-close" data-bs-close aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button>
-      <span class="bs-title">搜尋</span>
-      <button class="fs-clear" id="exPlaceClear">全部清除</button>
+      <span class="bs-title">目的地以及領取地</span>
+      <button class="fs-clear" id="exPlaceClear">清除</button>
     </div>
-    <div class="bs-body"><div id="exPlaceBody"></div></div>
-    <div class="fs-foot"><button class="cta" id="exPlaceApply">搜尋</button></div>
+    <div class="bs-body"><div class="exp-body" id="exPlaceBody"></div></div>
+    <div class="fs-foot"><button class="cta" id="exPlaceApply">確定</button></div>
   </div>
 
-  <!-- 探索更多：篩選 sheet（Figma 2357-114862）通訊產品 / 領取方式 / 商品特性 / 旅遊天數 / 價錢 -->
+  <!-- 探索更多：更多條件 sheet（Figma 2551-62556）領取方式 / 商品特性 / 旅遊天數 / 價格區間 -->
   <div class="bsheet tall" id="exFilterSheet">
     <div class="bs-handle"></div>
     <div class="bs-bar">
       <button class="bs-close" data-bs-close aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button>
-      <span class="bs-title">搜尋</span>
-      <button class="fs-clear" id="exFilterClear">全部清除</button>
+      <span class="bs-title">篩選</span>
+      <button class="fs-clear" id="exFilterClear">清除</button>
     </div>
     <div class="bs-body"><div class="exf-body" id="exFilterBody"></div></div>
-    <div class="fs-foot"><button class="cta" id="exFilterApply">搜尋</button></div>
+    <div class="fs-foot"><button class="cta" id="exFilterApply">確定</button></div>
   </div>
 
   <!-- 總篩選 sheet（Figma 970-50754） -->
@@ -3678,7 +3706,7 @@
     { img: '{{IMG_SW_P4}}', type: 'SIM Card', title: '日本 SIM 卡・Docomo / IIJ / KDDI / Softbank 5G・香港寄送到府', rating: 4.3, reviews: 180, bought: '1K+', week: 23, rec: 86, tags: ['3天前可免費取消', '郵寄', '可加值'], now: 156, was: 312 },
     { img: '{{IMG_SW_P6}}', type: 'eSIM', title: '泰國 eSIM・TrueMove H 5G 高速・可用 TikTok・即買即用', rating: 4.6, reviews: 1135, bought: '70K+', week: 210, rec: 93, tags: ['即買即用', '立即確認', '吃到飽不斷網'], now: 151, was: 240 }
   ];
-  var EX_SORTS = ['KKday推薦', '價格低到高', '高評分優先', '高銷量優先'];  // 與報價頁排序 sheet 同款
+  var EX_SORTS = ['KKday推薦', '最受歡迎', '用戶評價', '價格：低到高'];  // Figma 2551-117887
   var EX_PLACE = {
     dest: [
       ['東北亞', ['日本', '韓國', '台灣', '中國', '香港', '澳門']],
@@ -3696,24 +3724,26 @@
       ['韓國', ['韓國 – 所有城市', '首爾', '釜山', '江原道']]
     ]
   };
+  // 通訊產品（type）已移到 filter bar 外層快篩 chip，不在「更多條件」sheet 內（Figma 2551-62556）
   var EX_FILTER_CATS = [
-    { key: 'type', label: '通訊產品', opts: ['WiFi', 'SIM Card', 'eSIM'] },
     { key: 'pickup', label: '領取方式', opts: ['機場領取', '門市領取', '郵寄', 'QRcode'] },
     { key: 'feat', label: '商品特性', opts: ['含語音通話', '可加值', '吃到飽不斷網', '輕量型'] },
     { key: 'days', label: '旅遊天數', opts: ['1-7天', '8-14天', '15天以上'] }
   ];
-  var EX_PMIN = 1, EX_PMAX = 404;
+  var EX_PMIN = 0, EX_PMAX = 12000;  // 價格區間 NT$0 – NT$12,000+（Figma 2551-62576）
   function exEmpty() { return { type: [], pickup: [], feat: [], days: [], pmin: EX_PMIN, pmax: EX_PMAX }; }
   var exState = { f: exEmpty(), dest: null, pickups: [], date: null, sort: 0 };
   var exDraft = null, exPlaceDraft = null;
-  function exFilterCount(f) { return f.type.length + f.pickup.length + f.feat.length + f.days.length + ((f.pmin > EX_PMIN || f.pmax < EX_PMAX) ? 1 : 0); }
+  // badge 只計 sheet 內的條件；通訊產品在外層快篩 chip 自帶選中態
+  function exFilterCount(f) { return f.pickup.length + f.feat.length + f.days.length + ((f.pmin > EX_PMIN || f.pmax < EX_PMAX) ? 1 : 0); }
   function exBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
   function exVisible() {
     // 通訊產品實際過濾商品；其餘條件（領取方式/特性/天數/價錢/地點/日期）為仿真，僅反映在 chip 計數與選中態
     var list = EX_PRODUCTS.filter(function (p) { return !exState.f.type.length || exState.f.type.indexOf(p.type) >= 0; });
-    if (exState.sort === 1) list.sort(function (a, b) { return a.now - b.now; });
+    // 1 最受歡迎＝銷量高到低、2 用戶評價＝評分高到低、3 價格：低到高（Figma 2551-117887 選項順序）
+    if (exState.sort === 1) list.sort(function (a, b) { return exBoughtNum(b.bought) - exBoughtNum(a.bought); });
     else if (exState.sort === 2) list.sort(function (a, b) { return b.rating - a.rating; });
-    else if (exState.sort === 3) list.sort(function (a, b) { return exBoughtNum(b.bought) - exBoughtNum(a.bought); });
+    else if (exState.sort === 3) list.sort(function (a, b) { return a.now - b.now; });
     return list;
   }
   function exMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
@@ -3749,8 +3779,20 @@
       var bd = fil.querySelector('.badge'); bd.hidden = n === 0; bd.textContent = n;
       var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date); dt.querySelector('.lb').textContent = exState.date ? exState.date.label : '日期';
       var so = sec.querySelector('[data-ex="sort"]'); so.classList.toggle('sel', exState.sort !== 0); so.querySelector('.lb').textContent = exState.sort ? EX_SORTS[exState.sort] : '排序';
+      // 通訊產品快篩 chip 選中態
+      sec.querySelectorAll('[data-exq]').forEach(function (q) {
+        q.classList.toggle('sel', exState.f.type.indexOf(q.getAttribute('data-exq')) >= 0);
+      });
     });
   }
+  // 通訊產品快篩：多選，全不選＝全部（Figma 2538-30531 下排 chip）
+  document.querySelectorAll('[data-exq]').forEach(function (q) {
+    q.addEventListener('click', function () {
+      var v = q.getAttribute('data-exq'), a = exState.f.type, i = a.indexOf(v);
+      if (i >= 0) a.splice(i, 1); else a.push(v);
+      renderExplore();
+    });
+  });
   // 搜尋卡 tab：SIM卡 / WIFI分享器 → 勾選通訊產品並平滑錨定到當前頁的探索更多（tab 本身保持 eSIM）
   // 目的地頁已選目的地 → 同步帶入探索更多「目的地及領取地」的目的地（單選）；名稱不同者以別名表映射，區域（亞洲通/東南亞…）無對應則不帶
   var EX_DEST_ALIAS = { '澳大利亞': '澳洲', '迪拜': '阿聯酋', '阿拉伯聯合大公國': '阿聯酋', '印度尼西亞': '印尼', '沙烏地': '沙烏地阿拉伯', '紐西蘭': '紐西蘭', '澳門': '澳門' };
@@ -3802,37 +3844,43 @@
   function exOpenSort() {
     var box = document.getElementById('sortList'); box.innerHTML = '';
     EX_SORTS.forEach(function (n, i) {
-      var it = el('<button class="sort-item"><span class="sname"></span><span class="sradio' + (i === exState.sort ? ' on' : '') + '"></span></button>');
+      var it = el('<button class="sort-item"><span class="sname"></span>' +
+        (i === exState.sort ? '<span class="ic ic-24 ic-stretch sradio-on">{{IC_checkCircle}}</span>' : '<span class="sradio"></span>') + '</button>');
       it.querySelector('.sname').textContent = n;
       it.addEventListener('click', function () { exState.sort = i; renderExplore(); closeSheets(); });
       box.appendChild(it);
     });
     openSheet(document.getElementById('bsSort'));
   }
-  // 目的地及領取地 sheet：目的地單選、領取/郵寄地多選
+  // 目的地以及領取地 sheet（Figma 2551-63376 / 2551-115310）：目的地單選、領取/郵寄地多選；
+  // 未選目的地時「領取/郵寄地」只顯示 inline notification 提示，不列出城市。
   function exRenderPlace() {
     var body = document.getElementById('exPlaceBody'); body.innerHTML = '';
-    function section(h, groups, single) {
-      var s = el('<div class="exp-sec"><div class="exp-h"></div></div>'); s.querySelector('.exp-h').textContent = h;
-      groups.forEach(function (g) {
-        var gh = el('<div class="exp-g"></div>'); gh.textContent = g[0]; s.appendChild(gh);
-        var row = el('<div class="exp-opts"></div>');
+    function title(t) { var n = el('<div class="exp-t"></div>'); n.textContent = t; body.appendChild(n); }
+    function groups(list, single) {
+      list.forEach(function (g) {
+        var grp = el('<div class="exp-grp"><div class="exp-g"></div><div class="exp-opts"></div></div>');
+        grp.querySelector('.exp-g').textContent = g[0];
+        var row = grp.querySelector('.exp-opts');
         g[1].forEach(function (o) {
           var on = single ? exPlaceDraft.dest === o : exPlaceDraft.pickups.indexOf(o) >= 0;
-          var b = el('<button class="exp-pill' + (on ? ' sel' : '') + '"></button>'); b.textContent = o;
+          var b = el('<button class="fopt' + (on ? ' sel' : '') + '"></button>'); b.textContent = o;
           b.addEventListener('click', function () {
-            if (single) exPlaceDraft.dest = on ? null : o;
+            if (single) { exPlaceDraft.dest = on ? null : o; exPlaceDraft.pickups = []; }
             else { var a = exPlaceDraft.pickups, i = a.indexOf(o); if (i >= 0) a.splice(i, 1); else a.push(o); }
             exRenderPlace();
           });
           row.appendChild(b);
         });
-        s.appendChild(row);
+        body.appendChild(grp);
       });
-      body.appendChild(s);
     }
-    section('請選擇目的地', EX_PLACE.dest, true);
-    section('請選擇領取/郵寄地', EX_PLACE.pickup, false);
+    title('目的地');
+    groups(EX_PLACE.dest, true);
+    body.appendChild(el('<div class="exp-div"></div>'));
+    title('領取/郵寄地');
+    if (exPlaceDraft.dest) groups(EX_PLACE.pickup, false);
+    else body.appendChild(el('<div class="exp-note"><span class="ic ic-20">{{IC_warningCircle}}</span><span>請先選擇目的地</span></div>'));
   }
   function exOpenPlace() {
     exPlaceDraft = { dest: exState.dest, pickups: exState.pickups.slice() };
@@ -3841,7 +3889,7 @@
   }
   document.getElementById('exPlaceClear').addEventListener('click', function () { exPlaceDraft = { dest: null, pickups: [] }; exRenderPlace(); });
   document.getElementById('exPlaceApply').addEventListener('click', function () { exState.dest = exPlaceDraft.dest; exState.pickups = exPlaceDraft.pickups.slice(); closeSheets(); renderExplore(); });
-  // 篩選 sheet：四組多選 + 價錢雙滑塊（HKD 1–404）
+  // 更多條件 sheet（Figma 2551-62556）：三組多選 + 價格區間雙滑塊（NT$0–12,000+），組間 1px 分隔線
   function exRenderFilter() {
     var body = document.getElementById('exFilterBody'); body.innerHTML = '';
     EX_FILTER_CATS.forEach(function (cat) {
@@ -3849,25 +3897,26 @@
       var opts = sec.querySelector('.exp-opts');
       cat.opts.forEach(function (o) {
         var on = exDraft[cat.key].indexOf(o) >= 0;
-        var b = el('<button class="exp-pill' + (on ? ' sel' : '') + '"></button>'); b.textContent = o;
+        var b = el('<button class="fopt' + (on ? ' sel' : '') + '"></button>'); b.textContent = o;
         b.addEventListener('click', function () { var a = exDraft[cat.key], i = a.indexOf(o); if (i >= 0) a.splice(i, 1); else a.push(o); exRenderFilter(); });
         opts.appendChild(b);
       });
       body.appendChild(sec);
     });
-    var ps = el('<div class="exf-sec"><div class="exp-h">價錢 (HKD)</div><div class="exf-price"></div>' +
+    var ps = el('<div class="exf-sec"><div class="exf-hd"><div class="exp-h">價格區間 (NT$)</div><div class="fs-price-val"></div></div>' +
       '<div class="fs-range"><div class="track"></div><div class="fill"></div>' +
-      '<input type="range" class="rmin" min="' + EX_PMIN + '" max="' + EX_PMAX + '" step="1"><input type="range" class="rmax" min="' + EX_PMIN + '" max="' + EX_PMAX + '" step="1"></div></div>');
-    var rmin = ps.querySelector('.rmin'), rmax = ps.querySelector('.rmax'), fill = ps.querySelector('.fill'), val = ps.querySelector('.exf-price');
+      '<input type="range" class="rmin" min="' + EX_PMIN + '" max="' + EX_PMAX + '" step="100"><input type="range" class="rmax" min="' + EX_PMIN + '" max="' + EX_PMAX + '" step="100"></div></div>');
+    var rmin = ps.querySelector('.rmin'), rmax = ps.querySelector('.rmax'), fill = ps.querySelector('.fill'), val = ps.querySelector('.fs-price-val');
     rmin.value = exDraft.pmin; rmax.value = exDraft.pmax;
+    function nt(n, plus) { return 'NT$' + n.toLocaleString('en-US') + (plus && n >= EX_PMAX ? '+' : ''); }
     function upd() {
       var span = EX_PMAX - EX_PMIN;
       fill.style.left = ((exDraft.pmin - EX_PMIN) / span * 100) + '%';
       fill.style.right = (100 - (exDraft.pmax - EX_PMIN) / span * 100) + '%';
-      val.textContent = exDraft.pmin + ' – ' + exDraft.pmax;
+      val.textContent = nt(exDraft.pmin) + ' – ' + nt(exDraft.pmax, true);
     }
-    rmin.addEventListener('input', function () { exDraft.pmin = Math.min(+rmin.value, exDraft.pmax - 1); rmin.value = exDraft.pmin; upd(); });
-    rmax.addEventListener('input', function () { exDraft.pmax = Math.max(+rmax.value, exDraft.pmin + 1); rmax.value = exDraft.pmax; upd(); });
+    rmin.addEventListener('input', function () { exDraft.pmin = Math.min(+rmin.value, exDraft.pmax - 100); rmin.value = exDraft.pmin; upd(); });
+    rmax.addEventListener('input', function () { exDraft.pmax = Math.max(+rmax.value, exDraft.pmin + 100); rmax.value = exDraft.pmax; upd(); });
     upd();
     body.appendChild(ps);
   }
@@ -3876,7 +3925,8 @@
     exRenderFilter(); openSheet(document.getElementById('exFilterSheet'));
     document.querySelector('#exFilterSheet .bs-body').scrollTop = 0;
   }
-  document.getElementById('exFilterClear').addEventListener('click', function () { exDraft = exEmpty(); exRenderFilter(); });
+  // 清除只清 sheet 內的條件；通訊產品由外層快篩 chip 控制，不受影響
+  document.getElementById('exFilterClear').addEventListener('click', function () { exDraft = exEmpty(); exDraft.type = exState.f.type.slice(); exRenderFilter(); });
   document.getElementById('exFilterApply').addEventListener('click', function () { exState.f = JSON.parse(JSON.stringify(exDraft)); closeSheets(); renderExplore(); });
   renderExplore();
 
@@ -4535,7 +4585,8 @@
     var box = document.getElementById('sortList');
     box.innerHTML = '';
     SORT_NAMES.forEach(function (n, i) {
-      var it = el('<button class="sort-item"><span class="sname"></span><span class="sradio' + (i === sortMode ? ' on' : '') + '"></span></button>');
+      var it = el('<button class="sort-item"><span class="sname"></span>' +
+        (i === sortMode ? '<span class="ic ic-24 ic-stretch sradio-on">{{IC_checkCircle}}</span>' : '<span class="sradio"></span>') + '</button>');
       it.querySelector('.sname').textContent = n;
       it.addEventListener('click', function () {
         sortMode = i;

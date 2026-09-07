@@ -207,6 +207,8 @@ subs = {
     "{{IC_editLine}}":     file_img("assets/ord/edit.svg"),         # 编辑按钮 ic_edit_line（intrinsic 15.6×15.6）
     "{{IC_infoCyan}}":     svg("info", recolor=("#727272", "#13A3B6")),  # 免费取消行 info（cyan）
     "{{IC_infoFill}}":     svg("infoFill"),  # 设备信息提示：实心 info 图标（Figma 1116-91131 ic_info_fill，#2D84D6）
+    # 目的地及领取地 sheet 空状态提示：实心 warning 图标（Figma 2551-115281 ic_warningCircle_fill，#FFA000）
+    "{{IC_warningCircle}}": svg("warningCircleFill"),
     "{{IC_spark}}":        inline_svg_to_img(DET_SPARK),
     "{{IC_smile}}":        inline_svg_to_img(DET_SMILE),
     "{{IC_neutral}}":      inline_svg_to_img(DET_NEUTRAL),
