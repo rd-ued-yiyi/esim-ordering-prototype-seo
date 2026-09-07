@@ -1239,25 +1239,26 @@
     padding: 12px 24px calc(12px + env(safe-area-inset-bottom, 0px)); }
 
   /* ================= 滾動置頂 header ================= */
+  /* 置頂 header（Figma 2357-114814 Mweb header）：高 56、px16 py12、標題 18/26 */
   .page-header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 30;
     max-width: 430px; margin: 0 auto;
-    height: calc(44px + env(safe-area-inset-top, 0px));
-    padding: env(safe-area-inset-top, 0px) 24px 0;
+    height: calc(56px + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) 16px 0;
     background: #fff;
     display: flex; align-items: center;
     opacity: 0; pointer-events: none; transition: opacity .2s;
   }
   .page-header.show { opacity: 1; pointer-events: auto; box-shadow: var(--el-fixed); }
   .page-header .ph-back { display: flex; align-items: center; }
-  .page-header .ph-menu { width: 24px; justify-content: center; }
+  .page-header .ph-menu { width: 32px; height: 32px; justify-content: center; }  /* 32px 圓形按鈕、20px icon（Figma 2357-114778） */
   .page-header.on-home .ph-return, .page-header:not(.on-home) .ph-menu { display: none; }
   .page-header .ph-title {
     flex: 1 1 0; min-width: 0; text-align: center; padding: 0 20px;
-    font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker);
+    font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .page-header .ph-spacer { width: 24px; }
+  .page-header .ph-spacer { width: 32px; }
 
   /* ================= bottom sheet 通用 ================= */
   .bs-mask {
