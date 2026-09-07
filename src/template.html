@@ -230,12 +230,15 @@
 
   /* ---------- destination card ---------- */
   .dest-card { box-shadow: var(--el-hero-card); display: flex; flex-direction: column; gap: 12px; }  /* 卡內各區塊間距 12px（Figma 1268-110020 SearchCard spacing-150）：eSIM 提示↔天數群組、群組↔不知道怎麼選↔搜尋套餐 皆一致 */
+  /* 目的地選框（Figma 2538-30569 destination select bar）：總高 44、icon 20、文字 14/20 加粗 */
   .search-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 12px; border: 1.5px solid var(--kk-primary-medium);
+    display: flex; align-items: center; gap: 8px; box-sizing: border-box; height: 44px;
+    padding: 0 12px; border: 1.5px solid var(--kk-primary-medium);
     border-radius: var(--r-lg); background: #fff; cursor: pointer;
   }
-  .search-bar .label { flex: 1 1 0; min-width: 0; }
+  .search-bar .label { flex: 1 1 0; min-width: 0; font-size: 14px; line-height: 20px; font-weight: 600; text-align: left; }
+  .search-bar .ic { width: 20px; height: 20px; }
+  .search-bar .ic img { max-width: 20px; max-height: 20px; width: auto; height: auto; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
   /* 主題頁「最近選擇」歷史區 */
@@ -911,7 +914,7 @@
     padding: 8px 16px; border-radius: 999px;
     border: 1px solid var(--kk-border-light); background: #fff;
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; cursor: pointer; }
-  .fopt.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: #13A3B6; }  /* 選中態不加粗 */
+  .fopt.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-medium); }  /* 選中態不加粗（Figma 2551-117509：#26BEC9） */
   .fopt.rect { border-radius: var(--r-md); }  /* 日期 chips 非全圓角（Figma） */
   .fopt .chev-sm img { width: 9.4px; height: 5.2px; }
   /* 價格區間雙滑塊 */
@@ -1700,13 +1703,15 @@
     background: none; border: 0; padding: 0 2px;
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
   .ex-chip .lb { overflow: hidden; text-overflow: ellipsis; }
-  .ex-chip .ic img { width: 16px; height: 16px; }
+  .ex-chip .ic img { width: 14px; height: 14px; }
   .ex-chip .ic-sel { display: none; }
-  .ex-chip.sel { border-color: var(--kk-primary-medium); color: #13A3B6; }
-  .ex-chip.sel .ic-def { display: none; }
-  .ex-chip.sel .ic-sel { display: inline-flex; }
-  .ex-chip .badge { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px;
-    border-radius: 8px; background: #13A3B6; color: #fff; font-size: 11px; line-height: 16px; font-weight: 600; }
+  /* 已選擇（Figma 2551-118073 select 有數量）：文字加粗、右上角 6px 紅點；顏色與圖標不變 */
+  .ex-chip.sel { font-weight: 600; }
+  .ex-chip.sel:not([data-ex="filter"]) .lb::after { content: ''; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: #E65F50; margin-left: 2px; transform: translateY(-6px); }
+  /* 更多條件的紅點由 .badge 承擔（有計數時顯示，樣式同 6px Dot） */
+  .ex-chip .badge { width: 6px; height: 6px; padding: 0; border-radius: 50%; background: #E65F50;
+    font-size: 0; align-self: flex-start; margin-top: 2px; flex: 0 0 auto; }
   .ex-list { display: flex; flex-direction: column; gap: 32px; }
   .ex-empty { padding: 32px 0; text-align: center; color: var(--kk-text-medium); font-size: 14px; line-height: 20px; }
   /* 商品卡（Figma Product Card）：16:9 圖 + 上下漸層 + 收藏心形；標題 16/24 Semibold；評分行；屬性標籤；價格 + 折扣標 */
@@ -1733,8 +1738,6 @@
   .ex-price { display: flex; align-items: baseline; gap: 4px; }
   .ex-price .now { font-family: "Helvetica Neue", Helvetica, Arial, var(--font-tc); font-size: 16px; line-height: 16px; font-weight: 700; color: var(--kk-text-darker); }
   .ex-price .from { font-size: 14px; line-height: 14px; color: var(--kk-text-darker); }
-  /* 折扣中：現價與「起」用警示色（Figma 主題頁商品卡採樣 #EF7A70） */
-  .ex-price.disc .now, .ex-price.disc .from { color: var(--kk-text-critical); }
   .ex-price .was { font-family: "Helvetica Neue", Helvetica, Arial, var(--font-tc); font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }
   .ex-off { display: inline-flex; align-items: center; padding: 2px 4px; border-radius: var(--r-sm); background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
   /* 目的地及領取地 / 篩選 sheet（Figma 2357-114854 / 2357-114862）：分組 pill，選中＝實底青色 */
@@ -1789,7 +1792,7 @@
             <div class="tabbar" role="tablist">
               <button class="tb-tab sel" data-tb="esim" role="tab"><span class="tb-in"><span class="lb">eSIM</span><span class="ul"></span></span></button>
               <button class="tb-tab" data-tb="sim" role="tab"><span class="tb-in"><span class="lb">SIM卡</span></span></button>
-              <button class="tb-tab" data-tb="wifi" role="tab"><span class="tb-in"><span class="lb">WIFI分享器</span></span></button>
+              <button class="tb-tab" data-tb="wifi" role="tab"><span class="tb-in"><span class="lb">WIFI</span></span></button>
             </div>
           <div class="card dest-card">
             <button class="search-bar" data-action="pick-destination">
@@ -1871,23 +1874,23 @@
               </div>
               <div class="faq-list compact">
                 <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 > 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
                 </div>
                 <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
                 </div>
                 <div class="faq-item extra">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
                 </div>
                 <div class="faq-item extra">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday APP 聯絡 24 小時線上客服。</div>
                 </div>
                 <div class="faq-item extra">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
                 </div>
                 <button class="faq-expand"><span class="lb">展開</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
@@ -1953,7 +1956,7 @@
             <div class="tabbar" role="tablist">
               <button class="tb-tab sel" data-tb="esim" role="tab"><span class="tb-in"><span class="lb">eSIM</span><span class="ul"></span></span></button>
               <button class="tb-tab" data-tb="sim" role="tab"><span class="tb-in"><span class="lb">SIM卡</span></span></button>
-              <button class="tb-tab" data-tb="wifi" role="tab"><span class="tb-in"><span class="lb">WIFI分享器</span></span></button>
+              <button class="tb-tab" data-tb="wifi" role="tab"><span class="tb-in"><span class="lb">WIFI</span></span></button>
             </div>
           <div class="card dest-card">
             <!-- 裝置支援提示（Figma 2357-114872）：淺藍資訊底、info icon、兩行（提醒確認相容 + 底線連結） -->
@@ -2054,23 +2057,23 @@
               </div>
               <div class="faq-list compact">
                 <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 > 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
                 </div>
                 <div class="faq-item">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
                 </div>
                 <div class="faq-item extra">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
                 </div>
                 <div class="faq-item extra">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday APP 聯絡 24 小時線上客服。</div>
                 </div>
                 <div class="faq-item extra">
-                  <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDown}}</span></button>
+                  <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
                 </div>
                 <button class="faq-expand"><span class="lb">展開</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
@@ -3773,7 +3776,7 @@
       '<div class="ex-body"><div class="ex-hd"><div class="ex-name"></div>' +
       '<div class="ex-rate"><span class="ic">' + EX_ICONS.star + '</span><b>' + p.rating.toFixed(1) + '</b><span>(' + p.reviews.toLocaleString('en-US') + ')・' + p.bought + ' 個已訂購・近 7 日預訂 ' + p.week + ' 次</span></div>' +
       '<div class="ex-tags">' + tags + '</div></div>' +
-      '<div class="ex-foot"><div class="ex-price' + (p.was ? ' disc' : '') + '"><span class="now">' + exMoney(p.now) + '</span><span class="from">起</span>' + (p.was ? '<span class="was">' + exMoney(p.was) + '</span>' : '') + '</div>' +
+      '<div class="ex-foot"><div class="ex-price"><span class="now">' + exMoney(p.now) + '</span><span class="from">起</span>' + (p.was ? '<span class="was">' + exMoney(p.was) + '</span>' : '') + '</div>' +
       (off ? '<span class="ex-off">' + off + '% OFF</span>' : '') + '</div></div></button>';
   }
   function exOpenDetail(p) {
@@ -3975,6 +3978,7 @@
 
   // ================= 滾動置頂 header =================
   function onPageScroll() {
+    if (lockCount > 0) return;  // bottom sheet 開啟時 body 被鎖、scrollY 歸零，跳過以免置頂 header/filter 被誤收起
     var y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
     document.getElementById('pageHeader').classList.toggle('show', y > 120 && current !== 'plans' && current !== 'simwifi');
     var ph = document.querySelector('.pl-head');
