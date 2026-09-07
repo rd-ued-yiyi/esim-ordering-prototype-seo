@@ -143,7 +143,11 @@ subs = {
     "{{IC_locationArrow}}":svg("locationArrow"),
     "{{IC_arrowDown}}":    svg("arrowDown"),
     "{{IC_arrowDownGray}}":svg("arrowDown", recolor=("#212121", "#727272")),  # 修改条件展开/收起 tab 箭头（Figma 1116-89167：text-dark #727272）
-    "{{IC_arrowDownCyan}}":svg("arrowDown", recolor=("#212121", "#13A3B6")),  # 探索更多 filter bar 选中态下拉箭头
+    # 探索更多 filter bar（Figma 2551-117541）：14px semibold 线性图标，选中态换青色
+    "{{IC_locationSb}}":     svg("locationLineSemibold"),
+    "{{IC_locationSbCyan}}": svg("locationLineSemibold", recolor=("#212121", "#13A3B6")),
+    "{{IC_arrowDownSb}}":    svg("arrowDownLineSemibold"),
+    "{{IC_arrowDownSbCyan}}":svg("arrowDownLineSemibold", recolor=("black", "#13A3B6")),
     "{{IC_arrowDownCircle}}": svg("arrowDownCircle"),  # 方案 B 列表页流量 chips 尾端展开按钮：环形下拉箭头 ic_arrowDown_circle_line #13A3B6（Figma 1202-105534）
     "{{IC_arrowDownCyanMed}}": svg("arrowDown", recolor=("#212121", "#26BEC9")),  # 方案 A 筛选下拉 chip 选中态箭头：青 #26BEC9（与选中青字/青边一致）
     "{{IC_question}}":     svg("question"),
