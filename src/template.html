@@ -1893,7 +1893,7 @@
                   <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
                 </div>
-                <button class="faq-expand"><span class="lb">展開</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+                <button class="faq-expand"><span class="lb">展開</span><span class="ic ic-16 chev">{{IC_arrowDownSb}}</span></button>
               </div>
             </div>
           </div>
@@ -2076,7 +2076,7 @@
                   <button class="faq-q"><span class="qtext t-subtitle-lg">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{IC_arrowDownLg}}</span></button>
                   <div class="faq-a t-body-md">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
                 </div>
-                <button class="faq-expand"><span class="lb">展開</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+                <button class="faq-expand"><span class="lb">展開</span><span class="ic ic-16 chev">{{IC_arrowDownSb}}</span></button>
               </div>
             </div>
           </div>
@@ -3794,12 +3794,13 @@
         c.addEventListener('click', function () { toast('維持舊版現狀'); });  // 探索更多商品維持舊版，不接新詳情頁
         box.appendChild(c);
       });
+      // 已選態只變樣式（加粗＋紅點，Figma 2551-118073），文本保持不變
       var pl = [exState.dest].concat(exState.pickups).filter(Boolean).join(' · ');
-      var place = sec.querySelector('[data-ex="place"]'); place.classList.toggle('sel', !!pl); place.querySelector('.lb').textContent = pl || '目的地及領取地';
+      var place = sec.querySelector('[data-ex="place"]'); place.classList.toggle('sel', !!pl);
       var n = exFilterCount(exState.f), fil = sec.querySelector('[data-ex="filter"]'); fil.classList.toggle('sel', n > 0);
-      var bd = fil.querySelector('.badge'); bd.hidden = n === 0; bd.textContent = n;
-      var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date); dt.querySelector('.lb').textContent = exState.date ? exState.date.label : '日期';
-      var so = sec.querySelector('[data-ex="sort"]'); so.classList.toggle('sel', exState.sort !== 0); so.querySelector('.lb').textContent = exState.sort ? EX_SORTS[exState.sort] : '排序';
+      var bd = fil.querySelector('.badge'); bd.hidden = n === 0;
+      var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date);
+      var so = sec.querySelector('[data-ex="sort"]'); so.classList.toggle('sel', exState.sort !== 0);
       // 通訊產品快篩 chip 選中態
       sec.querySelectorAll('[data-exq]').forEach(function (q) {
         q.classList.toggle('sel', exState.f.type.indexOf(q.getAttribute('data-exq')) >= 0);
