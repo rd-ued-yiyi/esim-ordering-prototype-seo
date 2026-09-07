@@ -304,9 +304,9 @@
   [data-screen="destination"] .page { padding-top: 16px; }
   .dest-bar {
     display: flex; align-items: center; gap: 8px;
-    height: 48px; max-width: 240px;
-    background: rgba(255,255,255,.88);  /* Figma 871-75700：淡薄荷磨砂（疊青底＝#E4F7F8），非純白 */
-    border: 0; border-radius: var(--r-lg);
+    box-sizing: border-box; height: 44px; max-width: 240px;  /* Figma 2538-30569：總高 44（p12 + 內容 20） */
+    background: rgba(255,255,255,.88);
+    border: 1.5px solid #fff; border-radius: var(--r-lg);
     box-shadow: 0 2px 8px rgba(17,25,40,.06);
     padding: 0 12px; cursor: pointer;
     color: var(--kk-text-darker);  /* 不繼承 .title-block 的白色 */
