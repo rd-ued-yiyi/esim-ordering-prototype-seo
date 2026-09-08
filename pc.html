@@ -32,7 +32,7 @@
   /* ---------- 螢幕路由 ---------- */
 
   /* ---------- 搜尋卡上方 tab bar（Figma 2357-116464，同 mweb TabBarCard）：eSIM｜SIM卡｜WIFI分享器 ----------
-     淺灰條 + 白底選中 tab（上圓角 16、右下 8px 內凹補角）+ 青色底線；SIM卡 / WIFI分享器 → 平滑錨定到「探索更多」，tab 保持 eSIM */
+     淺灰條 + 白底選中 tab（上圓角 16、右下 16px 內凹補角）+ 青色底線；SIM卡 / WIFI分享器 → 平滑錨定到「探索更多」，tab 保持 eSIM */
   .pc-tabs { display: inline-flex; align-items: stretch; background: var(--kk-surface-light); border-radius: 16px 16px 0 0; }
   .pc-tab { position: relative; width: 104px; display: flex; justify-content: center; padding: 12px; }
   .pc-tab .tb-in { display: flex; flex-direction: column; align-items: stretch; }
@@ -41,8 +41,8 @@
   .pc-tab.sel { background: #fff; border-radius: 16px 16px 0 0; padding-bottom: 0; }
   .pc-tab.sel .lb { font-weight: 600; color: var(--kk-primary-dark); }
   .pc-tab.sel .ul { display: block; }
-  .pc-tab.sel::after { content: ''; position: absolute; right: -8px; bottom: 0; width: 8px; height: 8px;
-    background: radial-gradient(circle at 100% 0, transparent 7.5px, #fff 8px); }
+  .pc-tab.sel::after { content: ''; position: absolute; right: -16px; bottom: 0; width: 16px; height: 16px;
+    background: radial-gradient(circle at 100% 0, transparent 15.5px, #fff 16px); }
   .pc-tab:not(.sel):hover .lb { color: var(--kk-primary-dark); }
 
   /* ================= eSIM 主題頁 ================= */

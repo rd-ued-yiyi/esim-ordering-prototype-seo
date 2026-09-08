@@ -1666,7 +1666,7 @@
   .cxl-note .ic { width: 14px; height: 14px; flex: 0 0 auto; margin-top: 2px; }
 
   /* ================= 搜尋卡 tab bar（Figma 2326-110720 TabBarCard）：eSIM｜SIM卡｜WIFI分享器 =================
-     外層淺灰底 + hero 陰影；選中 tab 白底、上圓角 16、右下 8px 內凹補角（folder tab），下方白卡左上角直角接合。
+     外層淺灰底 + hero 陰影；選中 tab 白底、上圓角 16、右下 16px 內凹補角（folder tab），下方白卡左上角直角接合。
      SIM卡 / WIFI分享器 不切頁：點擊 → 平滑錨定到底部「探索更多」並自動勾選對應「通訊產品」篩選；tab 保持 eSIM。 */
   .tabcard { background: var(--kk-surface-light); border-radius: var(--r-xl); box-shadow: var(--el-hero-card); overflow: hidden; }
   .tabbar { display: flex; align-items: stretch; }
@@ -1677,8 +1677,8 @@
   .tb-tab.sel { background: #fff; border-radius: var(--r-xl) var(--r-xl) 0 0; padding-bottom: 0; }
   .tb-tab.sel .lb { font-weight: 600; color: #13A3B6; }
   .tb-tab.sel .ul { display: block; }
-  .tb-tab.sel::after { content: ''; position: absolute; right: -8px; bottom: 0; width: 8px; height: 8px;
-    background: radial-gradient(circle at 100% 0, transparent 7.5px, #fff 8px); }
+  .tb-tab.sel::after { content: ''; position: absolute; right: -16px; bottom: 0; width: 16px; height: 16px;
+    background: radial-gradient(circle at 100% 0, transparent 15.5px, #fff 16px); }
   .tb-tab:not(.sel):active .lb { opacity: .55; }
   .tabcard .dest-card { box-shadow: none; border-radius: 0 var(--r-xl) var(--r-xl) var(--r-xl); }
 
