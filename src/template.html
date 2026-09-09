@@ -1685,11 +1685,10 @@
   .ex-head { display: flex; flex-direction: column; gap: 16px; }
   .ex-title { display: flex; align-items: center; gap: 8px; font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-darker); }  /* Figma 2538-30548：24/30 */
   .ex-title .ic img { width: 24px; height: 24px; }
-  /* filter bar（Figma 2551-117541）：上排 select group（pb8）＋ 下排快篩 chip（pt8）→ 兩排間距 16 */
-  .ex-filterbar { display: flex; flex-direction: column; gap: 16px; }
-  /* 上排：兩端撐滿，項與項之間夾 16px 竖分隔項 */
-  .ex-filters { display: flex; align-items: center; justify-content: space-between; }
-  .ex-div { width: 1px; height: 16px; background: var(--kk-border-lighter); flex: 0 0 auto; }
+  /* filter bar（Figma 2551-63759 / 2551-117542）：上排「目的地｜領取/郵寄地」兩個等寬 chip（h32、r8），
+     下排橫滑 pill chip（更多條件 / 排序 / 日期 + 通訊產品快篩），兩排間距 8 */
+  .ex-filterbar { display: flex; flex-direction: column; gap: 8px; }
+  .ex-row1 { display: flex; gap: 8px; }
   .ex-quick { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
   .ex-quick::-webkit-scrollbar { display: none; }
   /* 快篩 chip：高 32、px12（Figma 2551-117507，比 sheet 內 38px Chip 小一號） */
@@ -1701,20 +1700,20 @@
     box-shadow: var(--el-action); }  /* Figma 2551-114032：頂貼 header、底留 12、底緣軟陰影（原圖採樣 ~4px 衰減） */
   .page-header.show.no-shadow { box-shadow: none; }  /* filter 列置頂時 header 與 filter 之間不要陰影 */
   .ex-chip .badge[hidden] { display: none; }  /* 計數為 0 時隱藏（class 的 display 會蓋過 UA 的 [hidden]） */
-  /* 上排條件項（Figma 5578-11491 select item）：文字 14/20 + 14px semibold 圖標，gap2 px2，最寬 140 */
-  .ex-chip { flex: 0 1 auto; display: inline-flex; align-items: center; gap: 2px; max-width: 140px;
-    background: none; border: 0; padding: 0 2px;
+  /* 條件 chip（Figma Chip：h32、pl8 pr12、gap4、16px 圖標、14/20 文字、#D5D6DB 描邊）；下排 pill、上排等寬 r8 */
+  .ex-chip { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 32px; padding: 0 12px 0 8px;
+    background: #fff; border: 1px solid var(--kk-border-light); border-radius: var(--r-circle);
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
+  .ex-chip--wide { flex: 1 1 0; min-width: 0; border-radius: var(--r-md); }
   .ex-chip .lb { overflow: hidden; text-overflow: ellipsis; }
-  .ex-chip .ic img { width: 14px; height: 14px; }
-  .ex-chip .ic-sel { display: none; }
-  /* 已選擇（Figma 2551-118073 select 有數量）：文字加粗、右上角 6px 紅點；顏色與圖標不變 */
+  .ex-chip .ic img { width: 16px; height: 16px; }
+  /* 已選擇（Figma 2551-118073）：文字加粗、右上角 6px 紅點；顏色與圖標不變 */
   .ex-chip.sel { font-weight: 600; }
   .ex-chip.sel:not([data-ex="filter"]) .lb::after { content: ''; display: inline-block; width: 6px; height: 6px;
     border-radius: 50%; background: #E65F50; margin-left: 2px; transform: translateY(-6px); }
   /* 更多條件的紅點由 .badge 承擔（有計數時顯示，樣式同 6px Dot） */
   .ex-chip .badge { width: 6px; height: 6px; padding: 0; border-radius: 50%; background: #E65F50;
-    font-size: 0; align-self: flex-start; margin-top: 2px; flex: 0 0 auto; }
+    font-size: 0; align-self: flex-start; margin-top: 4px; flex: 0 0 auto; }
   .ex-list { display: flex; flex-direction: column; gap: 32px; }
   .ex-empty { padding: 32px 0; text-align: center; color: var(--kk-text-medium); font-size: 14px; line-height: 20px; }
   /* 商品卡（Figma Product Card）：16:9 圖 + 上下漸層 + 收藏心形；標題 16/24 Semibold；評分行；屬性標籤；價格 + 折扣標 */
@@ -1911,17 +1910,16 @@
           <!-- filter bar（Figma 2551-117541）：上排 select group 兩端撐滿＋16px 竖分隔項，下排 32px 快篩 chip；
                整組（.ex-filterbar）滾動置頂，wrap 佔位防跳動 -->
           <div class="ex-filters-wrap"><div class="ex-filterbar">
-            <div class="ex-filters">
-              <button class="ex-chip" data-ex="place"><span class="ic ic-14 ic-def">{{IC_locationSb}}</span><span class="ic ic-14 ic-sel">{{IC_locationSbCyan}}</span><span class="lb">目的地及領取地</span></button>
-              <span class="ex-div"></span>
-              <button class="ex-chip" data-ex="filter"><span class="lb">更多條件</span><span class="badge" hidden></span><span class="ic ic-14 chev ic-def">{{IC_arrowDownSb}}</span><span class="ic ic-14 chev ic-sel">{{IC_arrowDownSbCyan}}</span></button>
-              <span class="ex-div"></span>
-              <button class="ex-chip" data-ex="date"><span class="lb">日期</span><span class="ic ic-14 chev ic-def">{{IC_arrowDownSb}}</span><span class="ic ic-14 chev ic-sel">{{IC_arrowDownSbCyan}}</span></button>
-              <span class="ex-div"></span>
-              <button class="ex-chip" data-ex="sort"><span class="lb">排序</span><span class="ic ic-14 chev ic-def">{{IC_arrowDownSb}}</span><span class="ic ic-14 chev ic-sel">{{IC_arrowDownSbCyan}}</span></button>
+            <!-- 上排：目的地（單選）｜領取/郵寄地（多選，未選目的地時 toast 請先選擇目的地） -->
+            <div class="ex-row1">
+              <button class="ex-chip ex-chip--wide" data-ex="dest"><span class="ic ic-16">{{IC_locationDark}}</span><span class="lb">目的地</span></button>
+              <button class="ex-chip ex-chip--wide" data-ex="pick"><span class="ic ic-16">{{IC_frontDesk}}</span><span class="lb">領取/郵寄地</span></button>
             </div>
-            <!-- 通訊產品快篩：多選，空選＝全部 -->
+            <!-- 下排：更多條件 / 排序 / 日期 + 通訊產品快篩（多選，空選＝全部） -->
             <div class="ex-quick">
+              <button class="ex-chip" data-ex="filter"><span class="ic ic-16">{{IC_filterDark}}</span><span class="lb">更多條件</span><span class="badge" hidden></span></button>
+              <button class="ex-chip" data-ex="sort"><span class="ic ic-16">{{IC_sortAmountDown}}</span><span class="lb">排序</span></button>
+              <button class="ex-chip" data-ex="date"><span class="ic ic-16">{{IC_calendar}}</span><span class="lb">日期</span></button>
               <button class="fopt" data-exq="eSIM">eSIM</button>
               <button class="fopt" data-exq="SIM Card">SIM 卡</button>
               <button class="fopt" data-exq="WiFi">WIFI</button>
@@ -2094,17 +2092,16 @@
           <!-- filter bar（Figma 2551-117541）：上排 select group 兩端撐滿＋16px 竖分隔項，下排 32px 快篩 chip；
                整組（.ex-filterbar）滾動置頂，wrap 佔位防跳動 -->
           <div class="ex-filters-wrap"><div class="ex-filterbar">
-            <div class="ex-filters">
-              <button class="ex-chip" data-ex="place"><span class="ic ic-14 ic-def">{{IC_locationSb}}</span><span class="ic ic-14 ic-sel">{{IC_locationSbCyan}}</span><span class="lb">目的地及領取地</span></button>
-              <span class="ex-div"></span>
-              <button class="ex-chip" data-ex="filter"><span class="lb">更多條件</span><span class="badge" hidden></span><span class="ic ic-14 chev ic-def">{{IC_arrowDownSb}}</span><span class="ic ic-14 chev ic-sel">{{IC_arrowDownSbCyan}}</span></button>
-              <span class="ex-div"></span>
-              <button class="ex-chip" data-ex="date"><span class="lb">日期</span><span class="ic ic-14 chev ic-def">{{IC_arrowDownSb}}</span><span class="ic ic-14 chev ic-sel">{{IC_arrowDownSbCyan}}</span></button>
-              <span class="ex-div"></span>
-              <button class="ex-chip" data-ex="sort"><span class="lb">排序</span><span class="ic ic-14 chev ic-def">{{IC_arrowDownSb}}</span><span class="ic ic-14 chev ic-sel">{{IC_arrowDownSbCyan}}</span></button>
+            <!-- 上排：目的地（單選）｜領取/郵寄地（多選，未選目的地時 toast 請先選擇目的地） -->
+            <div class="ex-row1">
+              <button class="ex-chip ex-chip--wide" data-ex="dest"><span class="ic ic-16">{{IC_locationDark}}</span><span class="lb">目的地</span></button>
+              <button class="ex-chip ex-chip--wide" data-ex="pick"><span class="ic ic-16">{{IC_frontDesk}}</span><span class="lb">領取/郵寄地</span></button>
             </div>
-            <!-- 通訊產品快篩：多選，空選＝全部 -->
+            <!-- 下排：更多條件 / 排序 / 日期 + 通訊產品快篩（多選，空選＝全部） -->
             <div class="ex-quick">
+              <button class="ex-chip" data-ex="filter"><span class="ic ic-16">{{IC_filterDark}}</span><span class="lb">更多條件</span><span class="badge" hidden></span></button>
+              <button class="ex-chip" data-ex="sort"><span class="ic ic-16">{{IC_sortAmountDown}}</span><span class="lb">排序</span></button>
+              <button class="ex-chip" data-ex="date"><span class="ic ic-16">{{IC_calendar}}</span><span class="lb">日期</span></button>
               <button class="fopt" data-exq="eSIM">eSIM</button>
               <button class="fopt" data-exq="SIM Card">SIM 卡</button>
               <button class="fopt" data-exq="WiFi">WIFI</button>
@@ -2562,16 +2559,28 @@
     <div class="sort-list" id="sortList"></div>
   </div>
 
-  <!-- 探索更多：目的地以及領取地 sheet（Figma 2551-63376 未選 / 2551-115310 已選）目的地單選、領取/郵寄地多選 -->
-  <div class="bsheet tall" id="exPlaceSheet">
+  <!-- 探索更多：目的地 sheet（Figma 2551-63376）按洲分組、單選 -->
+  <div class="bsheet tall" id="exDestSheet">
     <div class="bs-handle"></div>
     <div class="bs-bar">
       <button class="bs-close" data-bs-close aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button>
-      <span class="bs-title">目的地以及領取地</span>
-      <button class="fs-clear" id="exPlaceClear">清除</button>
+      <span class="bs-title">目的地</span>
+      <button class="fs-clear" id="exDestClear">清除</button>
     </div>
-    <div class="bs-body"><div class="exp-body" id="exPlaceBody"></div></div>
-    <div class="fs-foot"><button class="cta" id="exPlaceApply">確定</button></div>
+    <div class="bs-body"><div class="exp-body" id="exDestBody"></div></div>
+    <div class="fs-foot"><button class="cta" id="exDestApply">確定</button></div>
+  </div>
+
+  <!-- 探索更多：領取地/郵寄地 sheet（Figma 2551-115310）按地區分組、多選（含「X–所有城市」） -->
+  <div class="bsheet tall" id="exPickSheet">
+    <div class="bs-handle"></div>
+    <div class="bs-bar">
+      <button class="bs-close" data-bs-close aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button>
+      <span class="bs-title">領取地/郵寄地</span>
+      <button class="fs-clear" id="exPickClear">清除</button>
+    </div>
+    <div class="bs-body"><div class="exp-body" id="exPickBody"></div></div>
+    <div class="fs-foot"><button class="cta" id="exPickApply">確定</button></div>
   </div>
 
   <!-- 探索更多：更多條件 sheet（Figma 2551-62556）領取方式 / 商品特性 / 旅遊天數 / 價格區間 -->
@@ -3757,7 +3766,7 @@
   var EX_PMIN = 0, EX_PMAX = 12000;  // 價格區間 NT$0 – NT$12,000+（Figma 2551-62576）
   function exEmpty() { return { type: [], pickup: [], feat: [], days: [], pmin: EX_PMIN, pmax: EX_PMAX }; }
   var exState = { f: exEmpty(), dest: null, pickups: [], date: null, sort: 0 };
-  var exDraft = null, exPlaceDraft = null;
+  var exDraft = null;
   // badge 只計 sheet 內的條件；通訊產品在外層快篩 chip 自帶選中態
   function exFilterCount(f) { return f.pickup.length + f.feat.length + f.days.length + ((f.pmin > EX_PMIN || f.pmax < EX_PMAX) ? 1 : 0); }
   function exBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
@@ -3798,8 +3807,8 @@
         box.appendChild(c);
       });
       // 已選態只變樣式（加粗＋紅點，Figma 2551-118073），文本保持不變
-      var pl = [exState.dest].concat(exState.pickups).filter(Boolean).join(' · ');
-      var place = sec.querySelector('[data-ex="place"]'); place.classList.toggle('sel', !!pl);
+      sec.querySelector('[data-ex="dest"]').classList.toggle('sel', !!exState.dest);
+      sec.querySelector('[data-ex="pick"]').classList.toggle('sel', exState.pickups.length > 0);
       var n = exFilterCount(exState.f), fil = sec.querySelector('[data-ex="filter"]'); fil.classList.toggle('sel', n > 0);
       var bd = fil.querySelector('.badge'); bd.hidden = n === 0;
       var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date);
@@ -3859,7 +3868,8 @@
   document.querySelectorAll('.ex-chip').forEach(function (c) {
     c.addEventListener('click', function () {
       var k = c.getAttribute('data-ex');
-      if (k === 'place') exOpenPlace();
+      if (k === 'dest') exOpenDest();
+      else if (k === 'pick') { if (!exState.dest) { toast('請先選擇目的地'); return; } exOpenPick(); }  // 未選目的地不開領取地
       else if (k === 'filter') exOpenFilter();
       else if (k === 'date') { dateReturn = 'explore'; openDateSheet(); }
       else if (k === 'sort') exOpenSort();
@@ -3877,43 +3887,47 @@
     });
     openSheet(document.getElementById('bsSort'));
   }
-  // 目的地以及領取地 sheet（Figma 2551-63376 / 2551-115310）：目的地單選、領取/郵寄地多選；
-  // 未選目的地時「領取/郵寄地」只顯示 inline notification 提示，不列出城市。
-  function exRenderPlace() {
-    var body = document.getElementById('exPlaceBody'); body.innerHTML = '';
-    function title(t) { var n = el('<div class="exp-t"></div>'); n.textContent = t; body.appendChild(n); }
-    function groups(list, single) {
-      list.forEach(function (g) {
-        var grp = el('<div class="exp-grp"><div class="exp-g"></div><div class="exp-opts"></div></div>');
-        grp.querySelector('.exp-g').textContent = g[0];
-        var row = grp.querySelector('.exp-opts');
-        g[1].forEach(function (o) {
-          var on = single ? exPlaceDraft.dest === o : exPlaceDraft.pickups.indexOf(o) >= 0;
-          var b = el('<button class="fopt' + (on ? ' sel' : '') + '"></button>'); b.textContent = o;
-          b.addEventListener('click', function () {
-            if (single) { exPlaceDraft.dest = on ? null : o; exPlaceDraft.pickups = []; }
-            else { var a = exPlaceDraft.pickups, i = a.indexOf(o); if (i >= 0) a.splice(i, 1); else a.push(o); }
-            exRenderPlace();
-          });
-          row.appendChild(b);
-        });
-        body.appendChild(grp);
+  // 目的地 sheet（Figma 2551-63376，單選）/ 領取地/郵寄地 sheet（Figma 2551-115310，多選）：兩個獨立 sheet
+  function exRenderGroups(body, list, isOn, onTap) {
+    body.innerHTML = '';
+    list.forEach(function (g) {
+      var grp = el('<div class="exp-grp"><div class="exp-g"></div><div class="exp-opts"></div></div>');
+      grp.querySelector('.exp-g').textContent = g[0];
+      var row = grp.querySelector('.exp-opts');
+      g[1].forEach(function (o) {
+        var b = el('<button class="fopt' + (isOn(o) ? ' sel' : '') + '"></button>'); b.textContent = o;
+        b.addEventListener('click', function () { onTap(o); });
+        row.appendChild(b);
       });
-    }
-    title('目的地');
-    groups(EX_PLACE.dest, true);
-    body.appendChild(el('<div class="exp-div"></div>'));
-    title('領取/郵寄地');
-    if (exPlaceDraft.dest) groups(EX_PLACE.pickup, false);
-    else body.appendChild(el('<div class="exp-note"><span class="ic ic-20">{{IC_warningCircle}}</span><span>請先選擇目的地</span></div>'));
+      body.appendChild(grp);
+    });
   }
-  function exOpenPlace() {
-    exPlaceDraft = { dest: exState.dest, pickups: exState.pickups.slice() };
-    exRenderPlace(); openSheet(document.getElementById('exPlaceSheet'));
-    document.querySelector('#exPlaceSheet .bs-body').scrollTop = 0;
+  var exDestDraft = null, exPickDraft = [];
+  function exRenderDest() {
+    exRenderGroups(document.getElementById('exDestBody'), EX_PLACE.dest,
+      function (o) { return exDestDraft === o; },
+      function (o) { exDestDraft = exDestDraft === o ? null : o; exRenderDest(); });
   }
-  document.getElementById('exPlaceClear').addEventListener('click', function () { exPlaceDraft = { dest: null, pickups: [] }; exRenderPlace(); });
-  document.getElementById('exPlaceApply').addEventListener('click', function () { exState.dest = exPlaceDraft.dest; exState.pickups = exPlaceDraft.pickups.slice(); closeSheets(); renderExplore(); });
+  function exOpenDest() {
+    exDestDraft = exState.dest; exRenderDest();
+    openSheet(document.getElementById('exDestSheet')); document.querySelector('#exDestSheet .bs-body').scrollTop = 0;
+  }
+  document.getElementById('exDestClear').addEventListener('click', function () { exDestDraft = null; exRenderDest(); });
+  document.getElementById('exDestApply').addEventListener('click', function () {
+    if (exState.dest !== exDestDraft) exState.pickups = [];  // 換目的地時清掉已選領取地
+    exState.dest = exDestDraft; closeSheets(); renderExplore();
+  });
+  function exRenderPick() {
+    exRenderGroups(document.getElementById('exPickBody'), EX_PLACE.pickup,
+      function (o) { return exPickDraft.indexOf(o) >= 0; },
+      function (o) { var i = exPickDraft.indexOf(o); if (i >= 0) exPickDraft.splice(i, 1); else exPickDraft.push(o); exRenderPick(); });
+  }
+  function exOpenPick() {
+    exPickDraft = exState.pickups.slice(); exRenderPick();
+    openSheet(document.getElementById('exPickSheet')); document.querySelector('#exPickSheet .bs-body').scrollTop = 0;
+  }
+  document.getElementById('exPickClear').addEventListener('click', function () { exPickDraft = []; exRenderPick(); });
+  document.getElementById('exPickApply').addEventListener('click', function () { exState.pickups = exPickDraft.slice(); closeSheets(); renderExplore(); });
   // 更多條件 sheet（Figma 2551-62556）：三組多選 + 價格區間雙滑塊（NT$0–12,000+），組間 1px 分隔線
   function exRenderFilter() {
     var body = document.getElementById('exFilterBody'); body.innerHTML = '';

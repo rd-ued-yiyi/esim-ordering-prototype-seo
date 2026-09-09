@@ -145,6 +145,7 @@ subs = {
     "{{IC_arrowDownGray}}":svg("arrowDown", recolor=("#212121", "#727272")),  # 修改条件展开/收起 tab 箭头（Figma 1116-89167：text-dark #727272）
     # 探索更多 filter bar（Figma 2551-117541）：14px semibold 线性图标，选中态换青色
     "{{IC_locationSb}}":     svg("locationLineSemibold"),
+    "{{IC_frontDesk}}":      svg("frontDeskLine"),  # 探索更多「領取/郵寄地」chip icon ic_frontDesk_line（Figma 2551-63759）
     "{{IC_locationSbCyan}}": svg("locationLineSemibold", recolor=("#212121", "#13A3B6")),
     "{{IC_arrowDownSb}}":    svg("arrowDownLineSemibold"),
     "{{IC_arrowDownLg}}":    svg("arrowDownLineSemiboldLg"),  # FAQ 條目 20px 加粗箭頭（Figma 2543-35298）
