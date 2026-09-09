@@ -3755,8 +3755,9 @@
       ['韓國', ['韓國 – 所有城市', '首爾', '釜山', '江原道']]
     ]
   };
-  // 通訊產品（type）已移到 filter bar 外層快篩 chip，不在「更多條件」sheet 內（Figma 2551-62556）
+  // 通訊產品（type）同時出現在 filter bar 快篩 chip 與「更多條件」sheet 第一組（Figma 2551-62556），共用 exState.f.type
   var EX_FILTER_CATS = [
+    { key: 'type', label: '通訊產品', opts: ['eSIM', 'SIM Card', 'WiFi'], labels: { 'SIM Card': 'SIM 卡', 'WiFi': 'WIFI' } },
     { key: 'pickup', label: '領取方式', opts: ['機場領取', '門市領取', '郵寄', 'QRcode'] },
     { key: 'feat', label: '商品特性', opts: ['含語音通話', '可加值', '吃到飽不斷網', '輕量型'] },
     { key: 'days', label: '旅遊天數', opts: ['1-7天', '8-14天', '15天以上'] }
@@ -3766,7 +3767,7 @@
   var exState = { f: exEmpty(), dest: null, pickups: [], date: null, sort: 0 };
   var exDraft = null;
   // badge 只計 sheet 內的條件；通訊產品在外層快篩 chip 自帶選中態
-  function exFilterCount(f) { return f.pickup.length + f.feat.length + f.days.length + ((f.pmin > EX_PMIN || f.pmax < EX_PMAX) ? 1 : 0); }
+  function exFilterCount(f) { return f.type.length + f.pickup.length + f.feat.length + f.days.length + ((f.pmin > EX_PMIN || f.pmax < EX_PMAX) ? 1 : 0); }  // 通訊產品也計入更多條件·N
   function exBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
   function exVisible() {
     // 通訊產品實際過濾商品；其餘條件（領取方式/特性/天數/價錢/地點/日期）為仿真，僅反映在 chip 計數與選中態
@@ -3934,7 +3935,7 @@
       var opts = sec.querySelector('.exp-opts');
       cat.opts.forEach(function (o) {
         var on = exDraft[cat.key].indexOf(o) >= 0;
-        var b = el('<button class="fopt' + (on ? ' sel' : '') + '"></button>'); b.textContent = o;
+        var b = el('<button class="fopt' + (on ? ' sel' : '') + '"></button>'); b.textContent = (cat.labels && cat.labels[o]) || o;
         b.addEventListener('click', function () { var a = exDraft[cat.key], i = a.indexOf(o); if (i >= 0) a.splice(i, 1); else a.push(o); exRenderFilter(); });
         opts.appendChild(b);
       });
