@@ -1759,6 +1759,9 @@
   .exp-note .ic { flex: 0 0 auto; }
   .exp-h { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin-bottom: 12px; }
   .exp-g { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin: 0; }  /* 區域小標 subtitle-lg */
+  /* 分組內有已選項 → 標題右上 6px 紅點（Figma 2551-63376 _KKBadge/Dot #E65F50） */
+  .exp-g.has-sel::after, .exf-sec .exp-h.has-sel::after { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: #E65F50; margin-left: 6px; vertical-align: top; }
   .exp-opts { display: flex; flex-wrap: wrap; gap: 8px; }
   /* 更多條件 sheet（Figma 2551-62556）：body pad 24/20、組距 20 + 組間 1px 分隔線、組內 title→chips 16 */
   .exf-body { display: flex; flex-direction: column; gap: 20px; padding: 24px 20px; }
@@ -3970,7 +3973,7 @@
     c.addEventListener('click', function () {
       var k = c.getAttribute('data-ex');
       if (k === 'dest') exOpenDest();
-      else if (k === 'pick') { if (!exState.dest) { toast('請先選擇目的地'); return; } exOpenPick(); }  // 未選目的地不開領取地
+      else if (k === 'pick') { if (!exState.dest) { toast('請先選擇目的地'); exOpenDest(); return; } exOpenPick(); }  // 未選目的地：提示並直接開目的地 sheet
       else if (k === 'filter') exOpenFilter();
       else if (k === 'date') { dateReturn = 'explore'; openDateSheet(); }
       else if (k === 'sort') exOpenSort();
@@ -3994,6 +3997,7 @@
     list.forEach(function (g) {
       var grp = el('<div class="exp-grp"><div class="exp-g"></div><div class="exp-opts"></div></div>');
       grp.querySelector('.exp-g').textContent = g[0];
+      if (g[1].some(isOn)) grp.querySelector('.exp-g').classList.add('has-sel');  // 該組有已選 → 標題紅點
       var row = grp.querySelector('.exp-opts');
       g[1].forEach(function (o) {
         var b = el('<button class="fopt' + (isOn(o) ? ' sel' : '') + '"></button>'); b.textContent = o;
@@ -4034,6 +4038,7 @@
     var body = document.getElementById('exFilterBody'); body.innerHTML = '';
     EX_FILTER_CATS.forEach(function (cat) {
       var sec = el('<div class="exf-sec"><div class="exp-h"></div><div class="exp-opts"></div></div>'); sec.querySelector('.exp-h').textContent = cat.label;
+      if (exDraft[cat.key].length) sec.querySelector('.exp-h').classList.add('has-sel');  // 該組有已選 → 標題紅點
       var opts = sec.querySelector('.exp-opts');
       cat.opts.forEach(function (o) {
         var on = exDraft[cat.key].indexOf(o) >= 0;
@@ -4054,6 +4059,7 @@
       fill.style.left = ((exDraft.pmin - EX_PMIN) / span * 100) + '%';
       fill.style.right = (100 - (exDraft.pmax - EX_PMIN) / span * 100) + '%';
       val.textContent = nt(exDraft.pmin) + ' – ' + nt(exDraft.pmax, true);
+      ps.querySelector('.exp-h').classList.toggle('has-sel', exDraft.pmin > EX_PMIN || exDraft.pmax < EX_PMAX);  // 價格非預設 → 標題紅點
     }
     rmin.addEventListener('input', function () { exDraft.pmin = Math.min(+rmin.value, exDraft.pmax - 100); rmin.value = exDraft.pmin; upd(); });
     rmax.addEventListener('input', function () { exDraft.pmax = Math.max(+rmax.value, exDraft.pmin + 100); rmax.value = exDraft.pmax; upd(); });
