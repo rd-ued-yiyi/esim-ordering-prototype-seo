@@ -1687,10 +1687,10 @@
   .ex-title .ic img { width: 24px; height: 24px; }
   /* filter bar（Figma 2551-63759 / 2551-117542）：上排「目的地｜領取/郵寄地」兩個等寬 chip（h32、r8），
      下排橫滑 pill chip（更多條件 / 排序 / 日期 + 通訊產品快篩），兩排間距 8 */
-  .ex-filterbar { display: flex; flex-direction: column; gap: 8px; }
-  /* 上排文字式選擇（Figma 2551-63759）：16px 地點 icon + 16/24 Semibold 文字 + 16px 下箭頭；文字過長省略 */
-  .ex-place { display: flex; align-items: center; gap: 4px; max-width: 100%; text-align: left;
-    font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .ex-filterbar { display: flex; flex-direction: column; gap: 4px; }  /* 上排選擇 ↔ 下排 chip = 4（Figma 2714-29870） */
+  /* 上排文字式選擇（Figma 2714-29870「目的地选择」）：高 32（py8）、gap 4、ic_location_fill 16 + Subtitle-md 14/20 Semibold #212121 + ic_arrowDown_line 16；文字過長省略 */
+  .ex-place { display: flex; align-items: center; gap: 4px; height: 32px; max-width: 100%; text-align: left;
+    font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .ex-place .lb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ex-place .ic img { width: 16px; height: 16px; }
   .ex-quick { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
@@ -1921,7 +1921,7 @@
                整組（.ex-filterbar）滾動置頂，wrap 佔位防跳動 -->
           <div class="ex-filters-wrap"><div class="ex-filterbar">
             <!-- 上排：目的地以及領取地 文字式選擇入口（Figma 2551-63759 / 2714-29870）→ 開合併 sheet -->
-            <button class="ex-place"><span class="ic ic-16">{{IC_ex16Location}}</span><span class="lb">請選擇目的地以及領取地</span><span class="ic ic-16 chev">{{IC_arrowDownSb}}</span></button>
+            <button class="ex-place"><span class="ic ic-16">{{IC_ex16Locationfill}}</span><span class="lb">請選擇目的地以及領取地</span><span class="ic ic-16 chev">{{IC_ex16Arrowdown}}</span></button>
             <!-- 下排：更多條件 / 排序 / 日期 + 通訊產品快篩（多選，空選＝全部） -->
             <div class="ex-quick">
               <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_ex16Filter}}</span><span class="ic ic-16 ic-sel">{{IC_ex16FilterCyan}}</span><span class="lb">更多條件</span></button>
@@ -2100,7 +2100,7 @@
                整組（.ex-filterbar）滾動置頂，wrap 佔位防跳動 -->
           <div class="ex-filters-wrap"><div class="ex-filterbar">
             <!-- 上排：目的地以及領取地 文字式選擇入口（Figma 2551-63759 / 2714-29870）→ 開合併 sheet -->
-            <button class="ex-place"><span class="ic ic-16">{{IC_ex16Location}}</span><span class="lb">請選擇目的地以及領取地</span><span class="ic ic-16 chev">{{IC_arrowDownSb}}</span></button>
+            <button class="ex-place"><span class="ic ic-16">{{IC_ex16Locationfill}}</span><span class="lb">請選擇目的地以及領取地</span><span class="ic ic-16 chev">{{IC_ex16Arrowdown}}</span></button>
             <!-- 下排：更多條件 / 排序 / 日期 + 通訊產品快篩（多選，空選＝全部） -->
             <div class="ex-quick">
               <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_ex16Filter}}</span><span class="ic ic-16 ic-sel">{{IC_ex16FilterCyan}}</span><span class="lb">更多條件</span></button>

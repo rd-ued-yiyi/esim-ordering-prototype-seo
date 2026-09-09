@@ -158,7 +158,7 @@ subs = {
     "{{IC_frontDesk}}":      svg("frontDeskLine"),  # 探索更多「領取/郵寄地」chip icon ic_frontDesk_line（Figma 2551-63759）
     "{{IC_arrowUpLine}}":    file_img("assets/icons/arrowUpLine.svg"),  # 回到頂部 FAB ic_arrowUp_line 24 #9C9DA0（Figma 2716-68916）
     # 探索更多 filter chip 圖標：Figma 導出的 16×16 版（含內留白，等比不變形）；預設 #212121、選中 #26BEC9
-    **{("{{IC_ex16%s%s}}" % (n.capitalize(), suf)): ex16(n, col) for n in ["location", "frontDesk", "filter", "sort", "calendar"] for suf, col in [("", "#212121"), ("Cyan", "#26BEC9")]},  # 預設統一 #212121（filter.svg 原為 black）
+    **{("{{IC_ex16%s%s}}" % (n.capitalize(), suf)): ex16(n, col) for n in ["location", "locationFill", "arrowDown", "frontDesk", "filter", "sort", "calendar"] for suf, col in [("", "#212121"), ("Cyan", "#26BEC9")]},  # 預設統一 #212121（filter.svg 原為 black）
     "{{IC_frontDeskCyan}}":  svg("frontDeskLine", recolor=("#212121", "#26BEC9")),  # 選中態 #26BEC9
     "{{IC_calendarCyanM}}":  svg("calendar", recolor=("#212121", "#26BEC9")),  # 探索更多日期 chip 選中態 #26BEC9
     "{{IC_locationSbCyan}}": svg("locationLineSemibold", recolor=("#212121", "#13A3B6")),
