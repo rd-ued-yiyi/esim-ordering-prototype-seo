@@ -1699,7 +1699,6 @@
     margin: 0; padding: 0 16px 12px; background: #fff; box-sizing: border-box;
     box-shadow: var(--el-action); }  /* Figma 2551-114032：頂貼 header、底留 12、底緣軟陰影（原圖採樣 ~4px 衰減） */
   .page-header.show.no-shadow { box-shadow: none; }  /* filter 列置頂時 header 與 filter 之間不要陰影 */
-  .ex-chip .badge[hidden] { display: none; }  /* 計數為 0 時隱藏（class 的 display 會蓋過 UA 的 [hidden]） */
   /* 條件 chip（Figma Chip：h32、pl8 pr12、gap4、16px 圖標、14/20 文字、#D5D6DB 描邊）；下排 pill、上排等寬 r8 */
   .ex-chip { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 32px; padding: 0 12px 0 8px;
     background: #fff; border: 1px solid var(--kk-border-light); border-radius: var(--r-circle);
@@ -1707,13 +1706,12 @@
   .ex-chip--wide { flex: 1 1 0; min-width: 0; border-radius: var(--r-md); }
   .ex-chip .lb { overflow: hidden; text-overflow: ellipsis; }
   .ex-chip .ic img { width: 16px; height: 16px; }
-  /* 已選擇（Figma 2551-118073）：文字加粗、右上角 6px 紅點；顏色與圖標不變 */
-  .ex-chip.sel { font-weight: 600; }
-  .ex-chip.sel:not([data-ex="filter"]) .lb::after { content: ''; display: inline-block; width: 6px; height: 6px;
-    border-radius: 50%; background: #E65F50; margin-left: 2px; transform: translateY(-6px); }
-  /* 更多條件的紅點由 .badge 承擔（有計數時顯示，樣式同 6px Dot） */
-  .ex-chip .badge { width: 6px; height: 6px; padding: 0; border-radius: 50%; background: #E65F50;
-    font-size: 0; align-self: flex-start; margin-top: 4px; flex: 0 0 auto; }
+  .ex-chip--wide .lb { flex: 0 1 auto; min-width: 0; }
+  .ex-chip .ic-sel { display: none; }
+  /* 已選擇（Figma 2679-65481）：淺青底 #F0FAFB、青描邊 + 青字 #26BEC9、圖標換青色；文字顯示所選值（目的地名 / 領取地清單 / 更多條件·N） */
+  .ex-chip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-medium); }
+  .ex-chip.sel .ic-def { display: none; }
+  .ex-chip.sel .ic-sel { display: inline-flex; }
   .ex-list { display: flex; flex-direction: column; gap: 32px; }
   .ex-empty { padding: 32px 0; text-align: center; color: var(--kk-text-medium); font-size: 14px; line-height: 20px; }
   /* 商品卡（Figma Product Card）：16:9 圖 + 上下漸層 + 收藏心形；標題 16/24 Semibold；評分行；屬性標籤；價格 + 折扣標 */
@@ -1912,14 +1910,14 @@
           <div class="ex-filters-wrap"><div class="ex-filterbar">
             <!-- 上排：目的地（單選）｜領取/郵寄地（多選，未選目的地時 toast 請先選擇目的地） -->
             <div class="ex-row1">
-              <button class="ex-chip ex-chip--wide" data-ex="dest"><span class="ic ic-16">{{IC_locationDark}}</span><span class="lb">目的地</span></button>
-              <button class="ex-chip ex-chip--wide" data-ex="pick"><span class="ic ic-16">{{IC_frontDesk}}</span><span class="lb">領取/郵寄地</span></button>
+              <button class="ex-chip ex-chip--wide" data-ex="dest"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLine}}</span><span class="lb">目的地</span></button>
+              <button class="ex-chip ex-chip--wide" data-ex="pick"><span class="ic ic-16 ic-def">{{IC_frontDesk}}</span><span class="ic ic-16 ic-sel">{{IC_frontDeskCyan}}</span><span class="lb">領取/郵寄地</span></button>
             </div>
             <!-- 下排：更多條件 / 排序 / 日期 + 通訊產品快篩（多選，空選＝全部） -->
             <div class="ex-quick">
-              <button class="ex-chip" data-ex="filter"><span class="ic ic-16">{{IC_filterDark}}</span><span class="lb">更多條件</span><span class="badge" hidden></span></button>
-              <button class="ex-chip" data-ex="sort"><span class="ic ic-16">{{IC_sortAmountDown}}</span><span class="lb">排序</span></button>
-              <button class="ex-chip" data-ex="date"><span class="ic ic-16">{{IC_calendar}}</span><span class="lb">日期</span></button>
+              <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">更多條件</span></button>
+              <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
+              <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendar}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyanM}}</span><span class="lb">日期</span></button>
               <button class="fopt" data-exq="eSIM">eSIM</button>
               <button class="fopt" data-exq="SIM Card">SIM 卡</button>
               <button class="fopt" data-exq="WiFi">WIFI</button>
@@ -2094,14 +2092,14 @@
           <div class="ex-filters-wrap"><div class="ex-filterbar">
             <!-- 上排：目的地（單選）｜領取/郵寄地（多選，未選目的地時 toast 請先選擇目的地） -->
             <div class="ex-row1">
-              <button class="ex-chip ex-chip--wide" data-ex="dest"><span class="ic ic-16">{{IC_locationDark}}</span><span class="lb">目的地</span></button>
-              <button class="ex-chip ex-chip--wide" data-ex="pick"><span class="ic ic-16">{{IC_frontDesk}}</span><span class="lb">領取/郵寄地</span></button>
+              <button class="ex-chip ex-chip--wide" data-ex="dest"><span class="ic ic-16 ic-def">{{IC_locationDark}}</span><span class="ic ic-16 ic-sel">{{IC_locationLine}}</span><span class="lb">目的地</span></button>
+              <button class="ex-chip ex-chip--wide" data-ex="pick"><span class="ic ic-16 ic-def">{{IC_frontDesk}}</span><span class="ic ic-16 ic-sel">{{IC_frontDeskCyan}}</span><span class="lb">領取/郵寄地</span></button>
             </div>
             <!-- 下排：更多條件 / 排序 / 日期 + 通訊產品快篩（多選，空選＝全部） -->
             <div class="ex-quick">
-              <button class="ex-chip" data-ex="filter"><span class="ic ic-16">{{IC_filterDark}}</span><span class="lb">更多條件</span><span class="badge" hidden></span></button>
-              <button class="ex-chip" data-ex="sort"><span class="ic ic-16">{{IC_sortAmountDown}}</span><span class="lb">排序</span></button>
-              <button class="ex-chip" data-ex="date"><span class="ic ic-16">{{IC_calendar}}</span><span class="lb">日期</span></button>
+              <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_filterDark}}</span><span class="ic ic-16 ic-sel">{{IC_filterCyan}}</span><span class="lb">更多條件</span></button>
+              <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_sortAmountDown}}</span><span class="ic ic-16 ic-sel">{{IC_sortAmountCyan}}</span><span class="lb">排序</span></button>
+              <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_calendar}}</span><span class="ic ic-16 ic-sel">{{IC_calendarCyanM}}</span><span class="lb">日期</span></button>
               <button class="fopt" data-exq="eSIM">eSIM</button>
               <button class="fopt" data-exq="SIM Card">SIM 卡</button>
               <button class="fopt" data-exq="WiFi">WIFI</button>
@@ -3807,10 +3805,10 @@
         box.appendChild(c);
       });
       // 已選態只變樣式（加粗＋紅點，Figma 2551-118073），文本保持不變
-      sec.querySelector('[data-ex="dest"]').classList.toggle('sel', !!exState.dest);
-      sec.querySelector('[data-ex="pick"]').classList.toggle('sel', exState.pickups.length > 0);
+      var dc = sec.querySelector('[data-ex="dest"]'); dc.classList.toggle('sel', !!exState.dest); dc.querySelector('.lb').textContent = exState.dest || '目的地';
+      var pc = sec.querySelector('[data-ex="pick"]'); pc.classList.toggle('sel', exState.pickups.length > 0); pc.querySelector('.lb').textContent = exState.pickups.length ? exState.pickups.join('、') : '領取/郵寄地';
       var n = exFilterCount(exState.f), fil = sec.querySelector('[data-ex="filter"]'); fil.classList.toggle('sel', n > 0);
-      var bd = fil.querySelector('.badge'); bd.hidden = n === 0;
+      fil.querySelector('.lb').textContent = n ? '更多條件·' + n : '更多條件';
       var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date);
       var so = sec.querySelector('[data-ex="sort"]'); so.classList.toggle('sel', exState.sort !== 0);
       // 通訊產品快篩 chip 選中態

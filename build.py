@@ -146,6 +146,8 @@ subs = {
     # 探索更多 filter bar（Figma 2551-117541）：14px semibold 线性图标，选中态换青色
     "{{IC_locationSb}}":     svg("locationLineSemibold"),
     "{{IC_frontDesk}}":      svg("frontDeskLine"),  # 探索更多「領取/郵寄地」chip icon ic_frontDesk_line（Figma 2551-63759）
+    "{{IC_frontDeskCyan}}":  svg("frontDeskLine", recolor=("#212121", "#26BEC9")),  # 選中態 #26BEC9
+    "{{IC_calendarCyanM}}":  svg("calendar", recolor=("#212121", "#26BEC9")),  # 探索更多日期 chip 選中態 #26BEC9
     "{{IC_locationSbCyan}}": svg("locationLineSemibold", recolor=("#212121", "#13A3B6")),
     "{{IC_arrowDownSb}}":    svg("arrowDownLineSemibold"),
     "{{IC_arrowDownLg}}":    svg("arrowDownLineSemiboldLg"),  # FAQ 條目 20px 加粗箭頭（Figma 2543-35298）
