@@ -1708,6 +1708,13 @@
     margin: 0; padding: 0 16px 12px; background: #fff; box-sizing: border-box;
     box-shadow: var(--el-action); }  /* Figma 2551-114032：頂貼 header、底留 12、底緣軟陰影（原圖採樣 ~4px 衰減） */
   .page-header.show.no-shadow { box-shadow: none; }  /* filter 列置頂時 header 與 filter 之間不要陰影 */
+  /* 回到頂部 FAB（Figma 2716-68916）：捲過探索更多 filter 後顯示；白色 40 圓、右 16、底 24+安全區、灰箭頭 */
+  .to-top { position: fixed; right: max(16px, calc(50% - 215px + 16px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    width: 40px; height: 40px; border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(38,50,56,.16);
+    display: flex; align-items: center; justify-content: center; z-index: 28;
+    opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .2s, transform .2s, visibility .2s; }
+  .to-top.show { opacity: 1; visibility: visible; transform: none; }
+  .to-top .ic img { width: 24px; height: 24px; }
   /* 條件 chip（Figma Chip：h32、pl8 pr12、gap4、16px 圖標、14/20 文字、#D5D6DB 描邊）；下排 pill、上排等寬 r8 */
   .ex-chip { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 32px; padding: 0 12px 0 8px;
     background: #fff; border: 1px solid var(--kk-border-light); border-radius: var(--r-circle);
@@ -2303,6 +2310,7 @@
     <span class="ph-title">全球上網</span>
     <span class="ph-spacer"></span>
   </div>
+  <button class="to-top" id="toTop" aria-label="回到頂部"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93VXBfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTEuNDY5NyA4LjQ3MDg5QzExLjc2MjYgOC4xNzggMTIuMjM3NCA4LjE3OCAxMi41MzAzIDguNDcwODlMMTguNTMwMyAxNC40NzA5QzE4LjgyMzIgMTQuNzYzOCAxOC44MjMyIDE1LjIzODcgMTguNTMwMyAxNS41MzE2QzE4LjIzNzQgMTUuODI0NCAxNy43NjI2IDE1LjgyNDQgMTcuNDY5NyAxNS41MzE2TDEyIDEwLjA2MTlMNi41MzAzMyAxNS41MzE2QzYuMjM3NDQgMTUuODI0NCA1Ljc2MjU2IDE1LjgyNDQgNS40Njk2NyAxNS41MzE2QzUuMTc2NzggMTUuMjM4NyA1LjE3Njc4IDE0Ljc2MzggNS40Njk2NyAxNC40NzA5TDExLjQ2OTcgOC40NzA4OVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="24" height="24"></span></button>
 
   <!-- bottom sheets -->
   <div class="bs-mask" id="bsMask"></div>
@@ -4088,6 +4096,18 @@
       b.querySelector('.lb').textContent = open ? '展開' : '收起';
     });
   });
+  // 回到頂部：rAF 自繪平滑捲動到 0
+  document.getElementById('toTop').addEventListener('click', function () {
+    var startY = window.scrollY || document.documentElement.scrollTop || 0, t0 = null, dur = 480;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur); k = 1 - Math.pow(1 - k, 3);
+      window.scrollTo(0, Math.round(startY * (1 - k)));
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+    setTimeout(function () { window.scrollTo(0, 0); }, dur + 60);
+  });
   syncVariantUI();  // 固定 data-variant=A（單一版本）
 
   // 首頁目的地 chip → 進入目的地頁（亞洲通/東南亞/北歐地區等區域按區域型別處理）
@@ -4117,12 +4137,14 @@
   }
   // 探索更多 filter 列：捲動超過後固定在置頂 header 下方，直到探索更多區塊捲出視窗
   function exStickyUpdate() {
-    var sec = document.querySelector('.screen.is-active .explore'); if (!sec) return;
+    var sec = document.querySelector('.screen.is-active .explore');
+    if (!sec) { document.getElementById('toTop').classList.remove('show'); return; }
     var wrap = sec.querySelector('.ex-filters-wrap'), f = wrap.firstElementChild;
     var hdr = document.getElementById('pageHeader');
     var top = hdr.classList.contains('show') ? hdr.offsetHeight : 0;
     var wr = wrap.getBoundingClientRect(), sr = sec.getBoundingClientRect();
     var pin = wr.top < top && sr.bottom > top + f.offsetHeight + 40;
+    document.getElementById('toTop').classList.toggle('show', wr.top < top);  // 捲過 filter 列即顯示回到頂部
     if (pin && !f.classList.contains('pinned')) { wrap.style.height = f.offsetHeight + 'px'; f.classList.add('pinned'); }
     else if (!pin && f.classList.contains('pinned')) { f.classList.remove('pinned'); wrap.style.height = ''; }
     hdr.classList.toggle('no-shadow', pin);
