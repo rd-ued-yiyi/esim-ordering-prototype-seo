@@ -52,6 +52,16 @@ def uniquify_svg_ids(markup, suffix):
                   .replace(f'href="#{_id}"', f'href="#{new}"'))
     return markup
 
+def ex16(name, color=None):
+    """Figma 16px 圖標（viewBox 16，含留白）→ data-URI <img>；color 給定時把 #212121 / black / #000 換成該色。"""
+    txt = (ROOT / "assets" / "icons" / "ex16" / f"{name}.svg").read_text(encoding="utf-8")
+    txt = txt.replace(' preserveAspectRatio="none"', "").replace(' overflow="visible"', "").replace(' style="display: block;"', "")
+    if color:
+        for c in ("#212121", "black", "#000000", "#000"):
+            txt = txt.replace(f'fill="{c}"', f'fill="{color}"').replace(f'stroke="{c}"', f'stroke="{color}"')
+    b64 = base64.b64encode(txt.strip().encode("utf-8")).decode()
+    return f'<img alt="" src="data:image/svg+xml;base64,{b64}" width="16" height="16">'
+
 def file_img(relpath, recolor=None):
     """读取 svg 文件 → data-URI <img>（保留 intrinsic 宽高＝设计尺寸，去掉 preserveAspectRatio 防变形）。"""
     txt = (ROOT / relpath).read_text(encoding="utf-8")
@@ -146,6 +156,8 @@ subs = {
     # 探索更多 filter bar（Figma 2551-117541）：14px semibold 线性图标，选中态换青色
     "{{IC_locationSb}}":     svg("locationLineSemibold"),
     "{{IC_frontDesk}}":      svg("frontDeskLine"),  # 探索更多「領取/郵寄地」chip icon ic_frontDesk_line（Figma 2551-63759）
+    # 探索更多 filter chip 圖標：Figma 導出的 16×16 版（含內留白，等比不變形）；預設 #212121、選中 #26BEC9
+    **{("{{IC_ex16%s%s}}" % (n.capitalize(), suf)): ex16(n, col) for n in ["location", "frontDesk", "filter", "sort", "calendar"] for suf, col in [("", None), ("Cyan", "#26BEC9")]},
     "{{IC_frontDeskCyan}}":  svg("frontDeskLine", recolor=("#212121", "#26BEC9")),  # 選中態 #26BEC9
     "{{IC_calendarCyanM}}":  svg("calendar", recolor=("#212121", "#26BEC9")),  # 探索更多日期 chip 選中態 #26BEC9
     "{{IC_locationSbCyan}}": svg("locationLineSemibold", recolor=("#212121", "#13A3B6")),
