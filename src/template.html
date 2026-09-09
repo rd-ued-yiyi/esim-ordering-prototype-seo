@@ -2568,8 +2568,7 @@
       <span class="bs-title">目的地</span>
       <button class="fs-clear" id="exDestClear">清除</button>
     </div>
-    <div class="bs-body"><div class="exp-body" id="exDestBody"></div></div>
-    <div class="fs-foot"><button class="cta" id="exDestApply">確定</button></div>
+    <div class="bs-body"><div class="exp-body" id="exDestBody"></div></div><!-- 單選：點選即套用並關閉，無確定鈕 -->
   </div>
 
   <!-- 探索更多：領取地/郵寄地 sheet（Figma 2551-115310）按地區分組、多選（含「X–所有城市」） -->
@@ -3906,21 +3905,19 @@
       body.appendChild(grp);
     });
   }
-  var exDestDraft = null, exPickDraft = [];
+  var exPickDraft = [];
+  // 目的地單選：點選即套用（換目的地時清掉已選領取地）並關閉 sheet，無確定鈕
   function exRenderDest() {
     exRenderGroups(document.getElementById('exDestBody'), EX_PLACE.dest,
-      function (o) { return exDestDraft === o; },
-      function (o) { exDestDraft = exDestDraft === o ? null : o; exRenderDest(); });
+      function (o) { return exState.dest === o; },
+      function (o) { exSetDest(exState.dest === o ? null : o); closeSheets(); });
   }
+  function exSetDest(d) { if (exState.dest !== d) exState.pickups = []; exState.dest = d; renderExplore(); }
   function exOpenDest() {
-    exDestDraft = exState.dest; exRenderDest();
+    exRenderDest();
     openSheet(document.getElementById('exDestSheet')); document.querySelector('#exDestSheet .bs-body').scrollTop = 0;
   }
-  document.getElementById('exDestClear').addEventListener('click', function () { exDestDraft = null; exRenderDest(); });
-  document.getElementById('exDestApply').addEventListener('click', function () {
-    if (exState.dest !== exDestDraft) exState.pickups = [];  // 換目的地時清掉已選領取地
-    exState.dest = exDestDraft; closeSheets(); renderExplore();
-  });
+  document.getElementById('exDestClear').addEventListener('click', function () { exSetDest(null); exRenderDest(); });
   function exRenderPick() {
     exRenderGroups(document.getElementById('exPickBody'), EX_PLACE.pickup,
       function (o) { return exPickDraft.indexOf(o) >= 0; },
