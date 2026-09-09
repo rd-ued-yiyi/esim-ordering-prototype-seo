@@ -3943,6 +3943,7 @@
     if (current === 'destination') { var md = exMapDest(destRaw()); if (md) exState.dest = md; }
     renderExplore();
     var sec = document.querySelector('.screen.is-active .explore'); if (!sec) return;
+    revealOpt(sec.querySelector('.ex-quick'), true, '.fopt.sel');  // 第二排快篩：把選中的通訊產品 chip 平滑捲到可視範圍（置中）
     var startY = window.scrollY || document.documentElement.scrollTop || 0;
     var maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     var hdrH = document.getElementById('pageHeader').offsetHeight || 44;  // 錨定後置頂 header 會顯示，目標位置預留其高度，避免標題被遮
