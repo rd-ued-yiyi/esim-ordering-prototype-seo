@@ -3871,7 +3871,15 @@
     c.addEventListener('click', function () {
       var k = c.getAttribute('data-ex');
       if (k === 'dest') exOpenDest();
-      else if (k === 'pick') { if (!exState.dest) { toast('請先選擇目的地'); exOpenDest(); return; } exOpenPick(); }  // 未選目的地：提示並直接開目的地 sheet
+      else if (k === 'pick') {
+        if (!exState.dest) {  // 未選目的地：先 toast，待提示消失（1.8s + 淡出）再自動開目的地 sheet，兩者不同時出現
+          toast('請先選擇目的地');
+          clearTimeout(exPickHintTimer);
+          exPickHintTimer = setTimeout(function () { if (!exState.dest && !document.querySelector('.bsheet.open')) exOpenDest(); }, 2000);
+          return;
+        }
+        exOpenPick();
+      }
       else if (k === 'filter') exOpenFilter();
       else if (k === 'date') { dateReturn = 'explore'; openDateSheet(); }
       else if (k === 'sort') exOpenSort();
@@ -3905,7 +3913,7 @@
       body.appendChild(grp);
     });
   }
-  var exPickDraft = [];
+  var exPickDraft = [], exPickHintTimer = null;
   // 目的地單選：點選即套用（換目的地時清掉已選領取地）並關閉 sheet，無確定鈕
   function exRenderDest() {
     exRenderGroups(document.getElementById('exDestBody'), EX_PLACE.dest,
