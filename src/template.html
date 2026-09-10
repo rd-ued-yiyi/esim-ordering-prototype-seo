@@ -1250,15 +1250,6 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .page-header .ph-spacer { width: 32px; }
-  /* 捲過探索更多 filter 後（Figma 2716-68916 Mweb header）：標題換成「目的地及領取地」選擇：18/26 Semibold + ic_arrowDown_line_semibold 20，gap 8；
-     Figma 漢堡 20 → 文字起點 60（pl20 + 20 + gap20），現有 32px 鈕右緣 48 → 補 12 */
-  .page-header .ph-place { display: none; flex: 1 1 0; min-width: 0; align-items: center; gap: 8px; margin-left: 12px; height: 100%; text-align: left; }
-  .page-header .ph-place .lb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
-  .page-header .ph-place .ic img { width: 20px; height: 20px; }
-  .page-header.ex-pinned .ph-title, .page-header.ex-pinned .ph-spacer { display: none; }
-  .page-header.ex-pinned .ph-place { display: flex; }
-  .ex-filterbar.pinned .ex-place { display: none; }  /* 置頂時上排選擇移到 header，filter 列只留 chips（Figma 2716-68916） */
 
   /* ================= bottom sheet 通用 ================= */
   .bs-mask {
@@ -1709,7 +1700,7 @@
   /* 快篩 chip：高 32、px12（Figma 2551-117507，比 sheet 內 38px Chip 小一號） */
   .ex-quick .fopt { flex: 0 0 auto; height: 32px; padding: 0 12px; }
   /* 捲過 filter bar 後整組置頂（.app 有 overflow-x:hidden，position:sticky 失效 → JS 切 .pinned 改 fixed，wrap 佔位防跳動）
-     Figma 2551-114032：header 下白底、px16、底部留 12 */
+     Figma 2716-68916：header 維持「全球上網」，目的地選擇列 + chips 列一起置頂；白底、px16、底部留 12、陰影 4-Action */
   .ex-filterbar.pinned { position: fixed; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; z-index: 29;
     margin: 0; padding: 1px 16px 12px; background: #fff; box-sizing: border-box;  /* 頂部留 1px：header 在上層，縮放時像素對齊誤差不會蓋到 chip 上邊框 */
     box-shadow: var(--el-action); }  /* Figma 2551-114032：頂貼 header、底留 12、底緣軟陰影（原圖採樣 ~4px 衰減） */
@@ -2215,8 +2206,6 @@
     <button class="ph-back ph-return" data-action="back" aria-label="返回"><span class="ic ic-24">{{IC_back}}</span></button>
     <span class="ph-title">全球上網</span>
     <span class="ph-spacer"></span>
-    <!-- 捲過探索更多 filter 後顯示：目的地及領取地選擇（Figma 2716-68916），點擊開合併 sheet -->
-    <button class="ph-place" id="phPlace"><span class="lb">請選擇目的地以及領取地</span><span class="ic ic-20">{{IC_arrowDownLg}}</span></button>
   </div>
   <button class="to-top" id="toTop" aria-label="回到頂部"><span class="ic ic-24">{{IC_arrowUpLine}}</span></button>
 
@@ -3818,7 +3807,6 @@
       var placeLb = !exState.dest ? '請選擇目的地以及領取地'
         : exState.dest + '·' + (exState.pickups.length ? exState.pickups.join('、') : '請選擇領取郵寄地');
       sec.querySelector('.ex-place .lb').textContent = placeLb;
-      document.querySelector('#phPlace .lb').textContent = placeLb;  // 置頂 header 上的同一選擇（Figma 2716-68916）
       var n = exFilterCount(exState.f), fil = sec.querySelector('[data-ex="filter"]'); fil.classList.toggle('sel', n > 0);
       fil.querySelector('.lb').textContent = n ? '更多條件·' + n : '更多條件';
       var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date);
@@ -3937,7 +3925,7 @@
   }
   document.getElementById('exPlaceClear').addEventListener('click', function () { exPlaceDraft = { dest: null, pickups: [] }; exRenderPlace(); });
   document.getElementById('exPlaceApply').addEventListener('click', function () { exState.dest = exPlaceDraft.dest; exState.pickups = exPlaceDraft.pickups.slice(); closeSheets(); renderExplore(); });
-  document.querySelectorAll('.ex-place, .ph-place').forEach(function (b) { b.addEventListener('click', exOpenPlace); });
+  document.querySelectorAll('.ex-place').forEach(function (b) { b.addEventListener('click', exOpenPlace); });
   // 更多條件 sheet（Figma 2551-62556）：三組多選 + 價格區間雙滑塊（NT$0–12,000+），組間 1px 分隔線
   function exRenderFilter() {
     var body = document.getElementById('exFilterBody'); body.innerHTML = '';
@@ -4030,7 +4018,7 @@
   // 探索更多 filter 列：捲動超過後固定在置頂 header 下方，直到探索更多區塊捲出視窗
   function exStickyUpdate() {
     var sec = document.querySelector('.screen.is-active .explore');
-    if (!sec) { document.getElementById('toTop').classList.remove('show'); document.getElementById('pageHeader').classList.remove('ex-pinned'); return; }
+    if (!sec) { document.getElementById('toTop').classList.remove('show'); return; }
     var wrap = sec.querySelector('.ex-filters-wrap'), f = wrap.firstElementChild;
     var hdr = document.getElementById('pageHeader');
     var top = hdr.classList.contains('show') ? hdr.offsetHeight : 0;
@@ -4040,7 +4028,6 @@
     if (pin && !f.classList.contains('pinned')) { wrap.style.height = f.offsetHeight + 'px'; f.classList.add('pinned'); }
     else if (!pin && f.classList.contains('pinned')) { f.classList.remove('pinned'); wrap.style.height = ''; }
     hdr.classList.toggle('no-shadow', pin);
-    hdr.classList.toggle('ex-pinned', pin);  // 置頂期間 header 標題換成目的地及領取地選擇（Figma 2716-68916）
     if (pin) f.style.top = top + 'px';
   }
   window.addEventListener('scroll', onPageScroll, { passive: true });
