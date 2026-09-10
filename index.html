@@ -1706,7 +1706,7 @@
   /* filter bar（Figma 2551-63759 / 2551-117542）：上排「目的地｜領取/郵寄地」兩個等寬 chip（h32、r8），
      下排橫滑 pill chip（更多條件 / 排序 / 日期 + 通訊產品快篩），兩排間距 8 */
   .ex-filterbar { display: flex; flex-direction: column; gap: 8px; }  /* 上排選擇 ↔ 下排 chip = 8（Figma 2551-63759 spacing-100） */
-  .ex-filters-wrap { margin-top: -8px; }  /* 標題 ↔ filter = 12（Figma 2551-63759 gap spacing-150；.explore gap 20 減 8） */
+  /* 標題 ↔ filter = 20（Figma 2551-63759 實測：標題底 48 → filter 起 68），直接用 .explore gap 20 */
   /* 上排文字式選擇（Figma 2714-29870「目的地选择」）：高 32（py8）、gap 4、ic_location_fill 16 + Subtitle-md 14/20 Semibold #212121 + ic_arrowDown_line 16；文字過長省略 */
   .ex-place { display: flex; align-items: center; gap: 4px; height: 32px; max-width: 100%; text-align: left;
     font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
