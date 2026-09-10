@@ -239,16 +239,16 @@
 
   /* ---------- destination card ---------- */
   .dest-card { box-shadow: var(--el-hero-card); display: flex; flex-direction: column; gap: 12px; }  /* 卡內各區塊間距 12px（Figma 1268-110020 SearchCard spacing-150）：eSIM 提示↔天數群組、群組↔不知道怎麼選↔搜尋套餐 皆一致 */
-  /* 首頁目的地選框（主題頁 2538-30531 未選態，像素實測）：總高 48、icon 20、文字 14/20 加粗；
+  /* 首頁目的地選框（Figma 2538-30540 search bar）：p12、gap 8、ic_location_fill 24 + Subtitle-lg 16/24 Semibold + ic_arrowRight 24 → 總高 48；
      44 是「已選態」小樣式（2538-30569，目的地頁 .dest-bar 用），勿混用 */
   .search-bar {
     display: flex; align-items: center; gap: 8px; box-sizing: border-box; height: 48px;
     padding: 0 12px; border: 1.5px solid var(--kk-primary-medium);
     border-radius: var(--r-lg); background: #fff; cursor: pointer;
   }
-  .search-bar .label { flex: 1 1 0; min-width: 0; font-size: 14px; line-height: 20px; font-weight: 600; text-align: left; }
-  .search-bar .ic { width: 20px; height: 20px; }
-  .search-bar .ic img { max-width: 20px; max-height: 20px; width: auto; height: auto; }
+  .search-bar .label { flex: 1 1 0; min-width: 0; font-size: 16px; line-height: 24px; font-weight: 600; text-align: left; }
+  .search-bar .ic { width: 24px; height: 24px; }
+  .search-bar .ic img { max-width: 24px; max-height: 24px; width: auto; height: auto; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
   /* 主題頁「最近選擇」歷史區 */
