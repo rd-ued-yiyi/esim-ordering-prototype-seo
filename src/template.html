@@ -1732,13 +1732,6 @@
   .ex-chip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-medium); }
   .ex-chip.sel .ic-def { display: none; }
   .ex-chip.sel .ic-sel { display: inline-flex; }
-  /* result & sorting bar（Figma 2754-121545）：py8、gap 20；左 Body-md 14/20（數字 Semibold）、右 ic_search_sort 16 + 排序 Subtitle-md #727272；
-     chips ↔ 本列 12（.explore gap 20 減 8）、本列 ↔ 列表 20 */
-  .ex-resbar { display: flex; align-items: flex-start; gap: 20px; padding: 8px 0; margin-top: -8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .ex-resbar .ex-count { flex: 1 1 0; min-width: 0; }
-  .ex-resbar .ex-count b { font-weight: 600; }
-  .ex-sort { display: flex; align-items: center; gap: 4px; flex: 0 0 auto; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-dark); white-space: nowrap; }
-  .ex-sort .ic img { width: 16px; height: 16px; }
   .ex-list { display: flex; flex-direction: column; gap: 32px; }
   .ex-empty { padding: 32px 0; text-align: center; color: var(--kk-text-medium); font-size: 14px; line-height: 20px; }
   /* 商品卡（Figma Product Card）：16:9 圖 + 上下漸層 + 收藏心形；標題 16/24 Semibold；評分行；屬性標籤；價格 + 折扣標 */
@@ -1944,13 +1937,12 @@
             <div class="ex-quick">
               <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_ex16Filter}}</span><span class="ic ic-16 ic-sel">{{IC_ex16FilterCyan}}</span><span class="lb">更多條件</span></button>
               <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_ex16Calendar}}</span><span class="ic ic-16 ic-sel">{{IC_ex16CalendarCyan}}</span><span class="lb">日期</span></button>
+              <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_ex16Sort}}</span><span class="ic ic-16 ic-sel">{{IC_ex16SortCyan}}</span><span class="lb">排序</span></button>
               <button class="fopt" data-exq="eSIM">eSIM</button>
               <button class="fopt" data-exq="SIM Card">SIM 卡</button>
               <button class="fopt" data-exq="WiFi">WIFI</button>
             </div>
           </div></div>
-          <!-- result & sorting bar（Figma 2551-63759 / 2754-121545）：左「N 項搜尋結果」、右 ic_search_sort 16 + 排序；不隨 filter 置頂 -->
-          <div class="ex-resbar"><span class="ex-count"><b>0</b> 項搜尋結果</span><button class="ex-sort" data-ex="sort"><span class="ic ic-16">{{IC_searchSort16}}</span><span class="lb">排序</span></button></div>
           <div class="ex-list"></div>
         </section>
       </div><!-- /con -->
@@ -2124,13 +2116,12 @@
             <div class="ex-quick">
               <button class="ex-chip" data-ex="filter"><span class="ic ic-16 ic-def">{{IC_ex16Filter}}</span><span class="ic ic-16 ic-sel">{{IC_ex16FilterCyan}}</span><span class="lb">更多條件</span></button>
               <button class="ex-chip" data-ex="date"><span class="ic ic-16 ic-def">{{IC_ex16Calendar}}</span><span class="ic ic-16 ic-sel">{{IC_ex16CalendarCyan}}</span><span class="lb">日期</span></button>
+              <button class="ex-chip" data-ex="sort"><span class="ic ic-16 ic-def">{{IC_ex16Sort}}</span><span class="ic ic-16 ic-sel">{{IC_ex16SortCyan}}</span><span class="lb">排序</span></button>
               <button class="fopt" data-exq="eSIM">eSIM</button>
               <button class="fopt" data-exq="SIM Card">SIM 卡</button>
               <button class="fopt" data-exq="WiFi">WIFI</button>
             </div>
           </div></div>
-          <!-- result & sorting bar（Figma 2551-63759 / 2754-121545）：左「N 項搜尋結果」、右 ic_search_sort 16 + 排序；不隨 filter 置頂 -->
-          <div class="ex-resbar"><span class="ex-count"><b>0</b> 項搜尋結果</span><button class="ex-sort" data-ex="sort"><span class="ic ic-16">{{IC_searchSort16}}</span><span class="lb">排序</span></button></div>
           <div class="ex-list"></div>
         </section>
       </div><!-- /con -->
@@ -3831,8 +3822,8 @@
       var n = exFilterCount(exState.f), fil = sec.querySelector('[data-ex="filter"]'); fil.classList.toggle('sel', n > 0);
       fil.querySelector('.lb').textContent = n ? '更多條件·' + n : '更多條件';
       var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date);
-      sec.querySelector('.ex-count b').textContent = list.length;  // N 項搜尋結果
-      sec.querySelector('.ex-sort .lb').textContent = exState.sort ? EX_SORTS[exState.sort] : '排序';  // 非預設排序時顯示所選排序名
+      var so = sec.querySelector('[data-ex="sort"]'); so.classList.toggle('sel', exState.sort !== 0);
+      so.querySelector('.lb').textContent = exState.sort ? EX_SORTS[exState.sort] : '排序';  // 非預設排序時顯示所選排序名
       // 通訊產品快篩 chip 選中態
       sec.querySelectorAll('[data-exq]').forEach(function (q) {
         q.classList.toggle('sel', exState.f.type.indexOf(q.getAttribute('data-exq')) >= 0);
@@ -3894,7 +3885,6 @@
       else if (k === 'sort') exOpenSort();
     });
   });
-  document.querySelectorAll('.ex-sort').forEach(function (b) { b.addEventListener('click', exOpenSort); });  // result bar 上的排序
   // 排序：與報價頁同一個 sheet（#bsSort），改綁探索更多的排序狀態
   function exOpenSort() {
     var box = document.getElementById('sortList'); box.innerHTML = '';

@@ -163,7 +163,6 @@ subs = {
     "{{IC_calendarCyanM}}":  svg("calendar", recolor=("#212121", "#26BEC9")),  # 探索更多日期 chip 選中態 #26BEC9
     "{{IC_locationSbCyan}}": svg("locationLineSemibold", recolor=("#212121", "#13A3B6")),
     "{{IC_arrowDownSb}}":    svg("arrowDownLineSemibold"),
-    "{{IC_searchSort16}}":   ex16("searchSort"),  # 探索更多 result bar 排序 ic_search_sort（原色 #727272）
     "{{IC_arrowDownLg}}":    svg("arrowDownLineSemiboldLg"),  # FAQ 條目 20px 加粗箭頭（Figma 2543-35298）
     "{{IC_arrowDownSbCyan}}":svg("arrowDownLineSemibold", recolor=("black", "#13A3B6")),
     "{{IC_arrowDownCircle}}": svg("arrowDownCircle"),  # 方案 B 列表页流量 chips 尾端展开按钮：环形下拉箭头 ic_arrowDown_circle_line #13A3B6（Figma 1202-105534）
