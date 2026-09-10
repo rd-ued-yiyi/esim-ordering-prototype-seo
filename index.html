@@ -1259,6 +1259,15 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .page-header .ph-spacer { width: 32px; }
+  /* 捲過探索更多 filter 後（Figma 2716-68916 Mweb header）：標題換成「目的地及領取地」選擇：18/26 Semibold + ic_arrowDown_line_semibold 20，gap 8；
+     Figma 漢堡 20 → 文字起點 60（pl20 + 20 + gap20），現有 32px 鈕右緣 48 → 補 12 */
+  .page-header .ph-place { display: none; flex: 1 1 0; min-width: 0; align-items: center; gap: 8px; margin-left: 12px; height: 100%; text-align: left; }
+  .page-header .ph-place .lb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
+  .page-header .ph-place .ic img { width: 20px; height: 20px; }
+  .page-header.ex-pinned .ph-title, .page-header.ex-pinned .ph-spacer { display: none; }
+  .page-header.ex-pinned .ph-place { display: flex; }
+  .ex-filterbar.pinned .ex-place { display: none; }  /* 置頂時上排選擇移到 header，filter 列只留 chips（Figma 2716-68916） */
 
   /* ================= bottom sheet 通用 ================= */
   .bs-mask {
@@ -1696,7 +1705,8 @@
   .ex-title .ic img { width: 24px; height: 24px; }
   /* filter bar（Figma 2551-63759 / 2551-117542）：上排「目的地｜領取/郵寄地」兩個等寬 chip（h32、r8），
      下排橫滑 pill chip（更多條件 / 排序 / 日期 + 通訊產品快篩），兩排間距 8 */
-  .ex-filterbar { display: flex; flex-direction: column; gap: 4px; }  /* 上排選擇 ↔ 下排 chip = 4（Figma 2714-29870） */
+  .ex-filterbar { display: flex; flex-direction: column; gap: 8px; }  /* 上排選擇 ↔ 下排 chip = 8（Figma 2551-63759 spacing-100） */
+  .ex-filters-wrap { margin-top: -8px; }  /* 標題 ↔ filter = 12（Figma 2551-63759 gap spacing-150；.explore gap 20 減 8） */
   /* 上排文字式選擇（Figma 2714-29870「目的地选择」）：高 32（py8）、gap 4、ic_location_fill 16 + Subtitle-md 14/20 Semibold #212121 + ic_arrowDown_line 16；文字過長省略 */
   .ex-place { display: flex; align-items: center; gap: 4px; height: 32px; max-width: 100%; text-align: left;
     font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
@@ -2305,6 +2315,8 @@
     <button class="ph-back ph-return" data-action="back" aria-label="返回"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjcuOTE2NjciIGhlaWdodD0iMTQuMTY2NyIgdmlld0JveD0iMCAwIDcuOTE2NjcgMTQuMTY2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjY3MjU5IDAuMjQ0MDc4QzcuOTk4MDMgMC41Njk1MTUgNy45OTgwMyAxLjA5NzE1IDcuNjcyNTkgMS40MjI1OUwyLjAxMTg0IDcuMDgzMzNMNy42NzI1OSAxMi43NDQxQzcuOTk4MDMgMTMuMDY5NSA3Ljk5ODAzIDEzLjU5NzIgNy42NzI1OSAxMy45MjI2QzcuMzQ3MTUgMTQuMjQ4IDYuODE5NTEgMTQuMjQ4IDYuNDk0MDggMTMuOTIyNkwwLjI0NDA3OCA3LjY3MjU5Qy0wLjA4MTM1OTIgNy4zNDcxNSAtMC4wODEzNTkyIDYuODE5NTEgMC4yNDQwNzggNi40OTQwOEw2LjQ5NDA4IDAuMjQ0MDc4QzYuODE5NTEgLTAuMDgxMzU5MiA3LjM0NzE1IC0wLjA4MTM1OTIgNy42NzI1OSAwLjI0NDA3OFoiIGZpbGw9IiMyMTIxMjEiLz4KPC9zdmc+" width="7.92" height="14.17"></span></button>
     <span class="ph-title">全球上網</span>
     <span class="ph-spacer"></span>
+    <!-- 捲過探索更多 filter 後顯示：目的地及領取地選擇（Figma 2716-68916），點擊開合併 sheet -->
+    <button class="ph-place" id="phPlace"><span class="lb">請選擇目的地以及領取地</span><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiB2aWV3Qm94PSIwIDAgMjAgMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJpY19hcnJvd0Rvd25fbGluZV9zZW1pYm9sZF9sZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMy4xNjA3NCA3LjAyODk1QzMuNDg2MTggNi43MDM1MSA0LjAxMzgyIDYuNzAzNTEgNC4zMzkyNiA3LjAyODk1TDEwIDEyLjY4OTdMMTUuNjYwNyA3LjAyODk1QzE1Ljk4NjIgNi43MDM1MSAxNi41MTM4IDYuNzAzNTEgMTYuODM5MyA3LjAyODk1QzE3LjE2NDcgNy4zNTQzOSAxNy4xNjQ3IDcuODgyMDIgMTYuODM5MyA4LjIwNzQ2TDEwLjU4OTMgMTQuNDU3NUMxMC4yNjM4IDE0Ljc4MjkgOS43MzYxOCAxNC43ODI5IDkuNDEwNzQgMTQuNDU3NUwzLjE2MDc0IDguMjA3NDZDMi44MzUzMSA3Ljg4MjAyIDIuODM1MzEgNy4zNTQzOSAzLjE2MDc0IDcuMDI4OTVaIiBmaWxsPSIjMjEyMTIxIi8+CjwvZz4KPC9zdmc+" width="20.00" height="20.00"></span></button>
   </div>
   <button class="to-top" id="toTop" aria-label="回到頂部"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93VXBfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTEuNDY5NyA4LjQ3MDg5QzExLjc2MjYgOC4xNzggMTIuMjM3NCA4LjE3OCAxMi41MzAzIDguNDcwODlMMTguNTMwMyAxNC40NzA5QzE4LjgyMzIgMTQuNzYzOCAxOC44MjMyIDE1LjIzODcgMTguNTMwMyAxNS41MzE2QzE4LjIzNzQgMTUuODI0NCAxNy43NjI2IDE1LjgyNDQgMTcuNDY5NyAxNS41MzE2TDEyIDEwLjA2MTlMNi41MzAzMyAxNS41MzE2QzYuMjM3NDQgMTUuODI0NCA1Ljc2MjU2IDE1LjgyNDQgNS40Njk2NyAxNS41MzE2QzUuMTc2NzggMTUuMjM4NyA1LjE3Njc4IDE0Ljc2MzggNS40Njk2NyAxNC40NzA5TDExLjQ2OTcgOC40NzA4OVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="24" height="24"></span></button>
 
@@ -3903,8 +3915,10 @@
       });
       // 已選態只變樣式（加粗＋紅點，Figma 2551-118073），文本保持不變
       // 上排文字（Figma 2714-29870）：未選→請選擇目的地以及領取地；選了目的地→「日本·請選擇領取郵寄地」；都選→「日本·台北、香港」
-      sec.querySelector('.ex-place .lb').textContent = !exState.dest ? '請選擇目的地以及領取地'
+      var placeLb = !exState.dest ? '請選擇目的地以及領取地'
         : exState.dest + '·' + (exState.pickups.length ? exState.pickups.join('、') : '請選擇領取郵寄地');
+      sec.querySelector('.ex-place .lb').textContent = placeLb;
+      document.querySelector('#phPlace .lb').textContent = placeLb;  // 置頂 header 上的同一選擇（Figma 2716-68916）
       var n = exFilterCount(exState.f), fil = sec.querySelector('[data-ex="filter"]'); fil.classList.toggle('sel', n > 0);
       fil.querySelector('.lb').textContent = n ? '更多條件·' + n : '更多條件';
       var dt = sec.querySelector('[data-ex="date"]'); dt.classList.toggle('sel', !!exState.date);
@@ -4022,7 +4036,7 @@
   }
   document.getElementById('exPlaceClear').addEventListener('click', function () { exPlaceDraft = { dest: null, pickups: [] }; exRenderPlace(); });
   document.getElementById('exPlaceApply').addEventListener('click', function () { exState.dest = exPlaceDraft.dest; exState.pickups = exPlaceDraft.pickups.slice(); closeSheets(); renderExplore(); });
-  document.querySelectorAll('.ex-place').forEach(function (b) { b.addEventListener('click', exOpenPlace); });
+  document.querySelectorAll('.ex-place, .ph-place').forEach(function (b) { b.addEventListener('click', exOpenPlace); });
   // 更多條件 sheet（Figma 2551-62556）：三組多選 + 價格區間雙滑塊（NT$0–12,000+），組間 1px 分隔線
   function exRenderFilter() {
     var body = document.getElementById('exFilterBody'); body.innerHTML = '';
@@ -4115,7 +4129,7 @@
   // 探索更多 filter 列：捲動超過後固定在置頂 header 下方，直到探索更多區塊捲出視窗
   function exStickyUpdate() {
     var sec = document.querySelector('.screen.is-active .explore');
-    if (!sec) { document.getElementById('toTop').classList.remove('show'); return; }
+    if (!sec) { document.getElementById('toTop').classList.remove('show'); document.getElementById('pageHeader').classList.remove('ex-pinned'); return; }
     var wrap = sec.querySelector('.ex-filters-wrap'), f = wrap.firstElementChild;
     var hdr = document.getElementById('pageHeader');
     var top = hdr.classList.contains('show') ? hdr.offsetHeight : 0;
@@ -4125,6 +4139,7 @@
     if (pin && !f.classList.contains('pinned')) { wrap.style.height = f.offsetHeight + 'px'; f.classList.add('pinned'); }
     else if (!pin && f.classList.contains('pinned')) { f.classList.remove('pinned'); wrap.style.height = ''; }
     hdr.classList.toggle('no-shadow', pin);
+    hdr.classList.toggle('ex-pinned', pin);  // 置頂期間 header 標題換成目的地及領取地選擇（Figma 2716-68916）
     if (pin) f.style.top = top + 'px';
   }
   window.addEventListener('scroll', onPageScroll, { passive: true });
