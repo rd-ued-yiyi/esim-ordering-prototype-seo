@@ -1703,14 +1703,15 @@
     font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .ex-place .lb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ex-place .ic img { width: 16px; height: 16px; }
-  .ex-quick { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+  /* 上下各留 1px 內距（負邊距抵銷，不改版面）：chip 邊框不貼捲動容器的裁切邊，避免縮放時 1px 邊框被吃掉 */
+  .ex-quick { display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; margin: -1px -16px; padding: 1px 16px; }
   .ex-quick::-webkit-scrollbar { display: none; }
   /* 快篩 chip：高 32、px12（Figma 2551-117507，比 sheet 內 38px Chip 小一號） */
   .ex-quick .fopt { flex: 0 0 auto; height: 32px; padding: 0 12px; }
   /* 捲過 filter bar 後整組置頂（.app 有 overflow-x:hidden，position:sticky 失效 → JS 切 .pinned 改 fixed，wrap 佔位防跳動）
      Figma 2551-114032：header 下白底、px16、底部留 12 */
   .ex-filterbar.pinned { position: fixed; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; z-index: 29;
-    margin: 0; padding: 0 16px 12px; background: #fff; box-sizing: border-box;
+    margin: 0; padding: 1px 16px 12px; background: #fff; box-sizing: border-box;  /* 頂部留 1px：header 在上層，縮放時像素對齊誤差不會蓋到 chip 上邊框 */
     box-shadow: var(--el-action); }  /* Figma 2551-114032：頂貼 header、底留 12、底緣軟陰影（原圖採樣 ~4px 衰減） */
   .page-header.show.no-shadow { box-shadow: none; }  /* filter 列置頂時 header 與 filter 之間不要陰影 */
   /* 回到頂部 FAB（Figma 2716-68916）：捲過探索更多 filter 後顯示；白色 40 圓、右 16、底 24+安全區、灰箭頭 */
