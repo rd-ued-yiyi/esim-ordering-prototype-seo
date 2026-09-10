@@ -2876,7 +2876,7 @@
     });
     document.querySelector('.app').classList.toggle('no-hero', name === 'plans' || name === 'kkhome' || name === 'simwifi');
     document.querySelector('.esim-root').classList.toggle('kkh-lock', name === 'kkhome');
-    document.getElementById('pageHeader').classList.toggle('on-home', name === 'home');  // 置頂 header 左鈕：主題頁漢堡、其他頁返回  // 模擬首頁鎖高、不可滾動
+    document.getElementById('pageHeader').classList.toggle('on-home', name === 'home' || name === 'destination');  // 置頂 header 左鈕：主題頁與目的地頁皆漢堡（選了目的地後仍是同一主題頁）、其他頁返回
     window.scrollTo(0, 0);
     // 重新進入目的地頁（如從列表返回）時把選中流量檔、選中天數 chip 滾回可視區，避免選中項落在螢幕外
     if (name === 'destination') {
