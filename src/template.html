@@ -229,7 +229,8 @@
   .card--pad-v { padding: 20px 16px; }
 
   /* ---------- destination card ---------- */
-  .dest-card { box-shadow: var(--el-hero-card); display: flex; flex-direction: column; gap: 12px; }  /* 卡內各區塊間距 12px（Figma 1268-110020 SearchCard spacing-150）：eSIM 提示↔天數群組、群組↔不知道怎麼選↔搜尋套餐 皆一致 */
+  .dest-card { box-shadow: var(--el-hero-card); display: flex; flex-direction: column; gap: 16px; }  /* 卡內區塊間距 16（Figma 871-75707：提示↔天數 16、流量選項↔搜尋鈕 16） */
+  .dest-card .group-8 { gap: 12px; }  /* 流量：標題↔分頁 12、分頁↔說明 12（Figma 871-75707） */
   /* 首頁目的地選框（Figma 2538-30540 search bar）：p12、gap 8、ic_location_fill 24 + Subtitle-lg 16/24 Semibold + ic_arrowRight 24 → 總高 48；
      44 是「已選態」小樣式（2538-30569，目的地頁 .dest-bar 用），勿混用 */
   .search-bar {
@@ -329,7 +330,7 @@
   .field-head.flow-head-a { gap: 12px; }  /* 箭頭 → 不知道怎麼選 12 */
   .flow-sel-a:active { transform: scale(.97); }
   /* 目的地頁裝置支援提示（Figma 2357-114863）：padding 12/16、icon 16、文字 14/20、第二行底線連結 Semibold */
-  .inline-note--dev { padding: 12px 16px; gap: 8px; font-size: 14px; line-height: 20px; margin-bottom: 12px; }  /* 與下方「用卡天數」間距 24（卡內 gap 12 + 12，Figma 2357-114872） */
+  .inline-note--dev { padding: 12px 16px; gap: 8px; font-size: 14px; line-height: 20px; margin-bottom: 8px; }  /* 與下方「用卡天數」間距 24（卡內 gap 16 + 8，Figma 2357-114872） */
   .inline-note--dev .ic { width: 16px; height: 16px; margin-top: 2px; }
   .inline-note--dev .ic img { width: 16px; height: 16px; }
   .inline-note--dev .txt { display: flex; flex-direction: column; gap: 4px; }
@@ -397,6 +398,7 @@
   .opts-scroll::-webkit-scrollbar { display: none; }
   /* 頂部留白 6px 給第一排 badge(top:-4px 露出卡片上緣 4px)，負 margin 抵消——淨間距 8px */
   .opts-scroll { margin-top: -6px; position: relative; }
+  .dest-card .opts-scroll { margin-top: -10px; }  /* group gap 12 − 10 + padding-top 6 ＝ 說明↔選項 8（Figma 871-75707） */
   /* 天數 chips 與 流量檔橫滾區通欄：抵消 dest-card 16px 內距、延伸到卡片左右邊緣，
      捲動內容直接顯示到卡邊、不被兩側內距色塊切斷（首/末項仍靠 16px padding 對齊其餘內容） */
   .dest-card .chips-row, .dest-card .opts-scroll {
