@@ -266,7 +266,6 @@ subs = {
     "{{IC_arrowSmRight}}": svg("arrow-sm", "detail"),
     "{{SHOTS_JSON}}":      "[" + ",".join('"' + svg_datauri(s) + '"' for s in SHOTS) + "]",
     "{{IMG_GUIDE1}}":      png_datauri("detail/guide1.png"),
-    **{("{{IMG_STEP%d}}" % i): img_datauri("intro/step%d.webp" % i) for i in (1,2,3)},  # PC 三步驟安裝插圖（intro g01/g03/g08 去文字裁切）
     "{{IMG_GUIDE2}}":      png_datauri("detail/guide2.png"),
     "{{IMG_GUIDE3}}":      png_datauri("detail/guide3.png"),
     # KKday 商品 243815 商品说明图文全图（10 张，内联自包含）

@@ -1,5 +1,5 @@
 <!-- eSIM 訂購流程原型 · PC 版（獨立頁 pc.html）-->
-<!-- 主題頁：依 mweb demo 重新設計的 PC 版（無 Figma 稿，依 KKday DS token / PC 主站慣例：版心 1140、區塊間距 64、卡片圓角 16）。
+<!-- 主題頁：mweb demo 的 PC 排版（內容區塊與文案與 mweb 一致，不新增內容；無 Figma 稿，依 KKday DS token / PC 主站慣例：版心 1140、區塊間距 64、卡片圓角 16）。
      header / 分類列 / footer 沿用 Figma 2123-57034；探索更多沿用 Figma 2357-115991 結構。 -->
 <style>
   :root {
@@ -54,12 +54,12 @@
   .pc-cat-more { position: absolute; right: 0; top: 18px; }
 
   /* ---------- hero 520：青色漸層 + 右側地球插畫（mweb 同一張）+ 左側標題與搜尋卡 ---------- */
-  .pc-hero { position: relative; height: 520px; overflow: hidden;
+  .pc-hero { position: relative; height: 440px; overflow: hidden;
     background: radial-gradient(120% 90% at 85% 20%, #5ED3DB 0%, rgba(94,211,219,0) 55%), linear-gradient(135deg, #26BEC9 0%, #13A3B6 100%); }
   .pc-hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px;
     background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.18) 100%); pointer-events: none; }
-  .pc-hero .col { position: relative; height: 520px; }
-  .pc-hero-art { position: absolute; right: -40px; top: 36px; width: 600px; pointer-events: none; }
+  .pc-hero .col { position: relative; height: 440px; }
+  .pc-hero-art { position: absolute; right: -40px; top: 24px; width: 560px; pointer-events: none; }
   .pc-hero-art svg { width: 100%; height: auto; display: block; }
   .pc-hero-art > svg > rect { display: none; }  /* 去掉 mweb hero 插畫自帶的青底與漸層矩形，只留插畫 */
   .pc-hero .h1 { position: absolute; left: 0; top: 96px; color: #fff; font-size: 44px; line-height: 56px; font-weight: 600; letter-spacing: .5px; }
@@ -123,31 +123,8 @@
   .pc-fopt.sel b { color: var(--kk-primary-dark); }
   .pc-fopt .badge { position: absolute; right: -4px; top: -4px; padding: 2px 6px; border-radius: 4px 4px 4px 0; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
 
-  /* ---------- 信任列：懸浮在 hero 底邊上的白卡 ---------- */
-  .pc-trust { position: relative; z-index: 2; margin-top: -40px; }
-  .pc-trust .col { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-radius: 16px; box-shadow: var(--el-hover); padding: 24px 8px; }
-  .pc-trust .it { display: flex; align-items: center; gap: 16px; padding: 0 24px; }
-  .pc-trust .it + .it { border-left: 1px solid var(--kk-border-lighter); }
-  .pc-trust .ico { width: 48px; height: 48px; border-radius: 12px; background: var(--kk-primary-lighter); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
-  .pc-trust .ico .ic { width: 24px; height: 24px; }
-  .pc-trust b { display: block; font-size: 16px; line-height: 24px; font-weight: 600; }
-  .pc-trust span { display: block; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
-
-  /* ---------- 熱門目的地：6 欄圖卡 ---------- */
-  .pc-dests { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
-  .pc-dest { position: relative; height: 232px; border-radius: 16px; overflow: hidden; background: var(--kk-surface-light); text-align: left; transition: transform .2s, box-shadow .2s; }
-  .pc-dest img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
-  .pc-dest::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.62) 100%); }
-  .pc-dest:hover { transform: translateY(-4px); box-shadow: var(--el-hover); }
-  .pc-dest:hover img { transform: scale(1.06); }
-  .pc-dest .tx { position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 1; color: #fff; }
-  .pc-dest .tx b { display: block; font-size: 20px; line-height: 28px; font-weight: 600; }
-  .pc-dest .tx span { display: block; font-size: 14px; line-height: 20px; color: rgba(255,255,255,.88); margin-top: 2px; }
-  .pc-dest .hot { position: absolute; left: 12px; top: 12px; z-index: 1; display: inline-flex; align-items: center; gap: 2px; height: 24px; padding: 0 8px 0 6px; border-radius: 999px; background: rgba(255,255,255,.92); color: var(--kk-text-critical); font-size: 12px; line-height: 16px; font-weight: 600; }
-  .pc-dest .hot .ic { width: 14px; height: 14px; }
-
   /* ---------- 為什麼選擇 KKday：4 欄卡，淺灰通欄 ---------- */
-  .pc-why { background: var(--kk-surface-lighter); padding: 64px 0; margin-top: 64px; }
+  .pc-why { background: var(--kk-surface-lighter); padding: 64px 0; }
   .pc-why .sec-head { margin-bottom: 32px; }
   .pc-whys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
   .pc-whyc { background: #fff; border-radius: 16px; padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--el-card); transition: transform .2s, box-shadow .2s; }
@@ -157,18 +134,10 @@
   .pc-whyc b { font-size: 18px; line-height: 26px; font-weight: 600; }
   .pc-whyc p { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
 
-  /* ---------- 三步驟安裝 ---------- */
-  .pc-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; }
-  .pc-step { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; padding: 0 16px; }
-  .pc-step .pic { width: 100%; height: 240px; border-radius: 16px; background: var(--kk-primary-lighter); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .pc-step .pic img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-  .pc-step .num { position: absolute; left: 32px; top: 16px; width: 36px; height: 36px; border-radius: 50%; background: var(--kk-primary-dark); color: #fff; font-size: 16px; line-height: 36px; font-weight: 600; text-align: center; box-shadow: 0 2px 8px rgba(19,163,182,.35); }
-  .pc-step b { font-size: 18px; line-height: 26px; font-weight: 600; }
-  .pc-step p { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); max-width: 300px; }
-  .pc-step-cta { display: flex; justify-content: center; gap: 12px; margin-top: 32px; }
-  .pc-ghost { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 8px; border: 1px solid var(--kk-border-light); background: #fff; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); transition: border-color .15s, background .15s; }
-  .pc-ghost:hover { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); }
-  .pc-ghost .ic { width: 20px; height: 20px; }
+  /* ---------- eSIM 安裝指南：兩個等寬入口卡 ---------- */
+  .pc-guides { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .pc-guide { height: 120px; display: flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid var(--kk-border-lighter); border-radius: 16px; background: #fff; font-size: 18px; line-height: 26px; font-weight: 600; box-shadow: var(--el-card); transition: border-color .15s, box-shadow .15s, transform .2s; }
+  .pc-guide:hover { border-color: var(--kk-primary-medium); box-shadow: var(--el-hover); transform: translateY(-2px); }
 
   /* ---------- 常見問題：雙欄手風琴 ---------- */
   .pc-faq { padding: 64px 0; }
@@ -323,7 +292,7 @@
     <div class="col">
       <div class="pc-hero-art" aria-hidden="true">{{HERO_SVG}}</div>
       <h1 class="h1">全球上網</h1>
-      <div class="sub">eSIM 免換卡、即買即用。<b>200+ 個目的地</b>，出發前 3 分鐘搞定上網。</div>
+      <div class="sub">輕鬆出發，無憂暢遊全球</div>
       <div class="pc-search">
         <div class="pc-tabs" role="tablist">
           <button class="pc-tab sel" role="tab"><span class="tb-in"><span class="lb">eSIM</span><span class="ul"></span></span></button>
@@ -360,49 +329,26 @@
     </div>
   </div>
 
-  <!-- 信任列 -->
-  <div class="pc-trust">
-    <div class="col">
-      <div class="it"><span class="ico"><span class="ic">{{IC_globe}}</span></span><div><b>200+ 目的地</b><span>單國、跨國、環球方案一次選齊</span></div></div>
-      <div class="it"><span class="ico"><span class="ic">{{IC_flash}}</span></span><div><b>即買即用</b><span>下單即收 QR Code，掃碼安裝免換卡</span></div></div>
-      <div class="it"><span class="ico"><span class="ic">{{IC_currencyReload}}</span></span><div><b>未啟用可免費取消</b><span>行程有變也不怕，出發前隨時退</span></div></div>
-      <div class="it"><span class="ico"><span class="ic">{{IC_checkCircle}}</span></span><div><b>24 小時中文客服</b><span>安裝與連線問題，隨時線上協助</span></div></div>
-    </div>
-  </div>
-
-  <!-- 熱門目的地 -->
-  <section class="sec">
-    <div class="col">
-      <div class="sec-head"><div><div class="t">熱門目的地</div><div class="d">旅客最常買的上網方案，點選直接看套餐</div></div><button class="more" data-pop-open="selDest">查看全部目的地<span class="ic ic-16">{{PC_arrowRight14}}</span></button></div>
-      <div class="pc-dests" id="pcDests"></div>
-    </div>
-  </section>
-
   <!-- 為什麼選擇 KKday -->
   <section class="pc-why">
     <div class="col">
-      <div class="sec-head"><div><div class="t">為什麼選擇 KKday？</div><div class="d">從挑選、安裝到出國連線，每一步都有人幫你</div></div></div>
+      <div class="sec-head"><div><div class="t">為什麼選擇KKday？</div></div></div>
       <div class="pc-whys">
-        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_tours}}</span></span><b>簡單易用</b><p>透過 KKday App 安裝與管理 eSIM，掃碼即裝，不用拆卡針、不怕弄丟實體卡。</p></div>
-        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_cruise}}</span></span><b>靈活彈性</b><p>天數與流量自由組合，每日、總量、無限三種計費任選，行程有變也能隨時加購延長。</p></div>
-        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_travel}}</span></span><b>200+ 目的地覆蓋</b><p>一張 eSIM 暢遊全球熱門目的地，亞洲通、歐洲通等跨國方案讓多國行程無縫切換。</p></div>
-        <div class="pc-whyc"><span class="ico"><span class="ic">{{IC_thumbsUp}}</span></span><b>嚴選電信商</b><p>與 KDDI、SKT、TrueMove 等原生電信合作，連線品質有保障，不是二手轉售流量。</p></div>
+        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_tours}}</span></span><b>簡單易用</b><p>透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</p></div>
+        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_cruise}}</span></span><b>靈活彈性</b><p>天數與流量自由組合，行程有變也能隨時加購延長。</p></div>
+        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_travel}}</span></span><b>80+ 國家覆蓋</b><p>一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</p></div>
+        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_tours}}</span></span><b>客服支援</b><p>24 小時中文客服線上，安裝與連線問題隨時協助。</p></div>
       </div>
     </div>
   </section>
 
-  <!-- 三步驟安裝 -->
+  <!-- eSIM 安裝指南（同 mweb：iOS / Android 兩個入口） -->
   <section class="sec">
     <div class="col">
-      <div class="sec-head"><div><div class="t">三步驟完成安裝</div><div class="d">出發前在家就能裝好，落地自動連線</div></div></div>
-      <div class="pc-steps">
-        <div class="pc-step"><span class="num">1</span><div class="pic"><img alt="" src="{{IMG_STEP1}}"></div><b>確認手機支援 eSIM</b><p>撥號畫面輸入 *#06#，看到 EID 序號就代表支援。購買前先確認手機沒有電信商合約鎖。</p></div>
-        <div class="pc-step"><span class="num">2</span><div class="pic"><img alt="" src="{{IMG_STEP2}}"></div><b>掃描 QR Code 安裝</b><p>下單後憑證即時寄到信箱與 KKday App，開啟相機掃描 QR Code，依指示新增行動方案。</p></div>
-        <div class="pc-step"><span class="num">3</span><div class="pic"><img alt="" src="{{IMG_STEP3}}"></div><b>抵達後開啟漫遊</b><p>落地後把 eSIM 設為行動數據並開啟資料漫遊，連上當地網路的那一刻才開始計算天數。</p></div>
-      </div>
-      <div class="pc-step-cta">
-        <button class="pc-ghost" data-toast="pc"><span class="ic">{{PC_apple}}</span>iOS 安裝指南</button>
-        <button class="pc-ghost" data-toast="pc"><span class="ic">{{PC_android}}</span>Android 安裝指南</button>
+      <div class="sec-head"><div><div class="t">eSIM 安裝指南</div></div></div>
+      <div class="pc-guides">
+        <button class="pc-guide" data-toast="pc"><span class="ic ic-32">{{PC_apple}}</span><span>iOS</span></button>
+        <button class="pc-guide" data-toast="pc"><span class="ic ic-32">{{PC_android}}</span><span>Android</span></button>
       </div>
     </div>
   </section>
@@ -410,7 +356,7 @@
   <!-- 常見問題：雙欄 -->
   <section class="pc-faq">
     <div class="col">
-      <div class="sec-head"><div><div class="t">常見問題</div></div><button class="more" data-toast="pc">查看全部<span class="ic ic-16">{{PC_arrowRight14}}</span></button></div>
+      <div class="sec-head"><div><div class="t">常見問題</div></div><button class="more" data-toast="pc">查看更多<span class="ic ic-16">{{PC_arrowRight14}}</span></button></div>
       <div class="pc-faq-grid">
         <div class="pc-faq-item open">
           <button class="pc-faq-q"><span class="q">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
@@ -431,10 +377,6 @@
         <div class="pc-faq-item">
           <button class="pc-faq-q"><span class="q">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
           <div class="pc-faq-a">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
-        </div>
-        <div class="pc-faq-item">
-          <button class="pc-faq-q"><span class="q">每日流量、總流量、無限流量怎麼選？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
-          <div class="pc-faq-a">每日流量：每天固定額度，隔日重新計算，適合用量穩定的旅客。總流量：整趟共用一個額度，每日用量自己控制。無限流量：沒有額度上限，天天放心用，重度使用者首選。</div>
         </div>
       </div>
     </div>
@@ -613,24 +555,7 @@
     if (!sel.dest) { toast('請先選擇目的地'); openPop('selDest'); return; }
     toast('搜尋 ' + sel.dest + (sel.days ? ' ' + sel.days + ' 天' : '') + (sel.plan ? ' ' + sel.plan : '') + '（PC 結果頁製作中）');
   });
-  document.querySelectorAll('[data-pop-open]').forEach(function (b) {
-    b.addEventListener('click', function (e) { e.stopPropagation(); window.scrollTo({ top: 0, behavior: 'smooth' }); setTimeout(function () { openPop(b.getAttribute('data-pop-open')); }, 420); });
-  });
 
-  // ================= 熱門目的地卡 =================
-  var DESTS = [
-    { n: '日本', img: '{{IMG_SW_C1}}', from: 82, hot: true }, { n: '韓國', img: '{{IMG_SW_P5}}', from: 66, hot: true }, { n: '泰國', img: '{{IMG_SW_P6}}', from: 52, hot: true },
-    { n: '中港澳', img: '{{IMG_SW_C3}}', from: 78 }, { n: '台灣', img: '{{IMG_SW_P1}}', from: 49 }, { n: '中國', img: '{{IMG_SW_P2}}', from: 39 }
-  ];
-  (function () {
-    var box = document.getElementById('pcDests');
-    DESTS.forEach(function (d) {
-      var c = h('<button class="pc-dest"><img alt="">' + (d.hot ? '<span class="hot"><span class="ic">{{IC_fire}}</span>熱門</span>' : '') + '<div class="tx"><b></b><span></span></div></button>');
-      c.querySelector('img').src = d.img; c.querySelector('b').textContent = d.n; c.querySelector('.tx span').textContent = 'NT$ ' + d.from + ' 起 / 天';
-      c.addEventListener('click', function () { pickDest(d.n === '中港澳' ? '香港' : d.n); window.scrollTo({ top: 0, behavior: 'smooth' }); });
-      box.appendChild(c);
-    });
-  })();
 
   // ================= 探索更多：資料 / 狀態 / 渲染 =================
   var PC_ICONS = { star: '{{IC_star}}', starGrey: '{{IC_starGrey}}', fire: '{{IC_fireHot}}', loc: '{{IC_locationGrey}}', cal: '{{IC_calendarGrey}}' };
