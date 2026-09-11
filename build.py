@@ -168,6 +168,7 @@ subs = {
     "{{IC_arrowDownCircle}}": svg("arrowDownCircle"),  # 方案 B 列表页流量 chips 尾端展开按钮：环形下拉箭头 ic_arrowDown_circle_line #13A3B6（Figma 1202-105534）
     "{{IC_arrowDownCyanMed}}": svg("arrowDown", recolor=("#212121", "#26BEC9")),  # 方案 A 筛选下拉 chip 选中态箭头：青 #26BEC9（与选中青字/青边一致）
     "{{IC_question}}":     svg("question"),
+    "{{IC_questionDark}}": svg("question", recolor=("#9C9DA0", "#727272")),  # 目的地頁「不知道怎麼選」$color-text-dark（Figma 871-75707）
     "{{IC_questionOrange}}": svg("question", recolor=("#9C9DA0", "#E78F37")),  # 方案 B 目的地頁「不知道怎麼選」橙色版（icons/question.svg 原色 #9C9DA0）
     "{{IC_arrowRightDark}}": svg("arrowRight", recolor=("#26BEC9", "#212121")),
     "{{IC_arrowRightGrey}}": svg("arrowRight", recolor=("#26BEC9", "#9C9DA0")),  # 套餐卡标题箭头（设计稿 $color-text-medium）

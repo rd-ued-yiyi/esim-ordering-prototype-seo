@@ -345,10 +345,12 @@
   #daysRow, #flowRow { gap: 12px; }  /* 標題↔值↔箭頭皆 12px（Figma 1268-110020：spacing-150），覆蓋 .field-head 的 8px */
   /* 方案 B：目的地頁流量區塊＝「流量 值 ›」選框 + 快捷卡 + 橙色「不知道怎麼選」；方案 A 維持原本 tab+選項 */
   :root[data-variant="B"] .flow-head-a, :root[data-variant="B"] #dataTabs, :root[data-variant="B"] #dataNote { display: none; }
-  :root[data-variant="A"] .flow-row-b, :root[data-variant="A"] .howto-b { display: none; }
-  .howto-b { display: inline-flex; align-items: center; align-self: flex-start; gap: 4px; font-size: 12px; line-height: 16px; color: #E78F37; }
+  :root[data-variant="A"] .flow-row-b { display: none; }
+  /* 「不知道怎麼選」（Figma 871-75707）：兩方案皆置於流量選項下方，12/16 + 16px 問號；標題列不再顯示 */
+  .field-head.flow-head-a .hint { display: none; }
+  .howto-b { display: inline-flex; align-items: center; align-self: flex-start; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }  /* $color-text-dark #727272（Figma 871-75707） */
   :root[data-variant="B"] .flow-row-b { margin-bottom: 8px; }  /* 流量選框與快捷卡組之間加間距（Figma db1） */
-  :root[data-variant="B"] .howto-b { margin-top: 4px; }  /* 快捷卡組↔「不知道怎麼選」= 12px（group-8 gap 8 + 4；Figma 1268-112141） */
+  .howto-b { margin-top: 0; }  /* 選項組↔「不知道怎麼選」= 12（dest-card .group-8 gap 12；Figma 871-75707） */
   .field-head .label-sm { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
   .field-head .hint { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
 
@@ -379,7 +381,7 @@
     border-bottom-right-radius: 2.5px;  /* Figma：圓角方塊旋轉 45°，露出的尖是圓的 */
     transform: translateX(-50%) rotate(45deg);
   }
-  .field-note { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .field-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }  /* 流量類型說明：$color-text-dark #727272（Figma 871-75707） */
 
   /* 搜尋卡內部分組間距：區塊間 20px、區塊內行間 8px（對齊 Figma 871:75442/75443/78764） */
   .group-24 { display: flex; flex-direction: column; gap: 24px; width: 100%; }  /* 用卡天數 group ↔ 流量 group（Figma 1268-110020：spacing-300 24px） */
@@ -2019,7 +2021,7 @@
                 <div class="field-note" id="dataNote">每日重置，用完降速</div>
                 <div class="opts-scroll" id="dataOptsScroll"><div class="opts-row" id="dataOpts"></div></div>
                 <!-- 方案 B：不知道怎麼選（橙色，置底） -->
-                <button class="hint howto-b" id="howtoHintB">不知道怎麼選<span class="ic ic-16">{{IC_questionOrange}}</span></button>
+                <button class="hint howto-b" id="howtoHintB">不知道怎麼選<span class="ic ic-16">{{IC_questionDark}}</span></button>
               </div>
             </div>
 
