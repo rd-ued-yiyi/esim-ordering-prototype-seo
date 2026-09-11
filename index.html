@@ -3034,6 +3034,7 @@
     if (tab === 'total') {
       // 推薦最接近「天數×1GB」的總量檔
       var opts = filteredOpts('total', d);
+      if (!opts.length) return null;  // 無檔位 → 無推薦
       var target = (d || 5);
       var best = opts[0];
       opts.forEach(function (o) { if (Math.abs(o.gb - target) < Math.abs(best.gb - target)) best = o; });
@@ -3058,6 +3059,7 @@
   function buildMergedRow(rowEl, d, selTab, selPlan, onPick) {
     rowEl.innerHTML = '';
     ['daily', 'total', 'unlimited'].forEach(function (tab) {
+      if (!filteredOpts(tab, d).length) return;  // 該計費方式在此天數下無檔位 → 不渲染該組
       var badge = badgeForTab(tab, d);
       var grid = el('<div class="opts-grid" data-g="' + tab + '"></div>');
       filteredOpts(tab, d).forEach(function (o) {
@@ -3157,8 +3159,15 @@
     var d = state.days ? +state.days : 0;
     // A/B 預設(未手動選過)：選中＝推薦(80%選擇)檔，確保預設流量落在帶標籤的選項上（B 另同步顯示該值）
     if (!state.planTouched) state.plan = badgeFor();
-    if (!state.plan || !filteredOpts(state.tab, d).some(function (o) { return o.t === state.plan; })) {
-      state.plan = filteredOpts(state.tab, d)[0].t;
+    var opts = filteredOpts(state.tab, d);
+    if (!opts.length) {
+      // 規則 3：所選計費方式在此天數下沒有任何檔位 → 退回第一個有檔位的計費方式，選其推薦檔；沒有推薦檔則選第一檔
+      state.tab = ['daily', 'total', 'unlimited'].filter(function (t) { return filteredOpts(t, d).length; })[0] || 'daily';
+      opts = filteredOpts(state.tab, d);
+      var rec = badgeForTab(state.tab, d);
+      state.plan = opts.some(function (o) { return o.t === rec; }) ? rec : opts[0].t;
+    } else if (!state.plan || !opts.some(function (o) { return o.t === state.plan; })) {
+      state.plan = opts[0].t;  // 規則 2：同計費方式的第一檔
     }
     var scrollEl = document.getElementById('dataOptsScroll');
     // A/B 都用拼合三計費方式的檔位帶（30 檔、跨計費方式）；差別只在標頭與選中回饋
