@@ -325,7 +325,8 @@
   .inline-note .ic { margin-top: 0; }
   .inline-note--info { background: #F2FAFF; }
   /* 目的地頁「流量 ›」：標題+箭頭可點，開啟選擇流量 sheet */
-  .flow-sel-a { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; background: none; border: 0; padding: 0; cursor: pointer; }
+  .flow-sel-a { display: inline-flex; align-items: center; gap: 12px; flex: 0 0 auto; background: none; border: 0; padding: 0; cursor: pointer; }  /* Figma 871-76703：文字 → 24px 箭頭 12 */
+  .field-head.flow-head-a { gap: 12px; }  /* 箭頭 → 不知道怎麼選 12 */
   .flow-sel-a:active { transform: scale(.97); }
   /* 目的地頁裝置支援提示（Figma 2357-114863）：padding 12/16、icon 16、文字 14/20、第二行底線連結 Semibold */
   .inline-note--dev { padding: 12px 16px; gap: 8px; font-size: 14px; line-height: 20px; margin-bottom: 12px; }  /* 與下方「用卡天數」間距 24（卡內 gap 12 + 12，Figma 2357-114872） */
@@ -1998,7 +1999,7 @@
                 <div class="field-head flow-head-a">
                   <button class="flow-sel-a" id="flowSelA">
                     <span class="label-lg">流量</span>
-                    <span class="ic ic-24"><span class="rot90 ic">{{IC_arrowRightDark}}</span></span>
+                    <span class="ic ic-24">{{IC_arrowRightDark}}</span>
                   </button>
                   <button class="hint" id="howtoHint">不知道怎麼選<span class="ic ic-16">{{IC_question}}</span></button>
                 </div>
