@@ -433,7 +433,7 @@
   .opt .t { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .opt.sel .t { color: #13A3B6; }
   .opt .p { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
-  /* 80%選擇 標籤（Figma 871-75700 實測）：珊瑚紅小圓角(4px)，貼卡片右上、露出卡片上緣 4px；整體右移 4px 使下方尖角左緣正好貼齊卡片右緣 → 折紙尖角 */
+  /* 推薦 標籤（原 80%選擇）（Figma 871-75700 實測）：珊瑚紅小圓角(4px)，貼卡片右上、露出卡片上緣 4px；整體右移 4px 使下方尖角左緣正好貼齊卡片右緣 → 折紙尖角 */
   .opt .badge {
     position: absolute; top: -4px; right: -4px; z-index: 3;
     background: var(--kk-text-critical); color: #fff;
@@ -3064,7 +3064,7 @@
       var grid = el('<div class="opts-grid" data-g="' + tab + '"></div>');
       filteredOpts(tab, d).forEach(function (o) {
         var b = el('<button class="opt' + (selTab === tab && selPlan === o.t ? ' sel' : '') + '"><span class="t"></span><span class="p"></span>' +
-          (badge === o.t ? '<span class="badge">80%選擇</span>' : '') + '</button>');
+          (badge === o.t ? '<span class="badge">推薦</span>' : '') + '</button>');
         b.setAttribute('data-val', o.t);  // 繁體原值：選中比較用（簡體模式下 .t 文本已被轉，不能當資料鍵）
         b.querySelector('.t').textContent = o.t;
         b.querySelector('.p').textContent = priceLabelFor(o, d);
@@ -3157,7 +3157,7 @@
   }
   function renderOpts() {
     var d = state.days ? +state.days : 0;
-    // A/B 預設(未手動選過)：選中＝推薦(80%選擇)檔，確保預設流量落在帶標籤的選項上（B 另同步顯示該值）
+    // A/B 預設(未手動選過)：選中＝推薦(推薦)檔，確保預設流量落在帶標籤的選項上（B 另同步顯示該值）
     if (!state.planTouched) state.plan = badgeFor();
     var opts = filteredOpts(state.tab, d);
     if (!opts.length) {
@@ -4216,7 +4216,7 @@
       var grid = el('<div class="flow-grid"></div>');
       filteredOpts(tab, d).forEach(function (o) {
         var b = el('<button class="opt' + (state.tab === tab && state.plan === o.t ? ' sel' : '') + '"><span class="t"></span><span class="p"></span>' +
-          (badge === o.t ? '<span class="badge">80%選擇</span>' : '') + '</button>');
+          (badge === o.t ? '<span class="badge">推薦</span>' : '') + '</button>');
         b.querySelector('.t').textContent = o.t;
         b.querySelector('.p').textContent = priceLabelFor(o, d);
         b.addEventListener('click', function () {
