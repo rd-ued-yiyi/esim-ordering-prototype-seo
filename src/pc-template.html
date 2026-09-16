@@ -255,7 +255,7 @@
   .pc-mask { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.4); display: none; }
   .pc-mask.open { display: block; }
   .pc-dlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
-    width: 640px; max-height: min(800px, calc(100vh - 80px)); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
+    width: 640px; height: min(800px, calc(100vh - 80px)); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
   .pc-dlg.open { display: flex; }
   .pc-dlg-hd { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; }
   .pc-dlg-hd .t { font-size: 18px; line-height: 26px; font-weight: 600; }
@@ -293,10 +293,10 @@
   .dlg-row .rd { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .dlg-row .cnt { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   /* ⓘ 包含國家 tooltip（Figma 3096-58630：白卡雙欄列表） */
-  .dlg-tip { position: absolute; right: -8px; top: calc(100% + 8px); z-index: 5; width: 349px; background: #fff; border-radius: 8px;
-    box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 16px; display: none; }
-  .dlg-row .dlg-tip { cursor: default; }
-  .dlg-tip.show { display: block; }
+  .dlg-tip { position: absolute; right: -8px; top: 100%; z-index: 5; width: 349px; background: #fff; border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 16px; display: none; cursor: default; }
+  /* hover「共N個國家 ⓘ」即顯示；覆蓋 tip 本身也保持顯示（Figma 3096-58630） */
+  .dlg-row .cnt:hover ~ .dlg-tip, .dlg-tip:hover { display: block; }
   .dlg-tip ul { columns: 2; column-gap: 24px; padding-left: 18px; font-size: 12px; line-height: 20px; color: var(--kk-text-darker); }
   .dlg-hint { flex: 0 0 auto; display: flex; align-items: center; gap: 16px; padding: 8px 24px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .dlg-hint b { color: var(--kk-primary-dark); }
@@ -375,7 +375,6 @@
 
   <!-- hero：未選（標題+搜尋卡）/ 已選（目的地 pill + 天數流量面板） -->
   <div class="pc-hero" id="pcHero" data-state="empty">
-    <div class="pc-hero-art" aria-hidden="true">{{HERO_SVG}}</div>
     <div class="col">
       <h1 class="h1">全球上網</h1>
       <div class="sub">輕鬆出發，無憂暢遊全球</div>
@@ -772,13 +771,8 @@
         var ul = row.querySelector('ul');
         (r.list || []).forEach(function (n) { var li = document.createElement('li'); li.textContent = n; ul.appendChild(li); });
         row.addEventListener('click', function () { pickDest(r.name); });
-        row.querySelector('.cnt').addEventListener('click', function (e) {
-          e.stopPropagation();
-          var tip = row.querySelector('.dlg-tip'), on = tip.classList.contains('show');
-          document.querySelectorAll('.dlg-tip.show').forEach(function (t) { t.classList.remove('show'); });
-          tip.classList.toggle('show', !on);
-        });
-        row.querySelector('.dlg-tip').addEventListener('click', function (e) { e.stopPropagation(); });
+        // 「共N個國家 ⓘ」tooltip 改 hover 顯示（CSS），點擊該區不觸發整列選擇
+        row.querySelector('.cnt').addEventListener('click', function (e) { e.stopPropagation(); });
         return row;
       };
       var hotr = GEO.hotRegions.filter(function (r) { return match(r.name); });
