@@ -136,8 +136,11 @@
   .pc-ftab { height: 32px; padding: 0 12px; border-radius: 8px; background: var(--kk-surface-light); font-size: 14px; line-height: 20px; border: 1px solid transparent; }
   .pc-ftab.sel { background: #fff; border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
   .pc-flow-help { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 14px; }
+  /* 三計費段堆疊的滾動區（Figma 3191-69364） */
+  .pc-flow-scroll { max-height: 300px; overflow-y: auto; padding: 2px 4px; display: flex; flex-direction: column; gap: 4px; }
+  .pc-flow-sec { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  .pc-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-height: 246px; overflow-y: auto; padding: 6px 4px 2px; }
+  .pc-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px 8px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1.5px solid transparent; }
   .pc-tier:hover { background: var(--kk-surface-medium); }
@@ -317,6 +320,17 @@
   .pc-dlg[data-mode="country"] .pc-dlg-ft, .pc-dlg[data-mode="country"] .dlg-hint,
   .pc-dlg[data-mode="region"] .pc-dlg-ft, .pc-dlg[data-mode="region"] .dlg-hint { display: none; }
 
+  /* 選擇建議 dialog（Figma 3140-37478；表格視覺與 mweb 選擇建議一致） */
+  .pc-howto-dlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
+    width: 600px; max-height: calc(100vh - 80px); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
+  .pc-howto-dlg.open { display: flex; }
+  .pc-howto-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 20px 24px 24px; }
+  .pc-howto-bd .ht { font-size: 16px; line-height: 24px; font-weight: 600; margin-bottom: 12px; }
+  .pc-howto-table { width: 100%; border: 1px solid var(--kk-border-lighter); border-radius: 8px; border-collapse: separate; border-spacing: 0; overflow: hidden; }
+  .pc-howto-table th { background: var(--kk-surface-lighter); text-align: left; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); padding: 12px 16px; }
+  .pc-howto-table td { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); padding: 12px 16px; border-top: 1px solid var(--kk-border-lighter); vertical-align: top; }
+  .pc-howto-table th:first-child, .pc-howto-table td:first-child { width: 52%; }
+
   /* ---------- footer（沿用） ---------- */
   .pc-foot { background: #444; padding: 50px 80px; color: #fff; }
   .pc-foot-top { display: flex; align-items: flex-start; justify-content: space-between; }
@@ -416,10 +430,10 @@
                 <div class="pc-flow-head">
                   <span class="pt">選擇流量</span>
                   <div class="pc-ftabs" id="pcFlowTabs"></div>
-                  <button class="pc-flow-help" data-toast="old">不知道怎麼選<span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBkPSJNNi41IDEwLjE2NjdDNi44NjgxOSAxMC4xNjY3IDcuMTY2NjcgOS44NjgxOSA3LjE2NjY3IDkuNUM3LjE2NjY3IDkuMTMxODEgNi44NjgxOSA4LjgzMzMzIDYuNSA4LjgzMzMzQzYuMTMxODEgOC44MzMzMyA1LjgzMzMzIDkuMTMxODEgNS44MzMzMyA5LjVDNS44MzMzMyA5Ljg2ODE5IDYuMTMxODEgMTAuMTY2NyA2LjUgMTAuMTY2N1oiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuOTM4OTUgMy4wNDM1NkM2LjUwMjUgMi45NTY3NCA2LjA1MDEgMy4wMDEzIDUuNjM4OTYgMy4xNzE2QzUuMjI3ODMgMy4zNDE4OSA0Ljg3NjQzIDMuNjMwMjggNC42MjkxOSA0LjAwMDI5QzQuMzgxOTYgNC4zNzAzIDQuMjUgNC44MDUzMiA0LjI1IDUuMjUwMzNDNC4yNSA1LjUyNjQ3IDQuNDczODYgNS43NTAzMyA0Ljc1IDUuNzUwMzNDNS4wMjYxNCA1Ljc1MDMzIDUuMjUgNS41MjY0NyA1LjI1IDUuMjUwMzNDNS4yNSA1LjAwMzEgNS4zMjMzMSA0Ljc2MTQzIDUuNDYwNjYgNC41NTU4NkM1LjU5ODAyIDQuMzUwMyA1Ljc5MzI0IDQuMTkwMDkgNi4wMjE2NSA0LjA5NTQ4QzYuMjUwMDUgNC4wMDA4NyA2LjUwMTM5IDMuOTc2MTEgNi43NDM4NiA0LjAyNDM0QzYuOTg2MzQgNC4wNzI1OCA3LjIwOTA3IDQuMTkxNjMgNy4zODM4OCA0LjM2NjQ0QzcuNTU4NyA0LjU0MTI2IDcuNjc3NzUgNC43NjM5OSA3LjcyNTk4IDUuMDA2NDZDNy43NzQyMSA1LjI0ODk0IDcuNzQ5NDYgNS41MDAyNyA3LjY1NDg1IDUuNzI4NjhDNy41NjAyNCA1Ljk1NzA5IDcuNDAwMDMgNi4xNTIzMSA3LjE5NDQ2IDYuMjg5NjZDNi45ODg5IDYuNDI3MDIgNi43NDcyMyA2LjUwMDMzIDYuNSA2LjUwMDMzQzYuMzY3MzkgNi41MDAzMyA2LjI0MDIyIDYuNTUzMDEgNi4xNDY0NSA2LjY0Njc3QzYuMDUyNjggNi43NDA1NCA2IDYuODY3NzIgNiA3LjAwMDMzVjcuNTAwMzNDNiA3Ljc3NjQ3IDYuMjIzODYgOC4wMDAzMyA2LjUgOC4wMDAzM0M2Ljc3NjE0IDguMDAwMzMgNyA3Ljc3NjQ3IDcgNy41MDAzM1Y3LjQ0NDA3QzcuMjY2MjYgNy4zODMzOCA3LjUyMDY0IDcuMjc0NDEgNy43NTAwMyA3LjEyMTEzQzguMTIwMDQgNi44NzM5IDguNDA4NDMgNi41MjI1IDguNTc4NzMgNi4xMTEzNkM4Ljc0OTAzIDUuNzAwMjMgOC43OTM1OCA1LjI0NzgzIDguNzA2NzcgNC44MTEzN0M4LjYxOTk1IDQuMzc0OTIgOC40MDU2NiAzLjk3NCA4LjA5MDk5IDMuNjU5MzRDNy43NzYzMiAzLjM0NDY3IDcuMzc1NDEgMy4xMzAzOCA2LjkzODk1IDMuMDQzNTZaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMCA2LjVDMCAyLjkxMDE1IDIuOTEwMTUgMCA2LjUgMEMxMC4wODk5IDAgMTMgMi45MTAxNSAxMyA2LjVDMTMgMTAuMDg5OSAxMC4wODk5IDEzIDYuNSAxM0MyLjkxMDE1IDEzIDAgMTAuMDg5OSAwIDYuNVpNNi41IDFDMy40NjI0MyAxIDEgMy40NjI0MyAxIDYuNUMxIDkuNTM3NTcgMy40NjI0MyAxMiA2LjUgMTJDOS41Mzc1NyAxMiAxMiA5LjUzNzU3IDEyIDYuNUMxMiAzLjQ2MjQzIDkuNTM3NTcgMSA2LjUgMVoiIGZpbGw9IiM3MjcyNzIiLz4KPC9nPgo8L3N2Zz4=" width="13.00" height="13.00"></span></button>
+                  <button class="pc-flow-help" id="pcHowtoBtn">不知道怎麼選<span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBkPSJNNi41IDEwLjE2NjdDNi44NjgxOSAxMC4xNjY3IDcuMTY2NjcgOS44NjgxOSA3LjE2NjY3IDkuNUM3LjE2NjY3IDkuMTMxODEgNi44NjgxOSA4LjgzMzMzIDYuNSA4LjgzMzMzQzYuMTMxODEgOC44MzMzMyA1LjgzMzMzIDkuMTMxODEgNS44MzMzMyA5LjVDNS44MzMzMyA5Ljg2ODE5IDYuMTMxODEgMTAuMTY2NyA2LjUgMTAuMTY2N1oiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuOTM4OTUgMy4wNDM1NkM2LjUwMjUgMi45NTY3NCA2LjA1MDEgMy4wMDEzIDUuNjM4OTYgMy4xNzE2QzUuMjI3ODMgMy4zNDE4OSA0Ljg3NjQzIDMuNjMwMjggNC42MjkxOSA0LjAwMDI5QzQuMzgxOTYgNC4zNzAzIDQuMjUgNC44MDUzMiA0LjI1IDUuMjUwMzNDNC4yNSA1LjUyNjQ3IDQuNDczODYgNS43NTAzMyA0Ljc1IDUuNzUwMzNDNS4wMjYxNCA1Ljc1MDMzIDUuMjUgNS41MjY0NyA1LjI1IDUuMjUwMzNDNS4yNSA1LjAwMzEgNS4zMjMzMSA0Ljc2MTQzIDUuNDYwNjYgNC41NTU4NkM1LjU5ODAyIDQuMzUwMyA1Ljc5MzI0IDQuMTkwMDkgNi4wMjE2NSA0LjA5NTQ4QzYuMjUwMDUgNC4wMDA4NyA2LjUwMTM5IDMuOTc2MTEgNi43NDM4NiA0LjAyNDM0QzYuOTg2MzQgNC4wNzI1OCA3LjIwOTA3IDQuMTkxNjMgNy4zODM4OCA0LjM2NjQ0QzcuNTU4NyA0LjU0MTI2IDcuNjc3NzUgNC43NjM5OSA3LjcyNTk4IDUuMDA2NDZDNy43NzQyMSA1LjI0ODk0IDcuNzQ5NDYgNS41MDAyNyA3LjY1NDg1IDUuNzI4NjhDNy41NjAyNCA1Ljk1NzA5IDcuNDAwMDMgNi4xNTIzMSA3LjE5NDQ2IDYuMjg5NjZDNi45ODg5IDYuNDI3MDIgNi43NDcyMyA2LjUwMDMzIDYuNSA2LjUwMDMzQzYuMzY3MzkgNi41MDAzMyA2LjI0MDIyIDYuNTUzMDEgNi4xNDY0NSA2LjY0Njc3QzYuMDUyNjggNi43NDA1NCA2IDYuODY3NzIgNiA3LjAwMDMzVjcuNTAwMzNDNiA3Ljc3NjQ3IDYuMjIzODYgOC4wMDAzMyA2LjUgOC4wMDAzM0M2Ljc3NjE0IDguMDAwMzMgNyA3Ljc3NjQ3IDcgNy41MDAzM1Y3LjQ0NDA3QzcuMjY2MjYgNy4zODMzOCA3LjUyMDY0IDcuMjc0NDEgNy43NTAwMyA3LjEyMTEzQzguMTIwMDQgNi44NzM5IDguNDA4NDMgNi41MjI1IDguNTc4NzMgNi4xMTEzNkM4Ljc0OTAzIDUuNzAwMjMgOC43OTM1OCA1LjI0NzgzIDguNzA2NzcgNC44MTEzN0M4LjYxOTk1IDQuMzc0OTIgOC40MDU2NiAzLjk3NCA4LjA5MDk5IDMuNjU5MzRDNy43NzYzMiAzLjM0NDY3IDcuMzc1NDEgMy4xMzAzOCA2LjkzODk1IDMuMDQzNTZaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMCA2LjVDMCAyLjkxMDE1IDIuOTEwMTUgMCA2LjUgMEMxMC4wODk5IDAgMTMgMi45MTAxNSAxMyA2LjVDMTMgMTAuMDg5OSAxMC4wODk5IDEzIDYuNSAxM0MyLjkxMDE1IDEzIDAgMTAuMDg5OSAwIDYuNVpNNi41IDFDMy40NjI0MyAxIDEgMy40NjI0MyAxIDYuNUMxIDkuNTM3NTcgMy40NjI0MyAxMiA2LjUgMTJDOS41Mzc1NyAxMiAxMiA5LjUzNzU3IDEyIDYuNUMxMiAzLjQ2MjQzIDkuNTM3NTcgMSA2LjUgMVoiIGZpbGw9IiM3MjcyNzIiLz4KPC9nPgo8L3N2Zz4=" width="13.00" height="13.00"></span></button>
                 </div>
-                <div class="pc-flow-note" id="pcFlowNote"></div>
-                <div class="pc-flow-grid" id="pcFlowGrid"></div>
+                <!-- 三種計費方式的所有檔位堆疊在同一滾動區；上方分頁＝錨點 + scroll-spy（Figma 3191-69364） -->
+                <div class="pc-flow-scroll" id="pcFlowScroll"></div>
               </div>
             </div>
             <div class="pc-panel-foot">
@@ -596,6 +610,23 @@
   </div>
 </div>
 
+<!-- ============ 選擇建議 dialog（Figma 3140-37478）：流量方案對照表 ============ -->
+<div class="pc-mask" id="pcHowtoMask"></div>
+<div class="pc-howto-dlg" id="pcHowtoDlg" role="dialog" aria-modal="true">
+  <div class="pc-dlg-hd"><span class="t">選擇建議</span><button id="pcHowtoClose" aria-label="關閉"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></button></div>
+  <div class="pc-howto-bd">
+    <div class="ht">流量方案如何選擇？</div>
+    <table class="pc-howto-table">
+      <tr><th>使用習慣</th><th>建議</th></tr>
+      <tr><td>輕度（地圖導航 + 訊息文字聊天）</td><td>每日流量 1GB/天</td></tr>
+      <tr><td>中度（滑社群 + 發限動/照片 + 導航）</td><td>每日流量 2–3GB/天</td></tr>
+      <tr><td>重度（看影片 + 滑短影音 + 開熱點）</td><td>不限流量</td></tr>
+      <tr><td>用量平均 + 行程天數長</td><td>總流量 天數X1.5GB</td></tr>
+      <tr><td>用量不均（某幾天爆量開會/發影片）</td><td>自訂總容量（自由分配）</td></tr>
+    </table>
+  </div>
+</div>
+
 <div class="pc-toast" id="pcToast" role="status"></div>
 
 <script>
@@ -728,25 +759,60 @@
     })(d);
     var sd = days.querySelector('.pc-day.sel');
     if (sd) sd.scrollIntoView({ block: 'nearest' });
+    // 分頁＝錨點：點擊捲到對應計費段（不切換內容）
     var tabs = document.getElementById('pcFlowTabs'); tabs.innerHTML = '';
     Object.keys(PLANS).forEach(function (k) {
-      var t = h('<button class="pc-ftab"></button>'); t.textContent = PLANS[k].lb; t.classList.toggle('sel', sel.tab === k);
-      t.addEventListener('click', function () { sel.tab = k; sel.plan = null; renderPanel(); });
+      var t = h('<button class="pc-ftab" data-tab="' + k + '"></button>'); t.textContent = PLANS[k].lb; t.classList.toggle('sel', sel.tab === k);
+      t.addEventListener('click', function () { flowScrollTo(k); });
       tabs.appendChild(t);
     });
-    document.getElementById('pcFlowNote').textContent = PLANS[sel.tab].note;
+    // 預設選中：目前計費段的推薦檔（無則第一檔）
     if (!sel.plan) { var rec = PLANS[sel.tab].opts.filter(function (o) { return o[2]; })[0]; sel.plan = (rec || PLANS[sel.tab].opts[0])[0]; }
-    var grid = document.getElementById('pcFlowGrid'); grid.innerHTML = '';
-    PLANS[sel.tab].opts.forEach(function (o) {
-      var b = h('<button class="pc-tier"><b></b><span></span>' + (o[2] ? '<em class="badge">' + o[2] + '</em>' : '') + '</button>');
-      b.querySelector('b').textContent = o[0];
-      b.querySelector('span').textContent = 'NT$ ' + (o[1]).toLocaleString('en-US') + ' 起';
-      b.classList.toggle('sel', sel.plan === o[0]);
-      b.addEventListener('click', function () { sel.plan = o[0]; renderPanel(); });
-      grid.appendChild(b);
+    // 三種計費段全部堆疊在同一滾動區（Figma 3191-69364）
+    var scroll = document.getElementById('pcFlowScroll'); scroll.innerHTML = '';
+    Object.keys(PLANS).forEach(function (k) {
+      var secEl = h('<div class="pc-flow-sec" data-sec="' + k + '"><div class="pc-flow-note"></div><div class="pc-flow-grid"></div></div>');
+      secEl.querySelector('.pc-flow-note').textContent = PLANS[k].note;
+      var grid = secEl.querySelector('.pc-flow-grid');
+      PLANS[k].opts.forEach(function (o) {
+        var b = h('<button class="pc-tier"><b></b><span></span>' + (o[2] ? '<em class="badge">推薦</em>' : '') + '</button>');
+        b.querySelector('b').textContent = o[0];
+        b.querySelector('span').textContent = 'NT$ ' + (o[1]).toLocaleString('en-US') + ' 起';
+        b.classList.toggle('sel', sel.tab === k && sel.plan === o[0]);
+        b.addEventListener('click', function () { sel.tab = k; sel.plan = o[0]; renderPanel(); });
+        grid.appendChild(b);
+      });
+      scroll.appendChild(secEl);
     });
     document.getElementById('pcSummary').textContent = sel.days + '天／' + sel.plan;
   }
+  function flowScrollTo(k) {
+    var scroll = document.getElementById('pcFlowScroll');
+    var sec = scroll.querySelector('.pc-flow-sec[data-sec="' + k + '"]');
+    if (!sec) return;
+    scroll._spyGuard = Date.now() + 600;  // 平滑捲動期間暫停 spy，避免高亮抖動
+    document.querySelectorAll('#pcFlowTabs .pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === k); });
+    scroll.scrollTo({ top: Math.max(0, sec.offsetTop - scroll.offsetTop - 2), behavior: 'smooth' });
+  }
+  // 垂直 scroll-spy：捲動時高亮所在計費段的分頁
+  (function () {
+    var scroll = document.getElementById('pcFlowScroll');
+    scroll.addEventListener('scroll', function () {
+      if (scroll._spyGuard && Date.now() < scroll._spyGuard) return;
+      var cur = 'daily', top = scroll.getBoundingClientRect().top;
+      ['daily', 'total', 'unlimited'].forEach(function (k) {
+        var sec = scroll.querySelector('.pc-flow-sec[data-sec="' + k + '"]');
+        if (sec && sec.getBoundingClientRect().top - top <= 44) cur = k;
+      });
+      document.querySelectorAll('#pcFlowTabs .pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === cur); });
+    });
+  })();
+  // 不知道怎麼選 → 選擇建議 dialog
+  function openHowto() { document.getElementById('pcHowtoMask').classList.add('open'); document.getElementById('pcHowtoDlg').classList.add('open'); }
+  function closeHowto() { document.getElementById('pcHowtoMask').classList.remove('open'); document.getElementById('pcHowtoDlg').classList.remove('open'); }
+  document.getElementById('pcHowtoBtn').addEventListener('click', openHowto);
+  document.getElementById('pcHowtoClose').addEventListener('click', closeHowto);
+  document.getElementById('pcHowtoMask').addEventListener('click', closeHowto);
   document.getElementById('pcSearchBtn').addEventListener('click', function () {
     toast('搜尋 ' + sel.dest + ' ' + sel.days + ' 天 ' + sel.plan + '（PC 結果頁維持現狀）');
   });
@@ -766,7 +832,7 @@
   }
   document.getElementById('pcDlgClose').addEventListener('click', closeDlg);
   document.getElementById('pcDlgMask').addEventListener('click', closeDlg);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDlg(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeDlg(); closeHowto(); } });
   document.querySelectorAll('[data-dlg-open]').forEach(function (b) { b.addEventListener('click', function () { openDlg(); }); });
   document.querySelectorAll('#pcDlgModes .pc-mode').forEach(function (m) {
     m.addEventListener('click', function () {
