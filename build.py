@@ -130,6 +130,8 @@ SHOTS = [
 
 subs = {
     "{{HERO_SVG}}":        (ROOT / "assets" / "hero" / "hero-scene.svg").read_text(encoding="utf-8"),
+    # 目的地選擇資料（洲別/熱門/多國區域）：mweb 與 PC 共用一份，改一處兩端同步
+    "{{GEO_DATA}}":        (ROOT / "src" / "geo-data.js").read_text(encoding="utf-8").strip(),
     # 付款页品牌/图标（结帐选择器的支付方式标识，内联矢量）
     "{{PAY_applepay}}":    raw_svg("applepay", folder="pay"),
     "{{PAY_creditcard}}":  raw_svg("creditcard", folder="pay"),
@@ -349,6 +351,12 @@ pc_subs = {
     "{{PC_apple}}":         pc_img("imgIcAppleLogoFill.svg"),
     "{{PC_android}}":       pc_img("imgIcAndroidLogoFill.svg"),
     **{("{{PC_social%d}}" % i): pc_img(n) for i, n in enumerate(["imgGroup13.svg","imgGroup12.svg","imgGroup14.svg","imgGroup9.svg","imgGroup7.svg"], 1)},
+    # PC 主題頁 2968-67063：header 搜尋/購物車/點數、商品卡收藏與獎牌（chrome 級手繪；核心內容圖標均用 Figma 資產）
+    "{{PC_searchCyan}}":    svg("search", recolor=("#212121", "#26BEC9")),
+    "{{PC_cart}}":          inline_svg_to_img('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212121" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2.2 11.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.6-1.3L21 8H6.1"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>'),
+    "{{PC_coin}}":          inline_svg_to_img('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#FFC128"/><circle cx="10" cy="10" r="6.6" fill="#FFD766"/><path d="M7.6 6.2v7.6M7.6 10l4.2-3.8M8.6 9.4l3.6 4.4" stroke="#B26E00" stroke-width="1.5" stroke-linecap="round"/></svg>'),
+    "{{PC_heartGrey}}":     inline_svg_to_img('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9C9DA0" stroke-width="1.6" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.6 3.5 4.5 6.7 4.5c2 0 3.6 1.1 4.4 2.7l.9 1.7.9-1.7c.8-1.6 2.4-2.7 4.4-2.7 3.2 0 5.3 3.1 4 6.3C19.5 15.4 12 20 12 20z"/></svg>'),
+    "{{PC_medal}}":         inline_svg_to_img('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 1.5h2.4L6 6H3.4L5 1.5Z" fill="#2D84D6"/><path d="M11 1.5H8.6L10 6h2.6L11 1.5Z" fill="#61A9EA"/><circle cx="8" cy="10" r="4.4" fill="#FFC128"/><circle cx="8" cy="10" r="2.9" fill="#FFDF8E"/><path d="M8 8.3l.6 1.2 1.3.2-.95.9.2 1.3L8 11.3l-1.15.6.2-1.3-.95-.9 1.3-.2L8 8.3Z" fill="#E8A200"/></svg>'),
 }
 pc_out = PC_TPL
 for k, v in {**subs, **pc_subs}.items():

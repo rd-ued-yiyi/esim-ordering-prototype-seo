@@ -1,6 +1,7 @@
 <!-- eSIM 訂購流程原型 · PC 版（獨立頁 pc.html）-->
-<!-- 主題頁：mweb demo 的 PC 排版（內容區塊與文案與 mweb 一致，不新增內容；無 Figma 稿，依 KKday DS token / PC 主站慣例：版心 1140、區塊間距 64、卡片圓角 16）。
-     header / 分類列 / footer 沿用 Figma 2123-57034；探索更多沿用 Figma 2357-115991 結構。 -->
+<!-- 主題頁對齊 Figma：2968-67063（未選目的地）/ 3096-60605（已選目的地）
+     目的地選擇彈窗：3076-56669（國家/地區）/ 3096-58066（多國區域）/ 3096-58908（多國自由選擇）
+     header / 分類列 / footer 沿用 Figma 2123-57034。版心 1140（探索更多 1170）。 -->
 <style>
   :root {
     --kk-primary-medium: #26BEC9; --kk-primary-button: #1AB6C1; --kk-primary-dark: #13A3B6; --kk-primary-darker: #068B9F;
@@ -8,7 +9,7 @@
     --kk-surface-lighter: #F7FAFC; --kk-surface-light: #F1F4F8; --kk-surface-medium: #E6E9ED; --kk-surface-darker: #9C9DA0;
     --kk-text-darker: #212121; --kk-text-dark: #727272; --kk-text-medium: #9C9DA0; --kk-text-light: #BABBBE;
     --kk-border-lighter: #E6E9ED; --kk-border-light: #D5D6DB;
-    --kk-text-critical: #EF7A70; --kk-warning-dark: #E78F37;
+    --kk-text-critical: #EF7A70; --kk-critical-dark: #E65F50; --kk-warning-dark: #E78F37;
     --el-card: 0 1px 2px rgba(38,50,56,.12); --el-hover: 0 8px 24px rgba(38,50,56,.12); --el-hero-card: 0 8px 24px rgba(38,190,201,.2);
     --font-tc: "PingFang TC","PingFang SC",-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;
   }
@@ -16,30 +17,31 @@
   html, body { background: #fff; }
   body { font-family: var(--font-tc); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; min-width: 1440px; }
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: inherit; }
+  input { font: inherit; }
   img { display: block; }
   .ic { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
   .ic > img, .ic > svg { max-width: 100%; max-height: 100%; width: 100%; height: 100%; }
   .ic-14 { width: 14px; height: 14px; } .ic-16 { width: 16px; height: 16px; } .ic-18 { width: 18px; height: 18px; } .ic-20 { width: 20px; height: 20px; }
-  .ic-24 { width: 24px; height: 24px; } .ic-28 { width: 28px; height: 28px; } .ic-32 { width: 32px; height: 32px; } .ic-36 { width: 36px; height: 36px; } .ic-48 { width: 48px; height: 48px; }
+  .ic-24 { width: 24px; height: 24px; }
+  .rot90 { transform: rotate(90deg); } .ic-28 { width: 28px; height: 28px; } .ic-32 { width: 32px; height: 32px; } .ic-36 { width: 36px; height: 36px; }
   .col { width: 1140px; margin: 0 auto; }
-  .sec { padding: 64px 0 0; }
-  .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
-  .sec-head .t { font-size: 28px; line-height: 36px; font-weight: 600; color: var(--kk-text-darker); }
-  .sec-head .d { margin-top: 4px; font-size: 16px; line-height: 24px; color: var(--kk-text-dark); }
-  .sec-head .more { display: inline-flex; align-items: center; gap: 4px; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-primary-darker); padding-bottom: 2px; }
-  .sec-head .more:hover { text-decoration: underline; }
+  .colw { width: 1170px; margin: 0 auto; }
+  .sec-t { font-size: 24px; line-height: 32px; font-weight: 600; color: var(--kk-text-darker); }
 
-  /* ---------- header 60 ---------- */
+  /* ---------- header 60（Figma 2968-67063：logo + 站內搜尋 + 右側工具列） ---------- */
   .pc-header { height: 60px; background: #fff; }
-  .pc-header .col { height: 60px; display: flex; align-items: center; justify-content: space-between; }
-  .pc-logo { width: 100px; height: 40px; }
-  .pc-right { display: flex; align-items: flex-start; }
-  .pc-right .it { display: flex; align-items: center; gap: 4px; padding: 20px 15px; color: var(--kk-text-dark); white-space: nowrap; }
+  .pc-header .col { height: 60px; display: flex; align-items: center; gap: 24px; }
+  .pc-logo { width: 100px; height: 40px; flex: 0 0 auto; }
+  .pc-hsearch { width: 400px; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px;
+    background: var(--kk-surface-light); border-radius: 999px; color: var(--kk-text-medium); font-size: 14px; }
+  .pc-right { display: flex; align-items: center; margin-left: auto; }
+  .pc-right .it { display: flex; align-items: center; gap: 4px; padding: 0 12px; height: 60px; color: var(--kk-text-dark); white-space: nowrap; }
   .pc-right .it:hover { color: var(--kk-text-darker); }
   .pc-right .it.app { color: var(--kk-primary-darker); }
-  .pc-right .avatar { padding: 9px 0 9px 9px; }
+  .pc-right .coin { display: flex; align-items: center; gap: 6px; padding: 0 12px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-right .avatar { padding: 9px 0 9px 6px; }
   .pc-right .avatar img { width: 42px; height: 42px; border-radius: 999px; }
-  /* 分類導航 60 */
+  /* 分類導航 60：eSIM/WIFI 選中 + 4px 底條（Figma） */
   .pc-cat { height: 60px; background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
   .pc-cat .col { position: relative; height: 60px; }
   .pc-cat-list { position: absolute; left: 0; top: 20px; width: 1116px; display: flex; align-items: flex-start; overflow: hidden; }
@@ -47,26 +49,33 @@
   .pc-cat-item .tx { padding: 0 14px; border-right: 1px solid var(--kk-border-light); white-space: nowrap; color: var(--kk-text-darker); }
   .pc-cat-item:hover .tx { color: var(--kk-primary-dark); }
   .pc-cat-item:last-child .tx { border-right: 0; }
-  .pc-cat-item.sel .tx { color: var(--kk-primary-medium); }
+  .pc-cat-item.sel .tx { color: var(--kk-primary-medium); font-weight: 600; }
   .pc-cat-item .bar { width: 100%; height: 4px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; visibility: hidden; }
   .pc-cat-item.sel .bar { visibility: visible; }
   .pc-cat-fade { position: absolute; right: 24px; top: 0; width: 80px; height: 60px; background: linear-gradient(to left, #fff, rgba(255,255,255,0)); pointer-events: none; }
   .pc-cat-more { position: absolute; right: 0; top: 18px; }
 
-  /* ---------- hero 520：青色漸層 + 右側地球插畫（mweb 同一張）+ 左側標題與搜尋卡 ---------- */
-  .pc-hero { position: relative; height: 440px; overflow: hidden;
+  /* ---------- hero：未選=標題+搜尋卡；已選=目的地 pill+套餐面板（Figma 2968-67063 / 3096-60605） ---------- */
+  .pc-hero { position: relative; overflow: hidden; padding-bottom: 40px;
     background: radial-gradient(120% 90% at 85% 20%, #5ED3DB 0%, rgba(94,211,219,0) 55%), linear-gradient(135deg, #26BEC9 0%, #13A3B6 100%); }
   .pc-hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px;
     background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.18) 100%); pointer-events: none; }
-  .pc-hero .col { position: relative; height: 440px; }
-  .pc-hero-art { position: absolute; right: -40px; top: 24px; width: 560px; pointer-events: none; }
+  .pc-hero .col { position: relative; z-index: 1; }
+  .pc-hero-art { position: absolute; right: -40px; top: 12px; width: 560px; pointer-events: none; z-index: 0; }
   .pc-hero-art svg { width: 100%; height: auto; display: block; }
-  .pc-hero-art > svg > rect { display: none; }  /* 去掉 mweb hero 插畫自帶的青底與漸層矩形，只留插畫 */
-  .pc-hero .h1 { position: absolute; left: 0; top: 96px; color: #fff; font-size: 44px; line-height: 56px; font-weight: 600; letter-spacing: .5px; }
-  .pc-hero .sub { position: absolute; left: 0; top: 160px; color: rgba(255,255,255,.92); font-size: 18px; line-height: 28px; }
-  .pc-hero .sub b { font-weight: 600; color: #fff; }
-  .pc-search { position: absolute; left: 0; top: 236px; width: 1140px; display: flex; flex-direction: column; align-items: flex-start; }
-  /* tab 條（同 mweb TabBarCard）：淺灰底、選中 tab 白底、上圓角 16、右下 16 內凹補角 */
+  .pc-hero-art > svg > rect { display: none; }
+  .pc-hero .h1 { padding-top: 44px; color: #fff; font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: .5px; }
+  .pc-hero .sub { margin-top: 8px; color: rgba(255,255,255,.92); font-size: 16px; line-height: 24px; max-width: 640px; }
+  /* 已選目的地 pill（Figma 3096-60605：白底 44、青定位 + 名稱 + ⌄） */
+  .pc-dest-pill { margin-top: 28px; height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 14px;
+    background: #fff; border-radius: 8px; box-shadow: var(--el-card); font-size: 14px; line-height: 20px; font-weight: 600; }
+  .pc-dest-pill .chev { transition: transform .2s; }
+  .pc-dest-pill:hover .chev { transform: translateY(1px); }
+  .pc-hero[data-state="empty"] .pc-dest-pill { display: none; }
+  .pc-hero[data-state="sel"] .h1, .pc-hero[data-state="sel"] .sub { display: none; }
+  /* tab 條（同 mweb TabBarCard）：選中白底 + 青字 + 底條 + 右下 16 內凹補角 */
+  .pc-search { margin-top: 32px; display: flex; flex-direction: column; align-items: flex-start; }
+  .pc-hero[data-state="sel"] .pc-search { margin-top: 16px; }
   .pc-tabs { display: inline-flex; align-items: stretch; background: rgba(255,255,255,.72); border-radius: 16px 16px 0 0; backdrop-filter: blur(4px); }
   .pc-tab { position: relative; min-width: 128px; display: flex; justify-content: center; padding: 12px 20px; }
   .pc-tab .tb-in { display: flex; flex-direction: column; align-items: stretch; }
@@ -78,153 +87,228 @@
   .pc-tab.sel::after { content: ''; position: absolute; right: -16px; bottom: 0; width: 16px; height: 16px;
     background: radial-gradient(circle at 100% 0, transparent 15.5px, #fff 16px); }
   .pc-tab:not(.sel):hover .lb { color: var(--kk-primary-dark); }
-  .pc-card { width: 1140px; background: #fff; border-radius: 0 16px 16px 16px; box-shadow: var(--el-hero-card);
-    padding: 20px; display: flex; gap: 16px; align-items: flex-end; }
-  .pc-sel { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; position: relative; }
-  .pc-sel .lb { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
-  .pc-sel .box { height: 52px; display: flex; align-items: center; gap: 8px; padding: 0 14px; width: 100%;
-    background: #fff; border: 1px solid var(--kk-border-light); border-radius: 8px; transition: border-color .15s, box-shadow .15s; }
-  .pc-sel .box:hover { border-color: var(--kk-primary-medium); }
-  .pc-sel.open .box, .pc-sel .box:focus-visible { border-color: var(--kk-primary-medium); box-shadow: 0 0 0 3px rgba(38,190,201,.18); outline: 0; }
-  .pc-sel .ph { flex: 1 1 0; min-width: 0; color: var(--kk-text-medium); font-size: 16px; line-height: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
-  .pc-sel.has .ph { color: var(--kk-text-darker); font-weight: 600; }
-  .pc-sel .chev { transition: transform .2s; }
-  .pc-sel.open .chev { transform: rotate(180deg); }
-  .pc-btn { height: 52px; padding: 0 40px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; white-space: nowrap; transition: background .15s; display: inline-flex; align-items: center; gap: 8px; }
-  .pc-btn:hover { background: var(--kk-primary-dark); }
-  /* 下拉面板（PC 取代 mweb bottom sheet） */
-  .pc-pop { position: absolute; left: 0; top: calc(100% + 8px); z-index: 20; background: #fff; border-radius: 12px; border: 1px solid var(--kk-border-lighter);
-    box-shadow: 0 12px 32px rgba(38,50,56,.16); padding: 20px; display: none; text-align: left; }
-  .pc-sel.open .pc-pop { display: block; }
-  .pc-pop .ph-t { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-dark); margin-bottom: 12px; }
-  .pc-pop .ph-t + .pc-chips { margin-bottom: 20px; }
-  .pc-pop .pc-chips:last-child { margin-bottom: 0; }
-  .pc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pc-chip { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 14px; border-radius: 8px; background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; transition: background .12s; }
-  .pc-chip:hover { background: var(--kk-surface-medium); }
-  .pc-chip.sel { background: var(--kk-primary-lighter); color: var(--kk-primary-dark); font-weight: 600; box-shadow: inset 0 0 0 1px var(--kk-primary-medium); }
-  .pc-pop-dest { width: 720px; }
-  .pc-pop-dest .cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 32px; }
-  .pc-pop-dest .grp .ph-t { margin-bottom: 8px; }
-  .pc-pop-days { width: 520px; }
-  .pc-pop-days .pc-chips { gap: 8px; }
-  .pc-pop-days .pc-chip { min-width: 60px; justify-content: center; }
-  .pc-pop-flow { width: 640px; }
-  .pc-pop-flow .ftabs { display: inline-flex; gap: 8px; margin-bottom: 8px; }
-  .pc-pop-flow .ftab { height: 32px; padding: 0 12px; border-radius: 999px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); background: var(--kk-surface-light); }
-  .pc-pop-flow .ftab.sel { background: var(--kk-primary-lighter); color: var(--kk-primary-dark); font-weight: 600; box-shadow: inset 0 0 0 1px var(--kk-primary-medium); }
-  .pc-pop-flow .fnote { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); margin-bottom: 12px; }
-  .pc-pop-flow .fopts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .pc-fopt { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 8px; border-radius: 8px; background: var(--kk-surface-light); }
-  .pc-fopt:hover { background: var(--kk-surface-medium); }
-  .pc-fopt b { font-size: 16px; line-height: 24px; font-weight: 600; }
-  .pc-fopt span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
-  .pc-fopt.sel { background: var(--kk-primary-lighter); box-shadow: inset 0 0 0 1px var(--kk-primary-medium); }
-  .pc-fopt.sel b { color: var(--kk-primary-dark); }
-  .pc-fopt .badge { position: absolute; right: -4px; top: -4px; padding: 2px 6px; border-radius: 4px 4px 4px 0; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
+  .pc-card { width: 1140px; background: #fff; border-radius: 0 16px 16px 16px; box-shadow: var(--el-hero-card); padding: 16px; }
 
-  /* ---------- 為什麼選擇 KKday：4 欄卡，淺灰通欄 ---------- */
-  .pc-why { background: var(--kk-surface-lighter); padding: 64px 0; }
-  .pc-why .sec-head { margin-bottom: 32px; }
-  .pc-whys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-  .pc-whyc { background: #fff; border-radius: 16px; padding: 28px 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--el-card); transition: transform .2s, box-shadow .2s; }
-  .pc-whyc:hover { transform: translateY(-4px); box-shadow: var(--el-hover); }
-  .pc-whyc .ico { width: 56px; height: 56px; border-radius: 14px; background: var(--kk-primary-lighter); display: flex; align-items: center; justify-content: center; }
-  .pc-whyc .ico .ic { width: 32px; height: 32px; }
-  .pc-whyc b { font-size: 18px; line-height: 26px; font-weight: 600; }
+  /* 未選：搜尋輸入 + 熱門 chips + 最近選擇（Figma 2968-67063） */
+  .pc-find { display: flex; flex-direction: column; gap: 16px; }
+  .pc-find-input { height: 56px; width: 100%; display: flex; align-items: center; gap: 10px; padding: 0 16px;
+    border: 1.5px solid var(--kk-primary-medium); border-radius: 8px; background: #fff; transition: box-shadow .15s; }
+  .pc-find-input:hover { box-shadow: 0 0 0 3px rgba(38,190,201,.15); }
+  .pc-find-input .ph { flex: 1 1 0; text-align: left; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-hotchips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pc-chip { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 14px; border-radius: 8px;
+    background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; transition: background .12s; }
+  .pc-chip:hover { background: var(--kk-surface-medium); }
+  .pc-chip .ic-14 img { width: 14px; height: 14px; }
+  .pc-recent { display: flex; flex-direction: column; gap: 10px; }
+  .pc-recent[hidden] { display: none; }
+  .pc-recent .rh { display: flex; align-items: center; justify-content: space-between; color: var(--kk-text-medium); font-size: 12px; line-height: 16px; }
+  .pc-recent .rh .gact { display: inline-flex; padding: 2px; }
+
+  /* 已選：相容提示 + 天數 / 流量面板 + 底部摘要（Figma 3096-60605） */
+  .pc-panel { display: none; flex-direction: column; gap: 16px; }
+  .pc-hero[data-state="sel"] .pc-panel { display: flex; }
+  .pc-hero[data-state="sel"] .pc-find { display: none; }
+  .pc-note { height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-radius: 8px; background: #EFF6FF; font-size: 14px; }
+  .pc-note u { font-weight: 600; text-underline-offset: 2px; cursor: pointer; }
+  .pc-panel-grid { display: flex; gap: 24px; align-items: stretch; }
+  .pc-pane { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .pc-pane .pt { font-size: 18px; line-height: 26px; font-weight: 600; }
+  .pc-pane-days { flex: 0 0 224px; }
+  .pc-days-list { display: flex; flex-direction: column; gap: 12px; max-height: 292px; overflow-y: auto; padding-right: 4px; }
+  .pc-day { flex: 0 0 auto; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px;
+    background: var(--kk-surface-light); font-size: 16px; line-height: 24px; border: 1px solid transparent; }
+  .pc-day:hover { background: var(--kk-surface-medium); }
+  .pc-day.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
+  .pc-pane-flow { flex: 1 1 0; min-width: 0; }
+  .pc-flow-head { display: flex; align-items: center; gap: 16px; }
+  .pc-flow-head .pt { flex: 0 0 auto; }
+  .pc-ftabs { display: flex; gap: 8px; }
+  .pc-ftab { height: 32px; padding: 0 12px; border-radius: 8px; background: var(--kk-surface-light); font-size: 14px; line-height: 20px; border: 1px solid transparent; }
+  .pc-ftab.sel { background: #fff; border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
+  .pc-flow-help { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 14px; }
+  .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .pc-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-height: 246px; overflow-y: auto; padding: 6px 4px 2px; }
+  .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px 8px; border-radius: 8px;
+    background: var(--kk-surface-light); border: 1.5px solid transparent; }
+  .pc-tier:hover { background: var(--kk-surface-medium); }
+  .pc-tier b { font-size: 18px; line-height: 26px; font-weight: 600; }
+  .pc-tier span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pc-tier.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
+  .pc-tier.sel b { color: var(--kk-primary-dark); }
+  .pc-tier .badge { position: absolute; right: -6px; top: -10px; padding: 2px 8px; border-radius: 4px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
+  .pc-panel-foot { display: flex; align-items: center; gap: 16px; }
+  .pc-panel-foot .sum { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
+  .pc-panel-foot .sum b { font-weight: 600; margin-left: 8px; }
+  .pc-panel-foot .pc-btn { margin-left: auto; }
+  .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
+    font-size: 16px; line-height: 24px; font-weight: 600; white-space: nowrap; transition: background .15s; display: inline-flex; align-items: center; gap: 8px; }
+  .pc-btn:hover { background: var(--kk-primary-dark); }
+
+  /* ---------- 面包屑 ---------- */
+  .pc-crumb { padding: 24px 0 8px; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-medium); }
+  .pc-crumb a { color: var(--kk-primary-dark); cursor: pointer; }
+  .pc-crumb a:hover { text-decoration: underline; }
+
+  /* ---------- 為什麼選擇 KKday：白底 4 欄橫排（Figma 2968-67063，無卡片） ---------- */
+  .pc-why { padding: 40px 0 0; }
+  .pc-why .sec-t { margin-bottom: 24px; }
+  .pc-whys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .pc-whyc { display: flex; gap: 12px; align-items: flex-start; }
+  .pc-whyc .ic { width: 40px; height: 40px; }
+  .pc-whyc .tx { display: flex; flex-direction: column; gap: 4px; }
+  .pc-whyc b { font-size: 16px; line-height: 24px; font-weight: 600; }
   .pc-whyc p { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
 
-  /* ---------- eSIM 安裝指南：兩個等寬入口卡 ---------- */
-  .pc-guides { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .pc-guide { height: 120px; display: flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid var(--kk-border-lighter); border-radius: 16px; background: #fff; font-size: 18px; line-height: 26px; font-weight: 600; box-shadow: var(--el-card); transition: border-color .15s, box-shadow .15s, transform .2s; }
-  .pc-guide:hover { border-color: var(--kk-primary-medium); box-shadow: var(--el-hover); transform: translateY(-2px); }
+  /* ---------- eSIM 安裝指南：標題 + 兩個入口同排（Figma 2968-67063） ---------- */
+  .pc-guide-row { padding: 48px 0 0; display: flex; align-items: center; gap: 24px; }
+  .pc-guide { height: 48px; display: inline-flex; align-items: center; gap: 8px; padding: 0 20px;
+    border: 1px solid var(--kk-border-lighter); border-radius: 8px; background: #fff; font-size: 16px; line-height: 24px; transition: border-color .15s, box-shadow .15s; }
+  .pc-guide:hover { border-color: var(--kk-primary-medium); box-shadow: var(--el-card); }
+  .pc-guide .ic { width: 24px; height: 24px; }
 
-  /* ---------- 常見問題：雙欄手風琴 ---------- */
-  .pc-faq { padding: 64px 0; }
-  .pc-faq-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 24px; align-items: start; }
-  .pc-faq-item { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 0 20px; transition: border-color .15s, box-shadow .15s; }
-  .pc-faq-item:hover { border-color: var(--kk-border-light); }
-  .pc-faq-item.open { border-color: var(--kk-primary-light); box-shadow: var(--el-card); }
-  .pc-faq-q { width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px 0; }
+  /* ---------- 常見問題：整寬單欄手風琴（Figma 2968-67063） ---------- */
+  .pc-faq { padding: 48px 0 56px; }
+  .pc-faq-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .pc-faq-head .more { font-size: 14px; line-height: 20px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .pc-faq-item { border-bottom: 1px solid var(--kk-border-lighter); }
+  .pc-faq-q { width: 100%; display: flex; align-items: center; gap: 16px; padding: 20px 0; }
   .pc-faq-q .q { flex: 1 1 0; font-size: 16px; line-height: 24px; font-weight: 600; }
   .pc-faq-q .chev { transition: transform .2s ease; }
   .pc-faq-item.open .pc-faq-q .chev { transform: rotate(180deg); }
-  .pc-faq-a { display: none; padding: 0 0 18px; font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
+  .pc-faq-a { display: none; padding: 0 0 20px; font-size: 14px; line-height: 22px; color: var(--kk-text-darker); }
   .pc-faq-item.open .pc-faq-a { display: block; }
 
-  /* ---------- 探索更多（沿用 Figma 2357-115991 結構）：#FAFAFA 通欄 ---------- */
-  .pc-explore { background: var(--kk-surface-lighter); padding: 64px 0 80px; }
-  .pc-explore .col { display: flex; flex-direction: column; gap: 8px; }
-  .pc-ex-title { font-size: 28px; line-height: 36px; font-weight: 600; color: var(--kk-text-darker); display: flex; align-items: center; gap: 8px; }
-  .pc-ex-title .ic { width: 28px; height: 28px; }
-  .pc-ex-desc { font-size: 16px; line-height: 24px; color: var(--kk-text-dark); }
-  .pc-ex-search { margin-top: 16px; width: 832px; height: 56px; display: flex; align-items: center; gap: 16px; padding: 0 20px;
-    background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 12px; box-shadow: var(--el-card); }
-  .pc-ex-search .dest { display: flex; align-items: center; gap: 6px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); white-space: nowrap; }
-  .pc-ex-search .sep { width: 1px; height: 24px; background: var(--kk-border-light); }
-  .pc-ex-search .pick { flex: 1 1 0; display: flex; align-items: center; gap: 8px; font-size: 16px; line-height: 24px; color: var(--kk-text-medium); }
-  .pc-ex-body { display: flex; gap: 32px; align-items: flex-start; margin-top: 24px; }
-  .pc-ex-side { flex: 0 0 245px; display: flex; flex-direction: column; gap: 16px; }
-  .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-  .pc-fbox .fh { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
-  .pc-fdate { flex-direction: row; align-items: center; gap: 12px; padding: 14px 20px; }
-  .pc-fdate .ic img { width: 20px; height: 20px; }
-  .pc-fdate span:last-child { flex: 1 1 0; text-align: center; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
-  .pc-cb { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  /* ---------- 探索更多（Figma 2968-67063：版心 1170、左篩選欄 281 + 主列表） ---------- */
+  .pc-explore { background: var(--kk-surface-light); padding: 48px 0 64px; }
+  .pc-ex-title { font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 24px; }
+  .pc-ex-picks { height: 48px; display: flex; align-items: center; gap: 16px; padding: 0 20px; margin-bottom: 24px;
+    background: #fff; border-radius: 999px; box-shadow: var(--el-card); }
+  .pc-ex-picks .pick { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pc-ex-picks .pick:hover { color: var(--kk-primary-dark); }
+  .pc-ex-picks .sep { width: 1px; height: 16px; background: var(--kk-border-light); }
+  .pc-ex-body { display: flex; gap: 32px; align-items: flex-start; }
+  .pc-ex-side { flex: 0 0 281px; display: flex; flex-direction: column; gap: 16px; }
+  .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+  .pc-fbox .fh { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .pc-fdate { flex-direction: row; align-items: stretch; padding: 0; overflow: hidden; }
+  .pc-fdate .cell { width: 64px; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--kk-border-lighter); padding: 20px 0; }
+  .pc-fdate .lb { flex: 1 1 0; display: flex; align-items: center; justify-content: center; font-size: 16px; line-height: 24px; font-weight: 600; }
+  .pc-cb { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; line-height: 20px; }
   .pc-cb .box { width: 20px; height: 20px; border: 1.5px solid var(--kk-border-light); border-radius: 4px; background: #fff; position: relative; flex: 0 0 auto; }
   .pc-cb:hover .box { border-color: var(--kk-primary-medium); }
   .pc-cb.on .box { background: var(--kk-primary-medium); border-color: var(--kk-primary-medium); }
   .pc-cb.on .box::after { content: ''; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
-  .pc-cb + .pc-cb { margin-top: -4px; }
-  .pc-pv { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); margin-top: -8px; }
-  .pc-range { position: relative; height: 24px; margin: 0 8px; }
+  .pc-pv { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); margin-top: -12px; }
+  .pc-range { position: relative; height: 24px; margin: 0 6px; }
   .pc-range .track { position: absolute; left: 0; right: 0; top: 11px; height: 2px; background: var(--kk-border-lighter); border-radius: 2px; }
   .pc-range .fill { position: absolute; top: 11px; height: 2px; background: var(--kk-primary-medium); border-radius: 2px; }
   .pc-range input[type=range] { position: absolute; left: 0; width: 100%; top: 0; margin: 0; height: 24px; -webkit-appearance: none; appearance: none; background: none; pointer-events: none; }
-  .pc-range input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; pointer-events: auto; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 1.5px solid var(--kk-border-light); box-shadow: 0 1px 4px rgba(38,50,56,.16); cursor: pointer; }
-  .pc-range input[type=range]::-moz-range-thumb { pointer-events: auto; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 1.5px solid var(--kk-border-light); cursor: pointer; }
+  .pc-range input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; pointer-events: auto; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 1.5px solid var(--kk-border-light); box-shadow: 0 1px 4px rgba(38,50,56,.16); cursor: pointer; }
+  .pc-range input[type=range]::-moz-range-thumb { pointer-events: auto; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 1.5px solid var(--kk-border-light); cursor: pointer; }
   .pc-ex-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-  .pc-ex-head { background: #fff; border-radius: 12px; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .pc-ex-cnt { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
-  .pc-ex-cnt i { font-style: normal; font-weight: 600; color: var(--kk-primary-dark); font-size: 18px; margin-right: 4px; }
-  .pc-sort { display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .pc-sort .lb { color: var(--kk-text-dark); }
-  .pc-sort .sp { width: 1px; height: 14px; background: var(--kk-border-light); }
-  .pc-sort button { display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-darker); }
-  .pc-sort button:hover { color: var(--kk-primary-dark); }
-  .pc-sort button .ic img, .pc-sort button .ic svg { width: 14px; height: 14px; }
-  .pc-sort button.sel { color: var(--kk-primary-dark); font-weight: 600; }
+  .pc-ex-cntbox { background: #fff; border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .pc-ex-cnt { font-size: 16px; line-height: 24px; }
+  .pc-ex-cnt i { font-style: normal; font-weight: 600; color: var(--kk-primary-dark); margin-right: 4px; }
+  .pc-ftag { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px;
+    border: 1px solid var(--kk-border-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
+  .pc-ftag .x { display: inline-flex; width: 14px; height: 14px; }
+  .pc-ftag-clear { height: 28px; padding: 0 12px; border-radius: 999px; background: var(--kk-surface-light); color: var(--kk-text-dark); font-size: 12px; }
+  .pc-sortbox { background: #fff; border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 16px; font-size: 14px; line-height: 20px; }
+  .pc-sortbox .lb { color: var(--kk-text-darker); }
+  .pc-sortbox .sp { width: 1px; height: 16px; background: var(--kk-border-light); }
+  .pc-sortbox button { display: inline-flex; align-items: center; gap: 6px; color: var(--kk-text-darker); }
+  .pc-sortbox button:hover { color: var(--kk-primary-dark); }
+  .pc-sortbox button .ic { width: 16px; height: 16px; }
+  .pc-sortbox button.sel { color: var(--kk-primary-dark); font-weight: 600; }
   .pc-ex-list { display: flex; flex-direction: column; gap: 16px; }
-  .pc-empty { padding: 48px 0; text-align: center; color: var(--kk-text-medium); }
-  .pc-pcard { display: flex; background: #fff; border-radius: 12px; overflow: hidden; text-align: left; width: 100%; transition: box-shadow .15s, transform .15s; }
+  .pc-empty { padding: 48px 0; text-align: center; color: var(--kk-text-medium); background: #fff; border-radius: 12px; }
+  /* 商品卡（Figma 2968-67063）：左 240 方圖 + 活動標籤，右標題/評分/標籤/價格 */
+  .pc-pcard { position: relative; display: flex; gap: 20px; background: #fff; border-radius: 12px; padding: 16px; width: 100%; transition: box-shadow .15s, transform .15s; }
   .pc-pcard:hover { box-shadow: var(--el-hover); transform: translateY(-2px); }
-  .pc-pcard .ph { flex: 0 0 266px; aspect-ratio: 16 / 9; background: var(--kk-surface-light); }
-  .pc-pcard .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .pc-pcard .bd { flex: 1 1 0; min-width: 0; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
-  .pc-pcard .tt { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .pc-ptags { display: flex; gap: 6px; flex-wrap: wrap; }
-  .pc-ptag { padding: 2px 6px; border-radius: 4px; background: #EAF4FE; color: #2D84D6; font-size: 12px; line-height: 16px; font-weight: 600; }
-  .pc-pcard .ds { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .pc-pmeta { display: flex; align-items: center; gap: 12px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  .pc-pmeta span { display: inline-flex; align-items: center; gap: 4px; }
-  .pc-pmeta .ic svg, .pc-pmeta .ic img { width: 14px; height: 14px; }
-  .pc-pfoot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding-top: 4px; }
-  .pc-prate { display: flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  .pc-stars { display: inline-flex; gap: 1px; }
-  .pc-stars .ic svg, .pc-stars .ic img { width: 14px; height: 14px; }
-  .pc-prate .sp { color: var(--kk-text-light); }
-  .pc-prate .ic-fire svg, .pc-prate .ic-fire img { width: 14px; height: 14px; }
-  .pc-off { padding: 1px 6px; border-radius: 3px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
+  .pc-pcard .ph { position: relative; flex: 0 0 240px; height: 240px; border-radius: 8px; overflow: hidden; background: var(--kk-surface-light); }
+  .pc-pcard .ph img { width: 100%; height: 100%; object-fit: cover; }
+  .pc-pcard .ph .ovl { position: absolute; left: 8px; top: 8px; display: flex; gap: 6px; }
+  .pc-pcard .ph .ovl span { padding: 3px 8px; border-radius: 4px; background: rgba(33,33,33,.72); color: #fff; font-size: 12px; line-height: 16px; }
+  .pc-pcard .bd { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  .pc-pcard .tt { font-size: 18px; line-height: 26px; font-weight: 600; padding-right: 40px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .pc-pcard .heart { position: absolute; right: 20px; top: 20px; }
+  .pc-prate { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pc-prate .ic { width: 16px; height: 16px; }
+  .pc-prate b { font-size: 16px; color: var(--kk-text-darker); }
+  .pc-ptags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pc-ptag { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 8px; border-radius: 4px; background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 12px; line-height: 16px; }
+  .pc-ptag .ic { width: 14px; height: 14px; }
+  .pc-pfoot { margin-top: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .pc-off { padding: 2px 8px; border-radius: 4px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
   .pc-pprice { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
   .pc-pprice .was { font-size: 14px; line-height: 20px; color: var(--kk-text-medium); text-decoration: line-through; }
-  .pc-pprice .now { font-size: 20px; line-height: 28px; font-weight: 700; color: var(--kk-text-darker); }
-  .pc-pprice .now small { font-size: 14px; font-weight: 400; margin-left: 2px; }
-  .pc-pager { display: flex; justify-content: center; gap: 4px; padding: 16px 0 0; }
-  .pc-pager button { min-width: 32px; height: 32px; padding: 0 10px; border-radius: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); background: #fff; border: 1px solid var(--kk-border-lighter); }
-  .pc-pager button:hover { border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
-  .pc-pager button.sel { background: var(--kk-primary-medium); border-color: var(--kk-primary-medium); color: #fff; }
+  .pc-pprice .now { font-size: 22px; line-height: 30px; font-weight: 700; }
+  .pc-pager { display: flex; justify-content: center; gap: 12px; padding: 16px 0 0; }
+  .pc-pager button { min-width: 32px; height: 32px; padding: 0 10px; border-radius: 4px; font-size: 14px; line-height: 20px; background: #fff; }
+  .pc-pager button:hover { color: var(--kk-primary-dark); }
+  .pc-pager button.sel { background: var(--kk-primary-medium); color: #fff; }
+  .pc-pager button.nav { border: 1px solid var(--kk-border-lighter); display: inline-flex; align-items: center; justify-content: center; }
 
-  /* ---------- footer ---------- */
+  /* ---------- 目的地選擇彈窗（Figma 3076-56669 / 3096-58066 / 3096-58908）：640×800、三模式 ---------- */
+  .pc-mask { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.4); display: none; }
+  .pc-mask.open { display: block; }
+  .pc-dlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
+    width: 640px; max-height: min(800px, calc(100vh - 80px)); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
+  .pc-dlg.open { display: flex; }
+  .pc-dlg-hd { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; }
+  .pc-dlg-hd .t { font-size: 18px; line-height: 26px; font-weight: 600; }
+  .pc-dlg-search { flex: 0 0 auto; margin: 16px 24px 0; height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 16px;
+    background: var(--kk-surface-light); border-radius: 999px; }
+  .pc-dlg-search input { flex: 1 1 0; min-width: 0; border: 0; background: none; outline: 0; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pc-dlg-search input::placeholder { color: var(--kk-text-medium); }
+  .pc-dlg-modes { flex: 0 0 auto; display: flex; gap: 10px; padding: 20px 24px 16px; }
+  .pc-mode { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 999px;
+    border: 1px solid var(--kk-border-light); background: #fff; font-size: 14px; line-height: 20px; }
+  .pc-mode .ic-on { display: none; }
+  .pc-mode.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); color: var(--kk-primary-dark); font-weight: 600; }
+  .pc-mode.sel .ic-off { display: none; }
+  .pc-mode.sel .ic-on { display: inline-flex; }
+  .pc-dlg-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 24px 24px; }
+  .dlg-group { padding-top: 16px; }
+  .dlg-group .gh { display: flex; align-items: center; gap: 6px; font-size: 16px; line-height: 24px; font-weight: 600; margin-bottom: 12px; }
+  .dlg-group .gh .gact { margin-left: auto; display: inline-flex; padding: 2px; }
+  .dlg-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .dlg-chip { height: 36px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px;
+    border: 1px solid var(--kk-border-light); background: #fff; font-size: 14px; line-height: 20px; }
+  .dlg-chip:hover { border-color: var(--kk-primary-medium); }
+  .dlg-chip.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); color: var(--kk-primary-dark); }
+  .dlg-tabs { position: sticky; top: 0; z-index: 2; background: #fff; display: flex; gap: 0; margin-top: 16px; border-bottom: 1px solid var(--kk-border-lighter); }
+  .dlg-tab { position: relative; padding: 12px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
+  .dlg-tab.sel { color: var(--kk-primary-dark); font-weight: 600; }
+  .dlg-tab.sel::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 1px; }
+  .dlg-rows { display: flex; flex-direction: column; gap: 12px; }
+  .dlg-row { position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-height: 64px;
+    border: 1px solid var(--kk-border-lighter); border-radius: 8px; background: #fff; }
+  .dlg-row:hover { border-color: var(--kk-primary-medium); }
+  .dlg-row.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); }
+  .dlg-row .rt { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left; }
+  .dlg-row .rn { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .dlg-row .rd { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dlg-row .cnt { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  /* ⓘ 包含國家 tooltip（Figma 3096-58630：白卡雙欄列表） */
+  .dlg-tip { position: absolute; right: -8px; top: calc(100% + 8px); z-index: 5; width: 349px; background: #fff; border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 16px; display: none; }
+  .dlg-row .dlg-tip { cursor: default; }
+  .dlg-tip.show { display: block; }
+  .dlg-tip ul { columns: 2; column-gap: 24px; padding-left: 18px; font-size: 12px; line-height: 20px; color: var(--kk-text-darker); }
+  .dlg-hint { flex: 0 0 auto; display: flex; align-items: center; gap: 16px; padding: 8px 24px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .dlg-hint b { color: var(--kk-primary-dark); }
+  .pc-dlg-ft { flex: 0 0 auto; display: flex; gap: 16px; padding: 24px; border-top: 1px solid var(--kk-border-lighter); }
+  .pc-dlg-ft button { flex: 1 1 0; height: 48px; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+  .pc-dlg-ft .ghost { border: 1px solid var(--kk-border-light); color: var(--kk-text-darker); }
+  .pc-dlg-ft .ok { background: var(--kk-primary-button); color: #fff; }
+  .pc-dlg-ft .ok:disabled { background: rgba(26,182,193,.4); cursor: default; }
+  .pc-dlg[data-mode="country"] .pc-dlg-ft, .pc-dlg[data-mode="country"] .dlg-hint,
+  .pc-dlg[data-mode="region"] .pc-dlg-ft, .pc-dlg[data-mode="region"] .dlg-hint { display: none; }
+
+  /* ---------- footer（沿用） ---------- */
   .pc-foot { background: #444; padding: 50px 80px; color: #fff; }
   .pc-foot-top { display: flex; align-items: flex-start; justify-content: space-between; }
   .pc-social { display: flex; gap: 4px; }
@@ -257,10 +341,13 @@
   <header class="pc-header">
     <div class="col">
       <span class="pc-logo">{{PC_logo}}</span>
+      <button class="pc-hsearch" data-toast="pc"><span class="ic ic-16">{{IC_searchGrey}}</span>搜尋景點、地區或城市</button>
       <div class="pc-right">
         <button class="it app" data-toast="pc"><span class="ic ic-18">{{PC_mobile}}</span>下載 App 享優惠</button>
         <button class="it" data-toast="pc">繁體中文<span class="ic ic-18">{{PC_arrowDown18}}</span></button>
         <button class="it" data-toast="pc">TWD<span class="ic ic-18">{{PC_arrowDown18}}</span></button>
+        <button class="it" data-toast="pc" aria-label="購物車"><span class="ic ic-24">{{PC_cart}}</span></button>
+        <button class="coin" data-toast="pc"><span class="ic ic-20">{{PC_coin}}</span>999</button>
         <button class="avatar" data-toast="pc"><img alt="" src="{{PC_avatar}}"></button>
       </div>
     </div>
@@ -268,139 +355,155 @@
   <nav class="pc-cat">
     <div class="col">
       <div class="pc-cat-list">
+        <button class="pc-cat-item sel" data-toast="pc"><span class="tx">eSIM/WIFI</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">住宿</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">景點門票</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">觀光行程</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">美食 &amp; 生鮮</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">戶外活動</span><span class="bar"></span></button>
-        <button class="pc-cat-item sel" data-toast="pc"><span class="tx">eSIM/WIFI</span><span class="bar"></span></button>
-        <button class="pc-cat-item" data-toast="pc"><span class="tx">台灣高鐵國旅聯票</span><span class="bar"></span></button>
+        <button class="pc-cat-item" data-toast="pc"><span class="tx">高鐵國旅聯票</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">全球租車</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">舒壓 &amp; 放鬆</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">伴手禮</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">活動 &amp; 展覽</span><span class="bar"></span></button>
         <button class="pc-cat-item" data-toast="pc"><span class="tx">工作坊 &amp; 在地文化</span><span class="bar"></span></button>
-        <button class="pc-cat-item" data-toast="pc"><span class="tx">旅行服務</span><span class="bar"></span></button>
       </div>
       <span class="pc-cat-fade"></span>
       <button class="pc-cat-more ic ic-24" data-toast="pc" aria-label="更多分類">{{PC_arrowRight24}}</button>
     </div>
   </nav>
 
-  <!-- hero：標題 + 副標 + 搜尋卡（目的地 / 用卡天數 / 流量 / 搜尋）；右側地球插畫 -->
-  <div class="pc-hero">
+  <!-- hero：未選（標題+搜尋卡）/ 已選（目的地 pill + 天數流量面板） -->
+  <div class="pc-hero" id="pcHero" data-state="empty">
+    <div class="pc-hero-art" aria-hidden="true">{{HERO_SVG}}</div>
     <div class="col">
-      <div class="pc-hero-art" aria-hidden="true">{{HERO_SVG}}</div>
       <h1 class="h1">全球上網</h1>
       <div class="sub">輕鬆出發，無憂暢遊全球</div>
+      <button class="pc-dest-pill" id="pcDestPill"><span class="ic ic-20">{{PC_location20}}</span><span id="pcDestName">目的地</span><span class="ic ic-20 chev">{{PC_arrowDown20}}</span></button>
       <div class="pc-search">
         <div class="pc-tabs" role="tablist">
           <button class="pc-tab sel" role="tab"><span class="tb-in"><span class="lb">eSIM</span><span class="ul"></span></span></button>
           <button class="pc-tab" role="tab" data-pc-anchor="sim"><span class="tb-in"><span class="lb">SIM卡</span></span></button>
-          <button class="pc-tab" role="tab" data-pc-anchor="wifi"><span class="tb-in"><span class="lb">WIFI分享器</span></span></button>
+          <button class="pc-tab" role="tab" data-pc-anchor="wifi"><span class="tb-in"><span class="lb">WIFI</span></span></button>
         </div>
         <div class="pc-card">
-          <!-- 目的地：下拉面板 = mweb 目的地 sheet 的 PC 版（熱門 + 洲別） -->
-          <div class="pc-sel" id="selDest"><div class="lb">目的地</div>
-            <button class="box" data-pop="selDest"><span class="ic ic-20">{{PC_location20}}</span><span class="ph">請選擇目的地</span><span class="ic ic-20 chev">{{PC_arrowDown20}}</span></button>
-            <div class="pc-pop pc-pop-dest">
-              <div class="ph-t">熱門目的地</div>
-              <div class="pc-chips" id="destHot"></div>
-              <div class="cols" id="destCols"></div>
+          <!-- 未選目的地：搜尋入口 + 熱門 + 最近選擇 -->
+          <div class="pc-find" id="pcFind">
+            <button class="pc-find-input" data-dlg-open><span class="ic ic-20">{{PC_location20}}</span><span class="ph">請先選擇目的地</span><span class="ic ic-20">{{PC_searchCyan}}</span></button>
+            <div class="pc-hotchips" id="pcHotChips"></div>
+            <div class="pc-recent" id="pcRecent" hidden>
+              <div class="rh"><span>最近選擇</span><button class="gact" id="pcRecentClear" aria-label="清除最近選擇"><span class="ic ic-16">{{IC_trash}}</span></button></div>
+              <div class="pc-hotchips" id="pcRecentChips"></div>
             </div>
           </div>
-          <!-- 用卡天數：1–30 天 -->
-          <div class="pc-sel" id="selDays"><div class="lb">用卡天數</div>
-            <button class="box" data-pop="selDays"><span class="ic ic-20">{{PC_calendar20}}</span><span class="ph">請選擇天數</span><span class="ic ic-20 chev">{{PC_arrowDown20}}</span></button>
-            <div class="pc-pop pc-pop-days"><div class="ph-t">選擇天數</div><div class="pc-chips" id="daysChips"></div></div>
-          </div>
-          <!-- 流量：每日 / 總量 / 無限（與 mweb 同一份選項） -->
-          <div class="pc-sel" id="selFlow"><div class="lb">流量</div>
-            <button class="box" data-pop="selFlow"><span class="ic ic-20">{{PC_swap20}}</span><span class="ph">請選擇流量</span><span class="ic ic-20 chev">{{PC_arrowDown20}}</span></button>
-            <div class="pc-pop pc-pop-flow">
-              <div class="ftabs" id="flowTabs"></div>
-              <div class="fnote" id="flowNote"></div>
-              <div class="fopts" id="flowOpts"></div>
+          <!-- 已選目的地：相容提示 + 選擇天數 / 選擇流量 + 摘要（Figma 3096-60605） -->
+          <div class="pc-panel" id="pcPanel">
+            <div class="pc-note"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
+            <div class="pc-panel-grid">
+              <div class="pc-pane pc-pane-days">
+                <div class="pt">選擇天數</div>
+                <div class="pc-days-list" id="pcDaysList"></div>
+              </div>
+              <div class="pc-pane pc-pane-flow">
+                <div class="pc-flow-head">
+                  <span class="pt">選擇流量</span>
+                  <div class="pc-ftabs" id="pcFlowTabs"></div>
+                  <button class="pc-flow-help" data-toast="old">不知道怎麼選<span class="ic ic-16">{{IC_questionDark}}</span></button>
+                </div>
+                <div class="pc-flow-note" id="pcFlowNote"></div>
+                <div class="pc-flow-grid" id="pcFlowGrid"></div>
+              </div>
+            </div>
+            <div class="pc-panel-foot">
+              <span class="sum">已選<b id="pcSummary">—</b></span>
+              <button class="pc-btn" id="pcSearchBtn">搜尋套餐</button>
             </div>
           </div>
-          <button class="pc-btn" id="pcSearch"><span class="ic ic-20">{{IC_search}}</span>搜尋套餐</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 為什麼選擇 KKday -->
+  <!-- 面包屑 -->
+  <div class="col"><div class="pc-crumb"><a data-toast="pc">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>eSIM/WIFI</span></div></div>
+
+  <!-- 為什麼選擇 KKday：4 欄橫排 -->
   <section class="pc-why">
     <div class="col">
-      <div class="sec-head"><div><div class="t">為什麼選擇KKday？</div></div></div>
+      <div class="sec-t">為什麼選擇KKday？</div>
       <div class="pc-whys">
-        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_tours}}</span></span><b>簡單易用</b><p>透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</p></div>
-        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_cruise}}</span></span><b>靈活彈性</b><p>天數與流量自由組合，行程有變也能隨時加購延長。</p></div>
-        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_travel}}</span></span><b>80+ 國家覆蓋</b><p>一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</p></div>
-        <div class="pc-whyc"><span class="ico"><span class="ic">{{PICTO_tours}}</span></span><b>客服支援</b><p>24 小時中文客服線上，安裝與連線問題隨時協助。</p></div>
+        <div class="pc-whyc"><span class="ic">{{PICTO_tours}}</span><span class="tx"><b>簡單易用</b><p>透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</p></span></div>
+        <div class="pc-whyc"><span class="ic">{{PICTO_cruise}}</span><span class="tx"><b>靈活彈性</b><p>天數與流量自由組合，行程有變也能隨時加購延長。</p></span></div>
+        <div class="pc-whyc"><span class="ic">{{PICTO_travel}}</span><span class="tx"><b>80+ 國家覆蓋</b><p>一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</p></span></div>
+        <div class="pc-whyc"><span class="ic">{{PICTO_tours}}</span><span class="tx"><b>客服支援</b><p>24 小時中文客服線上，安裝與連線問題隨時協助。</p></span></div>
       </div>
     </div>
   </section>
 
-  <!-- eSIM 安裝指南（同 mweb：iOS / Android 兩個入口） -->
-  <section class="sec">
-    <div class="col">
-      <div class="sec-head"><div><div class="t">eSIM 安裝指南</div></div></div>
-      <div class="pc-guides">
-        <button class="pc-guide" data-toast="pc"><span class="ic ic-32">{{PC_apple}}</span><span>iOS</span></button>
-        <button class="pc-guide" data-toast="pc"><span class="ic ic-32">{{PC_android}}</span><span>Android</span></button>
-      </div>
+  <!-- eSIM 安裝指南：標題 + 兩入口同排 -->
+  <div class="col">
+    <div class="pc-guide-row">
+      <span class="sec-t">eSIM 安裝指南</span>
+      <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_apple}}</span>iOS</button>
+      <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_android}}</span>Android</button>
     </div>
-  </section>
+  </div>
 
-  <!-- 常見問題：雙欄 -->
+  <!-- 常見問題：整寬單欄 -->
   <section class="pc-faq">
     <div class="col">
-      <div class="sec-head"><div><div class="t">常見問題</div></div><button class="more" data-toast="pc">查看更多<span class="ic ic-16">{{PC_arrowRight14}}</span></button></div>
-      <div class="pc-faq-grid">
-        <div class="pc-faq-item open">
-          <button class="pc-faq-q"><span class="q">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
-          <div class="pc-faq-a">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 &gt; 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
-        </div>
-        <div class="pc-faq-item">
-          <button class="pc-faq-q"><span class="q">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
-          <div class="pc-faq-a">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
-        </div>
-        <div class="pc-faq-item">
-          <button class="pc-faq-q"><span class="q">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
-          <div class="pc-faq-a">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
-        </div>
-        <div class="pc-faq-item">
-          <button class="pc-faq-q"><span class="q">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
-          <div class="pc-faq-a">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday App 聯絡 24 小時線上客服。</div>
-        </div>
-        <div class="pc-faq-item">
-          <button class="pc-faq-q"><span class="q">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
-          <div class="pc-faq-a">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
-        </div>
+      <div class="pc-faq-head"><span class="sec-t">常見問題</span><button class="more" data-toast="pc">查看更多</button></div>
+      <div class="pc-faq-item open">
+        <button class="pc-faq-q"><span class="q">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+        <div class="pc-faq-a">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 &gt; 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
+      </div>
+      <div class="pc-faq-item">
+        <button class="pc-faq-q"><span class="q">天數如何計算、什麼時候開始生效？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+        <div class="pc-faq-a">抵達目的地並首次連上當地網路才開始計算，按每 24 小時為一天。提前安裝不會啟用，可放心在出發前完成設定。</div>
+      </div>
+      <div class="pc-faq-item">
+        <button class="pc-faq-q"><span class="q">可以開熱點分享給其他裝置嗎？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+        <div class="pc-faq-a">可以，所有方案均支援個人熱點，流量與主裝置共用；無限流量方案依公平使用原則提供高速流量。</div>
+      </div>
+      <div class="pc-faq-item">
+        <button class="pc-faq-q"><span class="q">安裝後無法上網怎麼辦？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+        <div class="pc-faq-a">請確認已開啟「資料漫遊」，並將 eSIM 設為行動資料線路；若仍無法連線，可透過 KKday App 聯絡 24 小時線上客服。</div>
+      </div>
+      <div class="pc-faq-item">
+        <button class="pc-faq-q"><span class="q">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
+        <div class="pc-faq-a">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
       </div>
     </div>
   </section>
 
-  <!-- 探索更多（Figma 2357-115991 + 2357-115994）：依現行 PC 列表頁重建為可互動 HTML -->
+  <!-- 探索更多：左篩選欄 + 排序 + 商品列表（Figma 2968-67063） -->
   <section class="pc-explore" id="pcExplore">
-    <div class="col">
-      <div class="pc-ex-title"><span class="ic">{{IC_sparkles}}</span>探索更多</div>
-      <p class="pc-ex-desc">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</p>
-      <div class="pc-ex-search">
-        <button class="dest" data-toast="old">請選擇目的地<span class="ic ic-18">{{PC_arrowDown18}}</span></button>
+    <div class="colw">
+      <div class="pc-ex-title">探索更多</div>
+      <div class="pc-ex-picks">
+        <button class="pick" data-dlg-open>請選擇目的地<span class="ic ic-16">{{IC_arrowDown}}</span></button>
         <span class="sep"></span>
-        <button class="pick" data-toast="old"><span class="ic ic-18">{{IC_searchGrey}}</span>請選擇領取/郵寄地</button>
+        <button class="pick" data-toast="old">請選擇領取/郵寄地<span class="ic ic-16">{{IC_arrowDown}}</span></button>
       </div>
       <div class="pc-ex-body">
         <aside class="pc-ex-side">
-          <div class="pc-fbox" id="pcTypeBox">
-            <div class="fh">商品類別</div>
-            <button class="pc-cb" data-type="eSIM"><span class="box"></span>eSIM</button>
-            <button class="pc-cb" data-type="SIM Card"><span class="box"></span>SIM卡</button>
-            <button class="pc-cb" data-type="WiFi"><span class="box"></span>Wi-Fi</button>
+          <div class="pc-fbox pc-fdate" style="cursor:pointer" data-toast="old">
+            <span class="cell"><span class="ic ic-24">{{PC_calendar20}}</span></span>
+            <span class="lb">出發日期</span>
           </div>
-          <button class="pc-fbox pc-fdate" data-toast="old"><span class="ic ic-20">{{PC_calendar20}}</span><span>出發日期</span></button>
+          <div class="pc-fbox" id="pcTypeBox">
+            <div class="fh">通訊產品</div>
+            <button class="pc-cb" data-type="WiFi"><span class="box"></span>Wifi</button>
+            <button class="pc-cb" data-type="SIM Card"><span class="box"></span>SIM Card</button>
+            <button class="pc-cb" data-type="eSIM"><span class="box"></span>eSIM</button>
+          </div>
+          <div class="pc-fbox">
+            <div class="fh">領取方式</div>
+            <button class="pc-cb" data-mock><span class="box"></span>機場領取</button>
+            <button class="pc-cb" data-mock><span class="box"></span>門市領取</button>
+            <button class="pc-cb" data-mock><span class="box"></span>郵寄</button>
+            <button class="pc-cb" data-mock><span class="box"></span>QRcode</button>
+          </div>
           <div class="pc-fbox">
             <div class="fh">商品特性</div>
             <button class="pc-cb" data-mock><span class="box"></span>含語音通話</button>
@@ -410,30 +513,31 @@
           </div>
           <div class="pc-fbox">
             <div class="fh">旅遊天數</div>
-            <button class="pc-cb" data-mock><span class="box"></span>1-7天</button>
-            <button class="pc-cb" data-mock><span class="box"></span>8-14天</button>
+            <button class="pc-cb" data-mock><span class="box"></span>1–7天</button>
+            <button class="pc-cb" data-mock><span class="box"></span>8–14天</button>
             <button class="pc-cb" data-mock><span class="box"></span>15天以上</button>
           </div>
           <div class="pc-fbox">
-            <div class="fh">價錢 (NT$)</div>
-            <div class="pc-pv" id="pcPv">1 – 2,500</div>
+            <div class="fh">價格區間 (NT$)</div>
+            <div class="pc-pv" id="pcPv">NT$0 – NT$12,000+</div>
             <div class="pc-range"><div class="track"></div><div class="fill" id="pcFill"></div>
-              <input type="range" id="pcRmin" min="1" max="2500" step="1" value="1"><input type="range" id="pcRmax" min="1" max="2500" step="1" value="2500"></div>
+              <input type="range" id="pcRmin" min="0" max="12000" step="100" value="0"><input type="range" id="pcRmax" min="0" max="12000" step="100" value="12000"></div>
           </div>
         </aside>
         <div class="pc-ex-main">
-          <div class="pc-ex-head">
-            <div class="pc-ex-cnt"><i id="pcExCnt">10</i>項體驗行程</div>
-            <div class="pc-sort" id="pcSort">
-              <span class="lb">排序</span><span class="sp"></span>
-              <button class="sel" data-sort="0"><span class="ic">{{IC_thumbsUp}}</span>KKday 推薦</button><span class="sp"></span>
-              <button data-sort="3"><span class="ic">{{IC_fireHot}}</span>熱門程度</button><span class="sp"></span>
-              <button data-sort="2"><span class="ic">{{IC_star}}</span>用戶評價</button><span class="sp"></span>
-              <button data-sort="1">$ 價格：低到高</button>
-            </div>
+          <div class="pc-ex-cntbox">
+            <span class="pc-ex-cnt"><i id="pcExCnt">162</i>個結果</span>
+            <span id="pcFtags" style="display:contents"></span>
+          </div>
+          <div class="pc-sortbox" id="pcSort">
+            <span class="lb">排序：</span><span class="sp"></span>
+            <button class="sel" data-sort="0"><span class="ic">{{IC_thumbsUp}}</span>KKday 推薦</button><span class="sp"></span>
+            <button data-sort="3"><span class="ic">{{IC_fireHot}}</span>熱門程度</button><span class="sp"></span>
+            <button data-sort="2"><span class="ic">{{IC_starFill16}}</span>用戶評價（高至低）</button><span class="sp"></span>
+            <button data-sort="1">$ 價格（低至高）</button>
           </div>
           <div class="pc-ex-list" id="pcExList"></div>
-          <div class="pc-pager" id="pcPager"><button class="sel">1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button>›</button></div>
+          <div class="pc-pager" id="pcPager"><button class="sel">1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button class="nav"><span class="ic ic-16 rot90">{{IC_arrowRightDark}}</span></button></div>
         </div>
       </div>
     </div>
@@ -466,6 +570,24 @@
   </footer>
 </section>
 
+<!-- ============ 目的地選擇彈窗（三模式） ============ -->
+<div class="pc-mask" id="pcDlgMask"></div>
+<div class="pc-dlg" id="pcDlg" data-mode="country" role="dialog" aria-modal="true">
+  <div class="pc-dlg-hd"><span class="t">請選擇目的地</span><button id="pcDlgClose" aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button></div>
+  <div class="pc-dlg-search"><span class="ic ic-16">{{IC_searchGrey}}</span><input id="pcDlgQ" placeholder="輸入國家或地區名稱搜尋"></div>
+  <div class="pc-dlg-modes" id="pcDlgModes">
+    <button class="pc-mode sel" data-mode="country"><span class="ic ic-16 ic-off">{{IC_locationDark}}</span><span class="ic ic-16 ic-on">{{IC_locationLineCyan}}</span>國家/地區</button>
+    <button class="pc-mode" data-mode="region"><span class="ic ic-16 ic-off">{{IC_earthLine}}</span><span class="ic ic-16 ic-on">{{IC_earthCyan}}</span>多國區域</button>
+    <button class="pc-mode" data-mode="multi"><span class="ic ic-16 ic-off">{{IC_multi}}</span><span class="ic ic-16 ic-on">{{IC_multiCyan}}</span>多國自由選擇</button>
+  </div>
+  <div class="pc-dlg-bd" id="pcDlgBody"></div>
+  <div class="dlg-hint"><span>最多可選擇5個</span><span id="pcDlgSelInfo" hidden>已選擇 <b id="pcDlgSelCount">0</b> 個</span></div>
+  <div class="pc-dlg-ft">
+    <button class="ghost" id="pcDlgClear">清除</button>
+    <button class="ok" id="pcDlgOk" disabled>確定</button>
+  </div>
+</div>
+
 <div class="pc-toast" id="pcToast" role="status"></div>
 
 <script>
@@ -478,118 +600,257 @@
   }
   function h(html) { var w = document.createElement('div'); w.innerHTML = html.trim(); return w.firstElementChild; }
 
-  // ================= 搜尋卡：目的地 / 天數 / 流量（下拉面板 = mweb bottom sheet 的 PC 版） =================
-  var GEO = {
-    hot: ['日本', '韓國', '泰國', '新加坡', '澳大利亞', '迪拜', '法國', '義大利', '加拿大', '美國'],
-    groups: [
-      ['亞洲', ['日本', '韓國', '中國', '泰國', '新加坡', '馬來西亞', '越南', '菲律賓', '印度尼西亞', '香港', '澳門', '台灣']],
-      ['歐洲', ['法國', '義大利', '德國', '英國', '西班牙', '瑞士', '荷蘭', '希臘', '葡萄牙', '奧地利']],
-      ['美洲', ['美國', '加拿大', '墨西哥', '巴西', '阿根廷']],
-      ['大洋洲 / 中東', ['澳大利亞', '紐西蘭', '關島', '迪拜', '土耳其', '埃及']],
-      ['跨國方案', ['亞洲通', '東南亞', '歐洲通', '北美通', '環球通']]
-    ]
-  };
+  // ================= 目的地資料（與 mweb 共用 src/geo-data.js） =================
+  {{GEO_DATA}}
+  var HOT_HOME = ['日本', '韓國', '泰國', '新加坡', '澳大利亞', '迪拜', '法國', '亞洲通', '東南亞', '北歐地區'];
   var PLANS = {
-    daily: { lb: '每日流量', note: '每天固定額度，隔日重新計算', opts: [['500MB/天', 52], ['1GB/天', 82], ['2GB/天', 132], ['3GB/天', 172, '推薦'], ['5GB/天', 242], ['10GB/天', 320]] },
+    daily: { lb: '每日流量', note: '每天固定額度，隔日重新計算', opts: [['500MB/天', 52], ['600MB/天', 62], ['700MB/天', 72, '推薦'], ['800MB/天', 80], ['1GB/天', 82], ['2GB/天', 132], ['3GB/天', 172], ['4GB/天', 210], ['6GB/天', 268]] },
     total: { lb: '總流量', note: '整趟共用一個額度，每日用量自己控制', opts: [['共3GB', 258], ['共5GB', 358], ['共10GB', 498, '推薦'], ['共20GB', 758], ['共30GB', 1290], ['共50GB', 1790]] },
     unlimited: { lb: '無限流量', note: '沒有額度上限，天天放心用', opts: [['無限不降速', 168], ['無限流量高速', 128], ['無限到量降速', 78, '推薦'], ['無限流量輕速', 45]] }
   };
-  var sel = { dest: null, days: null, tab: 'daily', plan: null };
+  var sel = { dest: null, days: 5, tab: 'daily', plan: null };
 
-  function setSel(id, text) {
-    var el = document.getElementById(id);
-    el.classList.toggle('has', !!text);
-    el.querySelector('.ph').textContent = text || el.querySelector('.ph').getAttribute('data-ph');
+  // ================= hero：未選（搜尋卡）/ 已選（天數流量面板） =================
+  var HK = 'pc_hist_dest';
+  function histGet() { try { return JSON.parse(localStorage.getItem(HK) || '[]'); } catch (e) { return []; } }
+  function histAdd(n) {
+    var a = histGet().filter(function (x) { return x !== n; }); a.unshift(n);
+    try { localStorage.setItem(HK, JSON.stringify(a.slice(0, 5))); } catch (e) {}
   }
-  document.querySelectorAll('.pc-sel .ph').forEach(function (p) { p.setAttribute('data-ph', p.textContent); });
-  function closePops() { document.querySelectorAll('.pc-sel.open').forEach(function (s) { s.classList.remove('open'); }); }
-  function openPop(id) { var was = document.getElementById(id).classList.contains('open'); closePops(); if (!was) document.getElementById(id).classList.add('open'); }
+  function renderFind() {
+    var hot = document.getElementById('pcHotChips'); hot.innerHTML = '';
+    HOT_HOME.forEach(function (n, i) {
+      var c = h('<button class="pc-chip">' + (i < 3 ? '<span class="ic ic-14">{{IC_fire}}</span>' : '') + '<span></span></button>');
+      c.lastElementChild.textContent = n;
+      c.addEventListener('click', function () { pickDest(n); });
+      hot.appendChild(c);
+    });
+    var more = h('<button class="pc-chip">更多<span class="ic ic-14 rot90">{{IC_arrowRightSm}}</span></button>');
+    more.addEventListener('click', function () { openDlg(); });
+    hot.appendChild(more);
+    var hist = histGet();
+    document.getElementById('pcRecent').hidden = !hist.length;
+    var rc = document.getElementById('pcRecentChips'); rc.innerHTML = '';
+    hist.forEach(function (n) {
+      var c = h('<button class="pc-chip"></button>'); c.textContent = n;
+      c.addEventListener('click', function () { pickDest(n); });
+      rc.appendChild(c);
+    });
+  }
+  document.getElementById('pcRecentClear').addEventListener('click', function () {
+    try { localStorage.setItem(HK, '[]'); } catch (e) {}
+    renderFind();
+  });
+  function pickDest(name) {
+    sel.dest = name;
+    histAdd(name);
+    document.getElementById('pcDestName').textContent = name;
+    document.getElementById('pcHero').setAttribute('data-state', 'sel');
+    closeDlg();
+    renderFind(); renderPanel();
+  }
+  document.getElementById('pcDestPill').addEventListener('click', function () { openDlg(); });
 
-  // 目的地
-  function renderDest() {
-    var hot = document.getElementById('destHot'); hot.innerHTML = '';
-    GEO.hot.forEach(function (n) {
-      var c = h('<button class="pc-chip"><span class="ic ic-14">{{IC_fire}}</span><span></span></button>'); c.lastElementChild.textContent = n;
-      c.classList.toggle('sel', sel.dest === n); c.addEventListener('click', function () { pickDest(n); }); hot.appendChild(c);
-    });
-    var cols = document.getElementById('destCols'); cols.innerHTML = '';
-    GEO.groups.forEach(function (g) {
-      var box = h('<div class="grp"><div class="ph-t"></div><div class="pc-chips"></div></div>'); box.querySelector('.ph-t').textContent = g[0];
-      g[1].forEach(function (n) { var c = h('<button class="pc-chip"></button>'); c.textContent = n; c.classList.toggle('sel', sel.dest === n); c.addEventListener('click', function () { pickDest(n); }); box.lastElementChild.appendChild(c); });
-      cols.appendChild(box);
-    });
-  }
-  function pickDest(n) { sel.dest = n; setSel('selDest', n); renderDest(); closePops(); if (!sel.days) setTimeout(function () { openPop('selDays'); }, 120); }
-  // 天數
-  function renderDays() {
-    var box = document.getElementById('daysChips'); box.innerHTML = '';
+  // 天數 / 流量面板
+  function renderPanel() {
+    var days = document.getElementById('pcDaysList'); days.innerHTML = '';
     for (var d = 1; d <= 30; d++) (function (d) {
-      var c = h('<button class="pc-chip"></button>'); c.textContent = d + ' 天'; c.classList.toggle('sel', sel.days === d);
-      c.addEventListener('click', function () { sel.days = d; setSel('selDays', d + ' 天'); renderDays(); closePops(); if (!sel.plan) setTimeout(function () { openPop('selFlow'); }, 120); });
-      box.appendChild(c);
+      var b = h('<button class="pc-day"></button>'); b.textContent = d + ' 天';
+      b.classList.toggle('sel', sel.days === d);
+      b.addEventListener('click', function () { sel.days = d; renderPanel(); });
+      days.appendChild(b);
     })(d);
-  }
-  // 流量
-  function renderFlow() {
-    var tabs = document.getElementById('flowTabs'); tabs.innerHTML = '';
+    var sd = days.querySelector('.pc-day.sel');
+    if (sd) sd.scrollIntoView({ block: 'nearest' });
+    var tabs = document.getElementById('pcFlowTabs'); tabs.innerHTML = '';
     Object.keys(PLANS).forEach(function (k) {
-      var t = h('<button class="ftab"></button>'); t.textContent = PLANS[k].lb; t.classList.toggle('sel', sel.tab === k);
-      t.addEventListener('click', function () { sel.tab = k; renderFlow(); }); tabs.appendChild(t);
+      var t = h('<button class="pc-ftab"></button>'); t.textContent = PLANS[k].lb; t.classList.toggle('sel', sel.tab === k);
+      t.addEventListener('click', function () { sel.tab = k; sel.plan = null; renderPanel(); });
+      tabs.appendChild(t);
     });
-    document.getElementById('flowNote').textContent = PLANS[sel.tab].note;
-    var opts = document.getElementById('flowOpts'); opts.innerHTML = '';
+    document.getElementById('pcFlowNote').textContent = PLANS[sel.tab].note;
+    if (!sel.plan) { var rec = PLANS[sel.tab].opts.filter(function (o) { return o[2]; })[0]; sel.plan = (rec || PLANS[sel.tab].opts[0])[0]; }
+    var grid = document.getElementById('pcFlowGrid'); grid.innerHTML = '';
     PLANS[sel.tab].opts.forEach(function (o) {
-      var b = h('<button class="pc-fopt"><b></b><span></span>' + (o[2] ? '<em class="badge">' + o[2] + '</em>' : '') + '</button>');
-      b.querySelector('b').textContent = o[0]; b.querySelector('span').textContent = 'NT$ ' + (o[1] * (sel.days || 5)).toLocaleString('en-US') + ' 起';
+      var b = h('<button class="pc-tier"><b></b><span></span>' + (o[2] ? '<em class="badge">' + o[2] + '</em>' : '') + '</button>');
+      b.querySelector('b').textContent = o[0];
+      b.querySelector('span').textContent = 'NT$ ' + (o[1]).toLocaleString('en-US') + ' 起';
       b.classList.toggle('sel', sel.plan === o[0]);
-      b.addEventListener('click', function () { sel.plan = o[0]; setSel('selFlow', PLANS[sel.tab].lb + '・' + o[0]); renderFlow(); closePops(); });
-      opts.appendChild(b);
+      b.addEventListener('click', function () { sel.plan = o[0]; renderPanel(); });
+      grid.appendChild(b);
     });
+    document.getElementById('pcSummary').textContent = sel.days + '天／' + sel.plan;
   }
-  renderDest(); renderDays(); renderFlow();
-  document.querySelectorAll('[data-pop]').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); openPop(b.getAttribute('data-pop')); }); });
-  document.querySelectorAll('.pc-pop').forEach(function (p) { p.addEventListener('click', function (e) { e.stopPropagation(); }); });
-  document.addEventListener('click', function () { closePops(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePops(); });
-  document.getElementById('pcSearch').addEventListener('click', function () {
-    if (!sel.dest) { toast('請先選擇目的地'); openPop('selDest'); return; }
-    toast('搜尋 ' + sel.dest + (sel.days ? ' ' + sel.days + ' 天' : '') + (sel.plan ? ' ' + sel.plan : '') + '（PC 結果頁製作中）');
+  document.getElementById('pcSearchBtn').addEventListener('click', function () {
+    toast('搜尋 ' + sel.dest + ' ' + sel.days + ' 天 ' + sel.plan + '（PC 結果頁維持現狀）');
   });
 
+  // ================= 目的地選擇彈窗：三模式 =================
+  var dlg = { mode: 'country', multi: [], q: '' };
+  var MAX_MULTI = 5;
+  function openDlg() {
+    document.getElementById('pcDlgMask').classList.add('open');
+    document.getElementById('pcDlg').classList.add('open');
+    document.getElementById('pcDlgQ').value = ''; dlg.q = '';
+    renderDlg();
+  }
+  function closeDlg() {
+    document.getElementById('pcDlgMask').classList.remove('open');
+    document.getElementById('pcDlg').classList.remove('open');
+  }
+  document.getElementById('pcDlgClose').addEventListener('click', closeDlg);
+  document.getElementById('pcDlgMask').addEventListener('click', closeDlg);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDlg(); });
+  document.querySelectorAll('[data-dlg-open]').forEach(function (b) { b.addEventListener('click', function () { openDlg(); }); });
+  document.querySelectorAll('#pcDlgModes .pc-mode').forEach(function (m) {
+    m.addEventListener('click', function () {
+      dlg.mode = m.getAttribute('data-mode');
+      document.querySelectorAll('#pcDlgModes .pc-mode').forEach(function (x) { x.classList.toggle('sel', x === m); });
+      document.getElementById('pcDlg').setAttribute('data-mode', dlg.mode);
+      renderDlg();
+    });
+  });
+  document.getElementById('pcDlgQ').addEventListener('input', function () { dlg.q = this.value.trim(); renderDlg(); });
 
-  // ================= 探索更多：資料 / 狀態 / 渲染 =================
-  var PC_ICONS = { star: '{{IC_star}}', starGrey: '{{IC_starGrey}}', fire: '{{IC_fireHot}}', loc: '{{IC_locationGrey}}', cal: '{{IC_calendarGrey}}' };
+  function dlgGroup(title, fire, action) {
+    return h('<div class="dlg-group"><div class="gh">' + (fire ? '<span class="ic ic-20">{{IC_fire}}</span>' : '') + '<span>' + title + '</span>' + (action || '') + '</div></div>');
+  }
+  function dlgChip(name, onTap, selected) {
+    var c = h('<button class="dlg-chip' + (selected ? ' sel' : '') + '"></button>'); c.textContent = name;
+    c.addEventListener('click', function () { onTap(name, c); });
+    return c;
+  }
+  function match(n) { return !dlg.q || n.indexOf(dlg.q) >= 0; }
+  function contTabs(pane, prefix) {
+    var bar = h('<div class="dlg-tabs"></div>');
+    GEO.continents.forEach(function (c, i) {
+      var t = h('<button class="dlg-tab' + (i === 0 ? ' sel' : '') + '"></button>'); t.textContent = c.name;
+      t.addEventListener('click', function () {
+        bar.querySelectorAll('.dlg-tab').forEach(function (x) { x.classList.remove('sel'); }); t.classList.add('sel');
+        var s = pane.querySelector('[data-sec="' + prefix + i + '"]');
+        if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      bar.appendChild(t);
+    });
+    return bar;
+  }
+  function renderDlg() {
+    var bd = document.getElementById('pcDlgBody'); bd.innerHTML = '';
+    if (dlg.mode === 'country') {
+      var hist = histGet().filter(match);
+      if (hist.length && !dlg.q) {
+        var g = dlgGroup('最近選擇', false, '<button class="gact" id="dlgHistClear" aria-label="清除"><span class="ic ic-20">{{IC_trash}}</span></button>');
+        var chips = h('<div class="dlg-chips"></div>');
+        hist.forEach(function (n) { chips.appendChild(dlgChip(n, pickDest)); });
+        g.appendChild(chips); bd.appendChild(g);
+        g.querySelector('#dlgHistClear').addEventListener('click', function () { try { localStorage.setItem(HK, '[]'); } catch (e) {} renderDlg(); renderFind(); });
+      }
+      var hots = GEO.hot.filter(match);
+      if (hots.length) {
+        var hg = dlgGroup('熱門', true);
+        var hchips = h('<div class="dlg-chips"></div>');
+        hots.forEach(function (n) { hchips.appendChild(dlgChip(n, pickDest)); });
+        hg.appendChild(hchips); bd.appendChild(hg);
+      }
+      if (!dlg.q) bd.appendChild(contTabs(bd, 'c'));
+      GEO.continents.forEach(function (c, i) {
+        var list = c.countries.filter(match); if (!list.length) return;
+        var g = dlgGroup(c.name); g.setAttribute('data-sec', 'c' + i);
+        var chips = h('<div class="dlg-chips"></div>');
+        list.forEach(function (n) { chips.appendChild(dlgChip(n, pickDest, sel.dest === n)); });
+        g.appendChild(chips); bd.appendChild(g);
+      });
+    } else if (dlg.mode === 'region') {
+      var mk = function (r) {
+        var row = h('<button class="dlg-row' + (sel.dest === r.name ? ' sel' : '') + '"><span class="ic ic-24">' + (sel.dest === r.name ? '{{IC_globeSel}}' : '{{IC_globe}}') + '</span>' +
+          '<span class="rt"><span class="rn"></span><span class="rd"></span></span>' +
+          '<span class="cnt"><span></span><span class="ic ic-16">{{IC_info}}</span></span>' +
+          '<span class="dlg-tip"><ul></ul></span></button>');
+        row.querySelector('.rn').textContent = r.name;
+        row.querySelector('.rd').textContent = (r.list && r.list.length ? r.list.join('、') : r.desc);
+        row.querySelector('.cnt span').textContent = '共' + r.count + '個國家';
+        var ul = row.querySelector('ul');
+        (r.list || []).forEach(function (n) { var li = document.createElement('li'); li.textContent = n; ul.appendChild(li); });
+        row.addEventListener('click', function () { pickDest(r.name); });
+        row.querySelector('.cnt').addEventListener('click', function (e) {
+          e.stopPropagation();
+          var tip = row.querySelector('.dlg-tip'), on = tip.classList.contains('show');
+          document.querySelectorAll('.dlg-tip.show').forEach(function (t) { t.classList.remove('show'); });
+          tip.classList.toggle('show', !on);
+        });
+        row.querySelector('.dlg-tip').addEventListener('click', function (e) { e.stopPropagation(); });
+        return row;
+      };
+      var hotr = GEO.hotRegions.filter(function (r) { return match(r.name); });
+      if (hotr.length) {
+        var hg2 = dlgGroup('熱門', true);
+        var rows = h('<div class="dlg-rows"></div>');
+        hotr.forEach(function (r) { rows.appendChild(mk(r)); });
+        hg2.appendChild(rows); bd.appendChild(hg2);
+      }
+      var alls = GEO.regions.filter(function (r) { return match(r.name); });
+      if (alls.length) {
+        var ag = dlgGroup('區域');
+        var arows = h('<div class="dlg-rows"></div>');
+        alls.forEach(function (r) { arows.appendChild(mk(r)); });
+        ag.appendChild(arows); bd.appendChild(ag);
+      }
+    } else {
+      if (!dlg.q) bd.appendChild(contTabs(bd, 'm'));
+      GEO.continents.forEach(function (c, i) {
+        var list = c.countries.filter(match); if (!list.length) return;
+        var g = dlgGroup(c.name); g.setAttribute('data-sec', 'm' + i);
+        var chips = h('<div class="dlg-chips"></div>');
+        list.forEach(function (n) {
+          chips.appendChild(dlgChip(n, function () {
+            var i2 = dlg.multi.indexOf(n);
+            if (i2 >= 0) dlg.multi.splice(i2, 1);
+            else { if (dlg.multi.length >= MAX_MULTI) { toast('最多可選擇' + MAX_MULTI + '個'); return; } dlg.multi.push(n); }
+            renderDlg();
+          }, dlg.multi.indexOf(n) >= 0));
+        });
+        g.appendChild(chips); bd.appendChild(g);
+      });
+      document.getElementById('pcDlgSelInfo').hidden = !dlg.multi.length;
+      document.getElementById('pcDlgSelCount').textContent = dlg.multi.length;
+      document.getElementById('pcDlgOk').disabled = dlg.multi.length < 2;  // 多國組合至少 2 個
+    }
+  }
+  document.getElementById('pcDlgClear').addEventListener('click', function () { dlg.multi = []; renderDlg(); });
+  document.getElementById('pcDlgOk').addEventListener('click', function () {
+    if (dlg.multi.length < 2) return;
+    var name = dlg.multi.length <= 2 ? dlg.multi.join('、') : dlg.multi[0] + ' 等' + dlg.multi.length + '國';
+    pickDest(name);
+  });
+
+  // ================= 探索更多 =================
+  var PC_ICONS = { star: '{{IC_starFill16}}', medal: '{{PC_medal}}', heart: '{{PC_heartGrey}}' };
   var PC_PRODUCTS = [
-    { img: '{{IMG_SW_C3}}', type: 'eSIM', title: '中港澳 5G eSIM・嚴選電信商・全面支援 AI・免翻牆', desc: '立即訂購中港澳 eSIM 網卡，下訂後立即使用！掃描 QRCode 便可設定，免去換卡的繁雜步驟，全面支援 ChatGPT 等 AI 應用，無需翻牆。', tags: ['即買即用', 'KKgift'], loc: '香港島', rating: 4.5, reviews: 426, bought: '1K+', now: 2045, was: 2272 },
-    { img: '{{IMG_SW_C1}}', type: 'eSIM', title: '日本 eSIM 無限流量・Rakuten / KDDI / Docomo 三大電信・支援 ChatGPT', desc: '日本旅行必備！立即訂購 KKday 日本 eSIM，免插卡、免等待，下單後即可安裝，一鍵啟用超快速！上網天數 1-30 天多種流量組合，適合各類上網需求。', tags: ['即買即用', 'KKgift'], loc: '日本', rating: 4.7, reviews: 2318, bought: '100K+', now: 1180, was: 1475 },
-    { img: '{{IMG_SW_P1}}', type: 'SIM Card', title: '台灣遠傳電信 4G/5G 無限流量 SIM 卡・可通話簡訊・桃園機場領取', desc: '立即在 KKday 訂購遠傳電信 5G/4G 無限上網電話卡，提供台灣桃園機場領取服務，服務時間至午夜 12 點，晚班機旅客也可方便領取。', tags: ['即買即用', '出發前可免費取消'], loc: '臺灣桃園國際機場', rating: 4.6, reviews: 1151, bought: '10K+', now: 249, was: 498 },
-    { img: '{{IMG_SW_WIFI1}}', type: 'WiFi', title: '日本 WiFi 分享器租借・4G 無限流量・桃園機場取還', desc: '日本 4G 高速無限流量 WiFi 分享器，最多可同時連線 5 台裝置，桃園機場出發前領取、回台歸還，多人同行最划算。', tags: ['機場領取', '免費取消'], loc: '臺灣桃園國際機場', rating: 4.6, reviews: 2860, bought: '60K+', now: 99, was: 129 },
-    { img: '{{IMG_SW_C2}}', type: 'eSIM', title: 'KDDI 5G 高速原生日本 eSIM・不限速不降速・支援 ChatGPT', desc: '立即在 KKday 訂購 KDDI 日本 eSIM，下訂後立即收到憑證，安裝啟用免換 SIM Card，5G/4G 高速網路無限流量、不限速、不降速。', tags: ['即買即用', 'KKgift'], loc: '日本', rating: 4.8, reviews: 3479, bought: '80K+', now: 893, was: null },
-    { img: '{{IMG_SW_P5}}', type: 'SIM Card', title: '韓國 SIM 卡・SKT 原生網路 5G/4G 無限流量・可通話・送 T-money', desc: '選擇韓國旅行的必需品 SIM 卡，在想要的日期使用 4G LTE 無限流量（通話／簡訊），無速度限制，輕鬆享受當地網路！', tags: ['即買即用', '1天前可免費取消'], loc: '南韓', rating: 4.7, reviews: 9925, bought: '100K+', now: 133, was: 165 },
-    { img: '{{IMG_SW_P2}}', type: 'eSIM', title: '中國網卡・無需翻牆 每日高速 / 總量方案 eSIM・優惠 5 折', desc: '立即訂購中國 eSIM，掃描 QRcode 後立即使用！於中國使用網路時無需翻牆，免去換卡的繁雜步驟，多種流量方案滿足您的上網需求。', tags: ['即買即用'], loc: '中國', rating: 4.4, reviews: 1627, bought: '50K+', now: 39, was: 78 },
-    { img: '{{IMG_SW_WIFI2}}', type: 'WiFi', title: '韓國 WiFi 蛋・5G 高速無限流量・首爾仁川機場領取', desc: '韓國 5G 高速 WiFi 蛋，抵達首爾仁川機場即可領取，無限流量不降速，輕巧好攜帶，多人共享更划算。', tags: ['機場領取', '免費取消'], loc: '南韓', rating: 4.5, reviews: 1204, bought: '30K+', now: 89, was: null },
-    { img: '{{IMG_SW_P4}}', type: 'SIM Card', title: '日本 SIM 卡・Docomo / IIJ / KDDI / Softbank 5G・香港寄送到府', desc: '立即訂購 KKDAY FUNSIM 日本 SIM 卡，提供每日及總流量方案選擇，配合香港平郵寄送到客人信箱中，方便快捷。', tags: ['立即確認', '郵寄'], loc: '日本', rating: 4.3, reviews: 180, bought: '1K+', now: 156, was: 312 },
-    { img: '{{IMG_SW_P6}}', type: 'eSIM', title: '泰國 eSIM・TrueMove H 5G 高速・可用 TikTok・即買即用', desc: '立即訂購泰國第一電信 TrueMove H 提供的 5G 高速 eSIM，下訂後立即使用！掃描 QR code 便可設定，再也不用擔心實體 SIM 卡遺失。', tags: ['即買即用'], loc: '泰國', rating: 4.6, reviews: 1135, bought: '70K+', now: 151, was: 240 }
+    { img: '{{IMG_SW_C3}}', type: 'eSIM', title: '中港澳 5G eSIM・嚴選電信商・全面支援 AI・免翻牆', ovl: ['即買即用', '免翻牆'], tags: ['信賴商家', '免費取消', '立即確認'], rating: 4.5, reviews: 426, bought: '1K+', now: 2045, was: 2272 },
+    { img: '{{IMG_SW_C1}}', type: 'eSIM', title: '日本 eSIM 無限流量・Rakuten / KDDI / Docomo 三大電信・支援 ChatGPT', ovl: ['即買即用', '免費取消'], tags: ['信賴商家', '免費取消', '立即確認'], rating: 4.7, reviews: 2318, bought: '100K+', now: 1180, was: 1475 },
+    { img: '{{IMG_SW_P1}}', type: 'SIM Card', title: '台灣遠傳電信 4G/5G 無限流量 SIM 卡・可通話簡訊・桃園機場領取', ovl: ['機場領取', '即買即用'], tags: ['信賴商家', '出發前可免費取消', '即買即用'], rating: 4.6, reviews: 1151, bought: '10K+', now: 249, was: 498 },
+    { img: '{{IMG_SW_WIFI1}}', type: 'WiFi', title: '日本 WiFi 分享器租借・4G 無限流量・桃園機場取還', ovl: ['機場領取', '可分享 5 台'], tags: ['信賴商家', '免費取消', '機場領取'], rating: 4.6, reviews: 2860, bought: '60K+', now: 99, was: 129 },
+    { img: '{{IMG_SW_C2}}', type: 'eSIM', title: 'KDDI 5G 高速原生日本 eSIM・不限速不降速・支援 ChatGPT', ovl: ['即買即用', '立即確認'], tags: ['信賴商家', '即買即用', '可加值'], rating: 4.8, reviews: 3479, bought: '80K+', now: 893, was: null },
+    { img: '{{IMG_SW_P5}}', type: 'SIM Card', title: '韓國 SIM 卡・SKT 原生網路 5G/4G 無限流量・可通話・送 T-money', ovl: ['即買即用', '含語音通話'], tags: ['信賴商家', '1天前可免費取消', '即買即用'], rating: 4.7, reviews: 9925, bought: '100K+', now: 133, was: 165 },
+    { img: '{{IMG_SW_P2}}', type: 'eSIM', title: '中國網卡・無需翻牆 每日高速 / 總量方案 eSIM・優惠 5 折', ovl: ['即買即用'], tags: ['信賴商家', '即買即用', '立即確認'], rating: 4.4, reviews: 1627, bought: '50K+', now: 39, was: 78 },
+    { img: '{{IMG_SW_WIFI2}}', type: 'WiFi', title: '韓國 WiFi 蛋・5G 高速無限流量・首爾仁川機場領取', ovl: ['機場領取', '輕量型'], tags: ['信賴商家', '免費取消', '機場領取'], rating: 4.5, reviews: 1204, bought: '30K+', now: 89, was: null },
+    { img: '{{IMG_SW_P4}}', type: 'SIM Card', title: '日本 SIM 卡・Docomo / IIJ / KDDI / Softbank 5G・香港寄送到府', ovl: ['郵寄', '立即確認'], tags: ['信賴商家', '3天前可免費取消', '郵寄'], rating: 4.3, reviews: 180, bought: '1K+', now: 156, was: 312 },
+    { img: '{{IMG_SW_P6}}', type: 'eSIM', title: '泰國 eSIM・TrueMove H 5G 高速・可用 TikTok・即買即用', ovl: ['即買即用', '立即確認'], tags: ['信賴商家', '即買即用', '吃到飽不斷網'], rating: 4.6, reviews: 1135, bought: '70K+', now: 151, was: 240 }
   ];
   var pcEx = { type: [], sort: 0 };
+  var TYPE_LB = { 'WiFi': 'Wifi', 'SIM Card': 'SIM Card', 'eSIM': 'eSIM' };
   function pcBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
-  function pcStars(r) {
-    var full = Math.round(r), s = '';
-    for (var i = 0; i < 5; i++) s += '<span class="ic">' + (i < full ? PC_ICONS.star : PC_ICONS.starGrey) + '</span>';
-    return '<span class="pc-stars">' + s + '</span>';
-  }
   function pcMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
   function pcCardHTML(p) {
-    var off = p.was ? Math.round((1 - p.now / p.was) * 100) : 0;
+    var off = p.was ? '折扣標籤' : '';
     return '<button class="pc-pcard" data-toast="old">' +
-      '<div class="ph"><img alt="" src="' + p.img + '"></div>' +
-      '<div class="bd"><div class="tt"></div>' +
-      '<div class="pc-ptags">' + p.tags.map(function (s) { return '<span class="pc-ptag">' + s + '</span>'; }).join('') + '</div>' +
-      '<div class="ds"></div>' +
-      '<div class="pc-pmeta"><span><span class="ic">' + PC_ICONS.loc + '</span>' + p.loc + '</span><span><span class="ic">' + PC_ICONS.cal + '</span>最早可預訂日：今日</span></div>' +
-      '<div class="pc-pfoot"><div class="pc-prate">' + pcStars(p.rating) + '<span>(' + p.reviews.toLocaleString('en-US') + ')</span><span class="sp">|</span><span class="ic ic-fire">' + PC_ICONS.fire + '</span><span>' + p.bought + ' 個已訂購</span>' + (off ? '<span class="pc-off">' + off + '% OFF</span>' : '') + '</div>' +
-      '<div class="pc-pprice">' + (p.was ? '<span class="was">' + pcMoney(p.was) + '</span>' : '') + '<span class="now">' + pcMoney(p.now) + '<small>起</small></span></div></div>' +
-      '</div></button>';
+      '<span class="ph"><img alt="" src="' + p.img + '"><span class="ovl">' + p.ovl.map(function (s) { return '<span>' + s + '</span>'; }).join('') + '</span></span>' +
+      '<span class="bd"><span class="tt"></span>' +
+      '<span class="pc-prate"><span class="ic">' + PC_ICONS.star + '</span><b>' + p.rating.toFixed(1) + '</b><span>(' + p.reviews.toLocaleString('en-US') + ')</span><span>・</span><span>' + p.bought + ' 個已訂購</span></span>' +
+      '<span class="pc-ptags">' + p.tags.map(function (s, i) { return '<span class="pc-ptag">' + (i === 0 ? '<span class="ic">' + PC_ICONS.medal + '</span>' : '') + s + '</span>'; }).join('') + '</span>' +
+      '<span class="pc-pfoot">' + (off ? '<span class="pc-off">' + off + '</span>' : '') +
+      '<span class="pc-pprice">' + (p.was ? '<span class="was">' + pcMoney(p.was) + '</span>' : '') + '<span class="now">' + pcMoney(p.now) + '</span></span></span>' +
+      '</span><span class="heart ic ic-24">' + PC_ICONS.heart + '</span></button>';
   }
   function renderPcExplore() {
     var list = PC_PRODUCTS.filter(function (p) { return !pcEx.type.length || pcEx.type.indexOf(p.type) >= 0; });
@@ -600,12 +861,24 @@
     if (!list.length) box.innerHTML = '<div class="pc-empty">沒有符合條件的商品</div>';
     list.forEach(function (p) {
       var c = h(pcCardHTML(p));
-      c.querySelector('.tt').textContent = p.title; c.querySelector('.ds').textContent = p.desc;
+      c.querySelector('.tt').textContent = p.title;
       box.appendChild(c);
     });
-    document.getElementById('pcExCnt').textContent = list.length ? (list.length * 93 + 4) : 0;  // 仿真總數
+    document.getElementById('pcExCnt').textContent = list.length ? (list.length * 15 + 12) : 0;
     document.querySelectorAll('#pcTypeBox .pc-cb').forEach(function (b) { b.classList.toggle('on', pcEx.type.indexOf(b.getAttribute('data-type')) >= 0); });
     document.querySelectorAll('#pcSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === pcEx.sort); });
+    // 已選條件 tag（Figma 3096-60605：結果數旁 tag + Clear all）
+    var ft = document.getElementById('pcFtags'); ft.innerHTML = '';
+    pcEx.type.forEach(function (t) {
+      var tag = h('<span class="pc-ftag">' + TYPE_LB[t] + '<button class="x" aria-label="移除"><span class="ic ic-14">{{IC_crossCircle}}</span></button></span>');
+      tag.querySelector('.x').addEventListener('click', function () { pcEx.type.splice(pcEx.type.indexOf(t), 1); renderPcExplore(); });
+      ft.appendChild(tag);
+    });
+    if (pcEx.type.length) {
+      var clr = h('<button class="pc-ftag-clear">Clear all</button>');
+      clr.addEventListener('click', function () { pcEx.type = []; renderPcExplore(); });
+      ft.appendChild(clr);
+    }
   }
   document.querySelectorAll('#pcTypeBox .pc-cb').forEach(function (b) {
     b.addEventListener('click', function () { var k = b.getAttribute('data-type'), i = pcEx.type.indexOf(k); if (i >= 0) pcEx.type.splice(i, 1); else pcEx.type.push(k); renderPcExplore(); });
@@ -613,19 +886,21 @@
   document.querySelectorAll('.pc-cb[data-mock]').forEach(function (b) { b.addEventListener('click', function () { b.classList.toggle('on'); }); });
   document.querySelectorAll('#pcSort button').forEach(function (b) { b.addEventListener('click', function () { pcEx.sort = +b.getAttribute('data-sort'); renderPcExplore(); }); });
   document.querySelectorAll('#pcPager button').forEach(function (b) { b.addEventListener('click', function () { toast(TOAST.old); }); });
-  (function () {  // 價錢雙滑塊（仿真：只更新顯示）
+  (function () {  // 價格區間雙滑塊（NT$0–12,000+，仿真）
     var rmin = document.getElementById('pcRmin'), rmax = document.getElementById('pcRmax'), fill = document.getElementById('pcFill'), pv = document.getElementById('pcPv');
+    function nt(n, plus) { return 'NT$' + n.toLocaleString('en-US') + (plus && n >= 12000 ? '+' : ''); }
     function upd() {
       var lo = +rmin.value, hi = +rmax.value;
-      if (lo > hi - 1) { lo = hi - 1; rmin.value = lo; }
-      fill.style.left = ((lo - 1) / 2499 * 100) + '%'; fill.style.right = (100 - (hi - 1) / 2499 * 100) + '%';
-      pv.textContent = lo.toLocaleString('en-US') + ' – ' + hi.toLocaleString('en-US');
+      if (lo > hi - 100) { lo = hi - 100; rmin.value = lo; }
+      fill.style.left = (lo / 12000 * 100) + '%'; fill.style.right = (100 - hi / 12000 * 100) + '%';
+      pv.textContent = nt(lo) + ' – ' + nt(hi, true);
     }
-    rmin.addEventListener('input', upd); rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 1) rmax.value = +rmin.value + 1; upd(); }); upd();
+    rmin.addEventListener('input', upd);
+    rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 100) rmax.value = +rmin.value + 100; upd(); });
+    upd();
   })();
-  renderPcExplore();
 
-  // SIM卡 / WIFI分享器：勾選對應商品類別 + 平滑錨定到探索更多（rAF 自繪，tab 保持 eSIM）
+  // SIM卡 / WIFI tab：勾選對應商品類別 + 平滑錨定到探索更多（tab 保持 eSIM）
   function anchorExplore(type) {
     if (type) { pcEx.type = [type]; renderPcExplore(); }
     var sec = document.getElementById('pcExplore');
@@ -644,10 +919,12 @@
   }
   document.addEventListener('click', function (e) {
     var go = e.target.closest('[data-pc-anchor]');
-    if (go) { e.stopPropagation(); anchorExplore(go.getAttribute('data-pc-anchor') === 'sim' ? 'SIM Card' : 'WiFi'); return; }
+    if (go) { anchorExplore(go.getAttribute('data-pc-anchor') === 'sim' ? 'SIM Card' : 'WiFi'); return; }
     var q = e.target.closest('.pc-faq-q');
     if (q) { q.parentElement.classList.toggle('open'); return; }
     var t = e.target.closest('[data-toast]');
     if (t) toast(TOAST[t.getAttribute('data-toast')] || t.getAttribute('data-toast'));
   });
+
+  renderFind(); renderPanel(); renderPcExplore();
 </script>
