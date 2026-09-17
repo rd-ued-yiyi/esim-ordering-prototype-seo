@@ -461,7 +461,8 @@
   .pc-lprev .ic, .pc-lnext .ic { width: 20px; height: 20px; color: var(--kk-text-darker); }
   .pc-lprev .ic { transform: rotate(180deg); }
   /* 滑動塌縮：單行、pill 縮小、流量卡變小 chip（藏價格與推薦）（Figma 3190-40586） */
-  .pc-lbar.compact .pc-lbar-in { display: flex; align-items: center; gap: 8px; padding: 11px 0; }
+  /* 亲密性：组间距(24) > 组内 日本↔5天(16) > 流量 chip 间(8) */
+  .pc-lbar.compact .pc-lbar-in { display: flex; align-items: center; gap: 24px; padding: 11px 0; }
   .pc-lbar.compact .pc-lconds { gap: 16px; }
   .pc-lbar.compact .pc-lpill { font-size: 16px; line-height: 24px; }
   .pc-lbar.compact .pc-lflowwrap { flex: 1 1 0; }
