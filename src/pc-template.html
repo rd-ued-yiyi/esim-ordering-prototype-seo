@@ -425,10 +425,9 @@
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-ldd button:hover { background: var(--kk-surface-light); }
   .pc-ldd button.sel { color: var(--kk-primary-dark); }
-  /* 流量 Option Card 橫向滾動行（預設 176×74 帶價格 + 推薦） */
-  .pc-lflowwrap { grid-area: flow; position: relative; min-width: 0; }
-  .pc-lflow { display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; padding: 1px; }
-  .pc-lflow::-webkit-scrollbar { display: none; }
+  /* 流量 Option Card 行（預設 176×74 帶價格）：flowwrap=視口(overflow hidden)，flow=軌道(translateX 平移)；點擊翻頁、無使用者橫向捲動、平移帶緩衝 */
+  .pc-lflowwrap { grid-area: flow; position: relative; min-width: 0; overflow: hidden; padding: 1px 0; }
+  .pc-lflow { position: relative; display: flex; gap: 16px; width: max-content; transition: transform .35s cubic-bezier(.22,.61,.36,1); will-change: transform; }
   .pc-lchip { position: relative; flex: 0 0 176px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
   .pc-lchip b { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
@@ -436,9 +435,19 @@
   .pc-lchip:hover { background: var(--kk-surface-medium); }
   .pc-lchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
-  .pc-lchip .badge { position: absolute; top: -6px; right: -4px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; padding: 0 4px; border-radius: 4px 4px 1px 4px; }
-  .pc-lnext { position: absolute; right: -2px; top: 50%; transform: translateY(-50%); z-index: 2; width: 32px; height: 32px; border-radius: 999px; background: #fff; box-shadow: var(--el-card); display: flex; align-items: center; justify-content: center; }
-  .pc-lnext .ic { width: 20px; height: 20px; color: var(--kk-text-darker); }
+  /* 左右翻頁按鈕：貼流量行左右緣、垂直置中於卡片行；可翻才顯示（[hidden]），compact 態隱藏 */
+  .pc-lprev, .pc-lnext { position: absolute; top: 38px; transform: translateY(-50%); z-index: 3; width: 32px; height: 32px; border-radius: 999px;
+    background: #fff; box-shadow: 0 1px 4px rgba(17,25,40,.16); display: flex; align-items: center; justify-content: center; }
+  .pc-lprev { left: 2px; } .pc-lnext { right: 2px; }
+  .pc-lprev[hidden], .pc-lnext[hidden] { display: none; }
+  .pc-lprev .ic, .pc-lnext .ic { width: 20px; height: 20px; color: var(--kk-text-darker); }
+  .pc-lprev .ic { transform: rotate(180deg); }
+  /* 翻頁按鈕外側白色漸層，遮住被切掉的半張卡，讓翻頁控制乾淨 */
+  .pc-lflowwrap::before, .pc-lflowwrap::after { content: ''; position: absolute; top: 1px; bottom: 1px; width: 24px; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .15s; }
+  .pc-lflowwrap::before { left: 0; background: linear-gradient(90deg, #fff, rgba(255,255,255,0)); }
+  .pc-lflowwrap::after { right: 0; background: linear-gradient(270deg, #fff, rgba(255,255,255,0)); }
+  .pc-lflowwrap.can-prev::before, .pc-lflowwrap.can-next::after { opacity: 1; }
+  .pc-lbar.compact .pc-lflowwrap::before, .pc-lbar.compact .pc-lflowwrap::after { opacity: 0; }
   /* 滑動塌縮：單行、pill 縮小、流量卡變小 chip（藏價格與推薦）（Figma 3190-40586） */
   .pc-lbar.compact .pc-lbar-in { display: flex; align-items: center; gap: 8px; padding: 11px 0; }
   .pc-lbar.compact .pc-lconds { gap: 16px; }
@@ -447,7 +456,7 @@
   .pc-lbar.compact .pc-lall { align-self: center; }
   .pc-lbar.compact .pc-lchip { flex: 0 0 auto; height: 36px; padding: 0 12px; flex-direction: row; }
   .pc-lbar.compact .pc-lchip b { font-size: 14px; line-height: 20px; }
-  .pc-lbar.compact .pc-lchip span, .pc-lbar.compact .pc-lchip .badge, .pc-lbar.compact .pc-lnext { display: none; }
+  .pc-lbar.compact .pc-lchip span, .pc-lbar.compact .pc-lprev, .pc-lbar.compact .pc-lnext { display: none; }
   /* 麵包屑 note */
   .pc-lnote { margin: 0 0 16px; }
   .pc-lbody { align-items: flex-start; }
@@ -762,8 +771,9 @@
           </div>
         </div>
         <div class="pc-lflowwrap">
+          <button class="pc-lprev" id="plFlowPrev" aria-label="往左翻頁" hidden><span class="ic">{{PC_arrowRight24}}</span></button>
           <div class="pc-lflow" id="plFlowChips"></div>
-          <button class="pc-lnext" id="plFlowNext" aria-label="更多流量"><span class="ic">{{PC_arrowRight24}}</span></button>
+          <button class="pc-lnext" id="plFlowNext" aria-label="往右翻頁" hidden><span class="ic">{{PC_arrowRight24}}</span></button>
         </div>
         <button class="pc-lall" id="plAllFlow">全部流量<span class="ic ic-16 rot90">{{IC_arrowRightGrey}}</span></button>
       </div>
@@ -1497,22 +1507,23 @@
     if (pk.indexOf('取消') >= 0) return PL_IC.reload;
     return PL_IC.check;
   }
-  // 卡片假數據：復刻 mweb .pkg-card 結構（警示/規格標籤/政策/評分/供應商/價格），內容對齊 Figma 3140-37910
+  // 卡片假數據：復刻 mweb .pkg-card 結構；warns（黃色提醒）依 mweb REQ_PATTERN 分布——並非每張都有，部分商品無需求提示
   var PL_DATA = [
-    { title: '5G・漫遊・原生網絡・支援熱點', warns: ['需設備信息', '需指定啟用日', '需實名認證'], tags: ['支持熱點・通話', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.8, reviews: 3479, bought: '10k+ 已購', vendor: 'Joytel', now: 988, was: 1234, per: 46, off: '20%OFF', hot: true },
-    { title: 'KDDI 5G 高速原生日本 eSIM・不限速', warns: ['需設備信息', '需指定啟用日'], tags: ['支持熱點', '5G', '原生卡'], perks: ['立即確認', '即買即用'], rating: 4.7, reviews: 2318, bought: '8K+ 已購', vendor: 'KDDI', now: 1180, was: 1475, per: 55, off: '20%OFF', hot: true },
-    { title: 'Docomo 每日流量 eSIM・可加值・支援 ChatGPT', warns: ['需設備信息', '需實名認證'], tags: ['5G/4G', '可加值', '本地預付卡'], perks: ['立即確認', '3天前可免費取消'], rating: 4.6, reviews: 1151, bought: '5K+ 已購', vendor: 'Docomo', now: 893, was: null, per: 41, off: null, hot: true },
-    { title: 'Softbank 5G eSIM・大流量方案・免翻牆', warns: ['需設備信息', '需指定啟用日', '需實名認證'], tags: ['支持熱點・通話', '5G', '國際漫遊卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.5, reviews: 426, bought: '3K+ 已購', vendor: 'Softbank', now: 756, was: 945, per: 35, off: '20%OFF', hot: false },
-    { title: 'IIJ 原生日本 eSIM・可通話簡訊・輕量型', warns: ['需設備信息'], tags: ['含本地通話', '5G/4G', '原生卡'], perks: ['立即確認', '10天前可免費取消'], rating: 4.4, reviews: 1627, bought: '2K+ 已購', vendor: 'IIJmio', now: 612, was: null, per: 28, off: null, hot: false },
-    { title: 'Rakuten 5G eSIM・吃到飽不斷網・支援熱點', warns: ['需設備信息', '需指定啟用日'], tags: ['支持熱點', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.6, reviews: 2860, bought: '6K+ 已購', vendor: 'Rakuten', now: 1049, was: 1311, per: 49, off: '20%OFF', hot: false },
-    { title: '中港澳通用 5G eSIM・免翻牆・全面支援 AI', warns: ['需實名認證'], tags: ['5G', '國際漫遊卡'], perks: ['立即確認', '即買即用'], rating: 4.3, reviews: 180, bought: '1K+ 已購', vendor: 'Joytel', now: 445, was: 556, per: 21, off: '20%OFF', hot: false },
-    { title: '亞洲多國 eSIM・一卡多國・24小時制計費', warns: ['需設備信息', '需指定啟用日'], tags: ['5G/4G', '可加值', '國際漫遊卡'], perks: ['立即確認', '不可取消'], rating: 4.2, reviews: 89, bought: '900 已購', vendor: 'GlobalSIM', now: 399, was: null, per: 18, off: null, hot: false }
+    { title: '5G・漫遊・原生網絡・支援熱點', warns: [], tags: ['支持熱點・通話', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.8, reviews: 3479, bought: '10k+ 已購', vendor: 'Joytel', now: 988, was: 1234, per: 46, off: '20%OFF', hot: true },
+    { title: 'KDDI 5G 高速原生日本 eSIM・不限速', warns: ['需指定啟用日'], tags: ['支持熱點', '5G', '原生卡'], perks: ['立即確認', '即買即用'], rating: 4.7, reviews: 2318, bought: '8K+ 已購', vendor: 'KDDI', now: 1180, was: 1475, per: 55, off: '20%OFF', hot: true },
+    { title: 'Docomo 每日流量 eSIM・可加值・支援 ChatGPT', warns: ['需航班信息', '需設備信息'], tags: ['5G/4G', '可加值', '本地預付卡'], perks: ['立即確認', '3天前可免費取消'], rating: 4.6, reviews: 1151, bought: '5K+ 已購', vendor: 'Docomo', now: 893, was: null, per: 41, off: null, hot: true },
+    { title: 'Softbank 5G eSIM・大流量方案・免翻牆', warns: ['需設備信息', '需指定啟用日'], tags: ['支持熱點・通話', '5G', '國際漫遊卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.5, reviews: 426, bought: '3K+ 已購', vendor: 'Softbank', now: 756, was: 945, per: 35, off: '20%OFF', hot: false },
+    { title: 'IIJ 原生日本 eSIM・可通話簡訊・輕量型', warns: ['需實名認證'], tags: ['含本地通話', '5G/4G', '原生卡'], perks: ['立即確認', '10天前可免費取消'], rating: 4.4, reviews: 1627, bought: '2K+ 已購', vendor: 'IIJmio', now: 612, was: null, per: 28, off: null, hot: false },
+    { title: 'Rakuten 5G eSIM・吃到飽不斷網・支援熱點', warns: ['需航班信息', '需設備信息'], tags: ['支持熱點', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.6, reviews: 2860, bought: '6K+ 已購', vendor: 'Rakuten', now: 1049, was: 1311, per: 49, off: '20%OFF', hot: false },
+    { title: '中港澳通用 5G eSIM・免翻牆・全面支援 AI', warns: ['需指定啟用日'], tags: ['5G', '國際漫遊卡'], perks: ['立即確認', '即買即用'], rating: 4.3, reviews: 180, bought: '1K+ 已購', vendor: 'Joytel', now: 445, was: 556, per: 21, off: '20%OFF', hot: false },
+    { title: '亞洲多國 eSIM・一卡多國・24小時制計費', warns: [], tags: ['5G/4G', '可加值', '國際漫遊卡'], perks: ['立即確認', '不可取消'], rating: 4.2, reviews: 89, bought: '900 已購', vendor: 'GlobalSIM', now: 399, was: null, per: 18, off: null, hot: false }
   ];
   var plSort = 0;
   function plBoughtNum(s) { var m = parseInt(s, 10) || 0; return m * (/[kK]/.test(s) ? 1000 : 1); }
   function plMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
   function plCardHTML(p) {
-    var warns = p.warns.map(function (w, i) { return (i ? '<span class="wdiv"></span>' : '') + '<span>' + w + '</span>'; }).join('');
+    // 黃色提醒：僅在該商品有需求時顯示（對齊 mweb，非每張卡都有）
+    var warns = (p.warns && p.warns.length) ? '<div class="pl-warns">' + p.warns.map(function (w, i) { return (i ? '<span class="wdiv"></span>' : '') + '<span>' + w + '</span>'; }).join('') + '</div>' : '';
     var tags = (p.hot ? '<span class="pl-tag hot"><span class="ic">' + PL_FIRE + '</span>HOT</span>' : '') + p.tags.map(function (t) { return '<span class="pl-tag">' + t + '</span>'; }).join('');
     var perks = p.perks.map(function (pk) { return '<span class="pl-perk"><span class="ic">' + plPerkIcon(pk) + '</span>' + pk + '</span>'; }).join('');
     var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '');
@@ -1521,7 +1532,7 @@
     return '<div class="pl-card" data-toast="old">' +
       '<div class="pl-main">' +
         '<div class="pl-hg">' +
-          '<div class="pl-warns">' + warns + '</div>' +
+          warns +
           '<div class="pl-title">' + p.title + '</div>' +
           '<div class="pl-tags">' + tags + '</div>' +
         '</div>' +
@@ -1550,22 +1561,45 @@
     document.getElementById('plCnt').textContent = 162;
     document.querySelectorAll('#plSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === plSort); });
   }
-  // 條件列：流量檔位橫向 chips（三計費方式全部檔位拼一條，選中滾到中央）
+  // 條件列：流量檔位 chips（三計費方式全部檔位拼一條）。外層 chip 不放推薦標籤；點擊翻頁、選中滾到中央
   function renderListChips() {
     var wrap = document.getElementById('plFlowChips'); wrap.innerHTML = '';
     var d = sel.days;
     TABS.forEach(function (tab) {
-      var badge = badgeForTab(tab, d);
       filteredOpts(tab, d).forEach(function (o) {
         var on = sel.tab === tab && sel.plan === o.t;
-        var c = h('<button class="pc-lchip' + (on ? ' sel' : '') + '"><b></b><span></span>' + (badge === o.t ? '<span class="badge">推薦</span>' : '') + '</button>');
+        var c = h('<button class="pc-lchip' + (on ? ' sel' : '') + '"><b></b><span></span></button>');
         c.querySelector('b').textContent = o.t;
         c.querySelector('span').textContent = priceLabelFor(o, d);
         c.addEventListener('click', function () { sel.tab = tab; sel.plan = o.t; sel.planTouched = true; renderList(); });
         wrap.appendChild(c);
       });
     });
-    var s = wrap.querySelector('.pc-lchip.sel'); if (s) requestAnimationFrame(function () { s.scrollIntoView({ inline: 'center', block: 'nearest' }); });
+    requestAnimationFrame(function () { centerFlowChip(false); updateFlowArrows(); });
+  }
+  // 流量軌道用 translateX 平移（overflow:hidden 下無法程式化 scrollLeft）：完全可控、無使用者捲動、CSS transition 做緩衝
+  var plFlowX = 0;
+  function plFlowVP() { return document.getElementById('plFlowChips').parentElement.clientWidth; }
+  function plFlowMax() { return Math.max(0, document.getElementById('plFlowChips').scrollWidth - plFlowVP()); }
+  function setFlowX(x, smooth) {
+    var track = document.getElementById('plFlowChips');
+    plFlowX = Math.max(0, Math.min(x, plFlowMax()));
+    if (!smooth) track.style.transition = 'none';
+    track.style.transform = 'translateX(' + (-plFlowX) + 'px)';
+    if (!smooth) { void track.offsetWidth; track.style.transition = ''; }  // reflow 後恢復緩衝
+    updateFlowArrows();
+  }
+  // 選中檔位平移到視覺中央；smooth=有緩衝
+  function centerFlowChip(smooth) {
+    var track = document.getElementById('plFlowChips'), s = track.querySelector('.pc-lchip.sel'); if (!s) return;
+    setFlowX(s.offsetLeft + s.offsetWidth / 2 - plFlowVP() / 2, smooth);
+  }
+  // 左右翻頁箭頭：可往左/右翻時才顯示（compact 態 CSS 隱藏）
+  function updateFlowArrows() {
+    var max = plFlowMax(), canPrev = plFlowX > 1, canNext = plFlowX < max - 1;
+    document.getElementById('plFlowPrev').hidden = !canPrev;
+    document.getElementById('plFlowNext').hidden = !canNext;
+    var fw = document.getElementById('plFlowChips').parentElement; fw.classList.toggle('can-prev', canPrev); fw.classList.toggle('can-next', canNext);
   }
   // 天數下拉（1–30 天，選中打勾）
   function renderDaysDd() {
@@ -1630,7 +1664,7 @@
     document.getElementById('plDaysName').textContent = sel.days + '天';
     renderListChips(); renderDaysDd(); renderPlCards();
   }
-  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
+  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; _plCompact = false; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
   function exitList() { document.body.classList.remove('list-mode'); document.getElementById('pcListPage').hidden = true; window.scrollTo(0, 0); }
   // 事件綁定
   document.getElementById('plDestPill').addEventListener('click', function () { openDlg(); });
@@ -1643,14 +1677,22 @@
   document.getElementById('plCrumbHome').addEventListener('click', exitList);
   document.querySelectorAll('#plSort button').forEach(function (b) { b.addEventListener('click', function () { plSort = +b.getAttribute('data-sort'); renderPlCards(); }); });
   // 輪播右箭頭：往右捲一屏流量卡
-  document.getElementById('plFlowNext').addEventListener('click', function () {
-    var f = document.getElementById('plFlowChips'); f.scrollBy({ left: Math.max(360, f.clientWidth - 80), behavior: 'smooth' });
-  });
-  // 滑動塌縮：捲動離開條件列上緣即切換 compact（Figma 3140-37910 預設 ↔ 3190-40586 滑動）
+  // 點擊翻頁（一次一屏，有緩衝）
+  document.getElementById('plFlowNext').addEventListener('click', function () { setFlowX(plFlowX + (plFlowVP() - 40), true); });
+  document.getElementById('plFlowPrev').addEventListener('click', function () { setFlowX(plFlowX - (plFlowVP() - 40), true); });
+  // 滑動塌縮：捲動離開條件列上緣即切換 compact（Figma 3140-37910 預設 ↔ 3190-40586 滑動）；狀態變動時選中檔滾回中央
+  var _plCompact = false;
   window.addEventListener('scroll', function () {
     if (!document.body.classList.contains('list-mode')) return;
-    document.getElementById('plBar').classList.toggle('compact', window.scrollY > 20);
+    var next = window.scrollY > 20;
+    if (next === _plCompact) return;
+    _plCompact = next;
+    document.getElementById('plBar').classList.toggle('compact', next);
+    requestAnimationFrame(function () { centerFlowChip(true); updateFlowArrows(); });  // 狀態切換：選中項滾到中央（緩衝）
   }, { passive: true });
+  window.addEventListener('resize', function () {
+    if (document.body.classList.contains('list-mode')) { centerFlowChip(false); updateFlowArrows(); }
+  });
   (function () {  // 列表頁價格區間雙滑塊
     var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax'), fill = document.getElementById('plFill'), pv = document.getElementById('plPv');
     function nt(n, plus) { return 'NT$' + n.toLocaleString('en-US') + (plus && n >= 12000 ? '+' : ''); }
