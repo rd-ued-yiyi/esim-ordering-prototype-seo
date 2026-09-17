@@ -463,7 +463,8 @@
   .pc-lbar.compact .pc-lchip span { display: none; }
   /* compact 態：不需要翻頁——隱藏翻頁鈕與漸層，改原生橫向捲動 */
   .pc-lbar.compact .pc-lprev, .pc-lbar.compact .pc-lnext { display: none; }
-  .pc-lbar.compact .pc-lflow-vp { overflow: hidden; }  /* compact：不捲動；只渲染完整放得下的 chip（JS 開窗），不切半顆 */
+  /* compact：不捲動；只渲染完整放得下的 chip（JS 開窗），不切半顆；chip 組右對齊靠近「全部流量」，空隙留左側與 日本/5天 拉開 */
+  .pc-lbar.compact .pc-lflow-vp { overflow: hidden; display: flex; justify-content: flex-end; }
   .pc-lbar.compact .pc-lflow { width: max-content; gap: 8px; }
   /* 麵包屑 note */
   .pc-lnote { margin: 0 0 16px; }
