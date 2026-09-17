@@ -334,6 +334,7 @@
   .pc-dlg-search input { flex: 1 1 0; min-width: 0; border: 0; background: none; outline: 0; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-dlg-search input::placeholder { color: var(--kk-text-medium); }
   .pc-dlg-search .pc-dlg-clear { flex: 0 0 auto; display: inline-flex; align-items: center; color: var(--kk-text-medium); }
+  .pc-dlg-search .pc-dlg-clear[hidden] { display: none; }  /* 覆蓋 display 需明確處理 [hidden]，否則空關鍵字時仍顯示 */
   .pc-dlg-search .pc-dlg-clear .ic { width: 16px; height: 16px; }
   /* 搜尋態：隱藏模式栏 / 分組 / 底部，顯示扁平結果列表（對齊 mweb renderSearch） */
   .pc-dlg.searching .pc-dlg-modes, .pc-dlg.searching .pc-dlg-bd,
@@ -927,6 +928,22 @@
   }
   function h(html) { var w = document.createElement('div'); w.innerHTML = html.trim(); return w.firstElementChild; }
 
+  // 彈窗開啟時鎖定背景捲動（對齊 mweb lockBody/unlockBody，引用計數 + 記錄捲動位置）
+  var _lockCount = 0, _lockY = 0;
+  function lockScroll() {
+    if (++_lockCount > 1) return;
+    _lockY = window.scrollY || document.documentElement.scrollTop || 0;
+    document.body.style.position = 'fixed';
+    document.body.style.top = -_lockY + 'px';
+    document.body.style.left = '0'; document.body.style.right = '0'; document.body.style.width = '100%';
+  }
+  function unlockScroll() {
+    if (_lockCount === 0 || --_lockCount > 0) return;
+    document.body.style.position = ''; document.body.style.top = '';
+    document.body.style.left = ''; document.body.style.right = ''; document.body.style.width = '';
+    window.scrollTo(0, _lockY);
+  }
+
   // ================= 目的地資料（與 mweb 共用 src/geo-data.js） =================
   var GEO = {
     hot: ['日本','韓國','泰國','新加坡','澳大利亞','迪拜','法國','義大利','加拿大','美國'],
@@ -1160,8 +1177,8 @@
     });
   })();
   // 不知道怎麼選 → 選擇建議 dialog
-  function openHowto() { document.getElementById('pcHowtoMask').classList.add('open'); document.getElementById('pcHowtoDlg').classList.add('open'); }
-  function closeHowto() { document.getElementById('pcHowtoMask').classList.remove('open'); document.getElementById('pcHowtoDlg').classList.remove('open'); }
+  function openHowto() { var d = document.getElementById('pcHowtoDlg'), wasOpen = d.classList.contains('open'); document.getElementById('pcHowtoMask').classList.add('open'); d.classList.add('open'); if (!wasOpen) lockScroll(); }
+  function closeHowto() { var d = document.getElementById('pcHowtoDlg'); if (!d.classList.contains('open')) return; document.getElementById('pcHowtoMask').classList.remove('open'); d.classList.remove('open'); unlockScroll(); }
   document.getElementById('pcHowtoBtn').addEventListener('click', openHowto);
   document.getElementById('pcHowtoClose').addEventListener('click', closeHowto);
   document.getElementById('pcHowtoMask').addEventListener('click', closeHowto);
@@ -1173,16 +1190,26 @@
   var dlg = { mode: 'country', multi: [], q: '' };
   var MAX_MULTI = 5;
   function openDlg() {
+    var d = document.getElementById('pcDlg'), wasOpen = d.classList.contains('open');
+    // 重開回到上次選擇的類目並還原當前選擇（對齊 mweb openModal(lastType())）
+    dlg.mode = (sel.destType === 'region' || sel.destType === 'multi') ? sel.destType : 'country';
+    dlg.multi = sel.destType === 'multi' && sel.dest ? sel.dest.split(' ').filter(Boolean) : [];
+    d.setAttribute('data-mode', dlg.mode);
+    document.querySelectorAll('#pcDlgModes .pc-mode').forEach(function (m) { m.classList.toggle('sel', m.getAttribute('data-mode') === dlg.mode); });
     document.getElementById('pcDlgMask').classList.add('open');
-    document.getElementById('pcDlg').classList.add('open');
+    d.classList.add('open');
     document.getElementById('pcDlgQ').value = ''; dlg.q = '';
     renderDlg();
+    if (!wasOpen) lockScroll();
     var inp = document.getElementById('pcDlgQ');  // PC：開啟即聚焦搜尋框（桌面適合，不彈鍵盤）
     requestAnimationFrame(function () { inp.focus(); });
   }
   function closeDlg() {
+    var d = document.getElementById('pcDlg');
+    if (!d.classList.contains('open')) return;
     document.getElementById('pcDlgMask').classList.remove('open');
-    document.getElementById('pcDlg').classList.remove('open');
+    d.classList.remove('open');
+    unlockScroll();
   }
   document.getElementById('pcDlgClose').addEventListener('click', closeDlg);
   document.getElementById('pcDlgMask').addEventListener('click', closeDlg);
@@ -1651,8 +1678,8 @@
     if (sec) bd.scrollTo({ top: sec.offsetTop - bd.offsetTop - 8, behavior: 'smooth' });
     document.querySelectorAll('#pcAllTabs .pc-alltab').forEach(function (t) { t.classList.toggle('sel', t.textContent === PLANS[k].lb); });
   }
-  function openAllFlow() { document.getElementById('pcAllMask').classList.add('open'); document.getElementById('pcAllDlg').classList.add('open'); renderAllFlow(); }
-  function closeAllFlow() { document.getElementById('pcAllMask').classList.remove('open'); document.getElementById('pcAllDlg').classList.remove('open'); }
+  function openAllFlow() { var d = document.getElementById('pcAllDlg'), wasOpen = d.classList.contains('open'); document.getElementById('pcAllMask').classList.add('open'); d.classList.add('open'); renderAllFlow(); if (!wasOpen) lockScroll(); }
+  function closeAllFlow() { var d = document.getElementById('pcAllDlg'); if (!d.classList.contains('open')) return; document.getElementById('pcAllMask').classList.remove('open'); d.classList.remove('open'); unlockScroll(); }
   // 列表頁總渲染：先正規化 sel.plan/tab（同 renderPanel），再刷新條件列 + 卡片
   function renderList() {
     var d = sel.days;
