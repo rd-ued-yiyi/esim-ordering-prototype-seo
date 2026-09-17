@@ -1633,7 +1633,16 @@
       var c = h('<button class="pc-lchip' + (on ? ' sel' : '') + '"><b></b><span></span></button>');
       c.querySelector('b').textContent = it.o.t;
       c.querySelector('span').textContent = priceLabelFor(it.o, d);
-      c.addEventListener('click', function () { sel.tab = it.tab; sel.plan = it.o.t; sel.planTouched = true; renderList(); });
+      c.addEventListener('click', function () {
+        sel.tab = it.tab; sel.plan = it.o.t; sel.planTouched = true;
+        if (_plCompact) {
+          // compact：只移動高亮，不重排 chip 組（避免選項與寬度跳動）；商品卡不依賴選中檔位，無需重繪
+          wrap.querySelectorAll('.pc-lchip.sel').forEach(function (x) { x.classList.remove('sel'); });
+          c.classList.add('sel');
+        } else {
+          renderList();
+        }
+      });
       return c;
     }
     if (_plCompact) {  // compact：不可捲動 → 只顯示完整放得下的 chip（以選中項為中心開窗），不切半顆、無翻頁鈕
