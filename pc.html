@@ -150,6 +150,8 @@
   /* 三計費段堆疊的滾動區（Figma 3191-69364） */
   .pc-flow-scroll { max-height: 232px; overflow-y: scroll; padding: 2px 8px 2px 4px; display: flex; flex-direction: column; gap: 4px; }
   .pc-flow-sec { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
+  /* 計費段之間橫向虛線分隔（Figma 3191-69364：#ADE6EB dashed） */
+  .pc-flow-sec + .pc-flow-sec { border-top: 1px dashed #ADE6EB; padding-top: 20px; margin-top: 8px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .pc-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px 8px; border-radius: 8px;
