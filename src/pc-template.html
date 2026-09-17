@@ -406,6 +406,7 @@
   body.list-mode .pc-cat { display: none; }                         /* 列表頁無分類導航（Figma 3140-37910 只有 header + 條件列） */
   body.list-mode .pc-header { position: sticky; top: 0; z-index: 22; }
   .pc-listpage { display: block; background: var(--kk-surface-light); padding-bottom: 40px; }  /* 淺灰頁底，襯托白色篩選卡 / 商品卡 */
+  .pc-listpage[hidden] { display: none; }  /* [hidden] 需覆蓋 display，否則主題頁也會渲染出空的列表頁 */
   /* 條件列（sticky）：預設兩行（目的地/天數 + 全部流量 / 流量 Option Card 行），滑動塌縮成單行小 chip */
   .pc-lbar { position: sticky; top: 60px; z-index: 20; background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
   .pc-lbar-in { display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "conds mid all" "flow flow flow"; align-items: center; column-gap: 12px; row-gap: 16px; padding: 16px 0; }
