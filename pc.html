@@ -471,8 +471,8 @@
   .pc-lbar.compact .pc-lchip span { display: none; }
   /* compact 態：不需要翻頁——隱藏翻頁鈕與漸層，改原生橫向捲動 */
   .pc-lbar.compact .pc-lprev, .pc-lbar.compact .pc-lnext { display: none; }
-  .pc-lbar.compact .pc-lflow-vp { overflow: hidden; }  /* compact：不捲動，超出裁掉 */
-  .pc-lbar.compact .pc-lflow { width: max-content; }
+  .pc-lbar.compact .pc-lflow-vp { overflow: hidden; }  /* compact：不捲動；只渲染完整放得下的 chip（JS 開窗），不切半顆 */
+  .pc-lbar.compact .pc-lflow { width: max-content; gap: 8px; }
   /* 麵包屑 note */
   .pc-lnote { margin: 0 0 16px; }
   .pc-lbody { align-items: flex-start; }
@@ -1702,13 +1702,26 @@
       c.addEventListener('click', function () { sel.tab = it.tab; sel.plan = it.o.t; sel.planTouched = true; renderList(); });
       return c;
     }
-    if (_plCompact) {  // compact：全部並排、原生橫捲、無翻頁鈕；選中項置中
+    if (_plCompact) {  // compact：不可捲動 → 只顯示完整放得下的 chip（以選中項為中心開窗），不切半顆、無翻頁鈕
       all.forEach(function (it) { wrap.appendChild(mkChip(it)); });
       document.getElementById('plFlowPrev').hidden = true;
       document.getElementById('plFlowNext').hidden = true;
       requestAnimationFrame(function () {
-        var s = wrap.querySelector('.pc-lchip.sel');
-        if (s) vpEl.scrollLeft = Math.max(0, s.offsetLeft - (vpEl.clientWidth - s.offsetWidth) / 2);
+        var kids = Array.prototype.slice.call(wrap.children);
+        if (!kids.length) return;
+        var W = vpEl.clientWidth, gap = parseFloat(getComputedStyle(wrap).columnGap) || 0;
+        var w = kids.map(function (k) { return k.offsetWidth; });
+        var si = kids.findIndex(function (k) { return k.classList.contains('sel'); }); if (si < 0) si = 0;
+        var a = si, b = si, used = w[si];
+        if (used > W) { /* 單顆都超寬：仍保留選中一顆 */ } else {
+          while (true) {
+            var grew = false;
+            if (b + 1 < kids.length && used + gap + w[b + 1] <= W) { used += gap + w[b + 1]; b++; grew = true; }
+            if (a - 1 >= 0 && used + gap + w[a - 1] <= W) { used += gap + w[a - 1]; a--; grew = true; }
+            if (!grew) break;
+          }
+        }
+        kids.forEach(function (k, i) { if (i < a || i > b) k.remove(); });
       });
       return;
     }
