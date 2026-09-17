@@ -445,6 +445,7 @@
   .pc-lflow-vp { flex: 1 1 0; min-width: 0; position: relative; overflow: hidden; padding: 1px 0; }
   /* 默認態：整頁 N 張等寬卡鋪滿整行（每張 flex:1），› 翻下一頁；無半張、無白漸層（Figma 3140-37910） */
   .pc-lflow { position: relative; display: flex; gap: 16px; width: 100%; }
+  .pc-lflow.sliding { transition: transform .28s ease, opacity .28s ease; }  /* 翻頁滑動動畫 */
   .pc-lchip { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
   .pc-lchip b { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
@@ -470,9 +471,8 @@
   .pc-lbar.compact .pc-lchip span { display: none; }
   /* compact 態：不需要翻頁——隱藏翻頁鈕與漸層，改原生橫向捲動 */
   .pc-lbar.compact .pc-lprev, .pc-lbar.compact .pc-lnext { display: none; }
-  .pc-lbar.compact .pc-lflow-vp { overflow-x: auto; scrollbar-width: none; }
-  .pc-lbar.compact .pc-lflow-vp::-webkit-scrollbar { display: none; }
-  .pc-lbar.compact .pc-lflow { width: max-content; }  /* compact：全部 chip 並排、原生橫捲 */
+  .pc-lbar.compact .pc-lflow-vp { overflow: hidden; }  /* compact：不捲動，超出裁掉 */
+  .pc-lbar.compact .pc-lflow { width: max-content; }
   /* 麵包屑 note */
   .pc-lnote { margin: 0 0 16px; }
   .pc-lbody { align-items: flex-start; }
@@ -1718,15 +1718,28 @@
     all.slice(plPage * n, plPage * n + n).forEach(function (it) { wrap.appendChild(mkChip(it)); });
     document.getElementById('plFlowPrev').hidden = plPage <= 0;
     document.getElementById('plFlowNext').hidden = plPage >= pages - 1;
+    // 翻頁滑動動畫：新頁從翻頁方向側滑入（next 從右、prev 從左）
+    if (_plSlideDir) {
+      var dir = _plSlideDir; _plSlideDir = 0;
+      wrap.classList.remove('sliding');
+      wrap.style.transform = 'translateX(' + (dir * 56) + 'px)'; wrap.style.opacity = '0.35';
+      requestAnimationFrame(function () {
+        wrap.classList.add('sliding');
+        wrap.style.transform = 'translateX(0)'; wrap.style.opacity = '1';
+      });
+    } else {
+      wrap.classList.remove('sliding'); wrap.style.transform = ''; wrap.style.opacity = '';
+    }
   }
   // 重繪後把翻頁位置對到選中檔所在頁
   function plSyncPageToSel() {
     var all = plAllTiers(), n = plPerPage();
     plPage = Math.floor(plSelIndex(all) / n);
   }
-  function applyFlow() { renderListChips(); }  // 尺寸/狀態變化即重排當前頁
-  function flowNext() { plPage++; renderListChips(); }
-  function flowPrev() { plPage--; renderListChips(); }
+  var _plSlideDir = 0;  // 翻頁滑動方向：+1 下一頁（從右滑入）/ -1 上一頁（從左滑入）
+  function applyFlow() { renderListChips(); }  // 尺寸/狀態變化即重排當前頁（不帶動畫）
+  function flowNext() { plPage++; _plSlideDir = 1; renderListChips(); }
+  function flowPrev() { plPage--; _plSlideDir = -1; renderListChips(); }
   // 天數下拉（1–30 天，選中打勾）
   function renderDaysDd() {
     var dd = document.getElementById('plDaysDd'); dd.innerHTML = '';
