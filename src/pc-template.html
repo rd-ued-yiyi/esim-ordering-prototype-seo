@@ -570,7 +570,9 @@
   .pl-det-tab { position: relative; flex: 0 0 auto; padding: 8px 0 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); white-space: nowrap; cursor: pointer; }
   .pl-det-tab.sel { color: var(--kk-primary-dark); font-weight: 600; }
   .pl-det-tab.sel::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; }
-  .pl-det-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 24px; }
+  .pl-det-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0; background: var(--kk-surface-lighter); }
+  .pl-det-bd .det-sec { background: #fff; padding: 24px; }
+  .pl-det-bd .det-sec + .det-sec { margin-top: 8px; }
   /* ---- 服務說明 ---- */
   .det-hero { display: flex; flex-direction: column; gap: 8px; border: 2px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; }
   .det-cond { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; font-weight: 600; color: #13A3B6; }
@@ -691,7 +693,7 @@
   /* 圖文說明 */
   .det-fig { margin-top: 8px; }
   .det-fig img { display: block; width: 100%; border-radius: 8px; }
-  .det-pid { padding: 16px 0 0; text-align: center; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .det-pid { padding: 16px 0 24px; text-align: center; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   /* ============ 日期日曆下拉（Figma 3223-83700） ============ */
   .pc-cal { position: fixed; z-index: 60; width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 16px; }
   .pc-cal[hidden] { display: none; }
@@ -2100,32 +2102,57 @@
   var DET_COUNTRIES = ['日本', '韓國', '泰國', '越南', '馬來西亞', '新加坡', '土耳其', '菲律賓', '印尼', '香港', '台灣'];
   function detFlowLabel() { return sel.days + '天·' + (sel.tab === 'daily' ? '每日流量' : sel.tab === 'total' ? '總流量' : '無限流量') + '·' + sel.plan; }
   function has(p, kw) { return (p.tags.join(' ') + ' ' + p.perks.join(' ') + ' ' + p.title).indexOf(kw) >= 0; }
+  // 詳情＝單一長頁，7 個 section 堆疊；tab 為錨點 + 垂直 scroll-spy（對齊 mweb openDetail/detSpy）
+  var DET_SECS = ['svc', 'howto', 'cancel', 'review', 'fee', 'notice', 'imgs'];
+  var detGuard = 0, detActiveTab = null;
   function openPlDetail(p) {
-    detP = p; detCur = 0;
-    document.getElementById('plDetTabs').innerHTML = '';
+    detP = p;
+    var tabsEl = document.getElementById('plDetTabs'); tabsEl.innerHTML = '';
     DET_TABS.forEach(function (t, i) {
-      var b = h('<button class="pl-det-tab' + (i === 0 ? ' sel' : '') + '">' + (t === '評論' ? '評論（' + p.reviews.toLocaleString('en-US') + '）' : t) + '</button>');
-      b.addEventListener('click', function () { detCur = i; document.querySelectorAll('#plDetTabs .pl-det-tab').forEach(function (x, j) { x.classList.toggle('sel', j === i); }); renderDetBody(); document.getElementById('plDetBd').scrollTop = 0; });
-      document.getElementById('plDetTabs').appendChild(b);
+      var b = h('<button class="pl-det-tab' + (i === 0 ? ' sel' : '') + '" data-sec="' + DET_SECS[i] + '">' + (t === '評論' ? '評論（' + p.reviews.toLocaleString('en-US') + '）' : t) + '</button>');
+      b.addEventListener('click', function () {
+        var bd = document.getElementById('plDetBd');
+        var sec = bd.querySelector('.det-sec[data-sec="' + b.getAttribute('data-sec') + '"]'); if (!sec) return;
+        detGuard = Date.now() + 700; detActiveTab = b.getAttribute('data-sec');
+        document.querySelectorAll('#plDetTabs .pl-det-tab').forEach(function (x) { x.classList.toggle('sel', x === b); });
+        centerDetTab(b);
+        bd.scrollTo({ top: detSecTop(sec), behavior: 'smooth' });
+      });
+      tabsEl.appendChild(b);
     });
     renderDetBody();
     document.getElementById('plDetMask').classList.add('open');
     document.getElementById('plDetDlg').classList.add('open');
     document.getElementById('plDetBd').scrollTop = 0;
+    detActiveTab = null; detSpy();
     lockScroll();
   }
   function closePlDetail() { if (!document.getElementById('plDetDlg').classList.contains('open')) return; detHideTip(); document.getElementById('plDetMask').classList.remove('open'); document.getElementById('plDetDlg').classList.remove('open'); unlockScroll(); }
-  document.getElementById('plDetBd').addEventListener('scroll', detHideTip, { passive: true });
+  function detSecTop(sec) { var bd = document.getElementById('plDetBd'); return sec.getBoundingClientRect().top - bd.getBoundingClientRect().top + bd.scrollTop; }
+  function centerDetTab(t) {
+    var tabs = document.getElementById('plDetTabs'); if (!t || !tabs.clientWidth) return;
+    var tr = t.getBoundingClientRect(), br = tabs.getBoundingClientRect();
+    tabs.scrollTo({ left: Math.max(0, tabs.scrollLeft + (tr.left + tr.width / 2) - (br.left + br.width / 2)), behavior: 'smooth' });
+  }
+  function detSpy() {
+    if (Date.now() < detGuard) return;
+    var bd = document.getElementById('plDetBd'), st = bd.scrollTop + 9, act = 'svc';
+    bd.querySelectorAll('.det-sec').forEach(function (s) { if (detSecTop(s) <= st) act = s.getAttribute('data-sec'); });
+    document.querySelectorAll('#plDetTabs .pl-det-tab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-sec') === act); });
+    if (act !== detActiveTab) { detActiveTab = act; centerDetTab(document.querySelector('#plDetTabs .pl-det-tab.sel')); }
+  }
+  document.getElementById('plDetBd').addEventListener('scroll', function () { detHideTip(); detSpy(); }, { passive: true });
   function renderDetBody() {
     detHideTip();
     var p = detP, bd = document.getElementById('plDetBd'); bd.innerHTML = '';
-    if (detCur === 0) bd.appendChild(detSvc(p));
-    else if (detCur === 1) bd.appendChild(detHowto(p));
-    else if (detCur === 2) bd.appendChild(detCancel(p));
-    else if (detCur === 3) bd.appendChild(detReview(p));
-    else if (detCur === 4) bd.appendChild(detFee(p));
-    else if (detCur === 5) bd.appendChild(detNotice(p));
-    else bd.appendChild(detImgs(p));
+    bd.appendChild(detSvc(p));
+    bd.appendChild(detHowto(p));
+    bd.appendChild(detCancel(p));
+    bd.appendChild(detReview(p));
+    bd.appendChild(detFee(p));
+    bd.appendChild(detNotice(p));
+    bd.appendChild(detImgs(p));
+    bd.appendChild(h('<div class="det-pid">產品編號：123456</div>'));
   }
   // 傳輸規格文案（對齊 mweb detTransSpec）
   function detTransSpec() {
@@ -2173,7 +2200,7 @@
   function detHideTip() { var t = document.getElementById('detHovTip'); if (t) t.hidden = true; }
   function detSvc(p) {
     var sp = p.spec, native = sp.sim === '原生卡', dest = sel.dest || '日本', d = sel.days;
-    var wrap = h('<div class="det-sec"></div>');
+    var wrap = h('<div class="det-sec" data-sec="svc"></div>');
     // 首屏摘要卡：條件(青) + 標題(22) + 提醒(橘) + 供應商(灰)
     var hero = h('<div class="det-hero">' +
       '<div class="det-cond"><span class="ic ic-20">{{IC_file}}</span><span class="ct"></span></div>' +
@@ -2267,7 +2294,7 @@
   }
   function detHowto(p) {
     var dest = sel.dest || '日本', multi = sel.destCount > 1;
-    return h('<div class="det-sec">' +
+    return h('<div class="det-sec" data-sec="howto">' +
       '<h2 class="det-h5">如何使用</h2>' +
       '<ul class="det-list">' +
         '<li>前往 設定 &gt; 行動服務（蜂窩行動網路）</li>' +
@@ -2293,13 +2320,13 @@
     else if (p.cancelType === 'cond') body = cxlTable([['所選日期 3 天前', '未使用可免費取消'], ['所選日期 0～2 天前', '不可取消、更改訂單、也不可請求退款']]);
     else if (p.cancelType === 'fee') body = cxlTable([['所選日期 10 天前', '未使用可免費取消'], ['所選日期 3～5 天前', '手續費 50%'], ['所選日期 0～2 天前', '手續費 100%'], ['所選日期 0 天前', '不可取消、更改訂單、也不可請求退款']]);
     else body = '<p class="det-body-md">商品一經訂購完成後，即不可取消、更改訂單，亦不得請求退款</p>';
-    return h('<div class="det-sec"><h2 class="det-h5">取消政策</h2>' +
+    return h('<div class="det-sec" data-sec="cancel"><h2 class="det-h5">取消政策</h2>' +
       '<div class="cxl-wrap">' + body +
       '<div class="cxl-note"><span class="ic ic-16">{{IC_info}}</span><div class="cxl-note-txt"><p>注意</p><p>' + CXL_SUPPLIER + '</p></div></div></div></div>');
   }
   function detReview(p) {
     var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '一般');
-    var wrap = h('<div class="det-sec"><h2 class="det-h5">評論</h2></div>');
+    var wrap = h('<div class="det-sec" data-sec="review"><h2 class="det-h5">評論</h2></div>');
     wrap.appendChild(h('<div class="det-score"><span class="badge9">' + p.rating.toFixed(1) + '</span><span class="gcol"><span class="gt">' + grade + '</span><span class="gc">依據 ' + p.reviews.toLocaleString('en-US') + ' 則評論</span></span></div>'));
     wrap.appendChild(h('<div class="det-ai"><div class="ai-t"><span class="ic ic-16">{{IC_spark}}</span>AI 精選旅客評論摘要</div><div class="ai-b">大多數旅客認為網速穩定、性價比高，掃碼後數分鐘內即可完成安裝，落地即可上網；熱點分享給同行裝置也很實用。少數旅客反映山區訊號偶有波動、首次啟用需要連線穩定 WiFi。整體而言適合自由行與商務出行，客服回應速度獲得一致好評。</div></div>'));
     wrap.appendChild(h('<div class="det-kws">' +
@@ -2329,7 +2356,7 @@
     return wrap;
   }
   function detFee(p) {
-    return h('<div class="det-sec">' +
+    return h('<div class="det-sec" data-sec="fee">' +
       '<h2 class="det-h5">費用資訊</h2>' +
       '<h3 class="det-sub" style="margin-top:0">費用包含</h3>' +
       '<div class="det-inc"><span class="ic">{{IP_checkLine}}</span>eSIM費用</div>' +
@@ -2343,7 +2370,7 @@
     '</div>');
   }
   function detNotice() {
-    return h('<div class="det-sec">' +
+    return h('<div class="det-sec" data-sec="notice">' +
       '<h2 class="det-h5">購買須知</h2>' +
       '<ul class="det-list">' +
         '<li>網路速度將隨地形、氣候、建物遮蔽、使用人數及地點等因素改變，收訊不穩定時，請務必與技術客服聯絡。</li>' +
@@ -2358,20 +2385,24 @@
     '</div>');
   }
   function detImgs() {
-    return h('<div class="det-sec">' +
-      '<h2 class="det-h5">圖文說明</h2>' +
-      '<p class="det-body-md">本商品由原生網路提供，落地即用、免換實體卡。以下圖文涵蓋裝置支援確認、安裝設定到使用提醒。</p>' +
-      '<p class="det-body-md" style="margin-top:24px;">購買前請先確認手機可用 eSIM，訂購後無法取消訂單退款。</p>' +
-      '<ul class="det-list" style="margin-top:24px;">' +
-        '<li>可用 eSIM 的手機：撥號輸入 *#06#，裝置資訊有 EID 序號即代表支援</li>' +
-        '<li>啟用 eSIM 前請先更新系統至最新版本，並連線穩定 WiFi</li>' +
-        '<li>開啟相機掃描 eSIM QR Code，點選「行動方案」</li>' +
-        '<li>啟用時間約 2-3 分鐘，過程中請保持連線</li>' +
-        '<li>可自訂 eSIM 名稱，方便管理多張 eSIM</li>' +
-        '<li>將行動資料切換至此 eSIM 並開啟資料漫遊即可上網</li>' +
-      '</ul>' +
-      '<div class="det-pid">產品編號：123456</div>' +
-    '</div>');
+    var figs = [
+      ['本商品由原生網路提供，落地即用、免換實體卡。以下圖文涵蓋裝置支援確認、安裝設定到使用提醒。', null],
+      ['購買前請先確認手機可用 eSIM，訂購後無法取消訂單退款。', '{{IMG_KK_1}}'],
+      ['啟用 eSIM 前請先更新 iOS 至最新版本，並連線穩定 WiFi，舊版 iOS 和網路不穩定是 eSIM 啟用失敗的常見原因。', '{{IMG_KK_2}}'],
+      ['開啟相機掃描 eSIM，點選「行動方案」。', '{{IMG_KK_3}}'],
+      ['啟用時間約 2-3 分鐘，跳出啟用畫面容易安裝失敗。', '{{IMG_KK_4}}'],
+      ['可自訂 eSIM 名稱，方便管理多張 eSIM。', '{{IMG_KK_5}}'],
+      ['選擇預設號碼，可指定原來的主要門號接收訊息（需先向原電信業者申請開通國際漫遊主要門號才能收到簡訊）。', '{{IMG_KK_6}}'],
+      ['可指定搭配主要門號使用 iMessage 和 FaceTime 功能。', '{{IMG_KK_7}}'],
+      ['選擇使用 eSIM 的行動資料，「eSIM 的行動資料沒有開啟」是無法上網的常見原因。', '{{IMG_KK_8}}'],
+      ['無法掃描 QR Code 時也可以手動加入 eSIM。', '{{IMG_KK_9}}'],
+      ['複製 eSIM 啟用碼後，請依序操作手動加入 eSIM 資訊。', '{{IMG_KK_10}}']
+    ];
+    var body = figs.map(function (f, i) {
+      var cap = '<p class="det-body-md"' + (i ? ' style="margin-top:24px;"' : '') + '>' + f[0] + '</p>';
+      return cap + (f[1] ? '<div class="det-fig"><img alt="" src="' + f[1] + '"></div>' : '');
+    }).join('');
+    return h('<div class="det-sec" data-sec="imgs"><h2 class="det-h5">圖文說明</h2>' + body + '</div>');
   }
   document.getElementById('plDetClose').addEventListener('click', closePlDetail);
   document.getElementById('plDetMask').addEventListener('click', closePlDetail);
