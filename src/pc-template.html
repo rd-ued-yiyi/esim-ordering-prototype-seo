@@ -15,7 +15,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #fff; }
-  body { font-family: var(--font-tc); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; min-width: 1024px; }  /* 自適應：內容區流體收窄，1024 以下才出現橫向捲動（PC 最小可用寬） */
+  body { font-family: var(--font-tc); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; }  /* 自適應：不設最小寬下限，內容區隨視窗一路等比收窄 */
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: inherit; }
   input { font: inherit; }
   img { display: block; }
@@ -33,8 +33,9 @@
   .pc-header { height: 60px; background: #fff; }
   .pc-header .col { height: 60px; display: flex; align-items: center; gap: 24px; }
   .pc-logo { width: 100px; height: 40px; flex: 0 0 auto; }
-  .pc-hsearch { flex: 0 1 400px; min-width: 200px; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px;
+  .pc-hsearch { flex: 0 1 400px; min-width: 0; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px; overflow: hidden; white-space: nowrap;
     background: var(--kk-surface-light); border-radius: 999px; color: var(--kk-text-medium); font-size: 14px; }
+  .pc-hsearch .ic { flex: 0 0 auto; }
   .pc-right { display: flex; align-items: center; margin-left: auto; }
   .pc-right .it { display: flex; align-items: center; gap: 4px; padding: 0 12px; height: 60px; color: var(--kk-text-dark); white-space: nowrap; }
   .pc-right .it:hover { color: var(--kk-text-darker); }
@@ -55,6 +56,9 @@
   .pc-cat-item.sel .bar { visibility: visible; }
   .pc-cat-fade { position: absolute; right: 24px; top: 0; width: 80px; height: 60px; background: linear-gradient(to left, #fff, rgba(255,255,255,0)); pointer-events: none; }
   .pc-cat-more { position: absolute; right: 0; top: 18px; }
+  /* 窄視窗漸進收合 header 次要工具（無最小寬下限，任何寬度都不橫向溢出）：先收「下載App」，再收語言／幣別 */
+  @media (max-width: 960px) { .pc-right .it.app { display: none; } }
+  @media (max-width: 800px) { .pc-right .it:not(.app):not([aria-label]) { display: none; } }
 
   /* ---------- hero：未選=標題+搜尋卡；已選=目的地 pill+套餐面板（Figma 2968-67063 / 3096-60605） ---------- */
   .pc-hero { position: relative; overflow: hidden; padding-bottom: 40px;
@@ -279,7 +283,7 @@
   .pc-pcard .tt { font-size: 18px; line-height: 26px; font-weight: 600; padding-right: 40px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .pc-pcard .heart { position: absolute; right: 20px; top: 20px; }
-  .pc-prate { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pc-prate { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }  /* 窄視窗允許換行，不撐破卡片 */
   .pc-prate .ic { width: 16px; height: 16px; }
   .pc-prate b { font-size: 16px; color: var(--kk-text-darker); }
   .pc-ptags { display: flex; gap: 8px; flex-wrap: wrap; }
