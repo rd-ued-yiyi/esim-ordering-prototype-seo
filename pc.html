@@ -126,7 +126,8 @@
   .pc-pane-days { flex: 0 0 224px; }
   .pc-days-list { display: flex; flex-direction: column; gap: 12px; max-height: 292px; overflow-y: scroll; padding-right: 8px; }
   /* 天數 / 流量滾動區：滾動條常駐（覆蓋 macOS overlay 預設）：6px 軌道 + 圓角滑塊 */
-  .pc-days-list, .pc-flow-scroll { scrollbar-width: thin; scrollbar-color: var(--kk-border-light) var(--kk-surface-light); scrollbar-gutter: stable; }
+  /* 注意：Chrome 一旦設了標準 scrollbar-width / scrollbar-color 就會忽略 ::-webkit-scrollbar，macOS 會退回 overlay 隱藏式滾動條；標準屬性只給 Firefox */
+  @supports not selector(::-webkit-scrollbar) { .pc-days-list, .pc-flow-scroll { scrollbar-width: thin; scrollbar-color: var(--kk-border-light) var(--kk-surface-light); } }
   .pc-days-list::-webkit-scrollbar, .pc-flow-scroll::-webkit-scrollbar { width: 6px; }
   .pc-days-list::-webkit-scrollbar-track, .pc-flow-scroll::-webkit-scrollbar-track { background: var(--kk-surface-light); border-radius: 3px; }
   .pc-days-list::-webkit-scrollbar-thumb, .pc-flow-scroll::-webkit-scrollbar-thumb { background: var(--kk-border-light); border-radius: 3px; }
