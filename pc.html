@@ -327,10 +327,11 @@
   .dlg-group .gh .gact { margin-left: auto; display: inline-flex; padding: 2px; }
   /* 目的地 chip：與 mweb .chip 同款（淺灰底 #F1F4F8、圓角 8、內距 8 + 文字左右 4、14/20；選中＝淺青底 + 1px 青 inset 邊 + 青字） */
   .dlg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .dlg-chip { display: inline-flex; align-items: center; padding: 8px 12px; border-radius: 8px; border: 0;
-    background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; white-space: nowrap; }
-  .dlg-chip:hover { background: var(--kk-surface-medium); }
-  .dlg-chip.sel { background: var(--kk-primary-lighter); box-shadow: inset 0 0 0 1px var(--kk-primary-medium); color: var(--kk-primary-dark); }
+  /* 目的地 chip = Figma PC 稿 3096-58066：pill 白底 + #D5D6DB 邊框、px16 py8、選中 #F0FAFB + 青邊青字（filter 用 pill，與探索更多 .ex-chip 同款） */
+  .dlg-chip { display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--kk-border-light);
+    background: #fff; color: var(--kk-text-darker); font-size: 14px; line-height: 20px; white-space: nowrap; }
+  .dlg-chip:hover { border-color: var(--kk-primary-medium); }
+  .dlg-chip.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); color: var(--kk-primary-dark); }
   .dlg-tabs { position: sticky; top: 0; z-index: 2; background: #fff; display: flex; gap: 0; margin-top: 0; padding-top: 4px; border-bottom: 1px solid var(--kk-border-lighter); }  /* 間距改用白底 padding，貼頂時不透出下方內容 */
   .dlg-tab { position: relative; padding: 12px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
   .dlg-tab.sel { color: var(--kk-primary-dark); font-weight: 600; }
