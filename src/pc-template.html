@@ -96,7 +96,7 @@
   .pc-find-input:hover { box-shadow: 0 0 0 3px rgba(38,190,201,.15); }
   .pc-find-input .ph { flex: 1 1 0; text-align: left; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-hotchips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .pc-chip { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 14px; border-radius: 8px;
+  .pc-chip { display: inline-flex; align-items: center; gap: 2px; height: 36px; padding: 0 12px; border-radius: 8px;
     background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; transition: background .12s; }
   .pc-chip:hover { background: var(--kk-surface-medium); }
   .pc-chip .ic-14 img { width: 14px; height: 14px; }
@@ -115,7 +115,7 @@
   .pc-pane { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
   .pc-pane .pt { font-size: 18px; line-height: 26px; font-weight: 600; }
   .pc-pane-days { flex: 0 0 224px; }
-  .pc-days-list { display: flex; flex-direction: column; gap: 12px; max-height: 292px; overflow-y: scroll; padding-right: 8px; }
+  .pc-days-list { display: flex; flex-direction: column; gap: 12px; max-height: 452px; overflow-y: scroll; padding-right: 8px; }
   /* 天數 / 流量滾動區：滾動條常駐（覆蓋 macOS overlay 預設）：6px 軌道 + 圓角滑塊 */
   /* 注意：Chrome 一旦設了標準 scrollbar-width / scrollbar-color 就會忽略 ::-webkit-scrollbar，macOS 會退回 overlay 隱藏式滾動條；標準屬性只給 Firefox */
   @supports not selector(::-webkit-scrollbar) { .pc-days-list, .pc-flow-scroll { scrollbar-width: thin; scrollbar-color: var(--kk-border-light) var(--kk-surface-light); } }
@@ -135,7 +135,7 @@
   .pc-ftab.sel { background: #fff; border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
   .pc-flow-help { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 14px; }
   /* 三計費段堆疊的滾動區（Figma 3191-69364） */
-  .pc-flow-scroll { max-height: 300px; overflow-y: scroll; padding: 2px 8px 2px 4px; display: flex; flex-direction: column; gap: 4px; }
+  .pc-flow-scroll { max-height: 460px; overflow-y: scroll; padding: 2px 8px 2px 4px; display: flex; flex-direction: column; gap: 4px; }
   .pc-flow-sec { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .pc-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
