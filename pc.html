@@ -85,6 +85,10 @@
     background: #fff; border-radius: 8px; box-shadow: var(--el-card); font-size: 14px; line-height: 20px; font-weight: 600; }
   .pc-dest-pill .chev { transition: transform .2s; }
   .pc-dest-pill:hover .chev { transform: translateY(1px); }
+  /* 多國態：名稱列表超出省略、數量 (N) 常駐可見（對齊 mweb destName + destNum） */
+  .pc-dest-pill #pcDestName { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dest-num { flex: 0 0 auto; color: var(--kk-text-dark); font-weight: 400; }
+  .pc-lpill #plDestName { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .pc-hero[data-state="empty"] .pc-dest-pill { display: none; }
   .pc-hero[data-state="sel"] .h1, .pc-hero[data-state="sel"] .sub { display: none; }
   /* tab 條（同 mweb TabBarCard）：選中白底 + 青字 + 底條 + 右下 16 內凹補角 */
@@ -340,8 +344,8 @@
   .dlg-group .gh .gact { margin-left: auto; display: inline-flex; padding: 2px; }
   /* 目的地 chip：與 mweb .chip 同款（淺灰底 #F1F4F8、圓角 8、內距 8 + 文字左右 4、14/20；選中＝淺青底 + 1px 青 inset 邊 + 青字） */
   .dlg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  /* 目的地 chip = Figma PC 稿 3096-58066：pill 白底 + #D5D6DB 邊框、px16 py8、選中 #F0FAFB + 青邊青字（filter 用 pill，與探索更多 .ex-chip 同款） */
-  .dlg-chip { display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--kk-border-light);
+  /* 目的地 chip：與 mweb .dest-modal .chip 一致——白底 8px 圓角矩形 + inset 1px 淺邊、選中淺青底青邊青字 */
+  .dlg-chip { display: inline-flex; align-items: center; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--kk-border-lighter);
     background: #fff; color: var(--kk-text-darker); font-size: 14px; line-height: 20px; white-space: nowrap; }
   .dlg-chip:hover { border-color: var(--kk-primary-medium); }
   .dlg-chip.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); color: var(--kk-primary-dark); }
@@ -541,7 +545,7 @@
     <div class="col">
       <h1 class="h1">全球上網</h1>
       <div class="sub">輕鬆出發，無憂暢遊全球</div>
-      <button class="pc-dest-pill" id="pcDestPill"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2xvY2F0aW9uX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTEwIDExLjI0OTlDOS4zODE5NCAxMS4yNDk5IDguNzc3NzUgMTEuMDY2NiA4LjI2Mzg1IDEwLjcyMzJDNy43NDk5NCAxMC4zNzk4IDcuMzQ5NCA5Ljg5MTc3IDcuMTEyODggOS4zMjA3NUM2Ljg3NjM1IDguNzQ5NzMgNi44MTQ0NyA4LjEyMTQyIDYuOTM1MDUgNy41MTUyM0M3LjA1NTYzIDYuOTA5MDQgNy4zNTMyNSA2LjM1MjE4IDcuNzkwMjkgNS45MTUxNEM4LjIyNzMzIDUuNDc4MSA4Ljc4NDE2IDUuMTgwNDYgOS4zOTAzNSA1LjA1OTg5QzkuOTk2NTQgNC45MzkzMSAxMC42MjQ5IDUuMDAxMjMgMTEuMTk1OSA1LjIzNzc1QzExLjc2NjkgNS40NzQyOCAxMi4yNTUgNS44NzQ4MiAxMi41OTgzIDYuMzg4NzJDMTIuOTQxNyA2LjkwMjYzIDEzLjEyNSA3LjUwNjggMTMuMTI1IDguMTI0ODdDMTMuMTIyOCA4Ljk1Mjk5IDEyLjc5MjkgOS43NDY1OCAxMi4yMDczIDEwLjMzMjJDMTEuNjIxNyAxMC45MTc3IDEwLjgyODEgMTEuMjQ3NyAxMCAxMS4yNDk5Wk0xMCA2LjI0OTg3QzkuNjI5MTYgNi4yNDk4NyA5LjI2NjY1IDYuMzU5ODUgOC45NTgzMSA2LjU2NTg4QzguNjQ5OTcgNi43NzE5IDguNDA5NjQgNy4wNjQ3NCA4LjI2NzczIDcuNDA3MzVDOC4xMjU4MSA3Ljc0OTk2IDguMDg4NjggOC4xMjY5NiA4LjE2MTAzIDguNDkwNjdDOC4yMzMzOCA4Ljg1NDM5IDguNDExOTYgOS4xODg0OCA4LjY3NDE4IDkuNDUwN0M4LjkzNjQgOS43MTI5MyA5LjI3MDUgOS44OTE1MSA5LjYzNDIxIDkuOTYzODZDOS45OTc5MyAxMC4wMzYyIDEwLjM3NDkgOS45OTkwNiAxMC43MTc1IDkuODU3MTVDMTEuMDYwMSA5LjcxNTIzIDExLjM1MyA5LjQ3NDg4IDExLjU1OSA5LjE2NjUzQzExLjc2NSA4Ljg1ODE5IDExLjg3NSA4LjQ5NTcxIDExLjg3NSA4LjEyNDg3QzExLjg3NSA3LjYyNzU5IDExLjY3NzUgNy4xNTA2NiAxMS4zMjU4IDYuNzk5MDNDMTAuOTc0MiA2LjQ0NzQgMTAuNDk3MyA2LjI0OTg3IDEwIDYuMjQ5ODdaIiBmaWxsPSIjMjEyMTIxIi8+CjxwYXRoIGQ9Ik0xMCAxOC43NDk4QzkuODcxNDggMTguNzQ4MiA5Ljc0NjUxIDE4LjcwNzUgOS42NDE2NyAxOC42MzMyQzkuMzc1MDEgMTguNDQ5OCAzLjEyNSAxMy45OTk4IDMuMTI1IDguMTI0ODVDMy4xMjUgNi4zMDE0OCAzLjg0OTMzIDQuNTUyODEgNS4xMzg2NCAzLjI2MzVDNi40Mjc5NSAxLjk3NDE5IDguMTc2NjQgMS4yNDk4NSAxMCAxLjI0OTg1QzExLjgyMzQgMS4yNDk4NSAxMy41NzIgMS45NzQxOSAxNC44NjE0IDMuMjYzNUMxNi4xNTA3IDQuNTUyODEgMTYuODc1IDYuMzAxNDggMTYuODc1IDguMTI0ODVDMTYuODc1IDEzLjk1ODIgMTAuNjI1IDE4LjQ0OTggMTAuMzU4MyAxOC42MzMyQzEwLjI1MzUgMTguNzA3NSAxMC4xMjg1IDE4Ljc0ODIgMTAgMTguNzQ5OFpNMTAgMi40OTk4NUM5LjI2MDEyIDIuNTAwODUgOC41Mjc3OSAyLjY0ODY4IDcuODQ1NDYgMi45MzQ3N0M3LjE2MzEzIDMuMjIwODcgNi41NDQzNSAzLjYzOTU0IDYuMDI1IDQuMTY2NTFDNC45NjU1MSA1LjIyMjMgNC4zNjY0MSA2LjY1NDEyIDQuMzU4MzMgOC4xNDk4MkM0LjM1ODMzIDEyLjYyNDggOC42OTE2NiAxNi4zNDk4IDkuOTgzMzMgMTcuMzY2NUMxMS4yNzUgMTYuMzQ5OCAxNS42MDgzIDEyLjYxNjUgMTUuNjA4MyA4LjE0OTgyQzE1LjYwMDIgNi42NTQxMiAxNS4wMDExIDUuMjIyMyAxMy45NDE3IDQuMTY2NTFDMTIuOTAwOCAzLjExMDI2IDExLjQ4MjkgMi41MTA3NCAxMCAyLjQ5OTg1WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+CjwvZz4KPC9zdmc+" width="20" height="20"></span><span id="pcDestName">目的地</span><span class="ic ic-20 chev"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93RG93bl9saW5lIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC40NDE5IDEyLjk0M0MxMC4xOTc5IDEzLjE4NyA5LjgwMjE0IDEzLjE4NyA5LjU1ODA2IDEyLjk0M0w0LjU1ODA2IDcuOTQyOTZDNC4zMTM5OCA3LjY5ODg4IDQuMzEzOTggNy4zMDMxNSA0LjU1ODA2IDcuMDU5MDdDNC44MDIxNCA2LjgxNSA1LjE5Nzg3IDYuODE1IDUuNDQxOTQgNy4wNTkwOEwxMCAxMS42MTcxTDE0LjU1ODEgNy4wNTkwOEMxNC44MDIxIDYuODE1IDE1LjE5NzkgNi44MTUgMTUuNDQxOSA3LjA1OTA4QzE1LjY4NiA3LjMwMzE1IDE1LjY4NiA3LjY5ODg4IDE1LjQ0MTkgNy45NDI5NkwxMC40NDE5IDEyLjk0M1oiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span></button>
+      <button class="pc-dest-pill" id="pcDestPill"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2xvY2F0aW9uX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTEwIDExLjI0OTlDOS4zODE5NCAxMS4yNDk5IDguNzc3NzUgMTEuMDY2NiA4LjI2Mzg1IDEwLjcyMzJDNy43NDk5NCAxMC4zNzk4IDcuMzQ5NCA5Ljg5MTc3IDcuMTEyODggOS4zMjA3NUM2Ljg3NjM1IDguNzQ5NzMgNi44MTQ0NyA4LjEyMTQyIDYuOTM1MDUgNy41MTUyM0M3LjA1NTYzIDYuOTA5MDQgNy4zNTMyNSA2LjM1MjE4IDcuNzkwMjkgNS45MTUxNEM4LjIyNzMzIDUuNDc4MSA4Ljc4NDE2IDUuMTgwNDYgOS4zOTAzNSA1LjA1OTg5QzkuOTk2NTQgNC45MzkzMSAxMC42MjQ5IDUuMDAxMjMgMTEuMTk1OSA1LjIzNzc1QzExLjc2NjkgNS40NzQyOCAxMi4yNTUgNS44NzQ4MiAxMi41OTgzIDYuMzg4NzJDMTIuOTQxNyA2LjkwMjYzIDEzLjEyNSA3LjUwNjggMTMuMTI1IDguMTI0ODdDMTMuMTIyOCA4Ljk1Mjk5IDEyLjc5MjkgOS43NDY1OCAxMi4yMDczIDEwLjMzMjJDMTEuNjIxNyAxMC45MTc3IDEwLjgyODEgMTEuMjQ3NyAxMCAxMS4yNDk5Wk0xMCA2LjI0OTg3QzkuNjI5MTYgNi4yNDk4NyA5LjI2NjY1IDYuMzU5ODUgOC45NTgzMSA2LjU2NTg4QzguNjQ5OTcgNi43NzE5IDguNDA5NjQgNy4wNjQ3NCA4LjI2NzczIDcuNDA3MzVDOC4xMjU4MSA3Ljc0OTk2IDguMDg4NjggOC4xMjY5NiA4LjE2MTAzIDguNDkwNjdDOC4yMzMzOCA4Ljg1NDM5IDguNDExOTYgOS4xODg0OCA4LjY3NDE4IDkuNDUwN0M4LjkzNjQgOS43MTI5MyA5LjI3MDUgOS44OTE1MSA5LjYzNDIxIDkuOTYzODZDOS45OTc5MyAxMC4wMzYyIDEwLjM3NDkgOS45OTkwNiAxMC43MTc1IDkuODU3MTVDMTEuMDYwMSA5LjcxNTIzIDExLjM1MyA5LjQ3NDg4IDExLjU1OSA5LjE2NjUzQzExLjc2NSA4Ljg1ODE5IDExLjg3NSA4LjQ5NTcxIDExLjg3NSA4LjEyNDg3QzExLjg3NSA3LjYyNzU5IDExLjY3NzUgNy4xNTA2NiAxMS4zMjU4IDYuNzk5MDNDMTAuOTc0MiA2LjQ0NzQgMTAuNDk3MyA2LjI0OTg3IDEwIDYuMjQ5ODdaIiBmaWxsPSIjMjEyMTIxIi8+CjxwYXRoIGQ9Ik0xMCAxOC43NDk4QzkuODcxNDggMTguNzQ4MiA5Ljc0NjUxIDE4LjcwNzUgOS42NDE2NyAxOC42MzMyQzkuMzc1MDEgMTguNDQ5OCAzLjEyNSAxMy45OTk4IDMuMTI1IDguMTI0ODVDMy4xMjUgNi4zMDE0OCAzLjg0OTMzIDQuNTUyODEgNS4xMzg2NCAzLjI2MzVDNi40Mjc5NSAxLjk3NDE5IDguMTc2NjQgMS4yNDk4NSAxMCAxLjI0OTg1QzExLjgyMzQgMS4yNDk4NSAxMy41NzIgMS45NzQxOSAxNC44NjE0IDMuMjYzNUMxNi4xNTA3IDQuNTUyODEgMTYuODc1IDYuMzAxNDggMTYuODc1IDguMTI0ODVDMTYuODc1IDEzLjk1ODIgMTAuNjI1IDE4LjQ0OTggMTAuMzU4MyAxOC42MzMyQzEwLjI1MzUgMTguNzA3NSAxMC4xMjg1IDE4Ljc0ODIgMTAgMTguNzQ5OFpNMTAgMi40OTk4NUM5LjI2MDEyIDIuNTAwODUgOC41Mjc3OSAyLjY0ODY4IDcuODQ1NDYgMi45MzQ3N0M3LjE2MzEzIDMuMjIwODcgNi41NDQzNSAzLjYzOTU0IDYuMDI1IDQuMTY2NTFDNC45NjU1MSA1LjIyMjMgNC4zNjY0MSA2LjY1NDEyIDQuMzU4MzMgOC4xNDk4MkM0LjM1ODMzIDEyLjYyNDggOC42OTE2NiAxNi4zNDk4IDkuOTgzMzMgMTcuMzY2NUMxMS4yNzUgMTYuMzQ5OCAxNS42MDgzIDEyLjYxNjUgMTUuNjA4MyA4LjE0OTgyQzE1LjYwMDIgNi42NTQxMiAxNS4wMDExIDUuMjIyMyAxMy45NDE3IDQuMTY2NTFDMTIuOTAwOCAzLjExMDI2IDExLjQ4MjkgMi41MTA3NCAxMCAyLjQ5OTg1WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+CjwvZz4KPC9zdmc+" width="20" height="20"></span><span id="pcDestName">目的地</span><span class="dest-num" id="pcDestNum" hidden></span><span class="ic ic-20 chev"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93RG93bl9saW5lIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC40NDE5IDEyLjk0M0MxMC4xOTc5IDEzLjE4NyA5LjgwMjE0IDEzLjE4NyA5LjU1ODA2IDEyLjk0M0w0LjU1ODA2IDcuOTQyOTZDNC4zMTM5OCA3LjY5ODg4IDQuMzEzOTggNy4zMDMxNSA0LjU1ODA2IDcuMDU5MDdDNC44MDIxNCA2LjgxNSA1LjE5Nzg3IDYuODE1IDUuNDQxOTQgNy4wNTkwOEwxMCAxMS42MTcxTDE0LjU1ODEgNy4wNTkwOEMxNC44MDIxIDYuODE1IDE1LjE5NzkgNi44MTUgMTUuNDQxOSA3LjA1OTA4QzE1LjY4NiA3LjMwMzE1IDE1LjY4NiA3LjY5ODg4IDE1LjQ0MTkgNy45NDI5NkwxMC40NDE5IDEyLjk0M1oiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span></button>
       <div class="pc-search">
         <div class="pc-tabs" role="tablist">
           <button class="pc-tab sel" role="tab"><span class="tb-in"><span class="lb">eSIM</span><span class="ul"></span></span></button>
@@ -717,7 +721,7 @@
     <div class="pc-lbar">
       <div class="col pc-lbar-in">
         <div class="pc-lconds">
-          <button class="pc-lpill" id="plDestPill"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2xvY2F0aW9uX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTEwIDExLjI0OTlDOS4zODE5NCAxMS4yNDk5IDguNzc3NzUgMTEuMDY2NiA4LjI2Mzg1IDEwLjcyMzJDNy43NDk5NCAxMC4zNzk4IDcuMzQ5NCA5Ljg5MTc3IDcuMTEyODggOS4zMjA3NUM2Ljg3NjM1IDguNzQ5NzMgNi44MTQ0NyA4LjEyMTQyIDYuOTM1MDUgNy41MTUyM0M3LjA1NTYzIDYuOTA5MDQgNy4zNTMyNSA2LjM1MjE4IDcuNzkwMjkgNS45MTUxNEM4LjIyNzMzIDUuNDc4MSA4Ljc4NDE2IDUuMTgwNDYgOS4zOTAzNSA1LjA1OTg5QzkuOTk2NTQgNC45MzkzMSAxMC42MjQ5IDUuMDAxMjMgMTEuMTk1OSA1LjIzNzc1QzExLjc2NjkgNS40NzQyOCAxMi4yNTUgNS44NzQ4MiAxMi41OTgzIDYuMzg4NzJDMTIuOTQxNyA2LjkwMjYzIDEzLjEyNSA3LjUwNjggMTMuMTI1IDguMTI0ODdDMTMuMTIyOCA4Ljk1Mjk5IDEyLjc5MjkgOS43NDY1OCAxMi4yMDczIDEwLjMzMjJDMTEuNjIxNyAxMC45MTc3IDEwLjgyODEgMTEuMjQ3NyAxMCAxMS4yNDk5Wk0xMCA2LjI0OTg3QzkuNjI5MTYgNi4yNDk4NyA5LjI2NjY1IDYuMzU5ODUgOC45NTgzMSA2LjU2NTg4QzguNjQ5OTcgNi43NzE5IDguNDA5NjQgNy4wNjQ3NCA4LjI2NzczIDcuNDA3MzVDOC4xMjU4MSA3Ljc0OTk2IDguMDg4NjggOC4xMjY5NiA4LjE2MTAzIDguNDkwNjdDOC4yMzMzOCA4Ljg1NDM5IDguNDExOTYgOS4xODg0OCA4LjY3NDE4IDkuNDUwN0M4LjkzNjQgOS43MTI5MyA5LjI3MDUgOS44OTE1MSA5LjYzNDIxIDkuOTYzODZDOS45OTc5MyAxMC4wMzYyIDEwLjM3NDkgOS45OTkwNiAxMC43MTc1IDkuODU3MTVDMTEuMDYwMSA5LjcxNTIzIDExLjM1MyA5LjQ3NDg4IDExLjU1OSA5LjE2NjUzQzExLjc2NSA4Ljg1ODE5IDExLjg3NSA4LjQ5NTcxIDExLjg3NSA4LjEyNDg3QzExLjg3NSA3LjYyNzU5IDExLjY3NzUgNy4xNTA2NiAxMS4zMjU4IDYuNzk5MDNDMTAuOTc0MiA2LjQ0NzQgMTAuNDk3MyA2LjI0OTg3IDEwIDYuMjQ5ODdaIiBmaWxsPSIjMjEyMTIxIi8+CjxwYXRoIGQ9Ik0xMCAxOC43NDk4QzkuODcxNDggMTguNzQ4MiA5Ljc0NjUxIDE4LjcwNzUgOS42NDE2NyAxOC42MzMyQzkuMzc1MDEgMTguNDQ5OCAzLjEyNSAxMy45OTk4IDMuMTI1IDguMTI0ODVDMy4xMjUgNi4zMDE0OCAzLjg0OTMzIDQuNTUyODEgNS4xMzg2NCAzLjI2MzVDNi40Mjc5NSAxLjk3NDE5IDguMTc2NjQgMS4yNDk4NSAxMCAxLjI0OTg1QzExLjgyMzQgMS4yNDk4NSAxMy41NzIgMS45NzQxOSAxNC44NjE0IDMuMjYzNUMxNi4xNTA3IDQuNTUyODEgMTYuODc1IDYuMzAxNDggMTYuODc1IDguMTI0ODVDMTYuODc1IDEzLjk1ODIgMTAuNjI1IDE4LjQ0OTggMTAuMzU4MyAxOC42MzMyQzEwLjI1MzUgMTguNzA3NSAxMC4xMjg1IDE4Ljc0ODIgMTAgMTguNzQ5OFpNMTAgMi40OTk4NUM5LjI2MDEyIDIuNTAwODUgOC41Mjc3OSAyLjY0ODY4IDcuODQ1NDYgMi45MzQ3N0M3LjE2MzEzIDMuMjIwODcgNi41NDQzNSAzLjYzOTU0IDYuMDI1IDQuMTY2NTFDNC45NjU1MSA1LjIyMjMgNC4zNjY0MSA2LjY1NDEyIDQuMzU4MzMgOC4xNDk4MkM0LjM1ODMzIDEyLjYyNDggOC42OTE2NiAxNi4zNDk4IDkuOTgzMzMgMTcuMzY2NUMxMS4yNzUgMTYuMzQ5OCAxNS42MDgzIDEyLjYxNjUgMTUuNjA4MyA4LjE0OTgyQzE1LjYwMDIgNi42NTQxMiAxNS4wMDExIDUuMjIyMyAxMy45NDE3IDQuMTY2NTFDMTIuOTAwOCAzLjExMDI2IDExLjQ4MjkgMi41MTA3NCAxMCAyLjQ5OTg1WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+CjwvZz4KPC9zdmc+" width="20" height="20"></span><span id="plDestName">日本</span><span class="ic ic-16 chev"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93RG93bl9saW5lIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC40NDE5IDEyLjk0M0MxMC4xOTc5IDEzLjE4NyA5LjgwMjE0IDEzLjE4NyA5LjU1ODA2IDEyLjk0M0w0LjU1ODA2IDcuOTQyOTZDNC4zMTM5OCA3LjY5ODg4IDQuMzEzOTggNy4zMDMxNSA0LjU1ODA2IDcuMDU5MDdDNC44MDIxNCA2LjgxNSA1LjE5Nzg3IDYuODE1IDUuNDQxOTQgNy4wNTkwOEwxMCAxMS42MTcxTDE0LjU1ODEgNy4wNTkwOEMxNC44MDIxIDYuODE1IDE1LjE5NzkgNi44MTUgMTUuNDQxOSA3LjA1OTA4QzE1LjY4NiA3LjMwMzE1IDE1LjY4NiA3LjY5ODg4IDE1LjQ0MTkgNy45NDI5NkwxMC40NDE5IDEyLjk0M1oiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span></button>
+          <button class="pc-lpill" id="plDestPill"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2xvY2F0aW9uX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTEwIDExLjI0OTlDOS4zODE5NCAxMS4yNDk5IDguNzc3NzUgMTEuMDY2NiA4LjI2Mzg1IDEwLjcyMzJDNy43NDk5NCAxMC4zNzk4IDcuMzQ5NCA5Ljg5MTc3IDcuMTEyODggOS4zMjA3NUM2Ljg3NjM1IDguNzQ5NzMgNi44MTQ0NyA4LjEyMTQyIDYuOTM1MDUgNy41MTUyM0M3LjA1NTYzIDYuOTA5MDQgNy4zNTMyNSA2LjM1MjE4IDcuNzkwMjkgNS45MTUxNEM4LjIyNzMzIDUuNDc4MSA4Ljc4NDE2IDUuMTgwNDYgOS4zOTAzNSA1LjA1OTg5QzkuOTk2NTQgNC45MzkzMSAxMC42MjQ5IDUuMDAxMjMgMTEuMTk1OSA1LjIzNzc1QzExLjc2NjkgNS40NzQyOCAxMi4yNTUgNS44NzQ4MiAxMi41OTgzIDYuMzg4NzJDMTIuOTQxNyA2LjkwMjYzIDEzLjEyNSA3LjUwNjggMTMuMTI1IDguMTI0ODdDMTMuMTIyOCA4Ljk1Mjk5IDEyLjc5MjkgOS43NDY1OCAxMi4yMDczIDEwLjMzMjJDMTEuNjIxNyAxMC45MTc3IDEwLjgyODEgMTEuMjQ3NyAxMCAxMS4yNDk5Wk0xMCA2LjI0OTg3QzkuNjI5MTYgNi4yNDk4NyA5LjI2NjY1IDYuMzU5ODUgOC45NTgzMSA2LjU2NTg4QzguNjQ5OTcgNi43NzE5IDguNDA5NjQgNy4wNjQ3NCA4LjI2NzczIDcuNDA3MzVDOC4xMjU4MSA3Ljc0OTk2IDguMDg4NjggOC4xMjY5NiA4LjE2MTAzIDguNDkwNjdDOC4yMzMzOCA4Ljg1NDM5IDguNDExOTYgOS4xODg0OCA4LjY3NDE4IDkuNDUwN0M4LjkzNjQgOS43MTI5MyA5LjI3MDUgOS44OTE1MSA5LjYzNDIxIDkuOTYzODZDOS45OTc5MyAxMC4wMzYyIDEwLjM3NDkgOS45OTkwNiAxMC43MTc1IDkuODU3MTVDMTEuMDYwMSA5LjcxNTIzIDExLjM1MyA5LjQ3NDg4IDExLjU1OSA5LjE2NjUzQzExLjc2NSA4Ljg1ODE5IDExLjg3NSA4LjQ5NTcxIDExLjg3NSA4LjEyNDg3QzExLjg3NSA3LjYyNzU5IDExLjY3NzUgNy4xNTA2NiAxMS4zMjU4IDYuNzk5MDNDMTAuOTc0MiA2LjQ0NzQgMTAuNDk3MyA2LjI0OTg3IDEwIDYuMjQ5ODdaIiBmaWxsPSIjMjEyMTIxIi8+CjxwYXRoIGQ9Ik0xMCAxOC43NDk4QzkuODcxNDggMTguNzQ4MiA5Ljc0NjUxIDE4LjcwNzUgOS42NDE2NyAxOC42MzMyQzkuMzc1MDEgMTguNDQ5OCAzLjEyNSAxMy45OTk4IDMuMTI1IDguMTI0ODVDMy4xMjUgNi4zMDE0OCAzLjg0OTMzIDQuNTUyODEgNS4xMzg2NCAzLjI2MzVDNi40Mjc5NSAxLjk3NDE5IDguMTc2NjQgMS4yNDk4NSAxMCAxLjI0OTg1QzExLjgyMzQgMS4yNDk4NSAxMy41NzIgMS45NzQxOSAxNC44NjE0IDMuMjYzNUMxNi4xNTA3IDQuNTUyODEgMTYuODc1IDYuMzAxNDggMTYuODc1IDguMTI0ODVDMTYuODc1IDEzLjk1ODIgMTAuNjI1IDE4LjQ0OTggMTAuMzU4MyAxOC42MzMyQzEwLjI1MzUgMTguNzA3NSAxMC4xMjg1IDE4Ljc0ODIgMTAgMTguNzQ5OFpNMTAgMi40OTk4NUM5LjI2MDEyIDIuNTAwODUgOC41Mjc3OSAyLjY0ODY4IDcuODQ1NDYgMi45MzQ3N0M3LjE2MzEzIDMuMjIwODcgNi41NDQzNSAzLjYzOTU0IDYuMDI1IDQuMTY2NTFDNC45NjU1MSA1LjIyMjMgNC4zNjY0MSA2LjY1NDEyIDQuMzU4MzMgOC4xNDk4MkM0LjM1ODMzIDEyLjYyNDggOC42OTE2NiAxNi4zNDk4IDkuOTgzMzMgMTcuMzY2NUMxMS4yNzUgMTYuMzQ5OCAxNS42MDgzIDEyLjYxNjUgMTUuNjA4MyA4LjE0OTgyQzE1LjYwMDIgNi42NTQxMiAxNS4wMDExIDUuMjIyMyAxMy45NDE3IDQuMTY2NTFDMTIuOTAwOCAzLjExMDI2IDExLjQ4MjkgMi41MTA3NCAxMCAyLjQ5OTg1WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+CjwvZz4KPC9zdmc+" width="20" height="20"></span><span id="plDestName">日本</span><span class="dest-num" id="plDestNum" hidden></span><span class="ic ic-16 chev"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93RG93bl9saW5lIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC40NDE5IDEyLjk0M0MxMC4xOTc5IDEzLjE4NyA5LjgwMjE0IDEzLjE4NyA5LjU1ODA2IDEyLjk0M0w0LjU1ODA2IDcuOTQyOTZDNC4zMTM5OCA3LjY5ODg4IDQuMzEzOTggNy4zMDMxNSA0LjU1ODA2IDcuMDU5MDdDNC44MDIxNCA2LjgxNSA1LjE5Nzg3IDYuODE1IDUuNDQxOTQgNy4wNTkwOEwxMCAxMS42MTcxTDE0LjU1ODEgNy4wNTkwOEMxNC44MDIxIDYuODE1IDE1LjE5NzkgNi44MTUgMTUuNDQxOSA3LjA1OTA4QzE1LjY4NiA3LjMwMzE1IDE1LjY4NiA3LjY5ODg4IDE1LjQ0MTkgNy45NDI5NkwxMC40NDE5IDEyLjk0M1oiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span></button>
           <div class="pc-lpick" id="plDaysPick">
             <button class="pc-lpill" id="plDaysPill"><span id="plDaysName">5天</span><span class="ic ic-16 chev"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93RG93bl9saW5lIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC40NDE5IDEyLjk0M0MxMC4xOTc5IDEzLjE4NyA5LjgwMjE0IDEzLjE4NyA5LjU1ODA2IDEyLjk0M0w0LjU1ODA2IDcuOTQyOTZDNC4zMTM5OCA3LjY5ODg4IDQuMzEzOTggNy4zMDMxNSA0LjU1ODA2IDcuMDU5MDdDNC44MDIxNCA2LjgxNSA1LjE5Nzg3IDYuODE1IDUuNDQxOTQgNy4wNTkwOEwxMCAxMS42MTcxTDE0LjU1ODEgNy4wNTkwOEMxNC44MDIxIDYuODE1IDE1LjE5NzkgNi44MTUgMTUuNDQxOSA3LjA1OTA4QzE1LjY4NiA3LjMwMzE1IDE1LjY4NiA3LjY5ODg4IDE1LjQ0MTkgNy45NDI5NkwxMC40NDE5IDEyLjk0M1oiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span></button>
             <div class="pc-ldd" id="plDaysDd"></div>
@@ -1006,13 +1010,22 @@
     try { localStorage.setItem(HK, '[]'); } catch (e) {}
     renderFind();
   });
-  function pickDest(name) {
-    sel.dest = name;
-    histAdd(name);
-    document.getElementById('pcDestName').textContent = name;
+  // 目的地 pill 顯示：名稱（多國＝國家空格串，超出省略）+ 數量 (N)（對齊 mweb destName / destNum）
+  function updateDestPill(nameId, numId) {
+    document.getElementById(nameId).textContent = sel.dest;
+    var num = document.getElementById(numId);
+    var multi = sel.destType === 'multi' && sel.destCount > 1;
+    num.hidden = !multi;
+    if (multi) num.textContent = '(' + sel.destCount + ')';
+  }
+  function pickDest(name, type, count) {
+    sel.dest = name; sel.destType = type || 'country'; sel.destCount = count || 0;
+    if (sel.destType === 'country') histAdd(name);  // 多國/區域不進「最近選擇」（避免長字串 chip）
+    updateDestPill('pcDestName', 'pcDestNum');
     document.getElementById('pcHero').setAttribute('data-state', 'sel');
     closeDlg();
     renderFind(); renderPanel();
+    syncExploreDest(name);  // 選好即同步「探索更多」目的地（對齊 mweb finishSelect → exMapDest）
     if (document.body.classList.contains('list-mode')) renderList();  // 列表頁改目的地：同步刷新條件列與結果
   }
   document.getElementById('pcDestPill').addEventListener('click', function () { openDlg(); });
@@ -1141,7 +1154,7 @@
   }
   function dlgChip(name, onTap, selected) {
     var c = h('<button class="dlg-chip' + (selected ? ' sel' : '') + '"></button>'); c.textContent = name;
-    c.addEventListener('click', function () { onTap(name, c); });
+    c.addEventListener('click', function () { onTap(name); });
     return c;
   }
   function match(n) { return !dlg.q || n.indexOf(dlg.q) >= 0; }
@@ -1195,7 +1208,7 @@
         row.querySelector('.cnt span').textContent = '共' + r.count + '個國家';
         var ul = row.querySelector('ul');
         (r.list || []).forEach(function (n) { var li = document.createElement('li'); li.textContent = n; ul.appendChild(li); });
-        row.addEventListener('click', function () { pickDest(r.name); });
+        row.addEventListener('click', function () { pickDest(r.name, 'region'); });
         // 「共N個國家 ⓘ」tooltip 改 hover 顯示（CSS），點擊該區不觸發整列選擇
         row.querySelector('.cnt').addEventListener('click', function (e) { e.stopPropagation(); });
         return row;
@@ -1238,8 +1251,7 @@
   document.getElementById('pcDlgClear').addEventListener('click', function () { dlg.multi = []; renderDlg(); });
   document.getElementById('pcDlgOk').addEventListener('click', function () {
     if (dlg.multi.length < 2) return;
-    var name = dlg.multi.length <= 2 ? dlg.multi.join('、') : dlg.multi[0] + ' 等' + dlg.multi.length + '國';
-    pickDest(name);
+    pickDest(dlg.multi.join(' '), 'multi', dlg.multi.length);  // 對齊 mweb：名稱＝國家空格串，數量另存 (N)
   });
 
   // ================= 探索更多 =================
@@ -1399,6 +1411,30 @@
     if (t) toast(TOAST[t.getAttribute('data-toast')] || t.getAttribute('data-toast'));
   });
 
+  // 選好目的地即同步「探索更多」目的地選框（對齊 mweb finishSelect → exMapDest）：
+  // 單一國家直接帶入；多國取首個可映射國家；區域等無對應則清空
+  function exMapDestPC(name) {
+    if (!name) return null;
+    var all = []; GEO.continents.forEach(function (c) { all = all.concat(c.countries); });
+    var toks = name.split(/[ 、]/).filter(Boolean);
+    for (var i = 0; i < toks.length; i++) if (all.indexOf(toks[i]) >= 0) return toks[i];  // 完全命中（含多國首個）
+    for (var j = 0; j < all.length; j++) if (name.indexOf(all[j]) >= 0) return all[j];      // 部分命中（如區域含國名）
+    return null;
+  }
+  function syncExploreDest(name) {
+    var mapped = exMapDestPC(name);
+    exState.dest = mapped; exState.picks = [];
+    if (mapped) {
+      exSetText('exSelDest', mapped, '選擇目的地');
+      document.getElementById('exSelPickup').hidden = false;
+      exSetText('exSelPickup', '', '選擇領取/郵寄地');
+    } else {
+      exSetText('exSelDest', '', '選擇目的地');
+      document.getElementById('exSelPickup').hidden = true;
+    }
+    renderPcExplore();
+  }
+
   // ================= 搜尋結果列表頁（同頁切換視圖） =================
   var PL_CHECK = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.4l3.2 3.2L13 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   // 卡片假數據：復刻 mweb .pkg-card 結構（警示/規格標籤/政策/評分/供應商/價格），內容對齊 Figma 3140-37910
@@ -1523,6 +1559,8 @@
       sel.plan = cur.some(function (o) { return o.t === rec; }) ? rec : cur[0].t;
     } else if (!sel.plan || !cur.some(function (o) { return o.t === sel.plan; })) { sel.plan = cur[0].t; }
     document.getElementById('plDestName').textContent = sel.dest || '日本';
+    var pn = document.getElementById('plDestNum'), pm = sel.destType === 'multi' && sel.destCount > 1;
+    pn.hidden = !pm; if (pm) pn.textContent = '(' + sel.destCount + ')';
     document.getElementById('plDaysName').textContent = sel.days + '天';
     renderListChips(); renderDaysDd(); renderPlCards();
   }
