@@ -141,8 +141,11 @@
   .pc-flow-head .pt { flex: 0 0 auto; }
   .pc-ftabs { display: flex; gap: 8px; }
   /* 流量計費分頁：與 mweb .ftab 同款——未選淺灰、選中淺青底 #F0FAFB + inset 青邊 + 青字（不加粗） */
-  .pc-ftab { height: 32px; padding: 0 12px; border-radius: 8px; background: var(--kk-surface-light); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pc-ftab { position: relative; height: 32px; padding: 0 12px; border-radius: 8px; background: var(--kk-surface-light); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-ftab.sel { background: var(--kk-primary-lighter); box-shadow: inset 0 0 0 1px var(--kk-primary-medium); color: #13A3B6; }
+  /* 選中態下方氣泡尖角（與 mweb .ftab.sel::after 同款）：圓角方塊旋轉 45° */
+  .pc-ftab.sel::after { content: ''; position: absolute; left: 50%; bottom: -4.5px; width: 9px; height: 9px; background: var(--kk-primary-lighter);
+    border-right: 1px solid var(--kk-primary-medium); border-bottom: 1px solid var(--kk-primary-medium); border-bottom-right-radius: 2.5px; transform: translateX(-50%) rotate(45deg); }
   .pc-flow-help { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 14px; }
   /* 三計費段堆疊的滾動區（Figma 3191-69364） */
   .pc-flow-scroll { max-height: 232px; overflow-y: scroll; padding: 2px 8px 2px 4px; display: flex; flex-direction: column; gap: 4px; }
