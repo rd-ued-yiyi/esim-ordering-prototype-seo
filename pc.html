@@ -32,7 +32,7 @@
   .ic > img, .ic > svg { max-width: 100%; max-height: 100%; width: 100%; height: 100%; object-fit: contain; }  /* contain：宽扁圖標（如 arrowDown 14×8）不被拉成方形變形 */
   .ic-14 { width: 14px; height: 14px; } .ic-16 { width: 16px; height: 16px; } .ic-18 { width: 18px; height: 18px; } .ic-20 { width: 20px; height: 20px; }
   .ic-24 { width: 24px; height: 24px; }
-  .rot90 { transform: rotate(90deg); } .ic-28 { width: 28px; height: 28px; } .ic-32 { width: 32px; height: 32px; } .ic-36 { width: 36px; height: 36px; }
+  .rot90 { transform: rotate(90deg); } .rot180 { transform: rotate(180deg); } .ic-28 { width: 28px; height: 28px; } .ic-32 { width: 32px; height: 32px; } .ic-36 { width: 36px; height: 36px; }
   /* 自適應內容容器：最寬 1140／1170，視窗變窄時等比收窄、兩側各留 24px 留白（不再固定寬） */
   .col { width: min(1140px, 100% - 48px); margin: 0 auto; }
   .colw { width: min(1170px, 100% - 48px); margin: 0 auto; }
@@ -473,8 +473,10 @@
   .pc-lbody .pc-ex-side { gap: 16px; }
   .pc-lbody .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; }
   .pc-lbody .pc-fbox .fh { margin-bottom: 16px; }
-  .pc-lbody .pc-fdate { display: flex; flex-direction: row; align-items: center; gap: 12px; padding: 16px 20px; }
-  .pc-lbody .pc-fdate .lb { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  /* 使用日期：緊湊白卡列（Figma 3167:43481：高 56、icon 24 + 文字，非帶邊框大格） */
+  .pc-lbody .pc-fdate { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; padding: 16px 20px; cursor: pointer; }
+  .pc-lbody .pc-fdate .cell { width: auto; padding: 0; border-right: 0; }
+  .pc-lbody .pc-fdate .lb { flex: 0 0 auto; justify-content: flex-start; font-size: 14px; line-height: 20px; font-weight: 400; color: var(--kk-text-darker); }
   /* 結果數 + 排序卡（Figma 排序（PC）） */
   .pl-topbox { background: #fff; border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
   .pl-topbox .pc-sortbox { background: none; border-radius: 0; padding: 0; }
@@ -527,6 +529,31 @@
   .pc-allsec .sh { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-allsec .sn { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); margin-top: -8px; }
   .pc-allgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  /* ============ 日期日曆下拉（Figma 3223-83700） ============ */
+  .pc-cal { position: fixed; z-index: 60; width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 16px; }
+  .pc-cal[hidden] { display: none; }
+  .pc-cal-hd { display: flex; align-items: center; height: 36px; margin-bottom: 4px; }
+  .pc-cal-mon { flex: 1 1 0; text-align: center; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-cal-nav { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--kk-text-darker); }
+  .pc-cal-nav .ic { width: 20px; height: 20px; }
+  .pc-cal-nav:hover { background: var(--kk-surface-light); }
+  .pc-cal-nav:disabled { color: var(--kk-border-light); pointer-events: none; }
+  .pc-cal-nav:disabled .ic { opacity: .35; }
+  .pc-cal-week { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .pc-cal-week span { height: 36px; display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pc-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .pc-cal-cell { position: relative; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); cursor: pointer; }
+  .pc-cal-cell .d { position: relative; z-index: 1; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+  .pc-cal-cell:hover .d { background: var(--kk-surface-light); }
+  .pc-cal-cell.pad { visibility: hidden; pointer-events: none; }
+  .pc-cal-cell.past { color: var(--kk-text-medium); text-decoration: line-through; pointer-events: none; }
+  .pc-cal-cell.today .d { color: var(--kk-primary-dark); font-weight: 600; }
+  .pc-cal-cell.sel .d, .pc-cal-cell.sel:hover .d { background: var(--kk-primary-medium); color: #fff; }
+  /* 區間淺青底：中間格滿寬、起訖格半邊，讓底色連成一條 */
+  .pc-cal-cell.inrange::before, .pc-cal-cell.rstart::before, .pc-cal-cell.rend::before { content: ''; position: absolute; top: 2px; bottom: 2px; left: 0; right: 0; z-index: 0; background: var(--kk-primary-lighter); }
+  .pc-cal-cell.rstart::before { left: 50%; }
+  .pc-cal-cell.rend::before { right: 50%; }
+  .pc-cal-cell.rstart.rend::before { display: none; }
   .pc-foot { background: #444; padding: 50px 80px; color: #fff; }
   .pc-foot-top { display: flex; align-items: flex-start; justify-content: space-between; }
   .pc-social { display: flex; gap: 4px; }
@@ -710,7 +737,7 @@
       </div>
       <div class="pc-ex-body">
         <aside class="pc-ex-side">
-          <div class="pc-fbox pc-fdate" style="cursor:pointer" data-toast="old">
+          <div class="pc-fbox pc-fdate pc-caltrigger" style="cursor:pointer">
             <span class="cell"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2NhbGVuZGFyX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNC4zNzUgMS44NzVDMTQuMzc1IDEuNTI5ODIgMTQuMDk1MiAxLjI1IDEzLjc1IDEuMjVDMTMuNDA0OCAxLjI1IDEzLjEyNSAxLjUyOTgyIDEzLjEyNSAxLjg3NVYyLjcwODMzSDYuODc1VjEuODc1QzYuODc1IDEuNTI5ODIgNi41OTUxOCAxLjI1IDYuMjUgMS4yNUM1LjkwNDgyIDEuMjUgNS42MjUgMS41Mjk4MiA1LjYyNSAxLjg3NVYyLjcwODMzSDQuMTY2NjdDMi45MDEwMSAyLjcwODMzIDEuODc1IDMuNzM0MzUgMS44NzUgNVYxNUMxLjg3NSAxNi4yNjU3IDIuOTAxMDEgMTcuMjkxNyA0LjE2NjY3IDE3LjI5MTdIMTUuODMzM0MxNy4wOTkgMTcuMjkxNyAxOC4xMjUgMTYuMjY1NyAxOC4xMjUgMTVWNUMxOC4xMjUgMy43MzQzNSAxNy4wOTkgMi43MDgzMyAxNS44MzMzIDIuNzA4MzNIMTQuMzc1VjEuODc1Wk01LjYyNSA0LjM3NVYzLjk1ODMzSDQuMTY2NjdDMy41OTEzNyAzLjk1ODMzIDMuMTI1IDQuNDI0NyAzLjEyNSA1VjYuMjVIMTYuODc1VjVDMTYuODc1IDQuNDI0NyAxNi40MDg2IDMuOTU4MzMgMTUuODMzMyAzLjk1ODMzSDE0LjM3NVY0LjM3NUMxNC4zNzUgNC43MjAxOCAxNC4wOTUyIDUgMTMuNzUgNUMxMy40MDQ4IDUgMTMuMTI1IDQuNzIwMTggMTMuMTI1IDQuMzc1VjMuOTU4MzNINi44NzVWNC4zNzVDNi44NzUgNC43MjAxOCA2LjU5NTE4IDUgNi4yNSA1QzUuOTA0ODIgNSA1LjYyNSA0LjcyMDE4IDUuNjI1IDQuMzc1Wk0xNi44NzUgNy41SDMuMTI1VjE1QzMuMTI1IDE1LjU3NTMgMy41OTEzNyAxNi4wNDE3IDQuMTY2NjcgMTYuMDQxN0gxNS44MzMzQzE2LjQwODYgMTYuMDQxNyAxNi44NzUgMTUuNTc1MyAxNi44NzUgMTVWNy41WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+CjwvZz4KPC9zdmc+" width="20" height="20"></span></span>
             <span class="lb">出發日期</span>
           </div>
@@ -819,7 +846,7 @@
             <button class="pc-cb" data-mock><span class="box"></span>自然日制</button>
             <button class="pc-cb" data-mock><span class="box"></span>總量制</button>
           </div>
-          <div class="pc-fbox pc-fdate" style="cursor:pointer" data-toast="old">
+          <div class="pc-fbox pc-fdate pc-caltrigger" style="cursor:pointer">
             <span class="cell"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2NhbGVuZGFyX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNC4zNzUgMS44NzVDMTQuMzc1IDEuNTI5ODIgMTQuMDk1MiAxLjI1IDEzLjc1IDEuMjVDMTMuNDA0OCAxLjI1IDEzLjEyNSAxLjUyOTgyIDEzLjEyNSAxLjg3NVYyLjcwODMzSDYuODc1VjEuODc1QzYuODc1IDEuNTI5ODIgNi41OTUxOCAxLjI1IDYuMjUgMS4yNUM1LjkwNDgyIDEuMjUgNS42MjUgMS41Mjk4MiA1LjYyNSAxLjg3NVYyLjcwODMzSDQuMTY2NjdDMi45MDEwMSAyLjcwODMzIDEuODc1IDMuNzM0MzUgMS44NzUgNVYxNUMxLjg3NSAxNi4yNjU3IDIuOTAxMDEgMTcuMjkxNyA0LjE2NjY3IDE3LjI5MTdIMTUuODMzM0MxNy4wOTkgMTcuMjkxNyAxOC4xMjUgMTYuMjY1NyAxOC4xMjUgMTVWNUMxOC4xMjUgMy43MzQzNSAxNy4wOTkgMi43MDgzMyAxNS44MzMzIDIuNzA4MzNIMTQuMzc1VjEuODc1Wk01LjYyNSA0LjM3NVYzLjk1ODMzSDQuMTY2NjdDMy41OTEzNyAzLjk1ODMzIDMuMTI1IDQuNDI0NyAzLjEyNSA1VjYuMjVIMTYuODc1VjVDMTYuODc1IDQuNDI0NyAxNi40MDg2IDMuOTU4MzMgMTUuODMzMyAzLjk1ODMzSDE0LjM3NVY0LjM3NUMxNC4zNzUgNC43MjAxOCAxNC4wOTUyIDUgMTMuNzUgNUMxMy40MDQ4IDUgMTMuMTI1IDQuNzIwMTggMTMuMTI1IDQuMzc1VjMuOTU4MzNINi44NzVWNC4zNzVDNi44NzUgNC43MjAxOCA2LjU5NTE4IDUgNi4yNSA1QzUuOTA0ODIgNSA1LjYyNSA0LjcyMDE4IDUuNjI1IDQuMzc1Wk0xNi44NzUgNy41SDMuMTI1VjE1QzMuMTI1IDE1LjU3NTMgMy41OTEzNyAxNi4wNDE3IDQuMTY2NjcgMTYuMDQxN0gxNS44MzMzQzE2LjQwODYgMTYuMDQxNyAxNi44NzUgMTUuNTc1MyAxNi44NzUgMTVWNy41WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+CjwvZz4KPC9zdmc+" width="20" height="20"></span></span>
             <span class="lb">使用日期</span>
           </div>
@@ -924,6 +951,17 @@
   <div class="pc-alldlg-hd"><span class="t">選擇流量</span><button id="pcAllClose" aria-label="關閉"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></button></div>
   <div class="pc-alldlg-tabs" id="pcAllTabs"></div>
   <div class="pc-alldlg-bd" id="pcAllBd"></div>
+</div>
+
+<!-- ============ 日期日曆下拉（Figma 3223-83700） ============ -->
+<div class="pc-cal" id="pcCal" hidden>
+  <div class="pc-cal-hd">
+    <button class="pc-cal-nav" id="pcCalPrev" aria-label="上個月"><span class="ic rot180"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTUuNTMwMyAxMS40NzA5QzE1LjgyMzIgMTEuNzYzOCAxNS44MjMyIDEyLjIzODcgMTUuNTMwMyAxMi41MzE2TDkuNTMwMzMgMTguNTMxNkM5LjIzNzQ0IDE4LjgyNDQgOC43NjI1NiAxOC44MjQ0IDguNDY5NjcgMTguNTMxNkM4LjE3Njc4IDE4LjIzODcgOC4xNzY3OCAxNy43NjM4IDguNDY5NjcgMTcuNDcwOUwxMy45MzkzIDEyLjAwMTJMOC40Njk2NyA2LjUzMTU1QzguMTc2NzggNi4yMzg2NiA4LjE3Njc4IDUuNzYzNzggOC40Njk2NyA1LjQ3MDg5QzguNzYyNTYgNS4xNzggOS4yMzc0NCA1LjE3OCA5LjUzMDMzIDUuNDcwODlMMTUuNTMwMyAxMS40NzA5WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+Cjwvc3ZnPg==" width="24" height="24"></span></button>
+    <span class="pc-cal-mon" id="pcCalMon"></span>
+    <button class="pc-cal-nav" id="pcCalNext" aria-label="下個月"><span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTUuNTMwMyAxMS40NzA5QzE1LjgyMzIgMTEuNzYzOCAxNS44MjMyIDEyLjIzODcgMTUuNTMwMyAxMi41MzE2TDkuNTMwMzMgMTguNTMxNkM5LjIzNzQ0IDE4LjgyNDQgOC43NjI1NiAxOC44MjQ0IDguNDY5NjcgMTguNTMxNkM4LjE3Njc4IDE4LjIzODcgOC4xNzY3OCAxNy43NjM4IDguNDY5NjcgMTcuNDcwOUwxMy45MzkzIDEyLjAwMTJMOC40Njk2NyA2LjUzMTU1QzguMTc2NzggNi4yMzg2NiA4LjE3Njc4IDUuNzYzNzggOC40Njk2NyA1LjQ3MDg5QzguNzYyNTYgNS4xNzggOS4yMzc0NCA1LjE3OCA5LjUzMDMzIDUuNDcwODlMMTUuNTMwMyAxMS40NzA5WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+Cjwvc3ZnPg==" width="24" height="24"></span></button>
+  </div>
+  <div class="pc-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+  <div class="pc-cal-grid" id="pcCalGrid"></div>
 </div>
 
 <div class="pc-toast" id="pcToast" role="status"></div>
@@ -1773,6 +1811,62 @@
     rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 100) rmax.value = +rmin.value + 100; upd(); });
     upd();
   })();
+
+  // ================= 日期日曆下拉（Figma 3223-83700）：單月 + 翻月 + 區間選擇 =================
+  var calSt = { view: null, start: null, end: null, trigger: null };
+  function calSameDay(a, b) { return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function calFmt(d) { return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function calToday() { var t = new Date(); t.setHours(0, 0, 0, 0); return t; }
+  function openCal(trigger) {
+    calSt.trigger = trigger;
+    var today = calToday();
+    if (!calSt.view) calSt.view = new Date((calSt.start || today).getFullYear(), (calSt.start || today).getMonth(), 1);
+    var cal = document.getElementById('pcCal'); cal.hidden = false;
+    renderCal();
+    var r = trigger.getBoundingClientRect(), w = cal.offsetWidth || 320;
+    cal.style.left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8)) + 'px';
+    cal.style.top = Math.min(r.bottom + 6, window.innerHeight - cal.offsetHeight - 8) + 'px';
+  }
+  function closeCal() { document.getElementById('pcCal').hidden = true; }
+  function renderCal() {
+    var v = calSt.view, today = calToday();
+    document.getElementById('pcCalMon').textContent = v.getFullYear() + '年' + (v.getMonth() + 1) + '月';
+    document.getElementById('pcCalPrev').disabled = (v.getFullYear() === today.getFullYear() && v.getMonth() <= today.getMonth());
+    var grid = document.getElementById('pcCalGrid'); grid.innerHTML = '';
+    var pad = new Date(v.getFullYear(), v.getMonth(), 1).getDay();
+    var days = new Date(v.getFullYear(), v.getMonth() + 1, 0).getDate();
+    for (var i = 0; i < pad; i++) grid.appendChild(h('<div class="pc-cal-cell pad"></div>'));
+    for (var day = 1; day <= days; day++) (function (day) {
+      var d = new Date(v.getFullYear(), v.getMonth(), day); d.setHours(0, 0, 0, 0);
+      var cls = 'pc-cal-cell';
+      if (d < today) cls += ' past';
+      if (calSameDay(d, today)) cls += ' today';
+      if (calSameDay(d, calSt.start)) cls += ' sel rstart';
+      if (calSameDay(d, calSt.end)) cls += ' sel rend';
+      if (calSt.start && calSt.end && d > calSt.start && d < calSt.end) cls += ' inrange';
+      var cell = h('<div class="' + cls + '"><span class="d">' + day + '</span></div>');
+      if (d >= today) cell.addEventListener('click', function (e) { e.stopPropagation(); pickCal(d); });
+      grid.appendChild(cell);
+    })(day);
+  }
+  function pickCal(d) {
+    if (!calSt.start || calSt.end || d < calSt.start) { calSt.start = d; calSt.end = null; }  // 起新區間
+    else { calSt.end = d; }                                                                   // 設訖點
+    renderCal();
+    if (calSt.trigger) {
+      var lb = calSt.trigger.querySelector('.lb');
+      lb.textContent = calSt.end ? (calFmt(calSt.start) + ' – ' + calFmt(calSt.end)) : (calFmt(calSt.start) + ' –');
+    }
+    if (calSt.start && calSt.end) closeCal();
+  }
+  document.getElementById('pcCalPrev').addEventListener('click', function (e) { e.stopPropagation(); calSt.view = new Date(calSt.view.getFullYear(), calSt.view.getMonth() - 1, 1); renderCal(); });
+  document.getElementById('pcCalNext').addEventListener('click', function (e) { e.stopPropagation(); calSt.view = new Date(calSt.view.getFullYear(), calSt.view.getMonth() + 1, 1); renderCal(); });
+  document.getElementById('pcCal').addEventListener('click', function (e) { e.stopPropagation(); });
+  document.querySelectorAll('.pc-caltrigger').forEach(function (t) {
+    t.addEventListener('click', function (e) { e.stopPropagation(); if (document.getElementById('pcCal').hidden) openCal(t); else closeCal(); });
+  });
+  document.addEventListener('click', function () { if (!document.getElementById('pcCal').hidden) closeCal(); });
+  window.addEventListener('scroll', function () { if (!document.getElementById('pcCal').hidden) closeCal(); }, { passive: true });
 
   renderFind(); renderPanel(); renderPcExplore();
 </script>
