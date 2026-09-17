@@ -486,9 +486,21 @@
   .pc-lbody .pc-fdate .cell { width: auto; padding: 0; border-right: 0; }
   .pc-lbody .pc-fdate .lb { flex: 0 0 auto; justify-content: flex-start; font-size: 14px; line-height: 20px; font-weight: 400; color: var(--kk-text-darker); }
   /* 結果數 + 排序卡（Figma 排序（PC）） */
-  .pl-topbox { background: #fff; border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .pl-topbox { background: #fff; border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; gap: 0; }
   .pl-topbox .pc-sortbox { background: none; border-radius: 0; padding: 0; }
-  .pl-cntrow { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-primary-dark); }
+  .pl-topbox .pl-topdiv { height: 1px; background: var(--kk-border-lighter); margin: 16px 0; }
+  /* 結果數 + 已選篩選 tag + Clear all（Figma 3221-81088） */
+  .pl-cntrow { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 24px; }
+  .pl-cntrow .cnt { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); white-space: nowrap; }
+  .pl-cntrow .cnt i { font-style: normal; font-weight: 700; color: var(--kk-primary-dark); }
+  .pl-ftags { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .pl-ftags:empty { display: none; }
+  .pl-ftag { display: inline-flex; align-items: center; gap: 14px; height: 24px; padding: 0 10px; border: 1px solid #999; border-radius: 100px; background: #fff; cursor: pointer; }
+  .pl-ftag .tx { font-size: 12px; line-height: 12px; font-weight: 700; color: #666; white-space: nowrap; }
+  .pl-ftag .x { width: 10px; height: 10px; color: #666; flex: 0 0 auto; }
+  .pl-ftag:hover { border-color: #666; }
+  .pl-ftag-clear { height: 24px; padding: 0 10px; border: 1px solid #999; border-radius: 100px; background: #999; color: #fff; font-size: 12px; line-height: 12px; cursor: pointer; }
+  .pl-ftag-clear:hover { background: #888; border-color: #888; }
   /* Plan 卡（Figma 3167:40025）：左內容（規格警示/標題/標籤/竪排政策/評論）+ 豎分隔 + 右價格CTA */
   .pl-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
   .pl-empty { padding: 64px 0; text-align: center; color: var(--kk-text-medium); background: #fff; border-radius: 12px; }
@@ -1010,7 +1022,8 @@
         </aside>
         <div class="pc-ex-main">
           <div class="pl-topbox">
-            <div class="pl-cntrow"><i id="plCnt">162</i> 個結果</div>
+            <div class="pl-cntrow"><span class="cnt"><i id="plCnt">162</i> 個結果</span><div class="pl-ftags" id="plFtags"></div></div>
+            <div class="pl-topdiv"></div>
             <div class="pc-sortbox" id="plSort">
               <span class="lb">排序：</span><span class="sp"></span>
               <button class="sel" data-sort="0"><span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuMTY2MDIgOC4zMzMwMUgxLjI1QzAuNTU5NjQ0IDguMzMzMDEgMCA3Ljc3MzM2IDAgNy4wODMwMVYxLjI1QzAgMC41NTk2NDQgMC41NTk2NDQgMCAxLjI1IDBINC4xNjYwMlY4LjMzMzAxWiIgZmlsbD0iIzI2QkVDOSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMi45MTYgOC43NSkiLz4KPHBhdGggZD0iTTMuMTQ3NDYgMEM0LjE3MDIzIDAuMDAwMTU4MTE1IDQuOTk5NjcgMC44Mjg4MzMgNSAxLjg1MTU2VjQuNTgzMDFDNSA0LjgxMzEzIDUuMTg2ODcgNSA1LjQxNjk5IDVIOS4wMDk3N0MxMC40MDUxIDUuMDAwMSAxMS40MDU3IDYuMzQ1MDggMTEuMDA0OSA3LjY4MTY0TDkuNTA0ODggMTIuNjgxNkM5LjI0MDQxIDEzLjU2MjcgOC40Mjk2NiAxNC4xNjYgNy41MDk3NyAxNC4xNjZIMFY1LjgzNTk0TDAuMDE3NTc4MSA1Ljc3NjM3TDEuMzc1IDEuMzEzNDhDMS42MTIyNyAwLjUzMzQxIDIuMzMyMTIgMC4wMDAxNDE5OTIgMy4xNDc0NiAwWiIgZmlsbD0iI0ZGQ0EyOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNi4yNSAyLjkxNikiLz4KPC9zdmc+" width="20.00" height="20.00"></span>KKday 推薦</button><span class="sp"></span>
@@ -1796,7 +1809,7 @@
     { title: '中港澳通用 5G eSIM・免翻牆・全面支援 AI', warns: ['需指定啟用日'], tags: ['5G', '國際漫遊卡'], perks: ['立即確認', '即買即用'], rating: 4.3, reviews: 180, bought: '1K+ 已購', vendor: 'Joytel', now: 445, was: 556, per: 21, off: '20%OFF', hot: false },
     { title: '亞洲多國 eSIM・一卡多國・24小時制計費', warns: [], tags: ['5G/4G', '可加值', '國際漫遊卡'], perks: ['立即確認', '不可取消'], rating: 4.2, reviews: 89, bought: '900 已購', vendor: 'GlobalSIM', now: 399, was: null, per: 18, off: null, hot: false }
   ];
-  var plSort = 0;
+  var plSort = 0, plRangeSync = null;
   // 為每張卡建立可篩選屬性（對應側欄各組）+ 記錄基準價（3GB/天·5天 為基準 1.0）
   PL_DATA.forEach(function (p, i) {
     var s = p.tags.join(' ') + ' ' + p.perks.join(' ') + ' ' + p.title;
@@ -1921,6 +1934,38 @@
     var noFilter = !groups.length && lo <= 0 && hi >= 12000;
     document.getElementById('plCnt').textContent = noFilter ? 162 : Math.round(162 * list.length / PL_DATA.length);
     document.querySelectorAll('#plSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === plSort); });
+    renderFtags();
+  }
+  // 已選篩選 tag（Figma 3221-81088）：勾選項 + 價格區間，可單獨移除 / Clear all
+  function renderFtags() {
+    var wrap = document.getElementById('plFtags'); if (!wrap) return;
+    wrap.innerHTML = '';
+    var active = [];
+    document.querySelectorAll('#pcListPage .pc-ex-side .pc-cb.on').forEach(function (b) { active.push({ label: b.textContent.trim(), cb: b }); });
+    var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax');
+    var lo = rmin ? +rmin.value : 0, hi = rmax ? +rmax.value : 12000;
+    var priceChanged = rmin && rmax && (lo > 0 || hi < 12000);
+    active.forEach(function (it) {
+      var chip = h('<div class="pl-ftag"><span class="tx"></span><span class="ic x"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></div>');
+      chip.querySelector('.tx').textContent = it.label;
+      chip.addEventListener('click', function () { it.cb.classList.remove('on'); renderPlCards(); });
+      wrap.appendChild(chip);
+    });
+    if (priceChanged) {
+      var pchip = h('<div class="pl-ftag"><span class="tx"></span><span class="ic x"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></div>');
+      pchip.querySelector('.tx').textContent = 'NT$' + lo.toLocaleString('en-US') + '–' + hi.toLocaleString('en-US');
+      pchip.addEventListener('click', function () { rmin.value = 0; rmax.value = 12000; if (typeof plRangeSync === 'function') plRangeSync(); renderPlCards(); });
+      wrap.appendChild(pchip);
+    }
+    if (active.length || priceChanged) {
+      var clr = h('<button class="pl-ftag-clear">Clear all</button>');
+      clr.addEventListener('click', function () {
+        document.querySelectorAll('#pcListPage .pc-ex-side .pc-cb.on').forEach(function (b) { b.classList.remove('on'); });
+        if (rmin && rmax) { rmin.value = 0; rmax.value = 12000; if (typeof plRangeSync === 'function') plRangeSync(); }
+        renderPlCards();
+      });
+      wrap.appendChild(clr);
+    }
   }
   // 條件列流量檔位：三計費方式全部檔位拼成一份資料
   function plAllTiers() {
@@ -2348,6 +2393,7 @@
     }
     rmin.addEventListener('input', function () { upd(); renderPlCards(); });
     rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 100) rmax.value = +rmin.value + 100; upd(); renderPlCards(); });
+    plRangeSync = upd;  // 供 Clear all / 移除價格 tag 重設滑塊填充
     upd();
   })();
 
