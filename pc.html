@@ -435,8 +435,15 @@
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-ldd button:hover { background: var(--kk-surface-light); }
   .pc-ldd button.sel { color: var(--kk-primary-dark); }
-  /* 流量 Option Card 行（預設 176×74 帶價格）：flowwrap=視口(overflow hidden)，flow=軌道(translateX 平移)；點擊翻頁、無使用者橫向捲動、平移帶緩衝 */
-  .pc-lflowwrap { grid-area: flow; position: relative; min-width: 0; overflow: hidden; padding: 1px 0; }
+  /* 流量 Option Card 行：flow-vp=視口(overflow hidden，兩側留 40px 給翻頁鈕，卡片不被壓)，flow=軌道(translateX)；點擊整頁翻、平移帶緩衝 */
+  .pc-lflowwrap { grid-area: flow; position: relative; min-width: 0; }
+  .pc-lflow-vp { position: relative; overflow: hidden; padding: 1px 0; }
+  .pc-lflowwrap.can-prev .pc-lflow-vp { margin-left: 40px; }   /* 有翻頁鈕才留道，避免無鈕時左緣縮進 */
+  .pc-lflowwrap.can-next .pc-lflow-vp { margin-right: 40px; }
+  /* 視口邊緣白色漸層：把翻頁方向露出的半張卡淡出，讓可見卡看起來完整（Figma 同款） */
+  .pc-lflowwrap.can-prev .pc-lflow-vp::before, .pc-lflowwrap.can-next .pc-lflow-vp::after { content: ''; position: absolute; top: 0; bottom: 0; width: 28px; z-index: 1; pointer-events: none; }
+  .pc-lflowwrap.can-prev .pc-lflow-vp::before { left: 0; background: linear-gradient(90deg, #fff, rgba(255,255,255,0)); }
+  .pc-lflowwrap.can-next .pc-lflow-vp::after { right: 0; background: linear-gradient(270deg, #fff, rgba(255,255,255,0)); }
   .pc-lflow { position: relative; display: flex; gap: 16px; width: max-content; transition: transform .35s cubic-bezier(.22,.61,.36,1); will-change: transform; }
   .pc-lchip { position: relative; flex: 0 0 176px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
@@ -446,18 +453,12 @@
   .pc-lchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
   /* 左右翻頁按鈕：貼流量行左右緣、垂直置中於卡片行；可翻才顯示（[hidden]），compact 態隱藏 */
-  .pc-lprev, .pc-lnext { position: absolute; top: 38px; transform: translateY(-50%); z-index: 3; width: 32px; height: 32px; border-radius: 999px;
+  .pc-lprev, .pc-lnext { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 32px; height: 32px; border-radius: 999px;
     background: #fff; box-shadow: 0 1px 4px rgba(17,25,40,.16); display: flex; align-items: center; justify-content: center; }
   .pc-lprev { left: 2px; } .pc-lnext { right: 2px; }
   .pc-lprev[hidden], .pc-lnext[hidden] { display: none; }
   .pc-lprev .ic, .pc-lnext .ic { width: 20px; height: 20px; color: var(--kk-text-darker); }
   .pc-lprev .ic { transform: rotate(180deg); }
-  /* 翻頁按鈕外側白色漸層，遮住被切掉的半張卡，讓翻頁控制乾淨 */
-  .pc-lflowwrap::before, .pc-lflowwrap::after { content: ''; position: absolute; top: 1px; bottom: 1px; width: 24px; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .15s; }
-  .pc-lflowwrap::before { left: 0; background: linear-gradient(90deg, #fff, rgba(255,255,255,0)); }
-  .pc-lflowwrap::after { right: 0; background: linear-gradient(270deg, #fff, rgba(255,255,255,0)); }
-  .pc-lflowwrap.can-prev::before, .pc-lflowwrap.can-next::after { opacity: 1; }
-  .pc-lbar.compact .pc-lflowwrap::before, .pc-lbar.compact .pc-lflowwrap::after { opacity: 0; }
   /* 滑動塌縮：單行、pill 縮小、流量卡變小 chip（藏價格與推薦）（Figma 3190-40586） */
   .pc-lbar.compact .pc-lbar-in { display: flex; align-items: center; gap: 8px; padding: 11px 0; }
   .pc-lbar.compact .pc-lconds { gap: 16px; }
@@ -466,7 +467,7 @@
   .pc-lbar.compact .pc-lall { align-self: center; }
   .pc-lbar.compact .pc-lchip { flex: 0 0 auto; height: 36px; padding: 0 12px; flex-direction: row; }
   .pc-lbar.compact .pc-lchip b { font-size: 14px; line-height: 20px; }
-  .pc-lbar.compact .pc-lchip span, .pc-lbar.compact .pc-lprev, .pc-lbar.compact .pc-lnext { display: none; }
+  .pc-lbar.compact .pc-lchip span { display: none; }
   /* 麵包屑 note */
   .pc-lnote { margin: 0 0 16px; }
   .pc-lbody { align-items: flex-start; }
@@ -809,7 +810,7 @@
         </div>
         <div class="pc-lflowwrap">
           <button class="pc-lprev" id="plFlowPrev" aria-label="往左翻頁" hidden><span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTUuNTMwMyAxMS40NzA5QzE1LjgyMzIgMTEuNzYzOCAxNS44MjMyIDEyLjIzODcgMTUuNTMwMyAxMi41MzE2TDkuNTMwMzMgMTguNTMxNkM5LjIzNzQ0IDE4LjgyNDQgOC43NjI1NiAxOC44MjQ0IDguNDY5NjcgMTguNTMxNkM4LjE3Njc4IDE4LjIzODcgOC4xNzY3OCAxNy43NjM4IDguNDY5NjcgMTcuNDcwOUwxMy45MzkzIDEyLjAwMTJMOC40Njk2NyA2LjUzMTU1QzguMTc2NzggNi4yMzg2NiA4LjE3Njc4IDUuNzYzNzggOC40Njk2NyA1LjQ3MDg5QzguNzYyNTYgNS4xNzggOS4yMzc0NCA1LjE3OCA5LjUzMDMzIDUuNDcwODlMMTUuNTMwMyAxMS40NzA5WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+Cjwvc3ZnPg==" width="24" height="24"></span></button>
-          <div class="pc-lflow" id="plFlowChips"></div>
+          <div class="pc-lflow-vp"><div class="pc-lflow" id="plFlowChips"></div></div>
           <button class="pc-lnext" id="plFlowNext" aria-label="往右翻頁" hidden><span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTUuNTMwMyAxMS40NzA5QzE1LjgyMzIgMTEuNzYzOCAxNS44MjMyIDEyLjIzODcgMTUuNTMwMyAxMi41MzE2TDkuNTMwMzMgMTguNTMxNkM5LjIzNzQ0IDE4LjgyNDQgOC43NjI1NiAxOC44MjQ0IDguNDY5NjcgMTguNTMxNkM4LjE3Njc4IDE4LjIzODcgOC4xNzY3OCAxNy43NjM4IDguNDY5NjcgMTcuNDcwOUwxMy45MzkzIDEyLjAwMTJMOC40Njk2NyA2LjUzMTU1QzguMTc2NzggNi4yMzg2NiA4LjE3Njc4IDUuNzYzNzggOC40Njk2NyA1LjQ3MDg5QzguNzYyNTYgNS4xNzggOS4yMzc0NCA1LjE3OCA5LjUzMDMzIDUuNDcwODlMMTUuNTMwMyAxMS40NzA5WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+Cjwvc3ZnPg==" width="24" height="24"></span></button>
         </div>
         <button class="pc-lall" id="plAllFlow">全部流量<span class="ic ic-16 rot90"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCAxNCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuMjkyODkgMC4yOTI4OTNDNi42ODM0MiAtMC4wOTc2MzExIDcuMzE2NTggLTAuMDk3NjMxMSA3LjcwNzExIDAuMjkyODkzTDEzLjcwNzEgNi4yOTI4OUMxNC4wOTc2IDYuNjgzNDIgMTQuMDk3NiA3LjMxNjU4IDEzLjcwNzEgNy43MDcxMUMxMy4zMTY2IDguMDk3NjMgMTIuNjgzNCA4LjA5NzYzIDEyLjI5MjkgNy43MDcxMUw3IDIuNDE0MjFMMS43MDcxMSA3LjcwNzExQzEuMzE2NTggOC4wOTc2MyAwLjY4MzQxOCA4LjA5NzYzIDAuMjkyODkzIDcuNzA3MTFDLTAuMDk3NjMxMSA3LjMxNjU4IC0wLjA5NzYzMTEgNi42ODM0MiAwLjI5Mjg5MyA2LjI5Mjg5TDYuMjkyODkgMC4yOTI4OTNaIiBmaWxsPSIjOUM5REEwIi8+Cjwvc3ZnPg==" width="14.00" height="8.00"></span></button>
@@ -1667,7 +1668,7 @@
     document.getElementById('plCnt').textContent = 162;
     document.querySelectorAll('#plSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === plSort); });
   }
-  // 條件列：流量檔位 chips（三計費方式全部檔位拼一條）。外層 chip 不放推薦標籤；點擊翻頁、選中滾到中央
+  // 條件列：流量檔位 chips（三計費方式全部檔位拼一條）。外層 chip 不放推薦標籤；整頁翻頁（只顯示完整卡）
   function renderListChips() {
     var wrap = document.getElementById('plFlowChips'); wrap.innerHTML = '';
     var d = sel.days;
@@ -1681,31 +1682,46 @@
         wrap.appendChild(c);
       });
     });
-    requestAnimationFrame(function () { centerFlowChip(false); updateFlowArrows(); });
+    // 重繪後保持目前翻頁位置（切換選項/天數不捲動），僅夾取到有效範圍、不做動畫
+    requestAnimationFrame(function () { applyFlow(false); });
   }
-  // 流量軌道用 translateX 平移（overflow:hidden 下無法程式化 scrollLeft）：完全可控、無使用者捲動、CSS transition 做緩衝
-  var plFlowX = 0;
+  // 流量翻頁：以「第一張可見卡索引」為狀態，永遠對齊到整張卡（左緣不出現半張）
+  var plFlowFirst = 0;
+  function flowEls() { return Array.prototype.slice.call(document.getElementById('plFlowChips').children); }
   function plFlowVP() { return document.getElementById('plFlowChips').parentElement.clientWidth; }
-  function plFlowMax() { return Math.max(0, document.getElementById('plFlowChips').scrollWidth - plFlowVP()); }
-  function setFlowX(x, smooth) {
-    var track = document.getElementById('plFlowChips');
-    plFlowX = Math.max(0, Math.min(x, plFlowMax()));
+  function applyFlow(smooth) {
+    var els = flowEls(); if (!els.length) return;
+    plFlowFirst = Math.max(0, Math.min(plFlowFirst, els.length - 1));
+    var track = document.getElementById('plFlowChips'), x = els[plFlowFirst].offsetLeft;
     if (!smooth) track.style.transition = 'none';
-    track.style.transform = 'translateX(' + (-plFlowX) + 'px)';
-    if (!smooth) { void track.offsetWidth; track.style.transition = ''; }  // reflow 後恢復緩衝
+    track.style.transform = 'translateX(' + (-x) + 'px)';
+    if (!smooth) { void track.offsetWidth; track.style.transition = ''; }
     updateFlowArrows();
   }
-  // 選中檔位平移到視覺中央；smooth=有緩衝
-  function centerFlowChip(smooth) {
-    var track = document.getElementById('plFlowChips'), s = track.querySelector('.pc-lchip.sel'); if (!s) return;
-    setFlowX(s.offsetLeft + s.offsetWidth / 2 - plFlowVP() / 2, smooth);
-  }
-  // 左右翻頁箭頭：可往左/右翻時才顯示（compact 態 CSS 隱藏）
   function updateFlowArrows() {
-    var max = plFlowMax(), canPrev = plFlowX > 1, canNext = plFlowX < max - 1;
+    var els = flowEls(), vp = plFlowVP();
+    var canPrev = plFlowFirst > 0;
+    var last = els[els.length - 1];
+    var canNext = !!last && (last.offsetLeft + last.offsetWidth - els[plFlowFirst].offsetLeft) > vp + 1;
     document.getElementById('plFlowPrev').hidden = !canPrev;
     document.getElementById('plFlowNext').hidden = !canNext;
-    var fw = document.getElementById('plFlowChips').parentElement; fw.classList.toggle('can-prev', canPrev); fw.classList.toggle('can-next', canNext);
+    var fw = document.querySelector('.pc-lflowwrap'); fw.classList.toggle('can-prev', canPrev); fw.classList.toggle('can-next', canNext);
+  }
+  // 往右翻：把「目前第一張的視窗內最後一張的下一張」設為新的第一張 → 下一頁整張卡從左緣開始
+  function flowNext() {
+    var els = flowEls(), vp = plFlowVP(), start = els[plFlowFirst].offsetLeft, next = plFlowFirst;
+    for (var i = plFlowFirst; i < els.length; i++) {
+      if (els[i].offsetLeft + els[i].offsetWidth - start <= vp + 1) next = i + 1; else break;
+    }
+    plFlowFirst = Math.min(next, els.length - 1); applyFlow(true);
+  }
+  // 往左翻：以「目前第一張的前一張」為視窗右緣往回收整張卡
+  function flowPrev() {
+    var els = flowEls(), vp = plFlowVP();
+    if (plFlowFirst <= 0) return;
+    var rightEdge = els[plFlowFirst - 1].offsetLeft + els[plFlowFirst - 1].offsetWidth, i = plFlowFirst - 1;
+    while (i > 0 && rightEdge - els[i - 1].offsetLeft <= vp + 1) i--;
+    plFlowFirst = Math.max(0, i); applyFlow(true);
   }
   // 天數下拉（1–30 天，選中打勾）
   function renderDaysDd() {
@@ -1770,7 +1786,7 @@
     document.getElementById('plDaysName').textContent = sel.days + '天';
     renderListChips(); renderDaysDd(); renderPlCards();
   }
-  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; _plCompact = false; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
+  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; _plCompact = false; plFlowFirst = 0; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
   function exitList() { document.body.classList.remove('list-mode'); document.getElementById('pcListPage').hidden = true; window.scrollTo(0, 0); }
   // 事件綁定
   document.getElementById('plDestPill').addEventListener('click', function () { openDlg(); });
@@ -1782,11 +1798,10 @@
   document.getElementById('pcAllMask').addEventListener('click', closeAllFlow);
   document.getElementById('plCrumbHome').addEventListener('click', exitList);
   document.querySelectorAll('#plSort button').forEach(function (b) { b.addEventListener('click', function () { plSort = +b.getAttribute('data-sort'); renderPlCards(); }); });
-  // 輪播右箭頭：往右捲一屏流量卡
-  // 點擊翻頁（一次一屏，有緩衝）
-  document.getElementById('plFlowNext').addEventListener('click', function () { setFlowX(plFlowX + (plFlowVP() - 40), true); });
-  document.getElementById('plFlowPrev').addEventListener('click', function () { setFlowX(plFlowX - (plFlowVP() - 40), true); });
-  // 滑動塌縮：捲動離開條件列上緣即切換 compact（Figma 3140-37910 預設 ↔ 3190-40586 滑動）；狀態變動時選中檔滾回中央
+  // 點擊翻頁（整頁、有緩衝）
+  document.getElementById('plFlowNext').addEventListener('click', function () { flowNext(); });
+  document.getElementById('plFlowPrev').addEventListener('click', function () { flowPrev(); });
+  // 滑動塌縮：捲動離開條件列上緣即切換 compact（Figma 3140-37910 預設 ↔ 3190-40586 滑動）
   var _plCompact = false;
   window.addEventListener('scroll', function () {
     if (!document.body.classList.contains('list-mode')) return;
@@ -1794,10 +1809,10 @@
     if (next === _plCompact) return;
     _plCompact = next;
     document.getElementById('plBar').classList.toggle('compact', next);
-    requestAnimationFrame(function () { centerFlowChip(true); updateFlowArrows(); });  // 狀態切換：選中項滾到中央（緩衝）
+    requestAnimationFrame(function () { applyFlow(false); });  // 卡片尺寸變了：保持同一頁、瞬時對齊、不做滑動動畫（避免滾來滾去）
   }, { passive: true });
   window.addEventListener('resize', function () {
-    if (document.body.classList.contains('list-mode')) { centerFlowChip(false); updateFlowArrows(); }
+    if (document.body.classList.contains('list-mode')) applyFlow(false);
   });
   (function () {  // 列表頁價格區間雙滑塊
     var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax'), fill = document.getElementById('plFill'), pv = document.getElementById('plPv');
@@ -1813,15 +1828,15 @@
     upd();
   })();
 
-  // ================= 日期日曆下拉（Figma 3223-83700）：單月 + 翻月 + 區間選擇 =================
-  var calSt = { view: null, start: null, end: null, trigger: null };
+  // ================= 日期日曆下拉（Figma 3223-83700）：單月 + 翻月 + 單日選擇 =================
+  var calSt = { view: null, date: null, trigger: null };
   function calSameDay(a, b) { return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
   function calFmt(d) { return (d.getMonth() + 1) + '/' + d.getDate(); }
   function calToday() { var t = new Date(); t.setHours(0, 0, 0, 0); return t; }
   function openCal(trigger) {
     calSt.trigger = trigger;
     var today = calToday();
-    if (!calSt.view) calSt.view = new Date((calSt.start || today).getFullYear(), (calSt.start || today).getMonth(), 1);
+    if (!calSt.view) calSt.view = new Date((calSt.date || today).getFullYear(), (calSt.date || today).getMonth(), 1);
     var cal = document.getElementById('pcCal'); cal.hidden = false;
     renderCal();
     var r = trigger.getBoundingClientRect(), w = cal.offsetWidth || 320;
@@ -1842,23 +1857,17 @@
       var cls = 'pc-cal-cell';
       if (d < today) cls += ' past';
       if (calSameDay(d, today)) cls += ' today';
-      if (calSameDay(d, calSt.start)) cls += ' sel rstart';
-      if (calSameDay(d, calSt.end)) cls += ' sel rend';
-      if (calSt.start && calSt.end && d > calSt.start && d < calSt.end) cls += ' inrange';
+      if (calSameDay(d, calSt.date)) cls += ' sel';
       var cell = h('<div class="' + cls + '"><span class="d">' + day + '</span></div>');
       if (d >= today) cell.addEventListener('click', function (e) { e.stopPropagation(); pickCal(d); });
       grid.appendChild(cell);
     })(day);
   }
   function pickCal(d) {
-    if (!calSt.start || calSt.end || d < calSt.start) { calSt.start = d; calSt.end = null; }  // 起新區間
-    else { calSt.end = d; }                                                                   // 設訖點
+    calSt.date = d;  // 單日選擇
     renderCal();
-    if (calSt.trigger) {
-      var lb = calSt.trigger.querySelector('.lb');
-      lb.textContent = calSt.end ? (calFmt(calSt.start) + ' – ' + calFmt(calSt.end)) : (calFmt(calSt.start) + ' –');
-    }
-    if (calSt.start && calSt.end) closeCal();
+    if (calSt.trigger) calSt.trigger.querySelector('.lb').textContent = calFmt(d);
+    closeCal();
   }
   document.getElementById('pcCalPrev').addEventListener('click', function (e) { e.stopPropagation(); calSt.view = new Date(calSt.view.getFullYear(), calSt.view.getMonth() - 1, 1); renderCal(); });
   document.getElementById('pcCalNext').addEventListener('click', function (e) { e.stopPropagation(); calSt.view = new Date(calSt.view.getFullYear(), calSt.view.getMonth() + 1, 1); renderCal(); });
