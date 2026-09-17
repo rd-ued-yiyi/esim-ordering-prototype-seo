@@ -265,7 +265,8 @@
     border: 1px solid var(--kk-border-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
   .pc-ftag .x { display: inline-flex; width: 14px; height: 14px; }
   .pc-ftag-clear { height: 28px; padding: 0 12px; border-radius: 999px; background: var(--kk-surface-light); color: var(--kk-text-dark); font-size: 12px; }
-  .pc-sortbox { background: #fff; border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 16px; font-size: 14px; line-height: 20px; }
+  .pc-sortbox { background: #fff; border-radius: 8px; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 14px; line-height: 20px; }
+  .pc-sortbox .lb, .pc-sortbox button { white-space: nowrap; }  /* 窄視窗整顆換行，不壓字 */
   .pc-sortbox .lb { color: var(--kk-text-darker); }
   .pc-sortbox .sp { width: 1px; height: 16px; background: var(--kk-border-light); }
   .pc-sortbox button { display: inline-flex; align-items: center; gap: 6px; color: var(--kk-text-darker); }
@@ -376,6 +377,91 @@
   .pc-howto-table th:first-child, .pc-howto-table td:first-child { width: 52%; }
 
   /* ---------- footer（沿用） ---------- */
+  /* ================= 搜尋結果列表頁（Figma 3140-37910 / 3190-40586 / 3191-69000） ================= */
+  body.list-mode #pcHome { display: none; }
+  .pc-listpage { display: block; }
+  /* 條件列：目的地 + 天數 pill + 流量檔位橫向滾動 chips + 全部流量（白底一條，貼分類導航下方） */
+  .pc-lbar { background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
+  .pc-lbar-in { display: flex; align-items: center; gap: 12px; height: 60px; }
+  .pc-lconds { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+  .pc-lpill { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 10px; border-radius: 8px;
+    background: var(--kk-surface-light); font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-lpill:hover { background: var(--kk-surface-medium); }
+  .pc-lpill .chev { transition: transform .2s; }
+  .pc-lpick { position: relative; }
+  .pc-lpick.open .pc-lpill .chev { transform: rotate(180deg); }
+  /* 天數下拉（Figma 3190-40586：清單 + 選中打勾） */
+  .pc-ldd { position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: 140px; max-height: 260px; overflow-y: auto;
+    background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: var(--el-card); padding: 4px; display: none; }
+  .pc-lpick.open .pc-ldd { display: block; }
+  .pc-ldd button { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 36px; padding: 0 12px; border-radius: 6px;
+    font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pc-ldd button:hover { background: var(--kk-surface-light); }
+  .pc-ldd button.sel { color: var(--kk-primary-dark); }
+  .pc-ldd button.sel .ic { color: var(--kk-primary-dark); }
+  /* 流量檔位橫向滾動 chips */
+  .pc-lflow { flex: 1 1 0; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
+  .pc-lflow::-webkit-scrollbar { display: none; }
+  .pc-lchip { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 96px; height: 44px; padding: 4px 12px; border-radius: 8px;
+    background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
+  .pc-lchip b { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-lchip span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pc-lchip:hover { background: var(--kk-surface-medium); }
+  .pc-lchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
+  .pc-lchip.sel b { color: var(--kk-primary-dark); }
+  .pc-lchip .badge { position: absolute; top: -6px; right: -4px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; padding: 0 4px; border-radius: 4px 4px 1px 4px; }
+  .pc-lall { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 2px; height: 44px; padding: 0 4px 0 12px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-lall .ic { color: var(--kk-text-medium); }
+  .pc-lall:hover { color: var(--kk-primary-dark); }
+  /* 結果數 + 排序（白底卡；Figma 3140-37910） */
+  .pc-lnote { margin: 12px 0 16px; }
+  .pc-lbody { align-items: flex-start; }
+  .pl-topbox { background: #fff; border-radius: 8px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .pl-topbox .pc-sortbox { background: none; border-radius: 0; padding: 0; }  /* 併入 pl-topbox 單一白盒，去掉內層盒的底與內距 */
+  .pl-cntrow { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-primary-dark); }
+  /* 列表卡（Figma 3140-37910：無圖、文字型；左內容 + 右價格CTA，中間豎分隔） */
+  .pl-list { display: flex; flex-direction: column; gap: 16px; }
+  .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 16px; cursor: pointer; transition: box-shadow .15s, transform .15s; }
+  .pl-card:hover { box-shadow: var(--el-hover); transform: translateY(-2px); }
+  .pl-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .pl-warns { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; line-height: 16px; color: #E88A00; }
+  .pl-warns .wdiv { width: 1px; height: 10px; background: var(--kk-border-light); }
+  .pl-title { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .pl-tag { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 4px; background: var(--kk-surface-light); font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .pl-tag.hot { background: #FDECEA; color: var(--kk-text-critical); font-weight: 600; }
+  .pl-perks { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+  .pl-perk { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-primary-dark); }
+  .pl-perk .ic { width: 16px; height: 16px; }
+  .pl-social { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pl-social .ic { width: 16px; height: 16px; }
+  .pl-social b { font-weight: 600; color: var(--kk-text-darker); }
+  .pl-social .grade { color: var(--kk-text-darker); }
+  .pl-social .dot { color: var(--kk-text-medium); }
+  .pl-social .vendor { color: var(--kk-text-medium); }
+  .pl-buy { flex: 0 0 176px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 8px; padding-left: 16px; border-left: 1px solid var(--kk-border-lighter); text-align: right; }
+  .pl-off { align-self: flex-end; background: #FDECEA; color: var(--kk-text-critical); font-size: 12px; line-height: 16px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+  .pl-price { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .pl-price .was { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); text-decoration: line-through; }
+  .pl-price .now { font-size: 22px; line-height: 28px; font-weight: 700; color: var(--kk-text-critical); }
+  .pl-price .per { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pl-cta { height: 40px; padding: 0 28px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; transition: background .15s; }
+  .pl-cta:hover { background: var(--kk-primary-dark); }
+  /* 全部流量 dialog（Figma 3191-69000：選擇流量，三段 3 欄卡片可捲動） */
+  .pc-alldlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
+    width: 640px; max-width: calc(100vw - 32px); max-height: calc(100vh - 80px); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
+  .pc-alldlg.open { display: flex; }
+  .pc-alldlg-hd { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 12px; }
+  .pc-alldlg-hd .t { font-size: 18px; line-height: 26px; font-weight: 600; }
+  .pc-alldlg-tabs { display: flex; gap: 24px; padding: 0 24px; border-bottom: 1px solid var(--kk-border-lighter); }
+  .pc-alltab { position: relative; padding: 8px 0 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pc-alltab.sel { color: var(--kk-primary-dark); font-weight: 600; }
+  .pc-alltab.sel::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; }
+  .pc-alldlg-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 16px 24px 24px; display: flex; flex-direction: column; gap: 20px; }
+  .pc-allsec { display: flex; flex-direction: column; gap: 12px; }
+  .pc-allsec .sh { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-allsec .sn { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); margin-top: -8px; }
+  .pc-allgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
   .pc-foot { background: #444; padding: 50px 80px; color: #fff; }
   .pc-foot-top { display: flex; align-items: flex-start; justify-content: space-between; }
   .pc-social { display: flex; gap: 4px; }
@@ -440,6 +526,7 @@
     </div>
   </nav>
 
+  <div id="pcHome">
   <!-- hero：未選（標題+搜尋卡）/ 已選（目的地 pill + 天數流量面板） -->
   <div class="pc-hero" id="pcHero" data-state="empty">
     <div class="col">
@@ -613,6 +700,90 @@
       </div>
     </div>
   </section>
+  </div><!-- /#pcHome -->
+
+  <!-- ============ 搜尋結果列表頁（Figma 3140-37910） ============ -->
+  <section class="pc-listpage" id="pcListPage" hidden>
+    <!-- 條件列：目的地 + 天數 + 流量檔位滾動 chips + 全部流量 -->
+    <div class="pc-lbar">
+      <div class="col pc-lbar-in">
+        <div class="pc-lconds">
+          <button class="pc-lpill" id="plDestPill"><span class="ic ic-16">{{PC_location20}}</span><span id="plDestName">日本</span><span class="ic ic-16 chev">{{PC_arrowDown20}}</span></button>
+          <div class="pc-lpick" id="plDaysPick">
+            <button class="pc-lpill" id="plDaysPill"><span id="plDaysName">5天</span><span class="ic ic-16 chev">{{PC_arrowDown20}}</span></button>
+            <div class="pc-ldd" id="plDaysDd"></div>
+          </div>
+        </div>
+        <div class="pc-lflow" id="plFlowChips"></div>
+        <button class="pc-lall" id="plAllFlow">全部流量<span class="ic ic-16 rot90">{{IC_arrowRightGrey}}</span></button>
+      </div>
+    </div>
+    <div class="col">
+      <div class="pc-crumb"><a id="plCrumbHome">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a data-toast="pc">eSIM/WIFI</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>搜尋結果</span></div>
+      <div class="pc-note pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
+      <div class="pc-ex-body pc-lbody">
+        <aside class="pc-ex-side">
+          <div class="pc-fbox">
+            <div class="fh">包含功能</div>
+            <button class="pc-cb" data-mock><span class="box"></span>支持熱點</button>
+            <button class="pc-cb" data-mock><span class="box"></span>含本地通話</button>
+            <button class="pc-cb" data-mock><span class="box"></span>可以加值</button>
+          </div>
+          <div class="pc-fbox">
+            <div class="fh">SIM卡類型</div>
+            <button class="pc-cb" data-mock><span class="box"></span>原生卡</button>
+            <button class="pc-cb" data-mock><span class="box"></span>國際漫遊卡</button>
+          </div>
+          <div class="pc-fbox">
+            <div class="fh">IP類型</div>
+            <button class="pc-cb" data-mock><span class="box"></span>本地</button>
+            <button class="pc-cb" data-mock><span class="box"></span>漫遊</button>
+          </div>
+          <div class="pc-fbox">
+            <div class="fh">傳輸規格</div>
+            <button class="pc-cb" data-mock><span class="box"></span>5G</button>
+            <button class="pc-cb" data-mock><span class="box"></span>5G/4G</button>
+          </div>
+          <div class="pc-fbox">
+            <div class="fh">流量激活計算方式</div>
+            <button class="pc-cb" data-mock><span class="box"></span>24小時制</button>
+            <button class="pc-cb" data-mock><span class="box"></span>自然日制</button>
+            <button class="pc-cb" data-mock><span class="box"></span>總量制</button>
+          </div>
+          <div class="pc-fbox pc-fdate" style="cursor:pointer" data-toast="old">
+            <span class="cell"><span class="ic ic-24">{{PC_calendar20}}</span></span>
+            <span class="lb">使用日期</span>
+          </div>
+          <div class="pc-fbox">
+            <div class="fh">服務保障</div>
+            <button class="pc-cb" data-mock><span class="box"></span>立即確認</button>
+            <button class="pc-cb" data-mock><span class="box"></span>即買即用</button>
+            <button class="pc-cb" data-mock><span class="box"></span>免費取消</button>
+          </div>
+          <div class="pc-fbox">
+            <div class="fh">價格區間 (NT$)</div>
+            <div class="pc-pv" id="plPv">NT$0 – NT$12,000+</div>
+            <div class="pc-range"><div class="track"></div><div class="fill" id="plFill"></div>
+              <input type="range" id="plRmin" min="0" max="12000" step="100" value="0"><input type="range" id="plRmax" min="0" max="12000" step="100" value="12000"></div>
+          </div>
+        </aside>
+        <div class="pc-ex-main">
+          <div class="pl-topbox">
+            <div class="pl-cntrow"><i id="plCnt">162</i> 個結果</div>
+            <div class="pc-sortbox" id="plSort">
+              <span class="lb">排序：</span><span class="sp"></span>
+              <button class="sel" data-sort="0"><span class="ic">{{IC_thumbsUp}}</span>KKday 推薦</button><span class="sp"></span>
+              <button data-sort="3"><span class="ic">{{IC_fireHot}}</span>熱門程度</button><span class="sp"></span>
+              <button data-sort="2"><span class="ic">{{IC_starFill16}}</span>用戶評分（高至低）</button><span class="sp"></span>
+              <button data-sort="1">$ 價格（低至高）</button>
+            </div>
+          </div>
+          <div class="pl-list" id="plList"></div>
+          <div class="pc-pager"><button class="sel">1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button class="nav"><span class="ic ic-16 rot90">{{IC_arrowRightDark}}</span></button></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <footer>
     <div class="pc-foot">
@@ -674,6 +845,14 @@
       <tr><td>用量不均（某幾天爆量開會/發影片）</td><td>自訂總容量（自由分配）</td></tr>
     </table>
   </div>
+</div>
+
+<!-- ============ 全部流量 dialog（Figma 3191-69000）：選擇流量，三段 3 欄卡片 ============ -->
+<div class="pc-mask" id="pcAllMask"></div>
+<div class="pc-alldlg" id="pcAllDlg" role="dialog" aria-modal="true">
+  <div class="pc-alldlg-hd"><span class="t">選擇流量</span><button id="pcAllClose" aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button></div>
+  <div class="pc-alldlg-tabs" id="pcAllTabs"></div>
+  <div class="pc-alldlg-bd" id="pcAllBd"></div>
 </div>
 
 <div class="pc-toast" id="pcToast" role="status"></div>
@@ -767,6 +946,7 @@
     document.getElementById('pcHero').setAttribute('data-state', 'sel');
     closeDlg();
     renderFind(); renderPanel();
+    if (document.body.classList.contains('list-mode')) renderList();  // 列表頁改目的地：同步刷新條件列與結果
   }
   document.getElementById('pcDestPill').addEventListener('click', function () { openDlg(); });
 
@@ -859,7 +1039,7 @@
   document.getElementById('pcHowtoClose').addEventListener('click', closeHowto);
   document.getElementById('pcHowtoMask').addEventListener('click', closeHowto);
   document.getElementById('pcSearchBtn').addEventListener('click', function () {
-    toast('demo 未開發');  // PC 搜尋結果頁尚未製作
+    enterList();  // 進入搜尋結果列表頁（同頁切換視圖）
   });
 
   // ================= 目的地選擇彈窗：三模式 =================
@@ -1151,6 +1331,159 @@
     var t = e.target.closest('[data-toast]');
     if (t) toast(TOAST[t.getAttribute('data-toast')] || t.getAttribute('data-toast'));
   });
+
+  // ================= 搜尋結果列表頁（同頁切換視圖） =================
+  var PL_CHECK = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.4l3.2 3.2L13 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  // 卡片假數據：復刻 mweb .pkg-card 結構（警示/規格標籤/政策/評分/供應商/價格），內容對齊 Figma 3140-37910
+  var PL_DATA = [
+    { title: '5G・漫遊・原生網絡・支援熱點', warns: ['需設備信息', '需指定啟用日', '需實名認證'], tags: ['支持熱點・通話', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.8, reviews: 3479, bought: '10k+ 已購', vendor: 'Joytel', now: 988, was: 1234, per: 46, off: '20%OFF', hot: true },
+    { title: 'KDDI 5G 高速原生日本 eSIM・不限速', warns: ['需設備信息', '需指定啟用日'], tags: ['支持熱點', '5G', '原生卡'], perks: ['立即確認', '即買即用'], rating: 4.7, reviews: 2318, bought: '8K+ 已購', vendor: 'KDDI', now: 1180, was: 1475, per: 55, off: '20%OFF', hot: true },
+    { title: 'Docomo 每日流量 eSIM・可加值・支援 ChatGPT', warns: ['需設備信息', '需實名認證'], tags: ['5G/4G', '可加值', '本地預付卡'], perks: ['立即確認', '3天前可免費取消'], rating: 4.6, reviews: 1151, bought: '5K+ 已購', vendor: 'Docomo', now: 893, was: null, per: 41, off: null, hot: true },
+    { title: 'Softbank 5G eSIM・大流量方案・免翻牆', warns: ['需設備信息', '需指定啟用日', '需實名認證'], tags: ['支持熱點・通話', '5G', '國際漫遊卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.5, reviews: 426, bought: '3K+ 已購', vendor: 'Softbank', now: 756, was: 945, per: 35, off: '20%OFF', hot: false },
+    { title: 'IIJ 原生日本 eSIM・可通話簡訊・輕量型', warns: ['需設備信息'], tags: ['含本地通話', '5G/4G', '原生卡'], perks: ['立即確認', '10天前可免費取消'], rating: 4.4, reviews: 1627, bought: '2K+ 已購', vendor: 'IIJmio', now: 612, was: null, per: 28, off: null, hot: false },
+    { title: 'Rakuten 5G eSIM・吃到飽不斷網・支援熱點', warns: ['需設備信息', '需指定啟用日'], tags: ['支持熱點', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.6, reviews: 2860, bought: '6K+ 已購', vendor: 'Rakuten', now: 1049, was: 1311, per: 49, off: '20%OFF', hot: false },
+    { title: '中港澳通用 5G eSIM・免翻牆・全面支援 AI', warns: ['需實名認證'], tags: ['5G', '國際漫遊卡'], perks: ['立即確認', '即買即用'], rating: 4.3, reviews: 180, bought: '1K+ 已購', vendor: 'Joytel', now: 445, was: 556, per: 21, off: '20%OFF', hot: false },
+    { title: '亞洲多國 eSIM・一卡多國・24小時制計費', warns: ['需設備信息', '需指定啟用日'], tags: ['5G/4G', '可加值', '國際漫遊卡'], perks: ['立即確認', '不可取消'], rating: 4.2, reviews: 89, bought: '900 已購', vendor: 'GlobalSIM', now: 399, was: null, per: 18, off: null, hot: false }
+  ];
+  var plSort = 0;
+  function plBoughtNum(s) { var m = parseInt(s, 10) || 0; return m * (/[kK]/.test(s) ? 1000 : 1); }
+  function plMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
+  function plCardHTML(p) {
+    var warns = p.warns.map(function (w, i) { return (i ? '<span class="wdiv"></span>' : '') + '<span>' + w + '</span>'; }).join('');
+    var tags = (p.hot ? '<span class="pl-tag hot">HOT</span>' : '') + p.tags.map(function (t) { return '<span class="pl-tag">' + t + '</span>'; }).join('');
+    var perks = p.perks.map(function (pk) { return '<span class="pl-perk"><span class="ic">' + PL_CHECK + '</span>' + pk + '</span>'; }).join('');
+    var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '');
+    var social = '<span class="ic">' + PC_ICONS.star + '</span><b>' + p.rating.toFixed(1) + '</b>' + (grade ? '<span class="grade">' + grade + '</span>' : '') +
+      '<span>(' + p.reviews.toLocaleString('en-US') + ')</span><span class="dot">·</span><span>' + p.bought + '</span><span class="dot">·</span><span class="vendor">' + p.vendor + ' 提供服務</span>';
+    return '<div class="pl-card" data-toast="old">' +
+      '<div class="pl-main">' +
+        '<div class="pl-warns">' + warns + '</div>' +
+        '<div class="pl-title">' + p.title + '</div>' +
+        '<div class="pl-tags">' + tags + '</div>' +
+        '<div class="pl-perks">' + perks + '</div>' +
+        '<div class="pl-social">' + social + '</div>' +
+      '</div>' +
+      '<div class="pl-buy">' +
+        (p.off ? '<span class="pl-off">' + p.off + '</span>' : '') +
+        '<div class="pl-price">' + (p.was ? '<span class="was">' + plMoney(p.was) + '</span>' : '') +
+          '<span class="now">' + plMoney(p.now) + '</span>' + (p.per ? '<span class="per">≈NT$' + p.per + '/天</span>' : '') + '</div>' +
+        '<button class="pl-cta">訂購</button>' +
+      '</div>' +
+    '</div>';
+  }
+  function renderPlCards() {
+    var list = PL_DATA.slice();
+    if (plSort === 1) list.sort(function (a, b) { return a.now - b.now; });
+    else if (plSort === 2) list.sort(function (a, b) { return b.rating - a.rating; });
+    else if (plSort === 3) list.sort(function (a, b) { return plBoughtNum(b.bought) - plBoughtNum(a.bought); });
+    var box = document.getElementById('plList'); box.innerHTML = '';
+    list.forEach(function (p) { box.appendChild(h(plCardHTML(p))); });
+    document.getElementById('plCnt').textContent = 162;
+    document.querySelectorAll('#plSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === plSort); });
+  }
+  // 條件列：流量檔位橫向 chips（三計費方式全部檔位拼一條，選中滾到中央）
+  function renderListChips() {
+    var wrap = document.getElementById('plFlowChips'); wrap.innerHTML = '';
+    var d = sel.days;
+    TABS.forEach(function (tab) {
+      var badge = badgeForTab(tab, d);
+      filteredOpts(tab, d).forEach(function (o) {
+        var on = sel.tab === tab && sel.plan === o.t;
+        var c = h('<button class="pc-lchip' + (on ? ' sel' : '') + '"><b></b><span></span>' + (badge === o.t ? '<span class="badge">推薦</span>' : '') + '</button>');
+        c.querySelector('b').textContent = o.t;
+        c.querySelector('span').textContent = priceLabelFor(o, d);
+        c.addEventListener('click', function () { sel.tab = tab; sel.plan = o.t; sel.planTouched = true; renderList(); });
+        wrap.appendChild(c);
+      });
+    });
+    var s = wrap.querySelector('.pc-lchip.sel'); if (s) requestAnimationFrame(function () { s.scrollIntoView({ inline: 'center', block: 'nearest' }); });
+  }
+  // 天數下拉（1–30 天，選中打勾）
+  function renderDaysDd() {
+    var dd = document.getElementById('plDaysDd'); dd.innerHTML = '';
+    for (var i = 1; i <= 30; i++) (function (d) {
+      var b = h('<button' + (sel.days === d ? ' class="sel"' : '') + '><span>' + d + '天</span></button>');
+      if (sel.days === d) b.insertAdjacentHTML('beforeend', '<span class="ic ic-16">' + PL_CHECK + '</span>');
+      b.addEventListener('click', function (e) { e.stopPropagation(); sel.days = d; sel.planTouched = false; document.getElementById('plDaysPick').classList.remove('open'); renderList(); renderPanel(); });
+      dd.appendChild(b);
+    })(i);
+  }
+  // 全部流量 dialog（Figma 3191-69000）
+  function renderAllFlow() {
+    var d = sel.days;
+    var tabs = document.getElementById('pcAllTabs'); tabs.innerHTML = '';
+    TABS.forEach(function (k) {
+      if (!filteredOpts(k, d).length) return;
+      var t = h('<button class="pc-alltab' + (sel.tab === k ? ' sel' : '') + '"></button>'); t.textContent = PLANS[k].lb;
+      t.addEventListener('click', function () { allFlowScrollTo(k); });
+      tabs.appendChild(t);
+    });
+    var bd = document.getElementById('pcAllBd'); bd.innerHTML = '';
+    TABS.forEach(function (k) {
+      var opts = filteredOpts(k, d); if (!opts.length) return;
+      var badge = badgeForTab(k, d);
+      var sec = h('<div class="pc-allsec" data-sec="' + k + '"><div class="sh"></div><div class="sn"></div><div class="pc-allgrid"></div></div>');
+      sec.querySelector('.sh').textContent = PLANS[k].lb;
+      sec.querySelector('.sn').textContent = PLANS[k].note;
+      var grid = sec.querySelector('.pc-allgrid');
+      opts.forEach(function (o) {
+        var on = sel.tab === k && sel.plan === o.t;
+        var c = h('<button class="pc-tier' + (on ? ' sel' : '') + '"><b></b><span></span>' + (badge === o.t ? '<span class="badge">推薦</span>' : '') + '</button>');
+        c.querySelector('b').textContent = o.t;
+        c.querySelector('span').textContent = priceLabelFor(o, d);
+        c.addEventListener('click', function () { sel.tab = k; sel.plan = o.t; sel.planTouched = true; closeAllFlow(); renderList(); });
+        grid.appendChild(c);
+      });
+      bd.appendChild(sec);
+    });
+  }
+  function allFlowScrollTo(k) {
+    var bd = document.getElementById('pcAllBd'), sec = bd.querySelector('.pc-allsec[data-sec="' + k + '"]');
+    if (sec) bd.scrollTo({ top: sec.offsetTop - bd.offsetTop - 8, behavior: 'smooth' });
+    document.querySelectorAll('#pcAllTabs .pc-alltab').forEach(function (t) { t.classList.toggle('sel', t.textContent === PLANS[k].lb); });
+  }
+  function openAllFlow() { document.getElementById('pcAllMask').classList.add('open'); document.getElementById('pcAllDlg').classList.add('open'); renderAllFlow(); }
+  function closeAllFlow() { document.getElementById('pcAllMask').classList.remove('open'); document.getElementById('pcAllDlg').classList.remove('open'); }
+  // 列表頁總渲染：先正規化 sel.plan/tab（同 renderPanel），再刷新條件列 + 卡片
+  function renderList() {
+    var d = sel.days;
+    if (!sel.planTouched) sel.plan = badgeForTab(sel.tab, d) || (filteredOpts(sel.tab, d)[0] || {}).t;
+    var cur = filteredOpts(sel.tab, d);
+    if (!cur.length) {
+      sel.tab = TABS.filter(function (t) { return filteredOpts(t, d).length; })[0] || 'daily';
+      cur = filteredOpts(sel.tab, d);
+      var rec = badgeForTab(sel.tab, d);
+      sel.plan = cur.some(function (o) { return o.t === rec; }) ? rec : cur[0].t;
+    } else if (!sel.plan || !cur.some(function (o) { return o.t === sel.plan; })) { sel.plan = cur[0].t; }
+    document.getElementById('plDestName').textContent = sel.dest || '日本';
+    document.getElementById('plDaysName').textContent = sel.days + '天';
+    renderListChips(); renderDaysDd(); renderPlCards();
+  }
+  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; renderList(); window.scrollTo(0, 0); }
+  function exitList() { document.body.classList.remove('list-mode'); document.getElementById('pcListPage').hidden = true; window.scrollTo(0, 0); }
+  // 事件綁定
+  document.getElementById('plDestPill').addEventListener('click', function () { openDlg(); });
+  document.getElementById('plDaysPill').addEventListener('click', function (e) { e.stopPropagation(); document.getElementById('plDaysPick').classList.toggle('open'); });
+  document.getElementById('plDaysDd').addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function () { document.getElementById('plDaysPick').classList.remove('open'); });
+  document.getElementById('plAllFlow').addEventListener('click', openAllFlow);
+  document.getElementById('pcAllClose').addEventListener('click', closeAllFlow);
+  document.getElementById('pcAllMask').addEventListener('click', closeAllFlow);
+  document.getElementById('plCrumbHome').addEventListener('click', exitList);
+  document.querySelectorAll('#plSort button').forEach(function (b) { b.addEventListener('click', function () { plSort = +b.getAttribute('data-sort'); renderPlCards(); }); });
+  (function () {  // 列表頁價格區間雙滑塊
+    var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax'), fill = document.getElementById('plFill'), pv = document.getElementById('plPv');
+    function nt(n, plus) { return 'NT$' + n.toLocaleString('en-US') + (plus && n >= 12000 ? '+' : ''); }
+    function upd() {
+      var lo = +rmin.value, hi = +rmax.value;
+      if (lo > hi - 100) { lo = hi - 100; rmin.value = lo; }
+      fill.style.left = (lo / 12000 * 100) + '%'; fill.style.right = (100 - hi / 12000 * 100) + '%';
+      pv.textContent = nt(lo) + ' – ' + nt(hi, true);
+    }
+    rmin.addEventListener('input', upd);
+    rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 100) rmax.value = +rmin.value + 100; upd(); });
+    upd();
+  })();
 
   renderFind(); renderPanel(); renderPcExplore();
 </script>
