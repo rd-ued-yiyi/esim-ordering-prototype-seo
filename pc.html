@@ -160,10 +160,9 @@
     font-size: 12px; line-height: 16px; font-weight: 400; font-style: normal; padding: 2px 6px; white-space: nowrap; border-radius: 4px 4px 1px 4px; }
   .pc-tier .badge::after { content: ''; position: absolute; right: 0; bottom: -4px; width: 0; height: 0;
     border-top: 4px solid var(--kk-text-critical); border-right: 4px solid transparent; }
-  .pc-panel-foot { display: flex; align-items: center; gap: 16px; }
+  .pc-panel-foot { display: flex; align-items: center; justify-content: flex-end; gap: 16px; }  /* 已選摘要 + 搜尋按鈕一起靠右（Figma 3096-60705） */
   .pc-panel-foot .sum { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
   .pc-panel-foot .sum b { font-weight: 600; margin-left: 8px; }
-  .pc-panel-foot .pc-btn { margin-left: auto; }
   .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
     font-size: 16px; line-height: 24px; font-weight: 600; white-space: nowrap; transition: background .15s; display: inline-flex; align-items: center; gap: 8px; }
   .pc-btn:hover { background: var(--kk-primary-dark); }
@@ -877,7 +876,7 @@
     scroll.scrollTop = keepTop;
     revealTier(scroll, selTier);
     document.querySelectorAll('#pcFlowTabs .pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === sel.tab); });
-    document.getElementById('pcSummary').textContent = sel.days + '天／' + sel.plan;
+    document.getElementById('pcSummary').textContent = sel.days + '天·' + PLANS[sel.tab].lb + '·' + sel.plan;  // Figma 3096-60705：N天·計費方式·檔位
   }
   // 選中檔位不在可視範圍時捲入（上下各留 8px），不動頁面本身
   function revealTier(scroll, el) {
