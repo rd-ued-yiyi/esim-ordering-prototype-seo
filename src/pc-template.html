@@ -15,7 +15,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #fff; }
-  body { font-family: var(--font-tc); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; min-width: 1440px; }
+  body { font-family: var(--font-tc); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; min-width: 1024px; }  /* 自適應：內容區流體收窄，1024 以下才出現橫向捲動（PC 最小可用寬） */
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: inherit; }
   input { font: inherit; }
   img { display: block; }
@@ -24,15 +24,16 @@
   .ic-14 { width: 14px; height: 14px; } .ic-16 { width: 16px; height: 16px; } .ic-18 { width: 18px; height: 18px; } .ic-20 { width: 20px; height: 20px; }
   .ic-24 { width: 24px; height: 24px; }
   .rot90 { transform: rotate(90deg); } .ic-28 { width: 28px; height: 28px; } .ic-32 { width: 32px; height: 32px; } .ic-36 { width: 36px; height: 36px; }
-  .col { width: 1140px; margin: 0 auto; }
-  .colw { width: 1170px; margin: 0 auto; }
+  /* 自適應內容容器：最寬 1140／1170，視窗變窄時等比收窄、兩側各留 24px 留白（不再固定寬） */
+  .col { width: min(1140px, 100% - 48px); margin: 0 auto; }
+  .colw { width: min(1170px, 100% - 48px); margin: 0 auto; }
   .sec-t { font-size: 24px; line-height: 32px; font-weight: 600; color: var(--kk-text-darker); }
 
   /* ---------- header 60（Figma 2968-67063：logo + 站內搜尋 + 右側工具列） ---------- */
   .pc-header { height: 60px; background: #fff; }
   .pc-header .col { height: 60px; display: flex; align-items: center; gap: 24px; }
   .pc-logo { width: 100px; height: 40px; flex: 0 0 auto; }
-  .pc-hsearch { width: 400px; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px;
+  .pc-hsearch { flex: 0 1 400px; min-width: 200px; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px;
     background: var(--kk-surface-light); border-radius: 999px; color: var(--kk-text-medium); font-size: 14px; }
   .pc-right { display: flex; align-items: center; margin-left: auto; }
   .pc-right .it { display: flex; align-items: center; gap: 4px; padding: 0 12px; height: 60px; color: var(--kk-text-dark); white-space: nowrap; }
@@ -44,7 +45,7 @@
   /* 分類導航 60：eSIM/WIFI 選中 + 4px 底條（Figma） */
   .pc-cat { height: 60px; background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
   .pc-cat .col { position: relative; height: 60px; }
-  .pc-cat-list { position: absolute; left: 0; top: 20px; width: 1116px; display: flex; align-items: flex-start; overflow: hidden; }
+  .pc-cat-list { position: absolute; left: 0; top: 20px; width: calc(100% - 24px); display: flex; align-items: flex-start; overflow: hidden; }
   .pc-cat-item { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px; }
   .pc-cat-item .tx { padding: 0 14px; border-right: 1px solid var(--kk-border-light); white-space: nowrap; color: var(--kk-text-darker); }
   .pc-cat-item:hover .tx { color: var(--kk-primary-dark); }
@@ -87,7 +88,7 @@
   .pc-tab.sel::after { content: ''; position: absolute; right: -16px; bottom: 0; width: 16px; height: 16px;
     background: radial-gradient(circle at 100% 0, transparent 15.5px, #fff 16px); }
   .pc-tab:not(.sel):hover .lb { color: var(--kk-primary-dark); }
-  .pc-card { width: 1140px; background: #fff; border-radius: 0 16px 16px 16px; box-shadow: var(--el-hero-card); padding: 16px; }
+  .pc-card { width: 100%; background: #fff; border-radius: 0 16px 16px 16px; box-shadow: var(--el-hero-card); padding: 16px; }
 
   /* 未選：搜尋輸入 + 熱門 chips + 最近選擇（Figma 2968-67063） */
   .pc-find { display: flex; flex-direction: column; gap: 16px; }
@@ -379,12 +380,12 @@
   .pc-sub .in { width: 380px; height: 42px; background: #fff; border: 1px solid #E1E1E1; border-radius: 4px; padding: 0 15px; display: flex; align-items: center; color: #ccc; }
   .pc-sub .go { position: absolute; right: 0; top: 0; width: 111px; height: 42px; background: var(--kk-primary-medium); color: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 500; }
   .pc-foot-line { height: 1px; background: #5A5A5A; margin: 38px 0 28px; }
-  .pc-foot-cols { display: grid; grid-template-columns: repeat(4, 242px); column-gap: 104px; }
+  .pc-foot-cols { display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; column-gap: 40px; }  /* 自適應：4 欄依內容寬、剩餘空間平均分配（不再固定總寬 1280） */
   .pc-foot-col h4 { font-size: 16px; line-height: 24px; font-weight: 400; color: rgba(255,255,255,.4); margin-bottom: 16px; }
   .pc-foot-col a { display: block; color: #E6E6E6; line-height: 20px; margin-bottom: 4px; }
   .pc-pay { display: flex; flex-wrap: wrap; gap: 8px; width: 242px; }
   .pc-pay .ic { width: 42px; height: 26px; }
-  .pc-foot-bottom { background: #333; padding: 32px 80px; display: flex; gap: 170px; color: #999; }
+  .pc-foot-bottom { background: #333; padding: 32px 80px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px 80px; color: #999; }
   .pc-foot-bottom p { line-height: 20px; margin-bottom: 4px; white-space: nowrap; }
   .pc-foot-bottom .c1 { min-width: 258px; } .pc-foot-bottom .c2 { min-width: 280px; }
   .pc-foot-bottom .copy { font-size: 12px; }
