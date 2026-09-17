@@ -115,7 +115,13 @@
   .pc-pane { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
   .pc-pane .pt { font-size: 18px; line-height: 26px; font-weight: 600; }
   .pc-pane-days { flex: 0 0 224px; }
-  .pc-days-list { display: flex; flex-direction: column; gap: 12px; max-height: 292px; overflow-y: auto; padding-right: 4px; }
+  .pc-days-list { display: flex; flex-direction: column; gap: 12px; max-height: 292px; overflow-y: scroll; padding-right: 8px; }
+  /* 天數 / 流量滾動區：滾動條常駐（覆蓋 macOS overlay 預設）：6px 軌道 + 圓角滑塊 */
+  .pc-days-list, .pc-flow-scroll { scrollbar-width: thin; scrollbar-color: var(--kk-border-light) var(--kk-surface-light); scrollbar-gutter: stable; }
+  .pc-days-list::-webkit-scrollbar, .pc-flow-scroll::-webkit-scrollbar { width: 6px; }
+  .pc-days-list::-webkit-scrollbar-track, .pc-flow-scroll::-webkit-scrollbar-track { background: var(--kk-surface-light); border-radius: 3px; }
+  .pc-days-list::-webkit-scrollbar-thumb, .pc-flow-scroll::-webkit-scrollbar-thumb { background: var(--kk-border-light); border-radius: 3px; }
+  .pc-days-list::-webkit-scrollbar-thumb:hover, .pc-flow-scroll::-webkit-scrollbar-thumb:hover { background: var(--kk-text-medium); }
   .pc-day { flex: 0 0 auto; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px;
     background: var(--kk-surface-light); font-size: 16px; line-height: 24px; border: 1px solid transparent; }
   .pc-day:hover { background: var(--kk-surface-medium); }
@@ -128,7 +134,7 @@
   .pc-ftab.sel { background: #fff; border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
   .pc-flow-help { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 14px; }
   /* 三計費段堆疊的滾動區（Figma 3191-69364） */
-  .pc-flow-scroll { max-height: 300px; overflow-y: auto; padding: 2px 4px; display: flex; flex-direction: column; gap: 4px; }
+  .pc-flow-scroll { max-height: 300px; overflow-y: scroll; padding: 2px 8px 2px 4px; display: flex; flex-direction: column; gap: 4px; }
   .pc-flow-sec { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .pc-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -284,11 +290,12 @@
   .dlg-group { padding-top: 16px; }
   .dlg-group .gh { display: flex; align-items: center; gap: 6px; font-size: 16px; line-height: 24px; font-weight: 600; margin-bottom: 12px; }
   .dlg-group .gh .gact { margin-left: auto; display: inline-flex; padding: 2px; }
-  .dlg-chips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .dlg-chip { height: 36px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px;
-    border: 1px solid var(--kk-border-light); background: #fff; font-size: 14px; line-height: 20px; }
-  .dlg-chip:hover { border-color: var(--kk-primary-medium); }
-  .dlg-chip.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); color: var(--kk-primary-dark); }
+  /* 目的地 chip：與 mweb .chip 同款（淺灰底 #F1F4F8、圓角 8、內距 8 + 文字左右 4、14/20；選中＝淺青底 + 1px 青 inset 邊 + 青字） */
+  .dlg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dlg-chip { display: inline-flex; align-items: center; padding: 8px 12px; border-radius: 8px; border: 0;
+    background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; white-space: nowrap; }
+  .dlg-chip:hover { background: var(--kk-surface-medium); }
+  .dlg-chip.sel { background: var(--kk-primary-lighter); box-shadow: inset 0 0 0 1px var(--kk-primary-medium); color: var(--kk-primary-dark); }
   .dlg-tabs { position: sticky; top: 0; z-index: 2; background: #fff; display: flex; gap: 0; margin-top: 0; padding-top: 4px; border-bottom: 1px solid var(--kk-border-lighter); }  /* 間距改用白底 padding，貼頂時不透出下方內容 */
   .dlg-tab { position: relative; padding: 12px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
   .dlg-tab.sel { color: var(--kk-primary-dark); font-weight: 600; }
@@ -640,12 +647,43 @@
   // ================= 目的地資料（與 mweb 共用 src/geo-data.js） =================
   {{GEO_DATA}}
   var HOT_HOME = ['日本', '韓國', '泰國', '新加坡', '澳大利亞', '迪拜', '法國', '亞洲通', '東南亞', '北歐地區'];
+  // 流量檔位：與 mweb 同一份（每日 / 無限 = 單日價 × 天數 × 長天數折扣；總量 = 一口價，隨天數篩選）
   var PLANS = {
-    daily: { lb: '每日流量', note: '每天固定額度，隔日重新計算', opts: [['500MB/天', 52], ['600MB/天', 62], ['700MB/天', 72, '推薦'], ['800MB/天', 80], ['1GB/天', 82], ['2GB/天', 132], ['3GB/天', 172], ['4GB/天', 210], ['6GB/天', 268]] },
-    total: { lb: '總流量', note: '整趟共用一個額度，每日用量自己控制', opts: [['共3GB', 258], ['共5GB', 358], ['共10GB', 498, '推薦'], ['共20GB', 758], ['共30GB', 1290], ['共50GB', 1790]] },
-    unlimited: { lb: '無限流量', note: '沒有額度上限，天天放心用', opts: [['無限不降速', 168], ['無限流量高速', 128], ['無限到量降速', 78, '推薦'], ['無限流量輕速', 45]] }
+    daily:     { lb: '每日流量', note: '每天固定額度，隔日重新計算',
+                 opts: [ { t: '500MB/天', per: 52 }, { t: '1GB/天', per: 82 }, { t: '2GB/天', per: 132 }, { t: '3GB/天', per: 172 }, { t: '4GB/天', per: 208 },
+                         { t: '5GB/天', per: 242 }, { t: '6GB/天', per: 272 }, { t: '7GB/天', per: 298 }, { t: '8GB/天', per: 322 }, { t: '10GB/天', per: 372 } ] },
+    total:     { lb: '總流量', note: '整趟共用一個額度，每日用量自己控制',
+                 opts: [ { t: '共1GB', price: 149, gb: 1 }, { t: '共2GB', price: 219, gb: 2 }, { t: '共3GB', price: 289, gb: 3 }, { t: '共5GB', price: 399, gb: 5 }, { t: '共10GB', price: 619, gb: 10 },
+                         { t: '共20GB', price: 999, gb: 20 }, { t: '共30GB', price: 1290, gb: 30 }, { t: '共50GB', price: 1790, gb: 50 }, { t: '共80GB', price: 2490, gb: 80 }, { t: '共100GB', price: 2990, gb: 100 } ] },
+    unlimited: { lb: '無限流量', note: '沒有額度上限，天天放心用',
+                 opts: [ { t: '無限不降速', per: 168 }, { t: '無限流量高速', per: 128 }, { t: '無限到量降速', per: 78 }, { t: '無限流量輕速', per: 45 } ] }
   };
-  var sel = { dest: null, days: 5, tab: 'daily', plan: null };
+  var TABS = ['daily', 'total', 'unlimited'];
+  function daysDiscount(d) { return d >= 30 ? 0.85 : d >= 15 ? 0.9 : d >= 7 ? 0.95 : 1; }
+  function priceLabelFor(o, d) { return o.per ? 'NT$ ' + Math.round(o.per * d * daysDiscount(d)).toLocaleString('en-US') + ' 起' : 'NT$ ' + o.price.toLocaleString('en-US') + ' 起'; }
+  // 總流量隨天數篩選：容量 ≥ 天數×0.2；不足 2 檔取最大 2 檔；奇數去最小湊偶（與 mweb 一致）
+  function filteredOpts(tab, d) {
+    var opts = PLANS[tab].opts;
+    if (tab === 'total' && d) {
+      var fit = opts.filter(function (o) { return o.gb >= d * 0.2; });
+      if (fit.length < 2) fit = PLANS.total.opts.slice(-2);
+      if (fit.length % 2 && fit.length > 2) fit = fit.slice(1);
+      opts = fit;
+    }
+    return opts;
+  }
+  // 推薦檔（與 mweb 一致）：每日依天數分段；總量取最接近 天數×1GB；無限固定到量降速
+  function badgeForTab(tab, d) {
+    if (tab === 'daily') return !d ? '3GB/天' : d <= 3 ? '2GB/天' : d <= 10 ? '3GB/天' : '2GB/天';
+    if (tab === 'total') {
+      var opts = filteredOpts('total', d); if (!opts.length) return null;
+      var target = d || 5, best = opts[0];
+      opts.forEach(function (o) { if (Math.abs(o.gb - target) < Math.abs(best.gb - target)) best = o; });
+      return best.t;
+    }
+    return '無限到量降速';
+  }
+  var sel = { dest: null, days: 5, tab: 'daily', plan: null, planTouched: false };
 
   // ================= hero：未選（搜尋卡）/ 已選（天數流量面板） =================
   var HK = 'pc_hist_dest';
@@ -706,25 +744,48 @@
       t.addEventListener('click', function () { flowScrollTo(k); });
       tabs.appendChild(t);
     });
-    // 預設選中：目前計費段的推薦檔（無則第一檔）
-    if (!sel.plan) { var rec = PLANS[sel.tab].opts.filter(function (o) { return o[2]; })[0]; sel.plan = (rec || PLANS[sel.tab].opts[0])[0]; }
-    // 三種計費段全部堆疊在同一滾動區（Figma 3191-69364）
-    var scroll = document.getElementById('pcFlowScroll'); scroll.innerHTML = '';
-    Object.keys(PLANS).forEach(function (k) {
+    // 選中規則（與 mweb 一致）：未手動選 → 當前計費段推薦檔；手動選過 → 檔位仍在則不變；不在 → 同段第一檔；整段無檔位 → 第一個有檔位的段的推薦檔
+    var d = sel.days;
+    if (!sel.planTouched) sel.plan = badgeForTab(sel.tab, d) || (filteredOpts(sel.tab, d)[0] || {}).t;
+    var cur = filteredOpts(sel.tab, d);
+    if (!cur.length) {
+      sel.tab = TABS.filter(function (t) { return filteredOpts(t, d).length; })[0] || 'daily';
+      cur = filteredOpts(sel.tab, d);
+      var rec = badgeForTab(sel.tab, d);
+      sel.plan = cur.some(function (o) { return o.t === rec; }) ? rec : cur[0].t;
+    } else if (!sel.plan || !cur.some(function (o) { return o.t === sel.plan; })) {
+      sel.plan = cur[0].t;
+    }
+    // 三種計費段全部堆疊在同一滾動區（Figma 3191-69364）；價格 / 篩選 / 推薦標籤都隨天數重算
+    var scroll = document.getElementById('pcFlowScroll'), keepTop = scroll.scrollTop; scroll.innerHTML = '';
+    var selTier = null;
+    TABS.forEach(function (k) {
+      var opts = filteredOpts(k, d); if (!opts.length) return;
+      var badge = badgeForTab(k, d);
       var secEl = h('<div class="pc-flow-sec" data-sec="' + k + '"><div class="pc-flow-note"></div><div class="pc-flow-grid"></div></div>');
       secEl.querySelector('.pc-flow-note').textContent = PLANS[k].note;
       var grid = secEl.querySelector('.pc-flow-grid');
-      PLANS[k].opts.forEach(function (o) {
-        var b = h('<button class="pc-tier"><b></b><span></span>' + (o[2] ? '<em class="badge">推薦</em>' : '') + '</button>');
-        b.querySelector('b').textContent = o[0];
-        b.querySelector('span').textContent = 'NT$ ' + (o[1]).toLocaleString('en-US') + ' 起';
-        b.classList.toggle('sel', sel.tab === k && sel.plan === o[0]);
-        b.addEventListener('click', function () { sel.tab = k; sel.plan = o[0]; renderPanel(); });
+      opts.forEach(function (o) {
+        var b = h('<button class="pc-tier"><b></b><span></span>' + (badge === o.t ? '<em class="badge">推薦</em>' : '') + '</button>');
+        b.querySelector('b').textContent = o.t;
+        b.querySelector('span').textContent = priceLabelFor(o, d);
+        var on = sel.tab === k && sel.plan === o.t; b.classList.toggle('sel', on); if (on) selTier = b;
+        b.addEventListener('click', function () { sel.tab = k; sel.plan = o.t; sel.planTouched = true; renderPanel(); });
         grid.appendChild(b);
       });
       scroll.appendChild(secEl);
     });
+    scroll.scrollTop = keepTop;
+    revealTier(scroll, selTier);
+    document.querySelectorAll('#pcFlowTabs .pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === sel.tab); });
     document.getElementById('pcSummary').textContent = sel.days + '天／' + sel.plan;
+  }
+  // 選中檔位不在可視範圍時捲入（上下各留 8px），不動頁面本身
+  function revealTier(scroll, el) {
+    if (!el) return;
+    var top = el.offsetTop - scroll.offsetTop, bottom = top + el.offsetHeight;
+    if (top - 8 < scroll.scrollTop) { scroll._spyGuard = Date.now() + 500; scroll.scrollTop = Math.max(0, top - 8); }
+    else if (bottom + 8 > scroll.scrollTop + scroll.clientHeight) { scroll._spyGuard = Date.now() + 500; scroll.scrollTop = bottom + 8 - scroll.clientHeight; }
   }
   function flowScrollTo(k) {
     var scroll = document.getElementById('pcFlowScroll');
