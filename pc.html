@@ -634,7 +634,7 @@
 <div class="pc-toast" id="pcToast" role="status"></div>
 
 <script>
-  var TOAST = { pc: 'PC 版原型：此功能維持現狀', old: '維持舊版現狀' };
+  var TOAST = { pc: 'demo 未開發', old: 'demo 未開發' };
   var toastTimer = null;
   function toast(msg) {
     var el = document.getElementById('pcToast');
@@ -818,7 +818,7 @@
   document.getElementById('pcHowtoClose').addEventListener('click', closeHowto);
   document.getElementById('pcHowtoMask').addEventListener('click', closeHowto);
   document.getElementById('pcSearchBtn').addEventListener('click', function () {
-    toast('搜尋 ' + sel.dest + ' ' + sel.days + ' 天 ' + sel.plan + '（PC 結果頁維持現狀）');
+    toast('demo 未開發');  // PC 搜尋結果頁尚未製作
   });
 
   // ================= 目的地選擇彈窗：三模式 =================
