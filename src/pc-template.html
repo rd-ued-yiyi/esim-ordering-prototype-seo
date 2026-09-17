@@ -322,6 +322,23 @@
     background: var(--kk-surface-light); border-radius: 999px; }
   .pc-dlg-search input { flex: 1 1 0; min-width: 0; border: 0; background: none; outline: 0; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-dlg-search input::placeholder { color: var(--kk-text-medium); }
+  .pc-dlg-search .pc-dlg-clear { flex: 0 0 auto; display: inline-flex; align-items: center; color: var(--kk-text-medium); }
+  .pc-dlg-search .pc-dlg-clear .ic { width: 16px; height: 16px; }
+  /* 搜尋態：隱藏模式栏 / 分組 / 底部，顯示扁平結果列表（對齊 mweb renderSearch） */
+  .pc-dlg.searching .pc-dlg-modes, .pc-dlg.searching .pc-dlg-bd,
+  .pc-dlg.searching .pc-dlg-ft, .pc-dlg.searching .dlg-hint { display: none; }
+  .pc-dlg-results { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 12px 24px; display: none; }
+  .pc-dlg.searching .pc-dlg-results { display: block; }
+  .pc-dlg.searching.no-result .pc-dlg-results { display: none; }
+  .pc-dlg-result { display: flex; align-items: flex-start; gap: 8px; width: 100%; padding: 10px 12px; border-radius: 8px; text-align: left; }
+  .pc-dlg-result:hover { background: var(--kk-surface-light); }
+  .pc-dlg-result .ic { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 2px; color: var(--kk-text-medium); }
+  .pc-dlg-result .rc { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .pc-dlg-result .nm { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pc-dlg-result .nm mark { background: none; color: var(--kk-primary-medium); }
+  .pc-dlg-result .sub { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pc-dlg-empty { flex: 1 1 auto; padding: 48px 24px; text-align: center; font-size: 14px; line-height: 20px; color: var(--kk-text-medium); display: none; }
+  .pc-dlg.searching.no-result .pc-dlg-empty { display: block; }
   .pc-dlg-modes { flex: 0 0 auto; display: flex; gap: 10px; padding: 20px 24px 16px; }
   .pc-mode { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 999px;
     border: 1px solid var(--kk-border-light); background: #fff; font-size: 14px; line-height: 20px; }
@@ -846,7 +863,9 @@
 <div class="pc-mask" id="pcDlgMask"></div>
 <div class="pc-dlg" id="pcDlg" data-mode="country" role="dialog" aria-modal="true">
   <div class="pc-dlg-hd"><span class="t">請選擇目的地</span><button id="pcDlgClose" aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button></div>
-  <div class="pc-dlg-search"><span class="ic ic-16">{{IC_searchGrey}}</span><input id="pcDlgQ" placeholder="輸入國家或地區名稱搜尋"></div>
+  <div class="pc-dlg-search"><span class="ic ic-16">{{IC_searchGrey}}</span><input id="pcDlgQ" placeholder="輸入國家或地區名稱搜尋" autocomplete="off"><button class="pc-dlg-clear" id="pcDlgClearKw" aria-label="清除" hidden><span class="ic ic-16">{{IC_crossCircle}}</span></button></div>
+  <div class="pc-dlg-results" id="pcDlgResults"></div>
+  <div class="pc-dlg-empty" id="pcDlgEmpty"></div>
   <div class="pc-dlg-modes" id="pcDlgModes">
     <button class="pc-mode sel" data-mode="country"><span class="ic ic-16 ic-off">{{IC_locationDark}}</span><span class="ic ic-16 ic-on">{{IC_locationLineCyan}}</span>國家/地區</button>
     <button class="pc-mode" data-mode="region"><span class="ic ic-16 ic-off">{{IC_earthLine}}</span><span class="ic ic-16 ic-on">{{IC_earthCyan}}</span>多國區域</button>
@@ -1089,6 +1108,8 @@
     document.getElementById('pcDlg').classList.add('open');
     document.getElementById('pcDlgQ').value = ''; dlg.q = '';
     renderDlg();
+    var inp = document.getElementById('pcDlgQ');  // PC：開啟即聚焦搜尋框（桌面適合，不彈鍵盤）
+    requestAnimationFrame(function () { inp.focus(); });
   }
   function closeDlg() {
     document.getElementById('pcDlgMask').classList.remove('open');
@@ -1107,6 +1128,40 @@
     });
   });
   document.getElementById('pcDlgQ').addEventListener('input', function () { dlg.q = this.value.trim(); renderDlg(); });
+  document.getElementById('pcDlgClearKw').addEventListener('click', function () {
+    var inp = document.getElementById('pcDlgQ'); inp.value = ''; dlg.q = ''; renderDlg(); inp.focus();
+  });
+  // 搜尋（對齊 mweb searchAll / renderSearch）：關鍵字命中的國家 + 區域，扁平列表 + 高亮 + 副標
+  function searchAllPC(q) {
+    var out = [], seen = {};
+    GEO.continents.forEach(function (c) {
+      c.countries.forEach(function (n) { if (n.indexOf(q) >= 0 && !seen[n]) { seen[n] = 1; out.push({ type: 'country', name: n, sub: c.name + '·國家' }); } });
+    });
+    (GEO.hotRegions || []).concat(GEO.regions || []).forEach(function (r) {
+      if (r.name.indexOf(q) >= 0 && !seen[r.name]) { seen[r.name] = 1; out.push({ type: 'region', name: r.name, sub: '區域·' + r.count + '個國家' }); }
+    });
+    return out;
+  }
+  function renderDlgSearch() {
+    var dialog = document.getElementById('pcDlg');
+    dialog.classList.add('searching');
+    var items = searchAllPC(dlg.q);
+    var box = document.getElementById('pcDlgResults'); box.innerHTML = '';
+    if (!items.length) {
+      dialog.classList.add('no-result');
+      document.getElementById('pcDlgEmpty').textContent = '沒有搜到「' + dlg.q + '」，換個關鍵詞試試';
+      return;
+    }
+    dialog.classList.remove('no-result');
+    items.forEach(function (it) {
+      var icon = it.type === 'country' ? '{{IC_locationDark}}' : '{{IC_earthLine}}';
+      var row = h('<button class="pc-dlg-result"><span class="ic ic-20">' + icon + '</span><span class="rc"><span class="nm"></span><span class="sub"></span></span></button>');
+      row.querySelector('.nm').innerHTML = it.name.split(dlg.q).join('<mark>' + dlg.q + '</mark>');
+      row.querySelector('.sub').textContent = it.sub;
+      row.addEventListener('click', function () { it.type === 'country' ? pickDest(it.name) : pickDest(it.name, 'region'); });
+      box.appendChild(row);
+    });
+  }
 
   function dlgGroup(title, fire, action) {
     return h('<div class="dlg-group"><div class="gh">' + (fire ? '<span class="ic ic-20">{{IC_fire}}</span>' : '') + '<span>' + title + '</span>' + (action || '') + '</div></div>');
@@ -1131,6 +1186,9 @@
     return bar;
   }
   function renderDlg() {
+    document.getElementById('pcDlgClearKw').hidden = !dlg.q;
+    if (dlg.q) { renderDlgSearch(); return; }                 // 有關鍵字：走扁平搜尋結果（隱藏模式栏/分組）
+    document.getElementById('pcDlg').classList.remove('searching', 'no-result');
     var bd = document.getElementById('pcDlgBody'); bd.innerHTML = '';
     if (dlg.mode === 'country') {
       var hist = histGet().filter(match);
