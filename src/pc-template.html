@@ -131,8 +131,9 @@
   .pc-flow-head { display: flex; align-items: center; gap: 16px; }
   .pc-flow-head .pt { flex: 0 0 auto; }
   .pc-ftabs { display: flex; gap: 8px; }
-  .pc-ftab { height: 32px; padding: 0 12px; border-radius: 8px; background: var(--kk-surface-light); font-size: 14px; line-height: 20px; border: 1px solid transparent; }
-  .pc-ftab.sel { background: #fff; border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
+  /* 流量計費分頁：與 mweb .ftab 同款——未選淺灰、選中淺青底 #F0FAFB + inset 青邊 + 青字（不加粗） */
+  .pc-ftab { height: 32px; padding: 0 12px; border-radius: 8px; background: var(--kk-surface-light); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pc-ftab.sel { background: var(--kk-primary-lighter); box-shadow: inset 0 0 0 1px var(--kk-primary-medium); color: #13A3B6; }
   .pc-flow-help { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 14px; }
   /* 三計費段堆疊的滾動區（Figma 3191-69364） */
   .pc-flow-scroll { max-height: 232px; overflow-y: scroll; padding: 2px 8px 2px 4px; display: flex; flex-direction: column; gap: 4px; }
