@@ -434,12 +434,9 @@
   /* 流量 Option Card 行：翻頁鈕作為 flex 兄弟置於視口左右外側（不覆蓋卡片）；flow=軌道(translateX)整頁翻 */
   .pc-lflowwrap { grid-area: flow; display: flex; align-items: center; min-width: 0; }
   .pc-lflow-vp { flex: 1 1 0; min-width: 0; position: relative; overflow: hidden; padding: 1px 0; }
-  /* 視口尾端白色漸層：把可翻方向露出的半張卡淡出（純視覺提示，不覆蓋在完整卡上） */
-  .pc-lflowwrap.can-prev .pc-lflow-vp::before, .pc-lflowwrap.can-next .pc-lflow-vp::after { content: ''; position: absolute; top: 0; bottom: 0; width: 28px; z-index: 1; pointer-events: none; }
-  .pc-lflowwrap.can-prev .pc-lflow-vp::before { left: 0; background: linear-gradient(90deg, #fff, rgba(255,255,255,0)); }
-  .pc-lflowwrap.can-next .pc-lflow-vp::after { right: 0; background: linear-gradient(270deg, #fff, rgba(255,255,255,0)); }
-  .pc-lflow { position: relative; display: flex; gap: 16px; width: max-content; transition: transform .35s cubic-bezier(.22,.61,.36,1); will-change: transform; }
-  .pc-lchip { position: relative; flex: 0 0 176px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px;
+  /* 默認態：整頁 N 張等寬卡鋪滿整行（每張 flex:1），› 翻下一頁；無半張、無白漸層（Figma 3140-37910） */
+  .pc-lflow { position: relative; display: flex; gap: 16px; width: 100%; }
+  .pc-lchip { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
   .pc-lchip b { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-lchip span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
@@ -466,8 +463,7 @@
   .pc-lbar.compact .pc-lprev, .pc-lbar.compact .pc-lnext { display: none; }
   .pc-lbar.compact .pc-lflow-vp { overflow-x: auto; scrollbar-width: none; }
   .pc-lbar.compact .pc-lflow-vp::-webkit-scrollbar { display: none; }
-  .pc-lbar.compact .pc-lflow-vp::before, .pc-lbar.compact .pc-lflow-vp::after { display: none; }
-  .pc-lbar.compact .pc-lflow { transform: none !important; transition: none; }
+  .pc-lbar.compact .pc-lflow { width: max-content; }  /* compact：全部 chip 並排、原生橫捲 */
   /* 麵包屑 note */
   .pc-lnote { margin: 0 0 16px; }
   .pc-lbody { align-items: flex-start; }
@@ -1609,70 +1605,61 @@
     document.getElementById('plCnt').textContent = 162;
     document.querySelectorAll('#plSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === plSort); });
   }
-  // 條件列：流量檔位 chips（三計費方式全部檔位拼一條）。外層 chip 不放推薦標籤；整頁翻頁（只顯示完整卡）
+  // 條件列流量檔位：三計費方式全部檔位拼成一份資料
+  function plAllTiers() {
+    var arr = [];
+    TABS.forEach(function (tab) { filteredOpts(tab, sel.days).forEach(function (o) { arr.push({ tab: tab, o: o }); }); });
+    return arr;
+  }
+  var plPage = 0;  // 默認態：當前頁（每頁 N 張等寬卡鋪滿整行）
+  // 每頁張數：按「兩側都留翻頁道」的最窄情形計算，恒定不隨箭頭顯隱變化（否則 page*n 會錯位重疊）
+  function plPerPage() {
+    var wrap = (document.querySelector('.pc-lflowwrap') || {}).clientWidth || 900;
+    var avail = wrap - 2 * (32 + 8);  // 預留左右翻頁鈕道
+    return Math.max(1, Math.floor((avail + 16) / (176 + 16)));  // 目標卡寬 ~176 + gap 16
+  }
+  function plSelIndex(all) {
+    for (var i = 0; i < all.length; i++) if (all[i].tab === sel.tab && all[i].o.t === sel.plan) return i;
+    return 0;
+  }
+  // 條件列：預設整頁 N 張等寬卡鋪滿整行、› 翻頁；compact 全部並排原生橫捲
   function renderListChips() {
     var wrap = document.getElementById('plFlowChips'); wrap.innerHTML = '';
-    var d = sel.days;
-    TABS.forEach(function (tab) {
-      filteredOpts(tab, d).forEach(function (o) {
-        var on = sel.tab === tab && sel.plan === o.t;
-        var c = h('<button class="pc-lchip' + (on ? ' sel' : '') + '"><b></b><span></span></button>');
-        c.querySelector('b').textContent = o.t;
-        c.querySelector('span').textContent = priceLabelFor(o, d);
-        c.addEventListener('click', function () { sel.tab = tab; sel.plan = o.t; sel.planTouched = true; renderList(); });
-        wrap.appendChild(c);
-      });
-    });
-    // 重繪後保持目前翻頁位置（切換選項/天數不捲動），僅夾取到有效範圍、不做動畫
-    requestAnimationFrame(function () { applyFlow(false); });
-  }
-  // 流量翻頁：以「第一張可見卡索引」為狀態，永遠對齊到整張卡（左緣不出現半張）
-  var plFlowFirst = 0;
-  function flowEls() { return Array.prototype.slice.call(document.getElementById('plFlowChips').children); }
-  function plFlowVP() { return document.getElementById('plFlowChips').parentElement.clientWidth; }
-  function applyFlow(smooth) {
-    var els = flowEls(); if (!els.length) return;
-    var vpEl = document.getElementById('plFlowChips').parentElement;
-    if (_plCompact) {  // compact：無翻頁，原生捲動；選中項置中
+    var vpEl = document.querySelector('.pc-lflow-vp');
+    var all = plAllTiers(), d = sel.days;
+    function mkChip(it) {
+      var on = sel.tab === it.tab && sel.plan === it.o.t;
+      var c = h('<button class="pc-lchip' + (on ? ' sel' : '') + '"><b></b><span></span></button>');
+      c.querySelector('b').textContent = it.o.t;
+      c.querySelector('span').textContent = priceLabelFor(it.o, d);
+      c.addEventListener('click', function () { sel.tab = it.tab; sel.plan = it.o.t; sel.planTouched = true; renderList(); });
+      return c;
+    }
+    if (_plCompact) {  // compact：全部並排、原生橫捲、無翻頁鈕；選中項置中
+      all.forEach(function (it) { wrap.appendChild(mkChip(it)); });
       document.getElementById('plFlowPrev').hidden = true;
       document.getElementById('plFlowNext').hidden = true;
-      var s = document.getElementById('plFlowChips').querySelector('.pc-lchip.sel');
-      if (s) vpEl.scrollLeft = Math.max(0, s.offsetLeft - (vpEl.clientWidth - s.offsetWidth) / 2);
+      requestAnimationFrame(function () {
+        var s = wrap.querySelector('.pc-lchip.sel');
+        if (s) vpEl.scrollLeft = Math.max(0, s.offsetLeft - (vpEl.clientWidth - s.offsetWidth) / 2);
+      });
       return;
     }
+    var n = plPerPage(), pages = Math.max(1, Math.ceil(all.length / n));
+    plPage = Math.max(0, Math.min(plPage, pages - 1));
     vpEl.scrollLeft = 0;
-    plFlowFirst = Math.max(0, Math.min(plFlowFirst, els.length - 1));
-    var track = document.getElementById('plFlowChips'), x = els[plFlowFirst].offsetLeft;
-    if (!smooth) track.style.transition = 'none';
-    track.style.transform = 'translateX(' + (-x) + 'px)';
-    if (!smooth) { void track.offsetWidth; track.style.transition = ''; }
-    updateFlowArrows();
+    all.slice(plPage * n, plPage * n + n).forEach(function (it) { wrap.appendChild(mkChip(it)); });
+    document.getElementById('plFlowPrev').hidden = plPage <= 0;
+    document.getElementById('plFlowNext').hidden = plPage >= pages - 1;
   }
-  function updateFlowArrows() {
-    var els = flowEls(), vp = plFlowVP();
-    var canPrev = plFlowFirst > 0;
-    var last = els[els.length - 1];
-    var canNext = !!last && (last.offsetLeft + last.offsetWidth - els[plFlowFirst].offsetLeft) > vp + 1;
-    document.getElementById('plFlowPrev').hidden = !canPrev;
-    document.getElementById('plFlowNext').hidden = !canNext;
-    var fw = document.querySelector('.pc-lflowwrap'); fw.classList.toggle('can-prev', canPrev); fw.classList.toggle('can-next', canNext);
+  // 重繪後把翻頁位置對到選中檔所在頁
+  function plSyncPageToSel() {
+    var all = plAllTiers(), n = plPerPage();
+    plPage = Math.floor(plSelIndex(all) / n);
   }
-  // 往右翻：把「目前第一張的視窗內最後一張的下一張」設為新的第一張 → 下一頁整張卡從左緣開始
-  function flowNext() {
-    var els = flowEls(), vp = plFlowVP(), start = els[plFlowFirst].offsetLeft, next = plFlowFirst;
-    for (var i = plFlowFirst; i < els.length; i++) {
-      if (els[i].offsetLeft + els[i].offsetWidth - start <= vp + 1) next = i + 1; else break;
-    }
-    plFlowFirst = Math.min(next, els.length - 1); applyFlow(true);
-  }
-  // 往左翻：以「目前第一張的前一張」為視窗右緣往回收整張卡
-  function flowPrev() {
-    var els = flowEls(), vp = plFlowVP();
-    if (plFlowFirst <= 0) return;
-    var rightEdge = els[plFlowFirst - 1].offsetLeft + els[plFlowFirst - 1].offsetWidth, i = plFlowFirst - 1;
-    while (i > 0 && rightEdge - els[i - 1].offsetLeft <= vp + 1) i--;
-    plFlowFirst = Math.max(0, i); applyFlow(true);
-  }
+  function applyFlow() { renderListChips(); }  // 尺寸/狀態變化即重排當前頁
+  function flowNext() { plPage++; renderListChips(); }
+  function flowPrev() { plPage--; renderListChips(); }
   // 天數下拉（1–30 天，選中打勾）
   function renderDaysDd() {
     var dd = document.getElementById('plDaysDd'); dd.innerHTML = '';
@@ -1734,9 +1721,9 @@
     var pn = document.getElementById('plDestNum'), pm = sel.destType === 'multi' && sel.destCount > 1;
     pn.hidden = !pm; if (pm) pn.textContent = '(' + sel.destCount + ')';
     document.getElementById('plDaysName').textContent = sel.days + '天';
-    renderListChips(); renderDaysDd(); renderPlCards();
+    plSyncPageToSel(); renderListChips(); renderDaysDd(); renderPlCards();
   }
-  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; _plCompact = false; plFlowFirst = 0; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
+  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; _plCompact = false; plPage = 0; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
   function exitList() { document.body.classList.remove('list-mode'); document.getElementById('pcListPage').hidden = true; window.scrollTo(0, 0); }
   // 事件綁定
   document.getElementById('plDestPill').addEventListener('click', function () { openDlg(); });
