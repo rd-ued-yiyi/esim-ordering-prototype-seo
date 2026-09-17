@@ -429,12 +429,10 @@
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-ldd button:hover { background: var(--kk-surface-light); }
   .pc-ldd button.sel { color: var(--kk-primary-dark); }
-  /* 流量 Option Card 行：flow-vp=視口(overflow hidden，兩側留 40px 給翻頁鈕，卡片不被壓)，flow=軌道(translateX)；點擊整頁翻、平移帶緩衝 */
-  .pc-lflowwrap { grid-area: flow; position: relative; min-width: 0; }
-  .pc-lflow-vp { position: relative; overflow: hidden; padding: 1px 0; }
-  .pc-lflowwrap.can-prev .pc-lflow-vp { margin-left: 40px; }   /* 有翻頁鈕才留道，避免無鈕時左緣縮進 */
-  .pc-lflowwrap.can-next .pc-lflow-vp { margin-right: 40px; }
-  /* 視口邊緣白色漸層：把翻頁方向露出的半張卡淡出，讓可見卡看起來完整（Figma 同款） */
+  /* 流量 Option Card 行：翻頁鈕作為 flex 兄弟置於視口左右外側（不覆蓋卡片）；flow=軌道(translateX)整頁翻 */
+  .pc-lflowwrap { grid-area: flow; display: flex; align-items: center; min-width: 0; }
+  .pc-lflow-vp { flex: 1 1 0; min-width: 0; position: relative; overflow: hidden; padding: 1px 0; }
+  /* 視口尾端白色漸層：把可翻方向露出的半張卡淡出（純視覺提示，不覆蓋在完整卡上） */
   .pc-lflowwrap.can-prev .pc-lflow-vp::before, .pc-lflowwrap.can-next .pc-lflow-vp::after { content: ''; position: absolute; top: 0; bottom: 0; width: 28px; z-index: 1; pointer-events: none; }
   .pc-lflowwrap.can-prev .pc-lflow-vp::before { left: 0; background: linear-gradient(90deg, #fff, rgba(255,255,255,0)); }
   .pc-lflowwrap.can-next .pc-lflow-vp::after { right: 0; background: linear-gradient(270deg, #fff, rgba(255,255,255,0)); }
@@ -446,10 +444,10 @@
   .pc-lchip:hover { background: var(--kk-surface-medium); }
   .pc-lchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
-  /* 左右翻頁按鈕：貼流量行左右緣、垂直置中於卡片行；可翻才顯示（[hidden]），compact 態隱藏 */
-  .pc-lprev, .pc-lnext { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 32px; height: 32px; border-radius: 999px;
+  /* 左右翻頁按鈕：flex 兄弟，在視口外側各佔一道（不壓卡）；可翻才顯示（[hidden] 收合，卡片用滿寬） */
+  .pc-lprev, .pc-lnext { flex: 0 0 32px; width: 32px; height: 32px; border-radius: 999px;
     background: #fff; box-shadow: 0 1px 4px rgba(17,25,40,.16); display: flex; align-items: center; justify-content: center; }
-  .pc-lprev { left: 2px; } .pc-lnext { right: 2px; }
+  .pc-lprev { margin-right: 8px; } .pc-lnext { margin-left: 8px; }
   .pc-lprev[hidden], .pc-lnext[hidden] { display: none; }
   .pc-lprev .ic, .pc-lnext .ic { width: 20px; height: 20px; color: var(--kk-text-darker); }
   .pc-lprev .ic { transform: rotate(180deg); }
@@ -462,6 +460,12 @@
   .pc-lbar.compact .pc-lchip { flex: 0 0 auto; height: 36px; padding: 0 12px; flex-direction: row; }
   .pc-lbar.compact .pc-lchip b { font-size: 14px; line-height: 20px; }
   .pc-lbar.compact .pc-lchip span { display: none; }
+  /* compact 態：不需要翻頁——隱藏翻頁鈕與漸層，改原生橫向捲動 */
+  .pc-lbar.compact .pc-lprev, .pc-lbar.compact .pc-lnext { display: none; }
+  .pc-lbar.compact .pc-lflow-vp { overflow-x: auto; scrollbar-width: none; }
+  .pc-lbar.compact .pc-lflow-vp::-webkit-scrollbar { display: none; }
+  .pc-lbar.compact .pc-lflow-vp::before, .pc-lbar.compact .pc-lflow-vp::after { display: none; }
+  .pc-lbar.compact .pc-lflow { transform: none !important; transition: none; }
   /* 麵包屑 note */
   .pc-lnote { margin: 0 0 16px; }
   .pc-lbody { align-items: flex-start; }
@@ -1626,6 +1630,15 @@
   function plFlowVP() { return document.getElementById('plFlowChips').parentElement.clientWidth; }
   function applyFlow(smooth) {
     var els = flowEls(); if (!els.length) return;
+    var vpEl = document.getElementById('plFlowChips').parentElement;
+    if (_plCompact) {  // compact：無翻頁，原生捲動；選中項置中
+      document.getElementById('plFlowPrev').hidden = true;
+      document.getElementById('plFlowNext').hidden = true;
+      var s = document.getElementById('plFlowChips').querySelector('.pc-lchip.sel');
+      if (s) vpEl.scrollLeft = Math.max(0, s.offsetLeft - (vpEl.clientWidth - s.offsetWidth) / 2);
+      return;
+    }
+    vpEl.scrollLeft = 0;
     plFlowFirst = Math.max(0, Math.min(plFlowFirst, els.length - 1));
     var track = document.getElementById('plFlowChips'), x = els[plFlowFirst].offsetLeft;
     if (!smooth) track.style.transition = 'none';
