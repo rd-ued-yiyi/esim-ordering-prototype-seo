@@ -491,6 +491,7 @@
   .pl-cntrow { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-primary-dark); }
   /* Plan 卡（Figma 3167:40025）：左內容（規格警示/標題/標籤/竪排政策/評論）+ 豎分隔 + 右價格CTA */
   .pl-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
+  .pl-empty { padding: 64px 0; text-align: center; color: var(--kk-text-medium); background: #fff; border-radius: 12px; }
   .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 16px; cursor: pointer; transition: box-shadow .15s; }
   .pl-card:hover { box-shadow: var(--el-hover); }
   .pl-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
@@ -1536,7 +1537,13 @@
   document.querySelectorAll('#pcTypeBox .pc-cb').forEach(function (b) {
     b.addEventListener('click', function () { var k = b.getAttribute('data-type'), i = pcEx.type.indexOf(k); if (i >= 0) pcEx.type.splice(i, 1); else pcEx.type.push(k); renderPcExplore(); });
   });
-  document.querySelectorAll('.pc-cb[data-mock]').forEach(function (b) { b.addEventListener('click', function () { b.classList.toggle('on'); }); });
+  document.querySelectorAll('.pc-cb[data-mock]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      b.classList.toggle('on');
+      // 列表頁側欄篩選：即時過濾卡片
+      if (b.closest('#pcListPage')) renderPlCards();
+    });
+  });
   document.querySelectorAll('#pcSort button').forEach(function (b) { b.addEventListener('click', function () { pcEx.sort = +b.getAttribute('data-sort'); renderPcExplore(); }); });
   document.querySelectorAll('#pcPager button').forEach(function (b) { b.addEventListener('click', function () { toast(TOAST.old); }); });
   (function () {  // 價格區間雙滑塊（NT$0–12,000+，仿真）
@@ -1631,9 +1638,61 @@
     { title: '亞洲多國 eSIM・一卡多國・24小時制計費', warns: [], tags: ['5G/4G', '可加值', '國際漫遊卡'], perks: ['立即確認', '不可取消'], rating: 4.2, reviews: 89, bought: '900 已購', vendor: 'GlobalSIM', now: 399, was: null, per: 18, off: null, hot: false }
   ];
   var plSort = 0;
+  // 為每張卡建立可篩選屬性（對應側欄各組）+ 記錄基準價（3GB/天·5天 為基準 1.0）
+  PL_DATA.forEach(function (p, i) {
+    var s = p.tags.join(' ') + ' ' + p.perks.join(' ') + ' ' + p.title;
+    var a = [];
+    if (/熱點/.test(s)) a.push('支持熱點');
+    if (/通話/.test(s)) a.push('含本地通話');
+    if (/加值/.test(s)) a.push('可以加值', '可加值');
+    a.push(/國際漫遊/.test(s) ? '國際漫遊卡' : '原生卡');
+    a.push(/國際漫遊/.test(s) ? '漫遊' : '本地');
+    if (/5G\/4G/.test(s)) a.push('5G/4G'); else if (/5G/.test(s)) a.push('5G');
+    a.push(['自然日制', '24小時制', '總量制'][i % 3]);
+    p.perks.forEach(function (pk) { a.push(pk); });  // 立即確認/即買即用/免費取消
+    p._attrs = a;
+    p._base = p.now;  // 基準價（未縮放）
+    p._baseWas = p.was;
+    p._basePer = p.per;
+  });
   function plBoughtNum(s) { var m = parseInt(s, 10) || 0; return m * (/[kK]/.test(s) ? 1000 : 1); }
   function plMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
+  // 流量檔位價格倍率（3GB/天 = 1.0）：資料量越大越貴
+  function planMult(plan) {
+    if (!plan) return 1;
+    if (/無限/.test(plan)) return 2.2;
+    var m = plan.match(/([\d.]+)\s*(GB|MB)/i);
+    var gb = m ? (m[2].toUpperCase() === 'MB' ? parseFloat(m[1]) / 1024 : parseFloat(m[1])) : 3;
+    if (/^共/.test(plan)) return Math.max(0.5, 0.5 + gb * 0.06);   // 總量方案
+    return Math.max(0.4, 0.4 + gb * 0.2);                          // 每日方案（3GB→1.0）
+  }
+  // 依所選天數/檔位縮放單張卡價格
+  function plScaled(p) {
+    var f = (sel.days / 5) * planMult(sel.plan);
+    var now = Math.round(p._base * f / 10) * 10;
+    return { now: now, was: p._baseWas ? Math.round(now / 0.8 / 10) * 10 : null, per: Math.max(1, Math.round(now / sel.days)) };
+  }
+  // 讀取列表頁側欄目前勾選的篩選（分組：組內 OR、跨組 AND）
+  function plActiveGroups() {
+    var groups = [];
+    document.querySelectorAll('#pcListPage .pc-ex-side .pc-fbox').forEach(function (box) {
+      var on = [];
+      box.querySelectorAll('.pc-cb.on').forEach(function (b) { on.push(b.textContent.trim()); });
+      if (on.length) groups.push(on);
+    });
+    return groups;
+  }
+  function plMatch(p, groups, lo, hi) {
+    var sc = plScaled(p);
+    if (sc.now < lo || sc.now > hi) return false;
+    return groups.every(function (g) {
+      return g.some(function (label) {
+        return p._attrs.some(function (a) { return a === label || a.indexOf(label) >= 0 || label.indexOf(a) >= 0; });
+      });
+    });
+  }
   function plCardHTML(p) {
+    var sc = plScaled(p);
     // 黃色提醒：僅在該商品有需求時顯示（對齊 mweb，非每張卡都有）
     var warns = (p.warns && p.warns.length) ? '<div class="pl-warns">' + p.warns.map(function (w, i) { return (i ? '<span class="wdiv"></span>' : '') + '<span>' + w + '</span>'; }).join('') + '</div>' : '';
     var tags = (p.hot ? '<span class="pl-tag hot"><span class="ic">' + PL_FIRE + '</span>HOT</span>' : '') + p.tags.map(function (t) { return '<span class="pl-tag">' + t + '</span>'; }).join('');
@@ -1654,23 +1713,32 @@
       '<div class="pl-hr"></div>' +
       '<div class="pl-buy">' +
         '<div class="pl-priceblk">' +
-          (p.off ? '<span class="pl-off">' + p.off + '</span>' : '') +
-          '<div class="pl-price">' + (p.was ? '<span class="was">' + plMoney(p.was) + '</span>' : '') +
-            '<span class="now"><span class="cur">NT$</span>' + p.now.toLocaleString('en-US') + '</span></div>' +
-          (p.per ? '<span class="pl-per">≈NT$' + p.per + '/天</span>' : '') +
+          (sc.was ? '<span class="pl-off">' + (p.off || '20%OFF') + '</span>' : '') +
+          '<div class="pl-price">' + (sc.was ? '<span class="was">' + plMoney(sc.was) + '</span>' : '') +
+            '<span class="now"><span class="cur">NT$</span>' + sc.now.toLocaleString('en-US') + '</span></div>' +
+          '<span class="pl-per">≈NT$' + sc.per + '/天</span>' +
         '</div>' +
         '<button class="pl-cta">訂購</button>' +
       '</div>' +
     '</div>';
   }
   function renderPlCards() {
-    var list = PL_DATA.slice();
-    if (plSort === 1) list.sort(function (a, b) { return a.now - b.now; });
+    var groups = plActiveGroups();
+    var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax');
+    var lo = rmin ? +rmin.value : 0, hi = rmax ? +rmax.value : 12000;
+    var list = PL_DATA.filter(function (p) { return plMatch(p, groups, lo, hi); });
+    if (plSort === 1) list.sort(function (a, b) { return plScaled(a).now - plScaled(b).now; });
     else if (plSort === 2) list.sort(function (a, b) { return b.rating - a.rating; });
     else if (plSort === 3) list.sort(function (a, b) { return plBoughtNum(b.bought) - plBoughtNum(a.bought); });
     var box = document.getElementById('plList'); box.innerHTML = '';
-    list.forEach(function (p) { box.appendChild(h(plCardHTML(p))); });
-    document.getElementById('plCnt').textContent = 162;
+    if (!list.length) {
+      box.innerHTML = '<div class="pl-empty">沒有符合條件的商品，試試放寬篩選</div>';
+    } else {
+      list.forEach(function (p) { box.appendChild(h(plCardHTML(p))); });
+    }
+    // 結果數：無任何篩選時顯示總量 162；有篩選則依命中比例縮放，較真實
+    var noFilter = !groups.length && lo <= 0 && hi >= 12000;
+    document.getElementById('plCnt').textContent = noFilter ? 162 : Math.round(162 * list.length / PL_DATA.length);
     document.querySelectorAll('#plSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === plSort); });
   }
   // 條件列流量檔位：三計費方式全部檔位拼成一份資料
@@ -1703,9 +1771,10 @@
       c.addEventListener('click', function () {
         sel.tab = it.tab; sel.plan = it.o.t; sel.planTouched = true;
         if (_plCompact) {
-          // compact：只移動高亮，不重排 chip 組（避免選項與寬度跳動）；商品卡不依賴選中檔位，無需重繪
+          // compact：只移動高亮，不重排 chip 組（避免選項與寬度跳動）；重繪卡片使價格隨檔位變化
           wrap.querySelectorAll('.pc-lchip.sel').forEach(function (x) { x.classList.remove('sel'); });
           c.classList.add('sel');
+          renderPlCards();
         } else {
           renderList();
         }
@@ -1863,8 +1932,8 @@
       fill.style.left = (lo / 12000 * 100) + '%'; fill.style.right = (100 - hi / 12000 * 100) + '%';
       pv.textContent = nt(lo) + ' – ' + nt(hi, true);
     }
-    rmin.addEventListener('input', upd);
-    rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 100) rmax.value = +rmin.value + 100; upd(); });
+    rmin.addEventListener('input', function () { upd(); renderPlCards(); });
+    rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 100) rmax.value = +rmin.value + 100; upd(); renderPlCards(); });
     upd();
   })();
 
