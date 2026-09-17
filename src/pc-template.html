@@ -365,19 +365,22 @@
   .dlg-tab.sel { color: var(--kk-primary-dark); font-weight: 600; }
   .dlg-tab.sel::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 1px; }
   .dlg-rows { display: flex; flex-direction: column; gap: 12px; }
-  .dlg-row { position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-height: 64px;
+  /* 底部對齊：讓「共N個國家 ⓘ」與第二行國家列表（.rd）同一條線 */
+  .dlg-row { position: relative; display: flex; align-items: flex-end; gap: 12px; padding: 12px 16px; min-height: 64px;
     border: 1px solid var(--kk-border-lighter); border-radius: 8px; background: #fff; }
+  .dlg-row > .ic-24 { align-self: center; }  /* 地球圖標維持垂直置中 */
   .dlg-row:hover { border-color: var(--kk-primary-medium); }
   .dlg-row.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); }
   .dlg-row .rt { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left; }
   .dlg-row .rn { font-size: 16px; line-height: 24px; font-weight: 600; }
   .dlg-row .rd { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .dlg-row .cnt { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  /* ⓘ 包含國家 tooltip（Figma 3096-58630：白卡雙欄列表） */
-  .dlg-tip { position: absolute; right: -8px; top: 100%; z-index: 5; width: 349px; background: #fff; border-radius: 8px;
-    box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 16px; display: none; cursor: default; }
-  /* hover「共N個國家 ⓘ」即顯示；覆蓋 tip 本身也保持顯示（Figma 3096-58630） */
-  .dlg-row .cnt:hover ~ .dlg-tip, .dlg-tip:hover { display: block; }
+  .dlg-row .cnt { position: relative; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  /* ⓘ 包含國家 tooltip（Figma 3096-58630：白卡雙欄列表）：緊貼觸發點（.cnt）下方，無斷層 */
+  .dlg-tip { position: absolute; right: 0; top: 100%; z-index: 5; width: 349px; background: #fff; border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 16px; display: none; cursor: default;
+    border-top: 6px solid transparent; background-clip: padding-box; }  /* 透明上邊＝視覺留 6px 間隙但 hover 連續，鼠標可移入 */
+  /* tip 為 .cnt 子元素：hover tip 時 :hover 冒泡回 .cnt，故停留 tip 上也保持顯示 */
+  .dlg-row .cnt:hover .dlg-tip { display: block; }
   .dlg-tip ul { columns: 2; column-gap: 24px; padding-left: 18px; font-size: 12px; line-height: 20px; color: var(--kk-text-darker); }
   .dlg-hint { flex: 0 0 auto; display: flex; align-items: center; gap: 16px; padding: 8px 24px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .dlg-hint b { color: var(--kk-primary-dark); }
@@ -1297,8 +1300,7 @@
       var mk = function (r) {
         var row = h('<button class="dlg-row' + (sel.dest === r.name ? ' sel' : '') + '"><span class="ic ic-24">' + (sel.dest === r.name ? '{{IC_globeSel}}' : '{{IC_globe}}') + '</span>' +
           '<span class="rt"><span class="rn"></span><span class="rd"></span></span>' +
-          '<span class="cnt"><span></span><span class="ic ic-16">{{IC_info}}</span></span>' +
-          '<span class="dlg-tip"><ul></ul></span></button>');
+          '<span class="cnt"><span></span><span class="ic ic-16">{{IC_info}}</span><span class="dlg-tip"><ul></ul></span></span></button>');
         row.querySelector('.rn').textContent = r.name;
         row.querySelector('.rd').textContent = (r.list && r.list.length ? r.list.join('、') : r.desc);
         row.querySelector('.cnt span').textContent = '共' + r.count + '個國家';
