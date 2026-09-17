@@ -524,6 +524,8 @@
   .pl-social .score { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .pl-social .grade { color: var(--kk-text-darker); font-weight: 500; }
   .pl-social .rc { color: var(--kk-text-darker); text-decoration: underline; }
+  .pl-social .pl-ratelink { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+  .pl-social .pl-ratelink:hover .score, .pl-social .pl-ratelink:hover .rc { color: var(--kk-primary-dark); }
   .pl-hr { width: 1px; align-self: stretch; background: var(--kk-border-lighter); flex: 0 0 auto; }
   .pl-buy { flex: 0 0 231px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 8px; }  /* 價格+訂購鈕靠卡片底部對齊 */
   .pl-priceblk { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
@@ -571,15 +573,26 @@
   .pl-detdlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
     width: 640px; max-width: calc(100vw - 32px); height: min(840px, calc(100vh - 64px)); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
   .pl-detdlg.open { display: flex; }
-  .pl-det-hd { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 12px; }
-  .pl-det-hd .t { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
-  .pl-det-hd button { color: var(--kk-text-darker); }
+  .pl-det-hd { flex: 0 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px 0 24px; }
+  .pl-det-hd .t { font-size: 20px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-det-hd button { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--kk-text-darker); }
+  .pl-det-hd button:hover { background: var(--kk-surface-light); }
+  .pl-det-hd button .ic { width: 20px; height: 20px; }
   .pl-det-tabs { flex: 0 0 auto; display: flex; gap: 24px; padding: 0 24px; border-bottom: 1px solid var(--kk-border-lighter); overflow-x: auto; scrollbar-width: none; }
   .pl-det-tabs::-webkit-scrollbar { display: none; }
   .pl-det-tab { position: relative; flex: 0 0 auto; padding: 8px 0 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); white-space: nowrap; cursor: pointer; }
   .pl-det-tab.sel { color: var(--kk-primary-dark); font-weight: 600; }
   .pl-det-tab.sel::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; }
   .pl-det-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0; background: var(--kk-surface-lighter); }
+  /* footer：價格 + 訂購（Figma 3183 Footer region） */
+  .pl-det-foot { flex: 0 0 auto; display: flex; align-items: center; gap: 16px; padding: 12px 24px; background: #fff; border-top: 1px solid var(--kk-border-lighter); }
+  .pl-det-price { flex: 1 1 0; min-width: 0; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .pl-det-price .off { align-self: center; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; padding: 2px 4px; border-radius: 4px; }
+  .pl-det-price .now { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 20px; line-height: 24px; font-weight: 700; color: var(--kk-text-darker); }
+  .pl-det-price .now .cur { font-weight: 500; margin-right: 2px; }
+  .pl-det-price .was { font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }
+  .pl-det-cta { flex: 0 0 auto; background: var(--kk-primary-button); color: #fff; border-radius: 8px; padding: 12px 24px; font-size: 16px; line-height: 24px; font-weight: 600; cursor: pointer; }
+  .pl-det-cta:hover { background: var(--kk-primary-dark); }
   .pl-det-bd .det-sec { background: #fff; padding: 24px; }
   .pl-det-bd .det-sec + .det-sec { margin-top: 8px; }
   /* ---- 服務說明 ---- */
@@ -604,16 +617,22 @@
   .det-coupon .tkt i { position: relative; font-style: normal; font-size: 12px; line-height: 16px; font-weight: 600; color: #E65F50; white-space: nowrap; }
   .det-coupon .claim { margin-left: auto; display: inline-flex; align-items: center; gap: 2px; color: #E65F50; font-size: 14px; line-height: 20px; font-weight: 600; flex: 0 0 auto; }
   .det-coupon .claim .car { width: 16px; height: 16px; }
-  .pl-cpop { position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 5; background: #fff; border-radius: 12px; box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 12px; display: none; flex-direction: column; gap: 12px; cursor: default; }
+  /* 領取折扣 popover（Figma 3220-51471）：349 寬、上三角、藍底提示 + 兩張券卡 */
+  .pl-cpop { position: absolute; left: 16px; top: calc(100% + 12px); z-index: 8; width: 349px; max-width: calc(100% - 16px); background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.12); padding: 8px 12px; display: none; flex-direction: column; gap: 8px; cursor: default; }
   .pl-cpop.show { display: flex; }
-  .pl-cpop .cp-note { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px; background: #EFF6FF; font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
-  .pl-cpop .cp-note .ic { width: 16px; height: 16px; color: var(--kk-primary-dark); flex: 0 0 auto; }
-  .pl-cpop .cp-card { border: 1px solid var(--kk-border-lighter); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
-  .pl-cpop .cp-card .r1 { display: flex; align-items: center; justify-content: space-between; }
-  .pl-cpop .cp-amt { font-size: 20px; line-height: 28px; font-weight: 700; color: #E65F50; }
-  .pl-cpop .cp-btn { height: 28px; padding: 0 12px; border-radius: 6px; background: var(--kk-primary-lighter); color: var(--kk-primary-dark); font-size: 12px; line-height: 16px; font-weight: 600; }
-  .pl-cpop .cp-cond { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  .pl-cpop .cp-exp { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pl-cpop::before { content: ''; position: absolute; left: 16px; top: -7px; width: 14px; height: 8px; background: #fff; clip-path: polygon(50% 0, 0 100%, 100% 100%); }
+  .pl-cpop .cp-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: #F2FAFF; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pl-cpop .cp-note .ic { width: 20px; height: 20px; color: #2D84D6; flex: 0 0 auto; }
+  .pl-cpop .cp-card { border: 1px solid var(--kk-border-lighter); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .pl-cpop .cp-r1 { display: flex; align-items: center; justify-content: space-between; height: 32px; }
+  .pl-cpop .cp-amt { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 24px; line-height: 24px; font-weight: 700; color: var(--kk-text-darker); }
+  .pl-cpop .cp-btn { flex: 0 0 auto; height: 28px; padding: 0 12px; border-radius: 4px; font-size: 14px; line-height: 20px; font-weight: 600; cursor: pointer; }
+  .pl-cpop .cp-btn.get { background: var(--kk-primary-medium); color: #fff; border: 0; }
+  .pl-cpop .cp-btn.use { background: #fff; color: var(--kk-primary-medium); border: 1px solid var(--kk-primary-medium); }
+  .pl-cpop .cp-txt { display: flex; flex-direction: column; gap: 4px; }
+  .pl-cpop .cp-cond { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-cpop .cp-desc { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pl-cpop .cp-exp { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   /* 政策行 */
   .det-policies { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-policies .perk { position: relative; display: inline-flex; align-items: center; gap: 6px; }
@@ -625,7 +644,12 @@
   .det-policies .scope-tip ul { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 24px; font-size: 12px; line-height: 22px; color: var(--kk-text-darker); }
   /* 基本資訊 */
   .det-h2 { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); margin: 24px 0 20px; }
+  /* 方案描述：預設夾 2 行 + 行尾展開/收起（Figma 1249-109409） */
   .det-intro { margin: 0 0 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .det-intro .det-intro-t { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .det-intro.open .det-intro-t { -webkit-line-clamp: unset; }
+  .det-intro .det-intro-more { margin-top: 2px; display: none; border: 0; background: none; padding: 0; cursor: pointer; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-decoration: underline; text-underline-offset: 2px; }
+  .det-intro.clampable .det-intro-more { display: inline-block; }
   .det-table { border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; }
   .det-table .th { background: var(--kk-surface-lighter); padding: 12px 16px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); border-bottom: 1px solid var(--kk-border-lighter); }
   .det-table .tr { display: flex; align-items: flex-start; border-bottom: 1px solid var(--kk-border-lighter); }
@@ -636,10 +660,11 @@
   .det-table .td-v--tip .td-info { display: inline-flex; vertical-align: -3px; margin-left: 4px; width: 16px; height: 16px; color: var(--kk-text-medium); }
   .det-table .td-v--tip:hover { color: var(--kk-primary-dark); }
   .det-table .td-v--tip:hover .td-info { color: var(--kk-primary-dark); }
-  /* 行內 ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角） */
-  .det-hovtip { position: fixed; z-index: 60; max-width: 327px; background: #fff; border-radius: 8px; box-shadow: 0 8px 28px rgba(17,25,40,.18); padding: 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); pointer-events: none; }
+  /* 行內 ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：可將滑鼠移入框內 */
+  .det-hovtip { position: fixed; z-index: 60; width: 327px; max-width: calc(100vw - 24px); background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .det-hovtip[hidden] { display: none; }
-  .det-hovtip::after { content: ''; position: absolute; left: var(--ax, 20px); top: -7px; width: 14px; height: 8px; background: #fff; clip-path: polygon(50% 0, 0 100%, 100% 100%); box-shadow: 0 -4px 8px rgba(17,25,40,.06); }
+  .det-hovtip::after { content: ''; position: absolute; left: var(--ax, 20px); top: -7px; width: 14px; height: 8px; background: #fff; clip-path: polygon(50% 0, 0 100%, 100% 100%); }
+  .det-hovtip.below::after { top: auto; bottom: -7px; transform: scaleY(-1); }
   /* ---- 其餘 tab 通用 ---- */
   .det-h5 { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); margin: 0 0 20px; }
   .det-sub { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin: 24px 0 8px; }
@@ -664,36 +689,54 @@
   .det-inc { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); margin-top: 8px; }
   .det-inc .ic { width: 20px; height: 20px; flex: 0 0 auto; }
   .det-inc .ic svg { width: 16px; height: 16px; display: block; }
-  /* 評論 */
-  .det-score { display: flex; align-items: center; gap: 8px; }
-  .det-score .badge9 { background: var(--kk-primary-medium); color: #fff; font-size: 24px; line-height: 30px; font-weight: 600; padding: 4px 8px; border-radius: 16px 12px 12px 4px; }
-  .det-score .gcol { display: flex; flex-direction: column; }
-  .det-score .gt { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
-  .det-score .gc { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  .det-ai { margin-top: 12px; border-radius: 8px; padding: 16px 20px; background: linear-gradient(150deg, #F0FBFC 11%, #F2FAFF 88%); }
-  .det-ai .ai-t { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 8px; font-size: 14px; line-height: 20px; font-weight: 600;
+  /* 評論（Figma 3183-77321 Review Header + 3183-77324 Review Card） */
+  .det-rev-title { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin: 0 0 16px; }
+  .det-score { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .det-score .badge9 { display: inline-flex; align-items: center; justify-content: center; background: var(--kk-primary-medium); color: #fff; font-size: 32px; line-height: 1.25; font-weight: 600; padding: 4px 8px; border-radius: 16px 12px 12px 4px; }
+  .det-score .gcol { display: flex; flex-direction: column; gap: 2px; }
+  .det-score .gt { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
+  .det-score .gc { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .det-ai { border-radius: 8px; padding: 20px 24px; background: linear-gradient(171deg, #F0FBFC 11%, #F2FAFF 88%); margin-bottom: 16px; }
+  .det-ai .ai-t { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 8px; font-size: 16px; line-height: 24px; font-weight: 600;
     background: linear-gradient(90deg, #10D5E3, #2EC4F2 46%, #4DAAF7); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .det-ai .ai-t .ic { width: 16px; height: 16px; -webkit-text-fill-color: initial; }
+  .det-ai .ai-t .ic { width: 20px; height: 20px; -webkit-text-fill-color: initial; }
   .det-ai .ai-b { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .det-kws { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .det-rev-sort { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .det-sortchip { display: inline-flex; align-items: center; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--kk-border-lighter); background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); cursor: pointer; white-space: nowrap; }
+  .det-sortchip.sel { background: var(--kk-primary-lighter); border-color: #ADE6EB; color: var(--kk-primary-medium); }
+  .det-kws { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
   .det-kw { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; padding: 8px 12px 8px 10px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-kw .ic { width: 16px; height: 16px; flex: 0 0 auto; }
-  .det-shots { display: flex; gap: 4px; margin-top: 8px; }
-  .det-shot { flex: 1 1 0; aspect-ratio: 1; border-radius: 8px; position: relative; overflow: hidden; background: var(--kk-surface-light); }
-  .det-shot > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .det-shot .ovl { position: absolute; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; line-height: 20px; }
-  .det-reviews { display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; scrollbar-width: none; width: calc(100% + 48px); margin-left: -24px; margin-right: -24px; padding: 0 24px; }
-  .det-reviews::-webkit-scrollbar { display: none; }
-  .det-rcard { flex: 0 0 296px; box-sizing: border-box; height: 176px; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
-  .det-rcard .rhead { display: flex; align-items: center; justify-content: space-between; }
-  .det-rcard .stars { display: flex; gap: 2px; }
-  .det-rcard .stars .ic { width: 16px; height: 16px; color: #FFB000; }
-  .det-rcard .rdate { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
-  .det-rcard .rtxt { margin-top: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .det-rcard .rn2 { font-size: 12px; line-height: 16px; font-weight: 500; color: var(--kk-text-darker); }
-  .det-rcard .rrole { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  .det-morebtn { display: block; width: 100%; margin-top: 20px; border: 1px solid var(--kk-text-darker); border-radius: 8px; padding: 12px 24px; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); text-align: center; background: #fff; cursor: pointer; }
-  .det-morebtn:hover { background: var(--kk-surface-light); }
+  /* 評論卡：左側旅客資訊 + 右側內容 */
+  .det-rlist { display: flex; flex-direction: column; }
+  .det-rcard { display: flex; gap: 8px; padding: 24px 0; border-top: 1px solid var(--kk-border-lighter); }
+  .det-rlist .det-rcard:first-child { border-top: 0; padding-top: 4px; }
+  .det-rcard .rc-l { flex: 0 0 180px; display: flex; flex-direction: column; gap: 16px; }
+  .det-rcard .rc-usr { display: flex; align-items: center; gap: 8px; }
+  .det-rcard .rc-uinfo { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .det-rcard .rc-av { flex: 0 0 40px; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: var(--kk-text-darker); }
+  .det-rcard .rc-av img { width: 100%; height: 100%; object-fit: cover; }
+  .det-rcard .rc-nm { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
+  .det-rcard .rc-role { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .det-rcard .rc-dates { display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .det-rcard .rc-r { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .det-rcard .rc-stars { display: flex; gap: 2px; }
+  .det-rcard .rc-stars .ic { width: 20px; height: 20px; color: #FFB000; }
+  .det-rcard .rc-stars .ic.off { color: var(--kk-border-light); }
+  .det-rcard .rc-title { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .det-rcard .rc-txt { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .det-rcard .rc-extra { display: flex; align-items: center; justify-content: space-between; }
+  .det-rcard .rc-trans, .det-rcard .rc-more { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); cursor: pointer; }
+  .det-rcard .rc-trans .ic, .det-rcard .rc-more .ic { width: 20px; height: 20px; }
+  .det-rcard .rc-trans u, .det-rcard .rc-more u { text-decoration: underline; text-underline-offset: 2px; }
+  .det-rcard .rc-gallery { display: flex; gap: 4px; }
+  .det-rcard .rc-shot { flex: 1 1 0; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--kk-surface-light); }
+  .det-rcard .rc-shot img { width: 100%; height: 100%; object-fit: cover; }
+  .det-rcard .rc-help { align-self: flex-end; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); cursor: pointer; }
+  .det-rcard .rc-help .ic { width: 20px; height: 20px; }
+  .det-rev-pager { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; }
+  .det-rev-pager button { min-width: 32px; height: 32px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--kk-border-lighter); background: #fff; font-size: 14px; color: var(--kk-text-darker); cursor: pointer; }
+  .det-rev-pager button.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-medium); font-weight: 600; }
   /* 購買須知：注意事項 box */
   .det-noticebox { margin-top: 24px; background: #FFF8E1; border-radius: 8px; padding: 16px; }
   .det-noticebox .nb-t { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: #212121; }
@@ -1146,9 +1189,13 @@
 <!-- ============ 商品詳情 dialog（Figma 3183-43487 / 3190-39080 / 3220-50734，資訊邏輯參考 mweb） ============ -->
 <div class="pc-mask" id="plDetMask"></div>
 <div class="pl-detdlg" id="plDetDlg" role="dialog" aria-modal="true">
-  <div class="pl-det-hd"><span class="t">詳情</span><button id="plDetClose" aria-label="關閉"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></button></div>
+  <div class="pl-det-hd"><span class="t">詳情</span><button id="plDetClose" aria-label="關閉"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></button></div>
   <div class="pl-det-tabs" id="plDetTabs"></div>
   <div class="pl-det-bd" id="plDetBd"></div>
+  <div class="pl-det-foot">
+    <div class="pl-det-price" id="plDetPrice"></div>
+    <button class="pl-det-cta" id="plDetCta" data-toast="old">訂購</button>
+  </div>
 </div>
 
 <!-- ============ 日期日曆下拉（Figma 3223-83700） ============ -->
@@ -1902,8 +1949,8 @@
     var tags = (p.hot ? '<span class="pl-tag hot"><span class="ic">' + PL_FIRE + '</span>HOT</span>' : '') + p.tags.map(function (t) { return '<span class="pl-tag">' + t + '</span>'; }).join('');
     var perks = p.perks.map(function (pk) { return '<span class="pl-perk"><span class="ic">' + plPerkIcon(pk) + '</span>' + pk + '</span>'; }).join('');
     var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '');
-    var social = '<span class="ic">' + PC_ICONS.star + '</span><span class="score">' + p.rating.toFixed(1) + '</span>' + (grade ? '<span class="grade">' + grade + '</span>' : '') +
-      '<span class="rc">(' + p.reviews.toLocaleString('en-US') + ')</span><span>· ' + p.bought + ' · ' + p.vendor + ' 提供服務</span>';
+    var social = '<span class="pl-ratelink"><span class="ic">' + PC_ICONS.star + '</span><span class="score">' + p.rating.toFixed(1) + '</span>' + (grade ? '<span class="grade">' + grade + '</span>' : '') +
+      '<span class="rc">(' + p.reviews.toLocaleString('en-US') + ')</span></span><span>· ' + p.bought + ' · ' + p.vendor + ' 提供服務</span>';
     return '<div class="pl-card">' +
       '<div class="pl-main">' +
         '<div class="pl-hg">' +
@@ -1942,7 +1989,7 @@
         var c = h(plCardHTML(p));
         c.addEventListener('click', function (e) {
           if (e.target.closest('.pl-cta')) { e.stopPropagation(); toast(TOAST.old); return; }  // 訂購鈕：走訂購（原型維持現狀）
-          openPlDetail(p);
+          openPlDetail(p, e.target.closest('.pl-ratelink') ? 'review' : null);  // 點評分資訊→直接定位到評論 tab（對齊 mweb）
         });
         box.appendChild(c);
       });
@@ -2172,7 +2219,7 @@
   // 詳情＝單一長頁，7 個 section 堆疊；tab 為錨點 + 垂直 scroll-spy（對齊 mweb openDetail/detSpy）
   var DET_SECS = ['svc', 'howto', 'cancel', 'review', 'fee', 'notice', 'imgs'];
   var detGuard = 0, detActiveTab = null;
-  function openPlDetail(p) {
+  function openPlDetail(p, anchor) {
     detP = p;
     var tabsEl = document.getElementById('plDetTabs'); tabsEl.innerHTML = '';
     DET_TABS.forEach(function (t, i) {
@@ -2188,13 +2235,25 @@
       tabsEl.appendChild(b);
     });
     renderDetBody();
+    fillDetFooter(p);
     document.getElementById('plDetMask').classList.add('open');
     document.getElementById('plDetDlg').classList.add('open');
-    document.getElementById('plDetBd').scrollTop = 0;
-    detActiveTab = null; detSpy();
+    var bd = document.getElementById('plDetBd');
     lockScroll();
+    requestAnimationFrame(function () {
+      var sec = anchor && bd.querySelector('.det-sec[data-sec="' + anchor + '"]');
+      bd.scrollTop = sec ? detSecTop(sec) : 0;
+      detActiveTab = null; detSpy();
+    });
   }
-  function closePlDetail() { if (!document.getElementById('plDetDlg').classList.contains('open')) return; detHideTip(); document.getElementById('plDetMask').classList.remove('open'); document.getElementById('plDetDlg').classList.remove('open'); unlockScroll(); }
+  // footer 價格（Figma 3183 Footer region）：促銷標 + NT$ 現價 + 原價
+  function fillDetFooter(p) {
+    var sc = plScaled(p), box = document.getElementById('plDetPrice');
+    box.innerHTML = (sc.was ? '<span class="off">' + (p.off || '20%OFF') + '</span>' : '') +
+      '<span class="now"><span class="cur">NT$</span>' + sc.now.toLocaleString('en-US') + '</span>' +
+      (sc.was ? '<span class="was">NT$ ' + sc.was.toLocaleString('en-US') + '</span>' : '');
+  }
+  function closePlDetail() { if (!document.getElementById('plDetDlg').classList.contains('open')) return; detHideTipNow(); document.getElementById('plDetMask').classList.remove('open'); document.getElementById('plDetDlg').classList.remove('open'); unlockScroll(); }
   function detSecTop(sec) { var bd = document.getElementById('plDetBd'); return sec.getBoundingClientRect().top - bd.getBoundingClientRect().top + bd.scrollTop; }
   function centerDetTab(t) {
     var tabs = document.getElementById('plDetTabs'); if (!t || !tabs.clientWidth) return;
@@ -2208,9 +2267,9 @@
     document.querySelectorAll('#plDetTabs .pl-det-tab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-sec') === act); });
     if (act !== detActiveTab) { detActiveTab = act; centerDetTab(document.querySelector('#plDetTabs .pl-det-tab.sel')); }
   }
-  document.getElementById('plDetBd').addEventListener('scroll', function () { detHideTip(); detSpy(); }, { passive: true });
+  document.getElementById('plDetBd').addEventListener('scroll', function () { detHideTipNow(); detSpy(); }, { passive: true });
   function renderDetBody() {
-    detHideTip();
+    detHideTipNow();
     var p = detP, bd = document.getElementById('plDetBd'); bd.innerHTML = '';
     bd.appendChild(detSvc(p));
     bd.appendChild(detHowto(p));
@@ -2249,22 +2308,30 @@
     net: '本地＝直接接入當地電信商網路，速度與延遲最佳；漫遊＝以漫遊方式接入，覆蓋範圍更廣但速度可能略降。',
     ip: '本地 IP＝由當地出口連線，適合使用當地服務；動態／漫遊 IP＝共享或 VPN 出口，跨區相容性較好。'
   };
-  // ⓘ 懸浮提示（Figma 3242-45084：白卡 + 上三角），滑鼠移入值格顯示
+  // ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：對準 ⓘ 圖示、可將滑鼠移入框內
+  var _tipHideTimer = null;
   function detHovTipEl() {
     var t = document.getElementById('detHovTip');
-    if (!t) { t = h('<div class="det-hovtip" id="detHovTip" hidden></div>'); document.body.appendChild(t); }
+    if (!t) {
+      t = h('<div class="det-hovtip" id="detHovTip" hidden></div>'); document.body.appendChild(t);
+      t.addEventListener('mouseenter', function () { clearTimeout(_tipHideTimer); });
+      t.addEventListener('mouseleave', detHideTip);
+    }
     return t;
   }
   function detShowTip(anchor, text) {
-    var t = detHovTipEl(); t.textContent = text; t.hidden = false;
+    clearTimeout(_tipHideTimer);
+    var t = detHovTipEl(); t.textContent = text; t.hidden = false; t.classList.remove('below');
     var r = anchor.getBoundingClientRect(), tw = t.offsetWidth, th = t.offsetHeight;
-    var left = Math.min(Math.max(8, r.left), window.innerWidth - tw - 8);
+    var ac = r.left + r.width / 2;                                   // ⓘ 圖示中心
+    var left = Math.min(Math.max(12, ac - 24), window.innerWidth - tw - 12);
     var top = r.bottom + 10;
-    if (top + th > window.innerHeight - 8) top = r.top - th - 10;  // 空間不足翻到上方
+    if (top + th > window.innerHeight - 8) { top = r.top - th - 10; t.classList.add('below'); }  // 下方空間不足→翻到上方
     t.style.left = left + 'px'; t.style.top = top + 'px';
-    t.style.setProperty('--ax', Math.max(12, Math.min(r.left + r.width / 2 - left, tw - 20)) + 'px');
+    t.style.setProperty('--ax', Math.max(10, Math.min(ac - left - 7, tw - 24)) + 'px');
   }
-  function detHideTip() { var t = document.getElementById('detHovTip'); if (t) t.hidden = true; }
+  function detHideTipNow() { var t = document.getElementById('detHovTip'); if (t) t.hidden = true; }
+  function detHideTip() { clearTimeout(_tipHideTimer); _tipHideTimer = setTimeout(detHideTipNow, 160); }
   function detSvc(p) {
     var sp = p.spec, native = sp.sim === '原生卡', dest = sel.dest || '日本', d = sel.days;
     var wrap = h('<div class="det-sec" data-sec="svc"></div>');
@@ -2290,9 +2357,15 @@
       '</span>' +
       '<span class="claim">折扣券<span class="car"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjkuMzMzMzMiIGhlaWdodD0iNS4zMzMzMyIgdmlld0JveD0iMCAwIDkuMzMzMzMgNS4zMzMzMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjE5NTI2IDAuMTk1MjYyQzQuNDU1NjEgLTAuMDY1MDg3NCA0Ljg3NzcyIC0wLjA2NTA4NzQgNS4xMzgwNyAwLjE5NTI2Mkw5LjEzODA3IDQuMTk1MjZDOS4zOTg0MiA0LjQ1NTYxIDkuMzk4NDIgNC44Nzc3MiA5LjEzODA3IDUuMTM4MDdDOC44Nzc3MiA1LjM5ODQyIDguNDU1NjEgNS4zOTg0MiA4LjE5NTI2IDUuMTM4MDdMNC42NjY2NyAxLjYwOTQ4TDEuMTM4MDcgNS4xMzgwN0MwLjg3NzcyMiA1LjM5ODQyIDAuNDU1NjEyIDUuMzk4NDIgMC4xOTUyNjIgNS4xMzgwN0MtMC4wNjUwODc0IDQuODc3NzIgLTAuMDY1MDg3NCA0LjQ1NTYxIDAuMTk1MjYyIDQuMTk1MjZMNC4xOTUyNiAwLjE5NTI2MloiIGZpbGw9IiNFNjVGNTAiLz4KPC9zdmc+" width="9.33" height="5.33"></span></span>' +
       '<span class="pl-cpop">' +
-        '<span class="cp-note"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik02LjUgMEM1LjIxNDQyIDAgMy45NTc3MiAwLjM4MTIxOCAyLjg4ODggMS4wOTU0NUMxLjgxOTg4IDEuODA5NjggMC45ODY3NTYgMi44MjQ4NCAwLjQ5NDc4NiA0LjAxMjU2QzAuMDAyODE2MzIgNS4yMDAyOCAtMC4xMjU5MDUgNi41MDcyMSAwLjEyNDg5OSA3Ljc2ODA5QzAuMzc1NzAzIDkuMDI4OTYgMC45OTQ3NjggMTAuMTg3MiAxLjkwMzgxIDExLjA5NjJDMi44MTI4NSAxMi4wMDUyIDMuOTcxMDQgMTIuNjI0MyA1LjIzMTkyIDEyLjg3NTFDNi40OTI3OSAxMy4xMjU5IDcuNzk5NzMgMTIuOTk3MiA4Ljk4NzQ0IDEyLjUwNTJDMTAuMTc1MiAxMi4wMTMyIDExLjE5MDMgMTEuMTgwMSAxMS45MDQ2IDEwLjExMTJDMTIuNjE4OCA5LjA0MjI5IDEzIDcuNzg1NTggMTMgNi41QzEyLjk5ODEgNC43NzY2OSAxMi4zMTI2IDMuMTI0NTIgMTEuMDk0IDEuOTA1OTZDOS44NzU0OCAwLjY4NzM5NiA4LjIyMzMxIDAuMDAxOTUwNDkgNi41IDBWMFpNNi4zNzUwNCAzLjAwMDAyQzYuNTIzMzcgMy4wMDAwMiA2LjY2ODM4IDMuMDQ0MDEgNi43OTE3MSAzLjEyNjQyQzYuOTE1MDUgMy4yMDg4MyA3LjAxMTE4IDMuMzI1OTcgNy4wNjc5NSAzLjQ2MzAxQzcuMTI0NzEgMy42MDAwNiA3LjEzOTU2IDMuNzUwODYgNy4xMTA2MyAzLjg5NjM0QzcuMDgxNjkgNC4wNDE4MyA3LjAxMDI2IDQuMTc1NDYgNi45MDUzNyA0LjI4MDM1QzYuODAwNDggNC4zODUyNCA2LjY2Njg0IDQuNDU2NjcgNi41MjEzNSA0LjQ4NTYxQzYuMzc1ODcgNC41MTQ1NSA2LjIyNTA3IDQuNDk5NyA2LjA4ODAyIDQuNDQyOTNDNS45NTA5OCA0LjM4NjE3IDUuODMzODUgNC4yOTAwNCA1Ljc1MTQ0IDQuMTY2N0M1LjY2OTAyIDQuMDQzMzYgNS42MjUwNCAzLjg5ODM2IDUuNjI1MDQgMy43NTAwMkM1LjYyNTA0IDMuNTUxMTEgNS43MDQwNSAzLjM2MDM1IDUuODQ0NzEgMy4yMTk2OUM1Ljk4NTM2IDMuMDc5MDQgNi4xNzYxMiAzLjAwMDAyIDYuMzc1MDQgMy4wMDAwMlYzLjAwMDAyWk03LjAwMDAxIDEwSDYuNTAwMDFDNi4zNjc0IDkuOTk5OTkgNi4yNDAyMyA5Ljk0NzMxIDYuMTQ2NDYgOS44NTM1NUM2LjA1MjY5IDkuNzU5NzggNi4wMDAwMSA5LjYzMjYxIDYuMDAwMDEgOS41VjYuNUM1Ljg2NzQgNi41IDUuNzQwMjIgNi40NDczMiA1LjY0NjQ1IDYuMzUzNTVDNS41NTI2OCA2LjI1OTc5IDUuNTAwMDEgNi4xMzI2MSA1LjUwMDAxIDZDNS41MDAwMSA1Ljg2NzM5IDUuNTUyNjggNS43NDAyMSA1LjY0NjQ1IDUuNjQ2NDVDNS43NDAyMiA1LjU1MjY4IDUuODY3NCA1LjUgNi4wMDAwMSA1LjVINi41MDAwMUM2LjYzMjYxIDUuNTAwMDEgNi43NTk3OSA1LjU1MjY5IDYuODUzNTUgNS42NDY0NUM2Ljk0NzMyIDUuNzQwMjIgNyA1Ljg2NzM5IDcuMDAwMDEgNlY5QzcuMTMyNjEgOSA3LjI1OTc5IDkuMDUyNjggNy4zNTM1NiA5LjE0NjQ1QzcuNDQ3MzMgOS4yNDAyMSA3LjUwMDAxIDkuMzY3MzkgNy41MDAwMSA5LjVDNy41MDAwMSA5LjYzMjYxIDcuNDQ3MzMgOS43NTk3OCA3LjM1MzU2IDkuODUzNTVDNy4yNTk3OSA5Ljk0NzMyIDcuMTMyNjEgMTAgNy4wMDAwMSAxMFoiIGZpbGw9IiMyRDg0RDYiLz4KPC9zdmc+" width="13.00" height="13.00"></span>領取成功後可於付款時選擇抵扣使用</span>' +
-        '<span class="cp-card"><span class="r1"><span class="cp-amt">95 折</span><span class="cp-btn">領取</span></span><span class="cp-cond">全站 eSIM 通用，單筆最高折 TWD 500</span><span class="cp-exp">有效期限：2026-10-02</span></span>' +
-        '<span class="cp-card"><span class="r1"><span class="cp-amt">TWD 100</span><span class="cp-btn">領取</span></span><span class="cp-cond">訂購金額須滿 TWD 1,000</span><span class="cp-exp">有效期限：2026-12-31</span></span>' +
+        '<span class="cp-note"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik02LjUgMEM1LjIxNDQyIDAgMy45NTc3MiAwLjM4MTIxOCAyLjg4ODggMS4wOTU0NUMxLjgxOTg4IDEuODA5NjggMC45ODY3NTYgMi44MjQ4NCAwLjQ5NDc4NiA0LjAxMjU2QzAuMDAyODE2MzIgNS4yMDAyOCAtMC4xMjU5MDUgNi41MDcyMSAwLjEyNDg5OSA3Ljc2ODA5QzAuMzc1NzAzIDkuMDI4OTYgMC45OTQ3NjggMTAuMTg3MiAxLjkwMzgxIDExLjA5NjJDMi44MTI4NSAxMi4wMDUyIDMuOTcxMDQgMTIuNjI0MyA1LjIzMTkyIDEyLjg3NTFDNi40OTI3OSAxMy4xMjU5IDcuNzk5NzMgMTIuOTk3MiA4Ljk4NzQ0IDEyLjUwNTJDMTAuMTc1MiAxMi4wMTMyIDExLjE5MDMgMTEuMTgwMSAxMS45MDQ2IDEwLjExMTJDMTIuNjE4OCA5LjA0MjI5IDEzIDcuNzg1NTggMTMgNi41QzEyLjk5ODEgNC43NzY2OSAxMi4zMTI2IDMuMTI0NTIgMTEuMDk0IDEuOTA1OTZDOS44NzU0OCAwLjY4NzM5NiA4LjIyMzMxIDAuMDAxOTUwNDkgNi41IDBWMFpNNi4zNzUwNCAzLjAwMDAyQzYuNTIzMzcgMy4wMDAwMiA2LjY2ODM4IDMuMDQ0MDEgNi43OTE3MSAzLjEyNjQyQzYuOTE1MDUgMy4yMDg4MyA3LjAxMTE4IDMuMzI1OTcgNy4wNjc5NSAzLjQ2MzAxQzcuMTI0NzEgMy42MDAwNiA3LjEzOTU2IDMuNzUwODYgNy4xMTA2MyAzLjg5NjM0QzcuMDgxNjkgNC4wNDE4MyA3LjAxMDI2IDQuMTc1NDYgNi45MDUzNyA0LjI4MDM1QzYuODAwNDggNC4zODUyNCA2LjY2Njg0IDQuNDU2NjcgNi41MjEzNSA0LjQ4NTYxQzYuMzc1ODcgNC41MTQ1NSA2LjIyNTA3IDQuNDk5NyA2LjA4ODAyIDQuNDQyOTNDNS45NTA5OCA0LjM4NjE3IDUuODMzODUgNC4yOTAwNCA1Ljc1MTQ0IDQuMTY2N0M1LjY2OTAyIDQuMDQzMzYgNS42MjUwNCAzLjg5ODM2IDUuNjI1MDQgMy43NTAwMkM1LjYyNTA0IDMuNTUxMTEgNS43MDQwNSAzLjM2MDM1IDUuODQ0NzEgMy4yMTk2OUM1Ljk4NTM2IDMuMDc5MDQgNi4xNzYxMiAzLjAwMDAyIDYuMzc1MDQgMy4wMDAwMlYzLjAwMDAyWk03LjAwMDAxIDEwSDYuNTAwMDFDNi4zNjc0IDkuOTk5OTkgNi4yNDAyMyA5Ljk0NzMxIDYuMTQ2NDYgOS44NTM1NUM2LjA1MjY5IDkuNzU5NzggNi4wMDAwMSA5LjYzMjYxIDYuMDAwMDEgOS41VjYuNUM1Ljg2NzQgNi41IDUuNzQwMjIgNi40NDczMiA1LjY0NjQ1IDYuMzUzNTVDNS41NTI2OCA2LjI1OTc5IDUuNTAwMDEgNi4xMzI2MSA1LjUwMDAxIDZDNS41MDAwMSA1Ljg2NzM5IDUuNTUyNjggNS43NDAyMSA1LjY0NjQ1IDUuNjQ2NDVDNS43NDAyMiA1LjU1MjY4IDUuODY3NCA1LjUgNi4wMDAwMSA1LjVINi41MDAwMUM2LjYzMjYxIDUuNTAwMDEgNi43NTk3OSA1LjU1MjY5IDYuODUzNTUgNS42NDY0NUM2Ljk0NzMyIDUuNzQwMjIgNyA1Ljg2NzM5IDcuMDAwMDEgNlY5QzcuMTMyNjEgOSA3LjI1OTc5IDkuMDUyNjggNy4zNTM1NiA5LjE0NjQ1QzcuNDQ3MzMgOS4yNDAyMSA3LjUwMDAxIDkuMzY3MzkgNy41MDAwMSA5LjVDNy41MDAwMSA5LjYzMjYxIDcuNDQ3MzMgOS43NTk3OCA3LjM1MzU2IDkuODUzNTVDNy4yNTk3OSA5Ljk0NzMyIDcuMTMyNjEgMTAgNy4wMDAwMSAxMFoiIGZpbGw9IiMyRDg0RDYiLz4KPC9zdmc+" width="13.00" height="13.00"></span>領取成功後可以在付款時選擇抵扣使用</span>' +
+        '<span class="cp-card">' +
+          '<span class="cp-r1"><span class="cp-amt">TWD 1,000</span><span class="cp-btn get">領取</span></span>' +
+          '<span class="cp-txt"><span class="cp-cond">訂購金額須滿 TWD 50,000</span><span class="cp-desc">假日不加價！超值雙人住宿 x 纜車入園來回優惠</span><span class="cp-exp">有效期限：2021-10-02</span></span>' +
+        '</span>' +
+        '<span class="cp-card">' +
+          '<span class="cp-r1"><span class="cp-amt">TWD 1,000</span><span class="cp-btn use">去使用</span></span>' +
+          '<span class="cp-txt"><span class="cp-cond">訂購金額須滿 TWD 50,000</span><span class="cp-desc">假日不加價！超值雙人住宿 x 纜車入園來回優惠</span><span class="cp-exp">即將失效：剩 1 天</span></span>' +
+        '</span>' +
       '</span></button>');
     var pop = cp.querySelector('.pl-cpop');
     cp.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
@@ -2312,7 +2385,12 @@
     wrap.appendChild(pol);
     // 基本資訊：標題 + 描述 + 分組表（分組/欄位/ⓘ 完全對齊 Figma 3183-76681）
     wrap.appendChild(h('<h3 class="det-h2">基本資訊</h3>'));
-    wrap.appendChild(h('<p class="det-intro">依據購買天數，可額外享有 3GB~30GB 的熱點分享流量。由連續兩年榮獲 Opensignal 網路可靠性全球大獎的電信網路提供連線，訊號覆蓋率高，市區、離島與山區都能穩定上網；搭配 KKday App 可隨時查詢剩餘流量，客服 24 小時線上協助安裝與連線問題。</p>'));
+    var intro = h('<div class="det-intro"><span class="det-intro-t">依據購買天數，可額外享有 3GB~30GB 的熱點分享流量。由連續兩年榮獲 Opensignal 網路可靠性全球大獎的電信網路提供連線，訊號覆蓋率高，市區、離島與山區都能穩定上網；搭配 KKday App 可隨時查詢剩餘流量，客服 24 小時線上協助安裝與連線問題。</span><button class="det-intro-more" type="button">展開</button></div>');
+    var moreBtn = intro.querySelector('.det-intro-more');
+    moreBtn.addEventListener('click', function () { var op = intro.classList.toggle('open'); moreBtn.textContent = op ? '收起' : '展開'; });
+    wrap.appendChild(intro);
+    // 夾行後若溢出才顯示「展開」（等插入 DOM 量測）
+    requestAnimationFrame(function () { var tEl = intro.querySelector('.det-intro-t'); if (tEl.scrollHeight - tEl.clientHeight > 1) intro.classList.add('clampable'); });
     var rows = [
       ['th', '卡片規格'],
       ['SIM 卡片規格', 'eSIM'],
@@ -2349,8 +2427,9 @@
       if (r[2]) {
         v.classList.add('td-v--tip');
         v.insertAdjacentHTML('beforeend', '<span class="td-info ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuNSAxQzMuNDYyNDMgMSAxIDMuNDYyNDMgMSA2LjVDMSA5LjUzNzU3IDMuNDYyNDMgMTIgNi41IDEyQzkuNTM3NTcgMTIgMTIgOS41Mzc1NyAxMiA2LjVDMTIgMy40NjI0MyA5LjUzNzU3IDEgNi41IDFaTTAgNi41QzAgMi45MTAxNSAyLjkxMDE1IDAgNi41IDBDMTAuMDg5OSAwIDEzIDIuOTEwMTUgMTMgNi41QzEzIDEwLjA4OTkgMTAuMDg5OSAxMyA2LjUgMTNDMi45MTAxNSAxMyAwIDEwLjA4OTkgMCA2LjVaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS41IDZDNS41IDUuNzIzODYgNS43MjM4NiA1LjUgNiA1LjVINi41QzYuNzc2MTQgNS41IDcgNS43MjM4NiA3IDZWOUM3LjI3NjE0IDkgNy41IDkuMjIzODYgNy41IDkuNUM3LjUgOS43NzYxNCA3LjI3NjE0IDEwIDcgMTBINi41QzYuMjIzODYgMTAgNiA5Ljc3NjE0IDYgOS41VjYuNUM1LjcyMzg2IDYuNSA1LjUgNi4yNzYxNCA1LjUgNloiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuMzc1IDQuNUM2Ljc4OTIxIDQuNSA3LjEyNSA0LjE2NDIxIDcuMTI1IDMuNzVDNy4xMjUgMy4zMzU3OSA2Ljc4OTIxIDMgNi4zNzUgM0M1Ljk2MDc5IDMgNS42MjUgMy4zMzU3OSA1LjYyNSAzLjc1QzUuNjI1IDQuMTY0MjEgNS45NjA3OSA0LjUgNi4zNzUgNC41WiIgZmlsbD0iIzcyNzI3MiIvPgo8L2c+Cjwvc3ZnPg==" width="13.00" height="13.00"></span>');
+        var icon = v.querySelector('.td-info');
         (function (key) {
-          v.addEventListener('mouseenter', function () { detShowTip(v, SPEC_TIPS[key]); });
+          v.addEventListener('mouseenter', function () { detShowTip(icon, SPEC_TIPS[key]); });
           v.addEventListener('mouseleave', detHideTip);
         })(r[2]);
       }
@@ -2391,35 +2470,61 @@
       '<div class="cxl-wrap">' + body +
       '<div class="cxl-note"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuNSAxQzMuNDYyNDMgMSAxIDMuNDYyNDMgMSA2LjVDMSA5LjUzNzU3IDMuNDYyNDMgMTIgNi41IDEyQzkuNTM3NTcgMTIgMTIgOS41Mzc1NyAxMiA2LjVDMTIgMy40NjI0MyA5LjUzNzU3IDEgNi41IDFaTTAgNi41QzAgMi45MTAxNSAyLjkxMDE1IDAgNi41IDBDMTAuMDg5OSAwIDEzIDIuOTEwMTUgMTMgNi41QzEzIDEwLjA4OTkgMTAuMDg5OSAxMyA2LjUgMTNDMi45MTAxNSAxMyAwIDEwLjA4OTkgMCA2LjVaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS41IDZDNS41IDUuNzIzODYgNS43MjM4NiA1LjUgNiA1LjVINi41QzYuNzc2MTQgNS41IDcgNS43MjM4NiA3IDZWOUM3LjI3NjE0IDkgNy41IDkuMjIzODYgNy41IDkuNUM3LjUgOS43NzYxNCA3LjI3NjE0IDEwIDcgMTBINi41QzYuMjIzODYgMTAgNiA5Ljc3NjE0IDYgOS41VjYuNUM1LjcyMzg2IDYuNSA1LjUgNi4yNzYxNCA1LjUgNloiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuMzc1IDQuNUM2Ljc4OTIxIDQuNSA3LjEyNSA0LjE2NDIxIDcuMTI1IDMuNzVDNy4xMjUgMy4zMzU3OSA2Ljc4OTIxIDMgNi4zNzUgM0M1Ljk2MDc5IDMgNS42MjUgMy4zMzU3OSA1LjYyNSAzLjc1QzUuNjI1IDQuMTY0MjEgNS45NjA3OSA0LjUgNi4zNzUgNC41WiIgZmlsbD0iIzcyNzI3MiIvPgo8L2c+Cjwvc3ZnPg==" width="13.00" height="13.00"></span><div class="cxl-note-txt"><p>注意</p><p>' + CXL_SUPPLIER + '</p></div></div></div></div>');
   }
+  var GLOBE_SVG = '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.25"/><path d="M2.75 10h14.5M10 2.75c2.1 2.3 2.1 12.2 0 14.5M10 2.75c-2.1 2.3-2.1 12.2 0 14.5" stroke-linecap="round"/></svg>';
+  var DET_REVIEWS = [
+    { nm: '唯洳', role: '家人', go: '出發日 2025/03/28', on: '評論於 2025/03/30', star: 5, title: '網路夠用，餵鹿超好玩', txt: '五天的沖繩旅遊給家人買了個 5GB 總量的網路非常夠用！但如果需要導航的人，建議買個無限流量使用～ 掃碼後幾分鐘就開通，落地就能上網，非常方便，推薦！' },
+    { nm: '曼蒂', role: '單人旅遊', go: '出發日 2025/03/30', on: '評論於 2025/04/02', star: 5, title: '免插卡超方便', txt: '不用插卡片非常方便，買完憑證馬上就寄來了，跟著步驟安裝一次就成功。一個人旅行完全夠用，訊號也很穩定。' },
+    { nm: '建龍', role: '商務旅客', go: '出發日 2025/03/24', on: '評論於 2025/03/26', star: 5, title: '客服處理積極', txt: '服務態度非常好！途中發生一點小狀況，線上客服處理積極、回覆也快，很快就解決了。商務出差很放心，棒棒！' }
+  ];
   function detReview(p) {
     var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '一般');
-    var wrap = h('<div class="det-sec" data-sec="review"><h2 class="det-h5">評論</h2></div>');
+    var wrap = h('<div class="det-sec" data-sec="review"></div>');
+    wrap.appendChild(h('<div class="det-rev-title">旅客評論</div>'));
+    // 評分資訊
     wrap.appendChild(h('<div class="det-score"><span class="badge9">' + p.rating.toFixed(1) + '</span><span class="gcol"><span class="gt">' + grade + '</span><span class="gc">依據 ' + p.reviews.toLocaleString('en-US') + ' 則評論</span></span></div>'));
-    wrap.appendChild(h('<div class="det-ai"><div class="ai-t"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDE0IDE0IiBmaWxsPSJub25lIj48cGF0aCBkPSJNOSAwbDEuMiAzLjhMMTQgNWwtMy44IDEuMkw5IDEwIDcuOCA2LjIgNCA1bDMuOC0xLjJMOSAwWiIgZmlsbD0iIzJFQzRGMiIvPjxwYXRoIGQ9Ik0zIDhsLjggMi4yTDYgMTFsLTIuMi44TDMgMTRsLS44LTIuMkwwIDExbDIuMi0uOEwzIDhaIiBmaWxsPSIjMTBENUUzIi8+PC9zdmc+" width="14" height="14"></span>AI 精選旅客評論摘要</div><div class="ai-b">大多數旅客認為網速穩定、性價比高，掃碼後數分鐘內即可完成安裝，落地即可上網；熱點分享給同行裝置也很實用。少數旅客反映山區訊號偶有波動、首次啟用需要連線穩定 WiFi。整體而言適合自由行與商務出行，客服回應速度獲得一致好評。</div></div>'));
+    // AI 摘要
+    wrap.appendChild(h('<div class="det-ai"><div class="ai-t"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX3NwYXJrbGVzX2ZpbGwiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTcuMDc4ODIgNS4xODA1OEM3LjQyMjg5IDQuMzY2MTEgOC41NzcxMSA0LjM2NjExIDguOTIxMTggNS4xODA1OUwxMC41MTQ5IDguOTUzMTFDMTAuNjE2MiA5LjE5Mjk1IDEwLjgwNyA5LjM4MzgyIDExLjA0NjkgOS40ODUxNEwxNC44MTk0IDExLjA3ODhDMTUuNjMzOSAxMS40MjI5IDE1LjYzMzkgMTIuNTc3MSAxNC44MTk0IDEyLjkyMTJMMTEuMDQ2OSAxNC41MTQ5QzEwLjgwNyAxNC42MTYyIDEwLjYxNjIgMTQuODA3IDEwLjUxNDkgMTUuMDQ2OUw4LjkyMTE3IDE4LjgxOTRDOC41NzcxIDE5LjYzMzkgNy40MjI4OSAxOS42MzM5IDcuMDc4ODIgMTguODE5NEw1LjQ4NTE0IDE1LjA0NjlDNS4zODM4MiAxNC44MDcgNS4xOTI5NSAxNC42MTYyIDQuOTUzMTEgMTQuNTE0OUwxLjE4MDU4IDEyLjkyMTJDMC4zNjYxMTIgMTIuNTc3MSAwLjM2NjExNCAxMS40MjI5IDEuMTgwNTkgMTEuMDc4OEw0Ljk1MzExIDkuNDg1MTRDNS4xOTI5NSA5LjM4MzgyIDUuMzgzODIgOS4xOTI5NSA1LjQ4NTE0IDguOTUzMTFMNy4wNzg4MiA1LjE4MDU4WiIgZmlsbD0iIzI2QkVDOSIvPgo8cGF0aCBkPSJNMTYuMDc4OCAyLjE4MDU4QzE2LjQyMjkgMS4zNjYxMSAxNy41NzcxIDEuMzY2MTEgMTcuOTIxMiAyLjE4MDU4TDE4LjMyNjkgMy4xNDEwNUMxOC40MjgyIDMuMzgwODkgMTguNjE5MSAzLjU3MTc2IDE4Ljg1ODkgMy42NzMwOEwxOS44MTk0IDQuMDc4ODJDMjAuNjMzOSA0LjQyMjg5IDIwLjYzMzkgNS41NzcxMSAxOS44MTk0IDUuOTIxMThMMTguODU4OSA2LjMyNjkyQzE4LjYxOTEgNi40MjgyNCAxOC40MjgyIDYuNjE5MTEgMTguMzI2OSA2Ljg1ODk1TDE3LjkyMTIgNy44MTk0MkMxNy41NzcxIDguNjMzODkgMTYuNDIyOSA4LjYzMzg5IDE2LjA3ODggNy44MTk0MkwxNS42NzMxIDYuODU4OTVDMTUuNTcxOCA2LjYxOTExIDE1LjM4MDkgNi40MjgyNCAxNS4xNDEgNi4zMjY5MkwxNC4xODA2IDUuOTIxMThDMTMuMzY2MSA1LjU3NzExIDEzLjM2NjEgNC40MjI4OSAxNC4xODA2IDQuMDc4ODJMMTUuMTQxIDMuNjczMDhDMTUuMzgwOSAzLjU3MTc2IDE1LjU3MTggMy4zODA4OSAxNS42NzMxIDMuMTQxMDVMMTYuMDc4OCAyLjE4MDU4WiIgZmlsbD0iIzI2QkVDOSIvPgo8cGF0aCBkPSJNMTcuMDc4OCAxNC4xODA2QzE3LjQyMjkgMTMuMzY2MSAxOC41NzcxIDEzLjM2NjEgMTguOTIxMiAxNC4xODA2TDE5LjYyMzkgMTUuODQ0MUMxOS43MjUyIDE2LjA4MzkgMTkuOTE2MSAxNi4yNzQ4IDIwLjE1NTkgMTYuMzc2MUwyMS44MTk0IDE3LjA3ODhDMjIuNjMzOSAxNy40MjI5IDIyLjYzMzkgMTguNTc3MSAyMS44MTk0IDE4LjkyMTJMMjAuMTU1OSAxOS42MjM5QzE5LjkxNjEgMTkuNzI1MiAxOS43MjUyIDE5LjkxNjEgMTkuNjIzOSAyMC4xNTU5TDE4LjkyMTIgMjEuODE5NEMxOC41NzcxIDIyLjYzMzkgMTcuNDIyOSAyMi42MzM5IDE3LjA3ODggMjEuODE5NEwxNi4zNzYxIDIwLjE1NTlDMTYuMjc0OCAxOS45MTYxIDE2LjA4MzkgMTkuNzI1MiAxNS44NDQxIDE5LjYyMzlMMTQuMTgwNiAxOC45MjEyQzEzLjM2NjEgMTguNTc3MSAxMy4zNjYxIDE3LjQyMjkgMTQuMTgwNiAxNy4wNzg4TDE1Ljg0NDEgMTYuMzc2MUMxNi4wODM5IDE2LjI3NDggMTYuMjc0OCAxNi4wODM5IDE2LjM3NjEgMTUuODQ0MUwxNy4wNzg4IDE0LjE4MDZaIiBmaWxsPSIjMjZCRUM5Ii8+CjwvZz4KPC9nPgo8L3N2Zz4=" width="24" height="24"></span>AI 精選旅客評論摘要</div><div class="ai-b">大多數旅客認為網速穩定、性價比高，掃碼後數分鐘內即可完成安裝，落地即可上網；熱點分享給同行裝置也很實用。少數旅客反映山區訊號偶有波動、首次啟用需要連線穩定 WiFi。整體而言適合自由行與商務出行，客服回應速度獲得一致好評。</div></div>'));
+    // 排序 chips
+    wrap.appendChild(h('<div class="det-rev-sort">' +
+      ['精選', '最高評分', '最低評分', '最新', '圖片優先', '最有幫助'].map(function (s, i) { return '<button class="det-sortchip' + (i === 0 ? ' sel' : '') + '" data-toast="old">' + s + '</button>'; }).join('') + '</div>'));
+    // 關鍵字 chips（正向 smile / 中性 neutral）
     wrap.appendChild(h('<div class="det-kws">' +
       ['網速', '性價比', '客服'].map(function (k) { return '<span class="det-kw"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEzIDEzIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSI2LjUiIGN5PSI2LjUiIHI9IjUuNzUiIHN0cm9rZT0iIzIxMjEyMSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48Y2lyY2xlIGN4PSI0LjYiIGN5PSI1LjIiIHI9Ii45IiBmaWxsPSIjMjEyMTIxIi8+PGNpcmNsZSBjeD0iOC40IiBjeT0iNS4yIiByPSIuOSIgZmlsbD0iIzIxMjEyMSIvPjxwYXRoIGQ9Ik00LjIgOC4yYTMgMyAwIDAgMCA0LjYgMCIgc3Ryb2tlPSIjMjEyMTIxIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" width="13" height="13"></span>' + k + '</span>'; }).join('') +
-      ['穩定性', '啟用流程', '訊號死角'].map(function (k) { return '<span class="det-kw"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEzIDEzIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSI2LjUiIGN5PSI2LjUiIHI9IjUuNzUiIHN0cm9rZT0iIzIxMjEyMSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48Y2lyY2xlIGN4PSI0LjYiIGN5PSI1LjIiIHI9Ii45IiBmaWxsPSIjMjEyMTIxIi8+PGNpcmNsZSBjeD0iOC40IiBjeT0iNS4yIiByPSIuOSIgZmlsbD0iIzIxMjEyMSIvPjxwYXRoIGQ9Ik00LjMgOC44aDQuNCIgc3Ryb2tlPSIjMjEyMTIxIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" width="13" height="13"></span>' + k + '</span>'; }).join('') + '</div>'));
-    // 旅客實拍（洗牌取 4 張）
-    if (typeof DET_SHOTS !== 'undefined' && DET_SHOTS.length) {
-      var pool = DET_SHOTS.slice();
-      for (var si = pool.length - 1; si > 0; si--) { var sj = (si * 7 + p.reviews) % (si + 1); var tmp = pool[si]; pool[si] = pool[sj]; pool[sj] = tmp; }
-      wrap.appendChild(h('<h3 class="det-sub">旅客實拍</h3>'));
-      var shots = h('<div class="det-shots"></div>');
-      for (var k = 0; k < 4; k++) shots.appendChild(h('<div class="det-shot"><img alt="" src="' + pool[k % pool.length] + '">' + (k === 3 ? '<div class="ovl">+75</div>' : '') + '</div>'));
-      wrap.appendChild(shots);
-    }
-    wrap.appendChild(h('<h3 class="det-sub">評語</h3>'));
-    var reviews = h('<div class="det-reviews"></div>');
-    [['唯洳', '家人', '2025/03/30', '五天的沖繩旅遊給家人買了個5GB總量的網路非常夠用！但如果需要導航的人，必須買個無限流量使用～ 但很方便！推薦！'],
-     ['曼蒂', '單人旅遊', '2025/04/02', '不用插卡片非常方便，買完憑證馬上就寄來了'],
-     ['建龍', '商務旅客', '2025/03/26', '服務態度非常好！發生意外線上處理積極！棒棒！']].forEach(function (r) {
-      var stars = ''; for (var i = 0; i < 5; i++) stars += '<span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX3N0YXJfZmlsbCI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik0xNC45NDc5IDYuMDg4MkMxNC44ODU1IDUuODkyMjEgMTQuNzY1NCA1LjcxOTU5IDE0LjYwMzQgNS41OTI4NUMxNC40NDE0IDUuNDY2MTIgMTQuMjQ0OSA1LjM5MTE2IDE0LjAzOTcgNS4zNzc3NUwxMC4zMjc4IDUuMTE3OTlMOC45NTA4MSAxLjY1MDdDOC44NzYyOSAxLjQ1OTAxIDguNzQ1NjEgMS4yOTQzIDguNTc1ODggMS4xNzgxNkM4LjQwNjE1IDEuMDYyMDIgOC4yMDUzIDAuOTk5ODU0IDcuOTk5NjQgMC45OTk4MTlINy45OTg2NkM3Ljc5MzMyIDEuMDAwMTkgNy41OTI4NiAxLjA2MjUxIDcuNDIzNTEgMS4xNzg2M0M3LjI1NDE1IDEuMjk0NzYgNy4xMjM3OCAxLjQ1OTI4IDcuMDQ5NDQgMS42NTA3TDUuNjUxOTggNS4xMzhMMS45NjA1NyA1LjM3Nzc1QzEuNzU1MzIgNS4zOTExNiAxLjU1ODg3IDUuNDY2MTIgMS4zOTY4NiA1LjU5Mjg1QzEuMjM0ODUgNS43MTk1OSAxLjExNDggNS44OTIyMSAxLjA1MjM3IDYuMDg4MkMwLjk4NjUxNSA2LjI4Njk3IDAuOTgyMDM1IDYuNTAwOTcgMS4wMzk1MSA2LjcwMjMyQzEuMDk2OTkgNi45MDM2NyAxLjIxMzc3IDcuMDgzMDYgMS4zNzQ2NCA3LjIxNzExTDQuMjE0NDggOS42MTc1TDMuMzY5NzUgMTIuOTQwM0MzLjMxMTUzIDEzLjE2NDEgMy4zMjIyNCAxMy40MDAzIDMuNDAwNDcgMTMuNjE3OUMzLjQ3ODcxIDEzLjgzNTUgMy42MjA4MyAxNC4wMjQ1IDMuODA4MjMgMTQuMTZDMy45ODkxNiAxNC4yOTE2IDQuMjA1NTIgMTQuMzY1NyA0LjQyOTE2IDE0LjM3MjdDNC42NTI4IDE0LjM3OTcgNC44NzMzNiAxNC4zMTkyIDUuMDYyMTQgMTQuMTk5TDcuOTkxODIgMTIuMzQzMUM3Ljk5NTczIDEyLjM0MDIgNy45OTk2NCAxMi4zMzgyIDguMDA4NDMgMTIuMzQzMUwxMS4xNjA4IDE0LjM0MDJDMTEuMzMxOSAxNC40NDk1IDExLjUzMjEgMTQuNTA0NiAxMS43MzUgMTQuNDk4NEMxMS45MzggMTQuNDkyMSAxMi4xMzQ0IDE0LjQyNDcgMTIuMjk4NSAxNC4zMDVDMTIuNDY4MyAxNC4xODIzIDEyLjU5NzEgMTQuMDExMSAxMi42NjggMTMuODEzOUMxMi43Mzg5IDEzLjYxNjggMTIuNzQ4NiAxMy40MDI4IDEyLjY5NTkgMTMuMkwxMS43OTg1IDkuNTcwMTNMMTQuNjI1NiA3LjIxNzExQzE0Ljc4NjUgNy4wODMwNiAxNC45MDMzIDYuOTAzNjcgMTQuOTYwNyA2LjcwMjMyQzE1LjAxODIgNi41MDA5NyAxNS4wMTM3IDYuMjg2OTcgMTQuOTQ3OSA2LjA4ODJaIiBmaWxsPSIjMjZCRUM5Ii8+CjwvZz4KPC9zdmc+" width="16" height="16"></span>';
-      var el = h('<div class="det-rcard"><div><div class="rhead"><span class="stars">' + stars + '</span><span class="rdate">' + r[2] + '</span></div><div class="rtxt"></div></div><div><div class="rn2"></div><div class="rrole"></div></div></div>');
-      el.querySelector('.rtxt').textContent = r[3]; el.querySelector('.rn2').textContent = r[0]; el.querySelector('.rrole').textContent = r[1];
-      reviews.appendChild(el);
+      ['穩定性', '交通時間', '取貨'].map(function (k) { return '<span class="det-kw"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEzIDEzIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSI2LjUiIGN5PSI2LjUiIHI9IjUuNzUiIHN0cm9rZT0iIzIxMjEyMSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48Y2lyY2xlIGN4PSI0LjYiIGN5PSI1LjIiIHI9Ii45IiBmaWxsPSIjMjEyMTIxIi8+PGNpcmNsZSBjeD0iOC40IiBjeT0iNS4yIiByPSIuOSIgZmlsbD0iIzIxMjEyMSIvPjxwYXRoIGQ9Ik00LjMgOC44aDQuNCIgc3Ryb2tlPSIjMjEyMTIxIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" width="13" height="13"></span>' + k + '</span>'; }).join('') + '</div>'));
+    // 評論卡列表
+    var pool = (typeof DET_SHOTS !== 'undefined' && DET_SHOTS.length) ? DET_SHOTS : [];
+    var list = h('<div class="det-rlist"></div>');
+    DET_REVIEWS.forEach(function (r, idx) {
+      var stars = ''; for (var i = 0; i < 5; i++) stars += '<span class="ic ic-20' + (i < r.star ? '' : ' off') + '"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX3N0YXJfZmlsbCI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik0xNC45NDc5IDYuMDg4MkMxNC44ODU1IDUuODkyMjEgMTQuNzY1NCA1LjcxOTU5IDE0LjYwMzQgNS41OTI4NUMxNC40NDE0IDUuNDY2MTIgMTQuMjQ0OSA1LjM5MTE2IDE0LjAzOTcgNS4zNzc3NUwxMC4zMjc4IDUuMTE3OTlMOC45NTA4MSAxLjY1MDdDOC44NzYyOSAxLjQ1OTAxIDguNzQ1NjEgMS4yOTQzIDguNTc1ODggMS4xNzgxNkM4LjQwNjE1IDEuMDYyMDIgOC4yMDUzIDAuOTk5ODU0IDcuOTk5NjQgMC45OTk4MTlINy45OTg2NkM3Ljc5MzMyIDEuMDAwMTkgNy41OTI4NiAxLjA2MjUxIDcuNDIzNTEgMS4xNzg2M0M3LjI1NDE1IDEuMjk0NzYgNy4xMjM3OCAxLjQ1OTI4IDcuMDQ5NDQgMS42NTA3TDUuNjUxOTggNS4xMzhMMS45NjA1NyA1LjM3Nzc1QzEuNzU1MzIgNS4zOTExNiAxLjU1ODg3IDUuNDY2MTIgMS4zOTY4NiA1LjU5Mjg1QzEuMjM0ODUgNS43MTk1OSAxLjExNDggNS44OTIyMSAxLjA1MjM3IDYuMDg4MkMwLjk4NjUxNSA2LjI4Njk3IDAuOTgyMDM1IDYuNTAwOTcgMS4wMzk1MSA2LjcwMjMyQzEuMDk2OTkgNi45MDM2NyAxLjIxMzc3IDcuMDgzMDYgMS4zNzQ2NCA3LjIxNzExTDQuMjE0NDggOS42MTc1TDMuMzY5NzUgMTIuOTQwM0MzLjMxMTUzIDEzLjE2NDEgMy4zMjIyNCAxMy40MDAzIDMuNDAwNDcgMTMuNjE3OUMzLjQ3ODcxIDEzLjgzNTUgMy42MjA4MyAxNC4wMjQ1IDMuODA4MjMgMTQuMTZDMy45ODkxNiAxNC4yOTE2IDQuMjA1NTIgMTQuMzY1NyA0LjQyOTE2IDE0LjM3MjdDNC42NTI4IDE0LjM3OTcgNC44NzMzNiAxNC4zMTkyIDUuMDYyMTQgMTQuMTk5TDcuOTkxODIgMTIuMzQzMUM3Ljk5NTczIDEyLjM0MDIgNy45OTk2NCAxMi4zMzgyIDguMDA4NDMgMTIuMzQzMUwxMS4xNjA4IDE0LjM0MDJDMTEuMzMxOSAxNC40NDk1IDExLjUzMjEgMTQuNTA0NiAxMS43MzUgMTQuNDk4NEMxMS45MzggMTQuNDkyMSAxMi4xMzQ0IDE0LjQyNDcgMTIuMjk4NSAxNC4zMDVDMTIuNDY4MyAxNC4xODIzIDEyLjU5NzEgMTQuMDExMSAxMi42NjggMTMuODEzOUMxMi43Mzg5IDEzLjYxNjggMTIuNzQ4NiAxMy40MDI4IDEyLjY5NTkgMTMuMkwxMS43OTg1IDkuNTcwMTNMMTQuNjI1NiA3LjIxNzExQzE0Ljc4NjUgNy4wODMwNiAxNC45MDMzIDYuOTAzNjcgMTQuOTYwNyA2LjcwMjMyQzE1LjAxODIgNi41MDA5NyAxNS4wMTM3IDYuMjg2OTcgMTQuOTQ3OSA2LjA4ODJaIiBmaWxsPSIjMjZCRUM5Ii8+CjwvZz4KPC9zdmc+" width="16" height="16"></span>';
+      var gallery = '';
+      for (var g = 0; g < 6; g++) { var im = pool.length ? '<img alt="" src="' + pool[(idx * 6 + g) % pool.length] + '">' : ''; gallery += '<span class="rc-shot">' + im + '</span>'; }
+      var card = h('<div class="det-rcard">' +
+        '<div class="rc-l">' +
+          '<div class="rc-usr"><span class="rc-av"></span><span class="rc-uinfo"><span class="rc-nm"></span><span class="rc-role"></span></span></div>' +
+          '<div class="rc-dates"><span class="rc-go"></span><span class="rc-on"></span></div>' +
+        '</div>' +
+        '<div class="rc-r">' +
+          '<div class="rc-stars">' + stars + '</div>' +
+          '<div class="rc-title"></div>' +
+          '<div class="rc-txt"></div>' +
+          '<div class="rc-extra"><span class="rc-trans">' + GLOBE_SVG + '<u>查看翻譯</u></span><span class="rc-more" data-toast="old"><u>展開</u><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0LjE2NjciIGhlaWdodD0iNy45MTY2NyIgdmlld0JveD0iMCAwIDE0LjE2NjcgNy45MTY2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0wLjI0NDA3OCAwLjI0NDA3OEMwLjU2OTUxNSAtMC4wODEzNTkyIDEuMDk3MTUgLTAuMDgxMzU5MiAxLjQyMjU5IDAuMjQ0MDc4TDcuMDgzMzMgNS45MDQ4MkwxMi43NDQxIDAuMjQ0MDc4QzEzLjA2OTUgLTAuMDgxMzU5MiAxMy41OTcyIC0wLjA4MTM1OTIgMTMuOTIyNiAwLjI0NDA3OEMxNC4yNDggMC41Njk1MTUgMTQuMjQ4IDEuMDk3MTUgMTMuOTIyNiAxLjQyMjU5TDcuNjcyNTkgNy42NzI1OUM3LjM0NzE1IDcuOTk4MDMgNi44MTk1MSA3Ljk5ODAzIDYuNDk0MDggNy42NzI1OUwwLjI0NDA3OCAxLjQyMjU5Qy0wLjA4MTM1OTIgMS4wOTcxNSAtMC4wODEzNTkyIDAuNTY5NTE1IDAuMjQ0MDc4IDAuMjQ0MDc4WiIgZmlsbD0iIzIxMjEyMSIvPgo8L3N2Zz4=" width="14.17" height="7.92"></span></span></div>' +
+          '<div class="rc-gallery">' + gallery + '</div>' +
+          '<div class="rc-help" data-toast="old"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuMTY2MDIgOC4zMzMwMUgxLjI1QzAuNTU5NjQ0IDguMzMzMDEgMCA3Ljc3MzM2IDAgNy4wODMwMVYxLjI1QzAgMC41NTk2NDQgMC41NTk2NDQgMCAxLjI1IDBINC4xNjYwMlY4LjMzMzAxWiIgZmlsbD0iIzI2QkVDOSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMi45MTYgOC43NSkiLz4KPHBhdGggZD0iTTMuMTQ3NDYgMEM0LjE3MDIzIDAuMDAwMTU4MTE1IDQuOTk5NjcgMC44Mjg4MzMgNSAxLjg1MTU2VjQuNTgzMDFDNSA0LjgxMzEzIDUuMTg2ODcgNSA1LjQxNjk5IDVIOS4wMDk3N0MxMC40MDUxIDUuMDAwMSAxMS40MDU3IDYuMzQ1MDggMTEuMDA0OSA3LjY4MTY0TDkuNTA0ODggMTIuNjgxNkM5LjI0MDQxIDEzLjU2MjcgOC40Mjk2NiAxNC4xNjYgNy41MDk3NyAxNC4xNjZIMFY1LjgzNTk0TDAuMDE3NTc4MSA1Ljc3NjM3TDEuMzc1IDEuMzEzNDhDMS42MTIyNyAwLjUzMzQxIDIuMzMyMTIgMC4wMDAxNDE5OTIgMy4xNDc0NiAwWiIgZmlsbD0iI0ZGQ0EyOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNi4yNSAyLjkxNikiLz4KPC9zdmc+" width="20.00" height="20.00"></span>有幫助 (1)</div>' +
+        '</div></div>');
+      card.querySelector('.rc-av').innerHTML = pool.length ? '<img alt="" src="' + pool[idx % pool.length] + '">' : '';
+      card.querySelector('.rc-nm').textContent = r.nm;
+      card.querySelector('.rc-role').textContent = r.role;
+      card.querySelector('.rc-go').textContent = r.go;
+      card.querySelector('.rc-on').textContent = r.on;
+      card.querySelector('.rc-title').textContent = r.title;
+      card.querySelector('.rc-txt').textContent = r.txt;
+      list.appendChild(card);
     });
-    wrap.appendChild(reviews);
-    wrap.appendChild(h('<button class="det-morebtn" data-toast="old">檢視更多評論</button>'));
+    wrap.appendChild(list);
+    // 分頁
+    wrap.appendChild(h('<div class="det-rev-pager">' +
+      [1, 2, 3, 4, 5].map(function (n) { return '<button class="' + (n === 1 ? 'sel' : '') + '" data-toast="old">' + n + '</button>'; }).join('') +
+      '<button data-toast="old">›</button></div>'));
     return wrap;
   }
   function detFee(p) {
