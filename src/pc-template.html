@@ -546,6 +546,72 @@
   .pc-spec-table td { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); padding: 16px; border-bottom: 1px solid var(--kk-border-lighter); vertical-align: top; }
   .pc-spec-table tr:last-child td { border-bottom: 0; }
   .pc-spec-table th:first-child, .pc-spec-table td:first-child { width: 34%; }
+  /* ============ 商品詳情 dialog（Figma 3190-39080） ============ */
+  .pl-detdlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
+    width: 720px; max-width: calc(100vw - 32px); height: min(880px, calc(100vh - 64px)); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
+  .pl-detdlg.open { display: flex; }
+  .pl-det-hd { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 12px; }
+  .pl-det-hd .t { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-det-tabs { flex: 0 0 auto; display: flex; gap: 24px; padding: 0 24px; border-bottom: 1px solid var(--kk-border-lighter); overflow-x: auto; scrollbar-width: none; }
+  .pl-det-tabs::-webkit-scrollbar { display: none; }
+  .pl-det-tab { position: relative; flex: 0 0 auto; padding: 8px 0 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); white-space: nowrap; }
+  .pl-det-tab.sel { color: var(--kk-primary-dark); font-weight: 600; }
+  .pl-det-tab.sel::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; }
+  .pl-det-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 20px 24px 24px; }
+  /* 摘要卡 */
+  .pl-det-sum { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .pl-det-sum .cond { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-det-sum .cond .ic { width: 20px; height: 20px; color: var(--kk-primary-dark); }
+  .pl-det-sum .tt { font-size: 20px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-det-sum .warns { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px; line-height: 16px; color: #E78F37; }
+  .pl-det-sum .warns .wdiv { width: 1px; height: 10px; background: var(--kk-border-light); }
+  .pl-det-sum .prov { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  /* 折扣券 banner */
+  .pl-det-coupon { position: relative; margin-top: 16px; display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-radius: 8px;
+    background: linear-gradient(90deg, #FFF1EE, #FFF7F5); color: var(--kk-text-darker); width: 100%; }
+  .pl-det-coupon .cc-pic { font-size: 18px; }
+  .pl-det-coupon .cc-t { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border: 1px dashed #EF7A70; border-radius: 4px; color: #E65F50; font-size: 12px; line-height: 16px; font-weight: 600; }
+  .pl-det-coupon .cc-claim { margin-left: auto; display: inline-flex; align-items: center; gap: 2px; color: #E65F50; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .pl-det-coupon .cc-claim .ic { width: 16px; height: 16px; }
+  .pl-cpop { position: absolute; left: 0; top: calc(100% + 8px); z-index: 5; width: 360px; background: #fff; border-radius: 12px; box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 12px; display: none; flex-direction: column; gap: 12px; }
+  .pl-cpop.show { display: flex; }
+  .pl-cpop .cp-note { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px; background: #EFF6FF; font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
+  .pl-cpop .cp-card { border: 1px solid var(--kk-border-lighter); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+  .pl-cpop .cp-card .r1 { display: flex; align-items: center; justify-content: space-between; }
+  .pl-cpop .cp-amt { font-size: 20px; line-height: 28px; font-weight: 700; color: var(--kk-text-darker); }
+  .pl-cpop .cp-btn { height: 28px; padding: 0 12px; border-radius: 6px; background: var(--kk-primary-lighter); color: var(--kk-primary-dark); font-size: 12px; line-height: 16px; font-weight: 600; }
+  .pl-cpop .cp-cond { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .pl-cpop .cp-exp { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  /* 政策行 */
+  .pl-det-pol { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .pl-det-pol .row { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pl-det-pol .row .ic { width: 20px; height: 20px; color: var(--kk-primary-dark); flex: 0 0 auto; }
+  .pl-det-pol .row.scope { position: relative; }
+  .pl-det-pol .row.scope u { text-underline-offset: 2px; cursor: pointer; }
+  .pl-det-pol .scope-tip { position: absolute; left: 24px; top: calc(100% + 6px); z-index: 5; width: 320px; background: #fff; border-radius: 8px; box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 14px; display: none; }
+  .pl-det-pol .row.scope:hover .scope-tip { display: block; }
+  .pl-det-pol .scope-tip ul { columns: 2; column-gap: 20px; padding-left: 18px; font-size: 12px; line-height: 20px; }
+  /* 基本資訊 */
+  .pl-det-h2 { margin: 24px 0 4px; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-det-intro { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); margin-bottom: 16px; }
+  .pl-det-intro .more { color: var(--kk-primary-dark); cursor: pointer; }
+  .pl-dt { border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; }
+  .pl-dt .th { background: var(--kk-surface-lighter); padding: 12px 16px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-dt .tr { display: flex; border-top: 1px solid var(--kk-border-lighter); }
+  .pl-dt .k { flex: 0 0 140px; padding: 14px 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pl-dt .v { flex: 1 1 0; min-width: 0; padding: 14px 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  /* 其他 tab 通用 */
+  .pl-det-sec h3 { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin: 16px 0 8px; }
+  .pl-det-sec h3:first-child { margin-top: 0; }
+  .pl-det-sec ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .pl-det-sec li { font-size: 14px; line-height: 22px; color: var(--kk-text-darker); }
+  .pl-det-sec p { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
+  .pl-rev { border-bottom: 1px solid var(--kk-border-lighter); padding: 16px 0; }
+  .pl-rev:first-child { padding-top: 0; }
+  .pl-rev .rh { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; }
+  .pl-rev .rh .nm { font-weight: 600; color: var(--kk-text-darker); }
+  .pl-rev .rh .dt { color: var(--kk-text-medium); font-size: 12px; }
+  .pl-rev .rt { margin-top: 6px; font-size: 14px; line-height: 22px; color: var(--kk-text-darker); }
   /* ============ 日期日曆下拉（Figma 3223-83700） ============ */
   .pc-cal { position: fixed; z-index: 60; width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 16px; }
   .pc-cal[hidden] { display: none; }
@@ -983,6 +1049,14 @@
       <tr><td>總量制</td><td>一次給定總流量額度，用完為止、不分每日配額。</td></tr>
     </table>
   </div>
+</div>
+
+<!-- ============ 商品詳情 dialog（Figma 3183-43487 / 3190-39080 / 3220-50734，資訊邏輯參考 mweb） ============ -->
+<div class="pc-mask" id="plDetMask"></div>
+<div class="pl-detdlg" id="plDetDlg" role="dialog" aria-modal="true">
+  <div class="pl-det-hd"><span class="t">詳情</span><button id="plDetClose" aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button></div>
+  <div class="pl-det-tabs" id="plDetTabs"></div>
+  <div class="pl-det-bd" id="plDetBd"></div>
 </div>
 
 <!-- ============ 日期日曆下拉（Figma 3223-83700） ============ -->
@@ -1665,7 +1739,7 @@
     var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '');
     var social = '<span class="ic">' + PC_ICONS.star + '</span><span class="score">' + p.rating.toFixed(1) + '</span>' + (grade ? '<span class="grade">' + grade + '</span>' : '') +
       '<span class="rc">(' + p.reviews.toLocaleString('en-US') + ')</span><span>· ' + p.bought + ' · ' + p.vendor + ' 提供服務</span>';
-    return '<div class="pl-card" data-toast="old">' +
+    return '<div class="pl-card">' +
       '<div class="pl-main">' +
         '<div class="pl-hg">' +
           warns +
@@ -1699,7 +1773,14 @@
     if (!list.length) {
       box.innerHTML = '<div class="pl-empty">沒有符合條件的商品，試試放寬篩選</div>';
     } else {
-      list.forEach(function (p) { box.appendChild(h(plCardHTML(p))); });
+      list.forEach(function (p) {
+        var c = h(plCardHTML(p));
+        c.addEventListener('click', function (e) {
+          if (e.target.closest('.pl-cta')) { e.stopPropagation(); toast(TOAST.old); return; }  // 訂購鈕：走訂購（原型維持現狀）
+          openPlDetail(p);
+        });
+        box.appendChild(c);
+      });
     }
     // 結果數：無任何篩選時顯示總量 162；有篩選則依命中比例縮放，較真實
     var noFilter = !groups.length && lo <= 0 && hi >= 12000;
@@ -1876,6 +1957,139 @@
   document.getElementById('plSpecInfo').addEventListener('click', function (e) { e.stopPropagation(); openSpec(); });
   document.getElementById('pcSpecClose').addEventListener('click', closeSpec);
   document.getElementById('pcSpecMask').addEventListener('click', closeSpec);
+
+  // ================= 商品詳情 dialog（點卡片開啟；資訊邏輯參考 mweb） =================
+  var DET_TABS = ['服務說明', '如何使用', '取消政策', '評論', '費用資訊', '購買須知', '圖文詳情'];
+  var detCur = 0, detP = null;
+  var DET_COUNTRIES = ['日本', '韓國', '泰國', '越南', '馬來西亞', '新加坡', '土耳其', '菲律賓', '印尼', '香港', '台灣', '土耳其'];
+  function detFlowLabel() { return sel.days + '天·' + (sel.tab === 'daily' ? '每日流量' : sel.tab === 'total' ? '總流量' : '無限流量') + '·' + sel.plan; }
+  function has(p, kw) { return (p.tags.join(' ') + ' ' + p.perks.join(' ') + ' ' + p.title).indexOf(kw) >= 0; }
+  function openPlDetail(p) {
+    detP = p; detCur = 0;
+    document.getElementById('plDetTabs').innerHTML = '';
+    DET_TABS.forEach(function (t, i) {
+      var b = h('<button class="pl-det-tab' + (i === 0 ? ' sel' : '') + '">' + (t === '評論' ? '評論（' + p.reviews.toLocaleString('en-US') + '）' : t) + '</button>');
+      b.addEventListener('click', function () { detCur = i; document.querySelectorAll('#plDetTabs .pl-det-tab').forEach(function (x, j) { x.classList.toggle('sel', j === i); }); renderDetBody(); document.getElementById('plDetBd').scrollTop = 0; });
+      document.getElementById('plDetTabs').appendChild(b);
+    });
+    renderDetBody();
+    document.getElementById('plDetMask').classList.add('open');
+    document.getElementById('plDetDlg').classList.add('open');
+    document.getElementById('plDetBd').scrollTop = 0;
+    lockScroll();
+  }
+  function closePlDetail() { if (!document.getElementById('plDetDlg').classList.contains('open')) return; document.getElementById('plDetMask').classList.remove('open'); document.getElementById('plDetDlg').classList.remove('open'); unlockScroll(); }
+  function renderDetBody() {
+    var p = detP, bd = document.getElementById('plDetBd'); bd.innerHTML = '';
+    if (detCur === 0) bd.appendChild(detSvc(p));
+    else if (detCur === 1) bd.appendChild(detHowto(p));
+    else if (detCur === 2) bd.appendChild(detCancel(p));
+    else if (detCur === 3) bd.appendChild(detReview(p));
+    else if (detCur === 4) bd.appendChild(detFee(p));
+    else if (detCur === 5) bd.appendChild(detNotice(p));
+    else bd.appendChild(detImgs(p));
+  }
+  function detSvc(p) {
+    var warns = (p.warns && p.warns.length) ? p.warns.map(function (w, i) { return (i ? '<span class="wdiv"></span>' : '') + '<span>' + w + '</span>'; }).join('') : '';
+    var wrap = h('<div></div>');
+    var sum = h('<div class="pl-det-sum">' +
+      '<div class="cond"><span class="ic ic-20">{{IC_fileCheckLine}}</span><span></span></div>' +
+      '<div class="tt"></div>' + (warns ? '<div class="warns">' + warns + '</div>' : '') +
+      '<div class="prov"></div></div>');
+    sum.querySelector('.cond span:last-child').textContent = detFlowLabel();
+    sum.querySelector('.tt').textContent = p.title;
+    sum.querySelector('.prov').textContent = p.vendor + ' 提供服務';
+    wrap.appendChild(sum);
+    // 折扣券 banner + popover
+    var cp = h('<button class="pl-det-coupon"><span class="cc-pic">{{IC_couponPicto}}</span>' +
+      '<span class="cc-t">95 折</span><span class="cc-t">TWD 100</span>' +
+      '<span class="cc-claim">折扣券<span class="ic">{{IC_arrowSmRight}}</span></span>' +
+      '<span class="pl-cpop">' +
+        '<span class="cp-note"><span class="ic ic-16">{{IC_infoFill}}</span>領取成功後可以在付款時選擇抵扣使用</span>' +
+        '<span class="cp-card"><span class="r1"><span class="cp-amt">TWD 1,000</span><span class="cp-btn">領取</span></span><span class="cp-cond">訂購金額須滿 TWD 50,000</span><span class="cp-exp">有效期限：2026-10-02</span></span>' +
+        '<span class="cp-card"><span class="r1"><span class="cp-amt">TWD 100</span><span class="cp-btn">去使用</span></span><span class="cp-cond">訂購金額須滿 TWD 3,000</span><span class="cp-exp">即將失效：剩 1 天</span></span>' +
+      '</span></button>');
+    var pop = cp.querySelector('.pl-cpop');
+    cp.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
+    pop.addEventListener('click', function (e) { e.stopPropagation(); });
+    wrap.appendChild(cp);
+    // 政策行
+    var pol = h('<div class="pl-det-pol"></div>');
+    if (has(p, '立即確認')) pol.appendChild(h('<div class="row"><span class="ic ic-20">{{IC_flash}}</span>立即確認並發送憑證</div>'));
+    if (has(p, '即買即用')) pol.appendChild(h('<div class="row"><span class="ic ic-20">{{IC_checkCircle}}</span>現在訂購，立即使用</div>'));
+    pol.appendChild(h('<div class="row"><span class="ic ic-20">{{IC_currencyReload}}</span>' + (has(p, '免費取消') ? '免費取消' : '出發前 3 天可免費取消') + '</div>'));
+    var scope = h('<div class="row scope"><span class="ic ic-20">{{IC_locationLine}}</span><span>適用 <u>' + (sel.dest || '日本') + ' 等 ' + DET_COUNTRIES.length + ' 個國家/地區</u></span><span class="scope-tip"><ul></ul></span></div>');
+    var ul = scope.querySelector('ul'); DET_COUNTRIES.forEach(function (n) { var li = document.createElement('li'); li.textContent = n; ul.appendChild(li); });
+    pol.appendChild(scope);
+    wrap.appendChild(pol);
+    // 基本資訊
+    wrap.appendChild(h('<h3 class="pl-det-h2">基本資訊</h3>'));
+    var intro = h('<p class="pl-det-intro">依據購買天數，可額外享有 3GB~30GB 的熱點分享流量；由連續兩年榮獲 Opensignal 網路可靠性大獎的電信網路提供連線，市區、離島與山區都能穩定上網。<span class="more">展開</span></p>');
+    wrap.appendChild(intro);
+    var carrier = p.vendor;
+    var trans = has(p, '5G/4G') ? '5G/4G' : '5G';
+    var rows = [
+      ['th', '卡片規格'],
+      ['SIM 卡片規格', 'eSIM'],
+      ['卡片供應商', carrier + '（' + (sel.dest || '日本') + '）'],
+      ['卡片有效期', '2030-12-12 前有效'],
+      ['th', '通話與簡訊'],
+      ['是否含通話', has(p, '通話') ? '是' : '否'],
+      ['支援熱點', has(p, '熱點') ? '是' : '否'],
+      ['th', '啟用設定'],
+      ['流量啟用計算方式', sel.tab === 'total' ? '總量制' : '自然日制'],
+      ['套餐有效期', sel.days + ' 天'],
+      ['th', '網路詳情'],
+      ['電信商', carrier],
+      ['IP型別', has(p, '國際漫遊') ? '漫遊 IP' : '本地 IP'],
+      ['傳輸規格', trans],
+      ['到量網速', sel.tab === 'unlimited' ? '達公平使用量後降速至 256Kbps' : '當日額度用完後降速，隔日恢復']
+    ];
+    var tbl = h('<div class="pl-dt"></div>');
+    rows.forEach(function (r) {
+      if (r[0] === 'th') tbl.appendChild(h('<div class="th">' + r[1] + '</div>'));
+      else { var tr = h('<div class="tr"><div class="k"></div><div class="v"></div></div>'); tr.querySelector('.k').textContent = r[0]; tr.querySelector('.v').textContent = r[1]; tbl.appendChild(tr); }
+    });
+    wrap.appendChild(tbl);
+    return wrap;
+  }
+  function detHowto() {
+    return h('<div class="pl-det-sec">' +
+      '<h3>如何使用</h3><ul><li>前往 設定 &gt; 行動服務（蜂窩行動網路）</li><li>點選 加入 eSIM / 加入行動方案</li><li>掃描 KKday 憑證中的 QR Code</li><li>依畫面指示完成 eSIM 安裝並開啟資料漫遊</li></ul>' +
+      '<h3>憑證使用方式</h3><ul><li>電子憑證於下單後寄送至 Email，開啟即可安裝</li><li>抵達目的地連上當地網路後開始計算天數</li></ul>' +
+      '<h3>使用效期</h3><ul><li>需於卡片有效期（2030-12-12）前啟用</li></ul></div>');
+  }
+  function detCancel() {
+    return h('<div class="pl-det-sec">' +
+      '<h3>取消政策</h3><ul><li>未啟用且於出發前指定期限內可申請免費取消</li><li>已啟用或已逾使用日，恕不退款</li></ul>' +
+      '<h3>改期</h3><ul><li>本商品為即買即用型，恕不提供改期，請於下單時確認天數與規格</li></ul></div>');
+  }
+  function detReview(p) {
+    var grade = p.rating >= 4.6 ? '非常好' : '很好';
+    var head = h('<div class="pl-det-sec"><h3>' + p.rating.toFixed(1) + ' ' + grade + '（' + p.reviews.toLocaleString('en-US') + ' 則評論）</h3></div>');
+    [['Wei***', '2026-08', '訊號穩定，掃碼即裝很快，出關就能用，推薦！'],
+     ['Chen***', '2026-07', '整趟都很順，熱點分享給同行也 OK。'],
+     ['Lin***', '2026-06', 'CP 值高，客服回覆也快。']].forEach(function (r) {
+      var el = h('<div class="pl-rev"><div class="rh"><span class="nm"></span><span class="dt"></span></div><div class="rt"></div></div>');
+      el.querySelector('.nm').textContent = r[0]; el.querySelector('.dt').textContent = r[1]; el.querySelector('.rt').textContent = r[2];
+      head.appendChild(el);
+    });
+    return head;
+  }
+  function detFee() {
+    return h('<div class="pl-det-sec">' +
+      '<h3>費用資訊</h3><p>方案費用已含當地上網流量與稅金，無隱藏費用。</p>' +
+      '<h3>延長 / 加值</h3><ul><li>可於 KKday App 內加購延長天數或流量（依方案而定）</li></ul></div>');
+  }
+  function detNotice() {
+    return h('<div class="pl-det-sec">' +
+      '<h3>購買須知</h3><ul><li>購買前請確認裝置支援 eSIM 且未鎖網</li><li>一組 QR Code 僅能安裝一次，請勿刪除後重裝</li><li>需開啟資料漫遊方可連線</li></ul></div>');
+  }
+  function detImgs() {
+    return h('<div class="pl-det-sec"><h3>圖文詳情</h3><p>商品圖文說明（示意）：涵蓋開通流程、覆蓋範圍與常見問題排解，實際內容以商品頁為準。</p></div>');
+  }
+  document.getElementById('plDetClose').addEventListener('click', closePlDetail);
+  document.getElementById('plDetMask').addEventListener('click', closePlDetail);
   document.getElementById('plCrumbHome').addEventListener('click', exitList);
   document.querySelectorAll('#plSort button').forEach(function (b) { b.addEventListener('click', function () { plSort = +b.getAttribute('data-sort'); renderPlCards(); }); });
   // 點擊翻頁（整頁、有緩衝）
