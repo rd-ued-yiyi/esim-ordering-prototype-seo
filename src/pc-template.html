@@ -383,73 +383,96 @@
   /* ---------- footer（沿用） ---------- */
   /* ================= 搜尋結果列表頁（Figma 3140-37910 / 3190-40586 / 3191-69000） ================= */
   body.list-mode #pcHome { display: none; }
-  .pc-listpage { display: block; }
-  /* 條件列：目的地 + 天數 pill + 流量檔位橫向滾動 chips + 全部流量（白底一條，貼分類導航下方） */
-  .pc-lbar { background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
-  .pc-lbar-in { display: flex; align-items: center; gap: 12px; height: 60px; }
-  .pc-lconds { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
-  .pc-lpill { display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 10px; border-radius: 8px;
-    background: var(--kk-surface-light); font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
-  .pc-lpill:hover { background: var(--kk-surface-medium); }
+  body.list-mode .pc-cat { display: none; }                         /* 列表頁無分類導航（Figma 3140-37910 只有 header + 條件列） */
+  body.list-mode .pc-header { position: sticky; top: 0; z-index: 22; }
+  .pc-listpage { display: block; background: var(--kk-surface-light); padding-bottom: 40px; }  /* 淺灰頁底，襯托白色篩選卡 / 商品卡 */
+  /* 條件列（sticky）：預設兩行（目的地/天數 + 全部流量 / 流量 Option Card 行），滑動塌縮成單行小 chip */
+  .pc-lbar { position: sticky; top: 60px; z-index: 20; background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
+  .pc-lbar-in { display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "conds mid all" "flow flow flow"; align-items: center; column-gap: 12px; row-gap: 16px; padding: 16px 0; }
+  .pc-lconds { grid-area: conds; display: flex; align-items: center; gap: 24px; }
+  .pc-lpill { display: inline-flex; align-items: center; gap: 4px; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
   .pc-lpill .chev { transition: transform .2s; }
   .pc-lpick { position: relative; }
   .pc-lpick.open .pc-lpill .chev { transform: rotate(180deg); }
+  .pc-lall { grid-area: all; align-self: start; display: inline-flex; align-items: center; gap: 2px; font-size: 14px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-lall .ic { color: var(--kk-text-medium); }
+  .pc-lall:hover { color: var(--kk-primary-dark); }
   /* 天數下拉（Figma 3190-40586：清單 + 選中打勾） */
-  .pc-ldd { position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: 140px; max-height: 260px; overflow-y: auto;
+  .pc-ldd { position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: 144px; max-height: 320px; overflow-y: auto;
     background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: var(--el-card); padding: 4px; display: none; }
   .pc-lpick.open .pc-ldd { display: block; }
   .pc-ldd button { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 36px; padding: 0 12px; border-radius: 6px;
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-ldd button:hover { background: var(--kk-surface-light); }
   .pc-ldd button.sel { color: var(--kk-primary-dark); }
-  .pc-ldd button.sel .ic { color: var(--kk-primary-dark); }
-  /* 流量檔位橫向滾動 chips */
-  .pc-lflow { flex: 1 1 0; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
+  /* 流量 Option Card 橫向滾動行（預設 176×74 帶價格 + 推薦） */
+  .pc-lflowwrap { grid-area: flow; position: relative; min-width: 0; }
+  .pc-lflow { display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; padding: 1px; }
   .pc-lflow::-webkit-scrollbar { display: none; }
-  .pc-lchip { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 96px; height: 44px; padding: 4px 12px; border-radius: 8px;
+  .pc-lchip { position: relative; flex: 0 0 176px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
-  .pc-lchip b { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-lchip b { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-lchip span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   .pc-lchip:hover { background: var(--kk-surface-medium); }
   .pc-lchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
   .pc-lchip .badge { position: absolute; top: -6px; right: -4px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; padding: 0 4px; border-radius: 4px 4px 1px 4px; }
-  .pc-lall { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 2px; height: 44px; padding: 0 4px 0 12px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
-  .pc-lall .ic { color: var(--kk-text-medium); }
-  .pc-lall:hover { color: var(--kk-primary-dark); }
-  /* 結果數 + 排序（白底卡；Figma 3140-37910） */
-  .pc-lnote { margin: 12px 0 16px; }
+  .pc-lnext { position: absolute; right: -2px; top: 50%; transform: translateY(-50%); z-index: 2; width: 32px; height: 32px; border-radius: 999px; background: #fff; box-shadow: var(--el-card); display: flex; align-items: center; justify-content: center; }
+  .pc-lnext .ic { width: 20px; height: 20px; color: var(--kk-text-darker); }
+  /* 滑動塌縮：單行、pill 縮小、流量卡變小 chip（藏價格與推薦）（Figma 3190-40586） */
+  .pc-lbar.compact .pc-lbar-in { display: flex; align-items: center; gap: 8px; padding: 11px 0; }
+  .pc-lbar.compact .pc-lconds { gap: 16px; }
+  .pc-lbar.compact .pc-lpill { font-size: 16px; line-height: 24px; }
+  .pc-lbar.compact .pc-lflowwrap { flex: 1 1 0; }
+  .pc-lbar.compact .pc-lall { align-self: center; }
+  .pc-lbar.compact .pc-lchip { flex: 0 0 auto; height: 36px; padding: 0 12px; flex-direction: row; }
+  .pc-lbar.compact .pc-lchip b { font-size: 14px; line-height: 20px; }
+  .pc-lbar.compact .pc-lchip span, .pc-lbar.compact .pc-lchip .badge, .pc-lbar.compact .pc-lnext { display: none; }
+  /* 麵包屑 note */
+  .pc-lnote { margin: 0 0 16px; }
   .pc-lbody { align-items: flex-start; }
-  .pl-topbox { background: #fff; border-radius: 8px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
-  .pl-topbox .pc-sortbox { background: none; border-radius: 0; padding: 0; }  /* 併入 pl-topbox 單一白盒，去掉內層盒的底與內距 */
+  /* 篩選欄：每組獨立白卡片（Figma filter card：radius 12、padding 20、卡間距 16） */
+  .pc-lbody .pc-ex-side { gap: 16px; }
+  .pc-lbody .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; }
+  .pc-lbody .pc-fbox .fh { margin-bottom: 16px; }
+  .pc-lbody .pc-fdate { display: flex; flex-direction: row; align-items: center; gap: 12px; padding: 16px 20px; }
+  .pc-lbody .pc-fdate .lb { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  /* 結果數 + 排序卡（Figma 排序（PC）） */
+  .pl-topbox { background: #fff; border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .pl-topbox .pc-sortbox { background: none; border-radius: 0; padding: 0; }
   .pl-cntrow { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-primary-dark); }
-  /* 列表卡（Figma 3140-37910：無圖、文字型；左內容 + 右價格CTA，中間豎分隔） */
-  .pl-list { display: flex; flex-direction: column; gap: 16px; }
-  .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 16px; cursor: pointer; transition: box-shadow .15s, transform .15s; }
-  .pl-card:hover { box-shadow: var(--el-hover); transform: translateY(-2px); }
-  .pl-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
-  .pl-warns { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; line-height: 16px; color: #E88A00; }
-  .pl-warns .wdiv { width: 1px; height: 10px; background: var(--kk-border-light); }
+  /* Plan 卡（Figma 3167:40025）：左內容（規格警示/標題/標籤/竪排政策/評論）+ 豎分隔 + 右價格CTA */
+  .pl-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
+  .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 16px; cursor: pointer; transition: box-shadow .15s; }
+  .pl-card:hover { box-shadow: var(--el-hover); }
+  .pl-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .pl-hg { display: flex; flex-direction: column; gap: 4px; }
+  .pl-warns { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 16px; color: #E78F37; overflow: hidden; white-space: nowrap; }
+  .pl-warns .wdiv { width: 1px; height: 10px; background: var(--kk-border-light); flex: 0 0 auto; }
+  .pl-warns span:not(.wdiv) { flex: 0 0 auto; }
   .pl-title { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
   .pl-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-  .pl-tag { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 4px; background: var(--kk-surface-light); font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  .pl-tag.hot { background: #FDECEA; color: var(--kk-text-critical); font-weight: 600; }
-  .pl-perks { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
-  .pl-perk { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-primary-dark); }
-  .pl-perk .ic { width: 16px; height: 16px; }
-  .pl-social { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
-  .pl-social .ic { width: 16px; height: 16px; }
-  .pl-social b { font-weight: 600; color: var(--kk-text-darker); }
-  .pl-social .grade { color: var(--kk-text-darker); }
-  .pl-social .dot { color: var(--kk-text-medium); }
-  .pl-social .vendor { color: var(--kk-text-medium); }
-  .pl-buy { flex: 0 0 176px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 8px; padding-left: 16px; border-left: 1px solid var(--kk-border-lighter); text-align: right; }
-  .pl-off { align-self: flex-end; background: #FDECEA; color: var(--kk-text-critical); font-size: 12px; line-height: 16px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
-  .pl-price { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-  .pl-price .was { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); text-decoration: line-through; }
-  .pl-price .now { font-size: 22px; line-height: 28px; font-weight: 700; color: var(--kk-text-critical); }
-  .pl-price .per { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
-  .pl-cta { height: 40px; padding: 0 28px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; transition: background .15s; }
+  .pl-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px; border-radius: 4px; background: var(--kk-surface-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
+  .pl-tag .ic { width: 16px; height: 16px; }
+  .pl-tag.hot { background: #FFF2F2; }
+  .pl-perks { display: flex; flex-direction: column; gap: 4px; }              /* 政策竪排（Figma 政策规格） */
+  .pl-perk { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pl-perk .ic { width: 16px; height: 16px; flex: 0 0 auto; }
+  .pl-social { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .pl-social .ic { width: 16px; height: 16px; flex: 0 0 auto; }
+  .pl-social .score { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-social .grade { color: var(--kk-text-darker); font-weight: 500; }
+  .pl-social .rc { color: var(--kk-text-darker); text-decoration: underline; }
+  .pl-hr { width: 1px; align-self: stretch; background: var(--kk-border-lighter); flex: 0 0 auto; }
+  .pl-buy { flex: 0 0 231px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 8px; }
+  .pl-priceblk { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .pl-off { background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; padding: 2px 4px; border-radius: 4px; }
+  .pl-price { display: flex; align-items: baseline; gap: 8px; }
+  .pl-price .was { font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }
+  .pl-price .now { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 18px; line-height: 18px; font-weight: 700; color: var(--kk-text-darker); }
+  .pl-price .now .cur { margin-right: 2px; }
+  .pl-per { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .pl-cta { height: 40px; padding: 0 20px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; transition: background .15s; }
   .pl-cta:hover { background: var(--kk-primary-dark); }
   /* 全部流量 dialog（Figma 3191-69000：選擇流量，三段 3 欄卡片可捲動） */
   .pc-alldlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
@@ -709,16 +732,19 @@
   <!-- ============ 搜尋結果列表頁（Figma 3140-37910） ============ -->
   <section class="pc-listpage" id="pcListPage" hidden>
     <!-- 條件列：目的地 + 天數 + 流量檔位滾動 chips + 全部流量 -->
-    <div class="pc-lbar">
+    <div class="pc-lbar" id="plBar">
       <div class="col pc-lbar-in">
         <div class="pc-lconds">
-          <button class="pc-lpill" id="plDestPill"><span class="ic ic-16">{{PC_location20}}</span><span id="plDestName">日本</span><span class="dest-num" id="plDestNum" hidden></span><span class="ic ic-16 chev">{{PC_arrowDown20}}</span></button>
+          <button class="pc-lpill" id="plDestPill"><span id="plDestName">日本</span><span class="dest-num" id="plDestNum" hidden></span><span class="ic ic-20 chev">{{PC_arrowDown20}}</span></button>
           <div class="pc-lpick" id="plDaysPick">
-            <button class="pc-lpill" id="plDaysPill"><span id="plDaysName">5天</span><span class="ic ic-16 chev">{{PC_arrowDown20}}</span></button>
+            <button class="pc-lpill" id="plDaysPill"><span id="plDaysName">5天</span><span class="ic ic-20 chev">{{PC_arrowDown20}}</span></button>
             <div class="pc-ldd" id="plDaysDd"></div>
           </div>
         </div>
-        <div class="pc-lflow" id="plFlowChips"></div>
+        <div class="pc-lflowwrap">
+          <div class="pc-lflow" id="plFlowChips"></div>
+          <button class="pc-lnext" id="plFlowNext" aria-label="更多流量"><span class="ic">{{PC_arrowRight24}}</span></button>
+        </div>
         <button class="pc-lall" id="plAllFlow">全部流量<span class="ic ic-16 rot90">{{IC_arrowRightGrey}}</span></button>
       </div>
     </div>
@@ -1369,7 +1395,21 @@
   }
 
   // ================= 搜尋結果列表頁（同頁切換視圖） =================
-  var PL_CHECK = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.4l3.2 3.2L13 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  // 政策圖標（Figma 3167:40036）：立即確認=閃電(青)、可用日=打勾圈(灰)、取消=退款循環(灰)
+  var PL_IC = {
+    flash: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9.2 1.5 3.5 9h3.3l-1 5.5L12.5 7H9l.2-5.5Z" fill="#26BEC9"/></svg>',
+    check: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="#727272" stroke-width="1.3"/><path d="m5.2 8.2 1.9 1.9 3.7-3.9" stroke="#727272" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    reload: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.6 5A5 5 0 1 0 13 8" stroke="#727272" stroke-width="1.3" stroke-linecap="round"/><path d="M13 2.4V5h-2.6" stroke="#727272" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    cross: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="#727272" stroke-width="1.3"/><path d="M5.8 5.8l4.4 4.4M10.2 5.8l-4.4 4.4" stroke="#727272" stroke-width="1.3" stroke-linecap="round"/></svg>'
+  };
+  var PL_FIRE = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8.5 1.5c.6 2-1 2.8-1.9 3.9C5.4 6.9 5 8 5 9a3 3 0 0 0 6 .2c0-1.2-.6-2.2-1.2-3 .3.9.1 1.8-.5 2.2.3-1.6-.8-2.8-.8-4.4 0-.9.3-1.7.8-2.5Z" fill="#EF7A70"/></svg>';
+  // 政策文案 → 圖標：立即確認→閃電；即買即用/可用→打勾；免費/可免費取消→退款循環；不可取消→叉
+  function plPerkIcon(pk) {
+    if (pk.indexOf('確認') >= 0) return PL_IC.flash;
+    if (pk.indexOf('不可') >= 0) return PL_IC.cross;
+    if (pk.indexOf('取消') >= 0) return PL_IC.reload;
+    return PL_IC.check;
+  }
   // 卡片假數據：復刻 mweb .pkg-card 結構（警示/規格標籤/政策/評分/供應商/價格），內容對齊 Figma 3140-37910
   var PL_DATA = [
     { title: '5G・漫遊・原生網絡・支援熱點', warns: ['需設備信息', '需指定啟用日', '需實名認證'], tags: ['支持熱點・通話', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.8, reviews: 3479, bought: '10k+ 已購', vendor: 'Joytel', now: 988, was: 1234, per: 46, off: '20%OFF', hot: true },
@@ -1386,23 +1426,29 @@
   function plMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
   function plCardHTML(p) {
     var warns = p.warns.map(function (w, i) { return (i ? '<span class="wdiv"></span>' : '') + '<span>' + w + '</span>'; }).join('');
-    var tags = (p.hot ? '<span class="pl-tag hot">HOT</span>' : '') + p.tags.map(function (t) { return '<span class="pl-tag">' + t + '</span>'; }).join('');
-    var perks = p.perks.map(function (pk) { return '<span class="pl-perk"><span class="ic">' + PL_CHECK + '</span>' + pk + '</span>'; }).join('');
+    var tags = (p.hot ? '<span class="pl-tag hot"><span class="ic">' + PL_FIRE + '</span>HOT</span>' : '') + p.tags.map(function (t) { return '<span class="pl-tag">' + t + '</span>'; }).join('');
+    var perks = p.perks.map(function (pk) { return '<span class="pl-perk"><span class="ic">' + plPerkIcon(pk) + '</span>' + pk + '</span>'; }).join('');
     var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '');
-    var social = '<span class="ic">' + PC_ICONS.star + '</span><b>' + p.rating.toFixed(1) + '</b>' + (grade ? '<span class="grade">' + grade + '</span>' : '') +
-      '<span>(' + p.reviews.toLocaleString('en-US') + ')</span><span class="dot">·</span><span>' + p.bought + '</span><span class="dot">·</span><span class="vendor">' + p.vendor + ' 提供服務</span>';
+    var social = '<span class="ic">' + PC_ICONS.star + '</span><span class="score">' + p.rating.toFixed(1) + '</span>' + (grade ? '<span class="grade">' + grade + '</span>' : '') +
+      '<span class="rc">(' + p.reviews.toLocaleString('en-US') + ')</span><span>· ' + p.bought + ' · ' + p.vendor + ' 提供服務</span>';
     return '<div class="pl-card" data-toast="old">' +
       '<div class="pl-main">' +
-        '<div class="pl-warns">' + warns + '</div>' +
-        '<div class="pl-title">' + p.title + '</div>' +
-        '<div class="pl-tags">' + tags + '</div>' +
+        '<div class="pl-hg">' +
+          '<div class="pl-warns">' + warns + '</div>' +
+          '<div class="pl-title">' + p.title + '</div>' +
+          '<div class="pl-tags">' + tags + '</div>' +
+        '</div>' +
         '<div class="pl-perks">' + perks + '</div>' +
         '<div class="pl-social">' + social + '</div>' +
       '</div>' +
+      '<div class="pl-hr"></div>' +
       '<div class="pl-buy">' +
-        (p.off ? '<span class="pl-off">' + p.off + '</span>' : '') +
-        '<div class="pl-price">' + (p.was ? '<span class="was">' + plMoney(p.was) + '</span>' : '') +
-          '<span class="now">' + plMoney(p.now) + '</span>' + (p.per ? '<span class="per">≈NT$' + p.per + '/天</span>' : '') + '</div>' +
+        '<div class="pl-priceblk">' +
+          (p.off ? '<span class="pl-off">' + p.off + '</span>' : '') +
+          '<div class="pl-price">' + (p.was ? '<span class="was">' + plMoney(p.was) + '</span>' : '') +
+            '<span class="now"><span class="cur">NT$</span>' + p.now.toLocaleString('en-US') + '</span></div>' +
+          (p.per ? '<span class="pl-per">≈NT$' + p.per + '/天</span>' : '') +
+        '</div>' +
         '<button class="pl-cta">訂購</button>' +
       '</div>' +
     '</div>';
@@ -1439,7 +1485,7 @@
     var dd = document.getElementById('plDaysDd'); dd.innerHTML = '';
     for (var i = 1; i <= 30; i++) (function (d) {
       var b = h('<button' + (sel.days === d ? ' class="sel"' : '') + '><span>' + d + '天</span></button>');
-      if (sel.days === d) b.insertAdjacentHTML('beforeend', '<span class="ic ic-16">' + PL_CHECK + '</span>');
+      if (sel.days === d) b.insertAdjacentHTML('beforeend', '<span class="ic ic-16"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.4l3.2 3.2L13 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>');
       b.addEventListener('click', function (e) { e.stopPropagation(); sel.days = d; sel.planTouched = false; document.getElementById('plDaysPick').classList.remove('open'); renderList(); renderPanel(); });
       dd.appendChild(b);
     })(i);
@@ -1497,7 +1543,7 @@
     document.getElementById('plDaysName').textContent = sel.days + '天';
     renderListChips(); renderDaysDd(); renderPlCards();
   }
-  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; renderList(); window.scrollTo(0, 0); }
+  function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
   function exitList() { document.body.classList.remove('list-mode'); document.getElementById('pcListPage').hidden = true; window.scrollTo(0, 0); }
   // 事件綁定
   document.getElementById('plDestPill').addEventListener('click', function () { openDlg(); });
@@ -1509,6 +1555,15 @@
   document.getElementById('pcAllMask').addEventListener('click', closeAllFlow);
   document.getElementById('plCrumbHome').addEventListener('click', exitList);
   document.querySelectorAll('#plSort button').forEach(function (b) { b.addEventListener('click', function () { plSort = +b.getAttribute('data-sort'); renderPlCards(); }); });
+  // 輪播右箭頭：往右捲一屏流量卡
+  document.getElementById('plFlowNext').addEventListener('click', function () {
+    var f = document.getElementById('plFlowChips'); f.scrollBy({ left: Math.max(360, f.clientWidth - 80), behavior: 'smooth' });
+  });
+  // 滑動塌縮：捲動離開條件列上緣即切換 compact（Figma 3140-37910 預設 ↔ 3190-40586 滑動）
+  window.addEventListener('scroll', function () {
+    if (!document.body.classList.contains('list-mode')) return;
+    document.getElementById('plBar').classList.toggle('compact', window.scrollY > 20);
+  }, { passive: true });
   (function () {  // 列表頁價格區間雙滑塊
     var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax'), fill = document.getElementById('plFill'), pv = document.getElementById('plPv');
     function nt(n, plus) { return 'NT$' + n.toLocaleString('en-US') + (plus && n >= 12000 ? '+' : ''); }
