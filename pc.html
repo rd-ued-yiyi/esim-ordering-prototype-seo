@@ -621,6 +621,59 @@
   .pl-rev .rh .nm { font-weight: 600; color: var(--kk-text-darker); }
   .pl-rev .rh .dt { color: var(--kk-text-medium); font-size: 12px; }
   .pl-rev .rt { margin-top: 6px; font-size: 14px; line-height: 22px; color: var(--kk-text-darker); }
+  .pl-rev .rh .stars { display: inline-flex; gap: 2px; }
+  .pl-rev .rh .stars .ic { width: 16px; height: 16px; color: #FFB000; }
+  .pl-rev .rmeta { margin-top: 6px; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pl-rev .rmeta .nm { font-weight: 600; color: var(--kk-text-dark); }
+  /* 基本資訊值後 ⓘ */
+  .pl-dt .v.v-tip { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  .pl-dt .v.v-tip .ic { width: 16px; height: 16px; color: var(--kk-text-medium); flex: 0 0 auto; }
+  .pl-dt .v.v-tip:hover { color: var(--kk-primary-dark); }
+  .pl-dt .v.v-tip:hover .ic { color: var(--kk-primary-dark); }
+  /* 評論：評分 + AI 摘要 + 關鍵字 */
+  .pl-rev-score { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; }
+  .pl-rev-score .badge9 { width: 48px; height: 48px; border-radius: 12px; background: var(--kk-primary-dark); color: #fff; font-size: 22px; line-height: 48px; text-align: center; font-weight: 700; flex: 0 0 auto; }
+  .pl-rev-score .gcol { display: flex; flex-direction: column; gap: 2px; }
+  .pl-rev-score .gt { font-size: 16px; line-height: 22px; font-weight: 600; color: var(--kk-text-darker); }
+  .pl-rev-score .gc { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pl-ai { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; background: var(--kk-surface-lighter); }
+  .pl-ai .ai-t { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); margin-bottom: 8px; }
+  .pl-ai .ai-t .ic { width: 16px; height: 16px; color: var(--kk-primary-dark); }
+  .pl-ai .ai-b { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
+  .pl-kws { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .pl-kw { display: inline-flex; align-items: center; gap: 4px; height: 30px; padding: 0 12px; border-radius: 15px; background: var(--kk-surface-light); font-size: 13px; line-height: 18px; color: var(--kk-text-dark); }
+  .pl-kw .ic { width: 16px; height: 16px; color: var(--kk-text-medium); }
+  .pl-kw.pos { background: var(--kk-primary-lighter); color: var(--kk-primary-dark); }
+  .pl-kw.pos .ic { color: var(--kk-primary-dark); }
+  .pl-morebtn { margin-top: 16px; width: 100%; height: 44px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; font-weight: 600; color: var(--kk-text-darker); cursor: pointer; }
+  .pl-morebtn:hover { background: var(--kk-surface-light); }
+  /* 取消政策表 */
+  .pl-cxl { border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; margin-top: 8px; }
+  .pl-cxl .r { display: flex; border-top: 1px solid var(--kk-border-lighter); }
+  .pl-cxl .r:first-child { border-top: 0; }
+  .pl-cxl .r.head { background: var(--kk-surface-lighter); font-weight: 600; color: var(--kk-text-darker); }
+  .pl-cxl .c { flex: 1 1 0; padding: 12px 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pl-cxl .c:first-child { flex: 0 0 46%; border-right: 1px solid var(--kk-border-lighter); }
+  .pl-cxl-note { display: flex; gap: 8px; margin-top: 12px; padding: 12px 14px; border-radius: 8px; background: var(--kk-surface-lighter); }
+  .pl-cxl-note .ic { width: 16px; height: 16px; color: var(--kk-text-medium); flex: 0 0 auto; margin-top: 2px; }
+  .pl-cxl-note p { font-size: 12px; line-height: 18px; color: var(--kk-text-medium); }
+  /* 費用資訊 */
+  .pl-det-sec h4.sub { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); margin: 16px 0 8px; }
+  .pl-inc { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 22px; color: var(--kk-text-darker); padding: 2px 0; }
+  .pl-inc .ic { width: 16px; height: 16px; color: var(--kk-primary-dark); flex: 0 0 auto; }
+  .pl-inc.no { color: var(--kk-text-medium); }
+  .pl-inc.no .ic { color: var(--kk-text-light); }
+  /* 注意事項 box */
+  .pl-noticebox { margin-top: 12px; border: 1px solid #F6D98A; background: #FFFBEE; border-radius: 8px; padding: 14px 16px; }
+  .pl-noticebox .nb-t { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; font-weight: 600; color: #A6791B; margin-bottom: 8px; }
+  .pl-noticebox .nb-i { width: 18px; height: 18px; border-radius: 50%; background: #E6A817; color: #fff; font-size: 12px; line-height: 18px; text-align: center; font-weight: 700; }
+  .pl-noticebox ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .pl-noticebox li { font-size: 13px; line-height: 20px; color: #8A6A1C; }
+  /* 圖文步驟 */
+  .pl-steps { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .pl-steps li { font-size: 14px; line-height: 22px; color: var(--kk-text-darker); }
+  /* 規格 ⓘ 釋義 */
+  .pc-spec-tip { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
   /* ============ 日期日曆下拉（Figma 3223-83700） ============ */
   .pc-cal { position: fixed; z-index: 60; width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 16px; }
   .pc-cal[hidden] { display: none; }
@@ -1048,8 +1101,8 @@
 <!-- ============ 規格詳情 dialog（Figma 3242-45112）：篩選規格釋義表格 ============ -->
 <div class="pc-mask" id="pcSpecMask"></div>
 <div class="pc-specdlg" id="pcSpecDlg" role="dialog" aria-modal="true">
-  <div class="pc-specdlg-hd"><span class="t">規格詳情</span><button id="pcSpecClose" aria-label="關閉"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></button></div>
-  <div class="pc-specdlg-bd">
+  <div class="pc-specdlg-hd"><span class="t" id="pcSpecTitle">規格詳情</span><button id="pcSpecClose" aria-label="關閉"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></button></div>
+  <div class="pc-specdlg-bd" id="pcSpecBd">
     <div class="pc-spec-h">流量激活方式</div>
     <table class="pc-spec-table">
       <tr><th>選項規格</th><th>含義</th></tr>
@@ -1760,6 +1813,21 @@
     p._base = p.now;  // 基準價（未縮放）
     p._baseWas = p.was;
     p._basePer = p.per;
+    // mweb 同款規格（詳情用；依卡片語義推導，缺的按索引補全，對齊 PKG_SPECS 欄位）
+    var native = !/國際漫遊/.test(s);
+    p.spec = {
+      sim: native ? '原生卡' : '國際漫遊卡',
+      net: native ? '本地' : '漫遊',
+      ip: native ? '本地IP' : '漫遊IP',
+      speed: /5G\/4G/.test(s) ? '5G/4G' : (/5G/.test(s) ? '5G' : '4G'),
+      act: ['自然日制', '24小時制', '總量制'][i % 3],
+      topup: /加值/.test(s),
+      hotspot: /熱點/.test(s),
+      call: /通話/.test(s),
+      sms: /通話/.test(s)
+    };
+    p.carrier = p.vendor;
+    p.cancelType = /免費取消/.test(p.perks.join()) ? 'free' : (/前可免費取消/.test(p.perks.join()) ? 'cond' : (/不可取消/.test(p.perks.join()) ? 'none' : 'fee'));
   });
   function plBoughtNum(s) { var m = parseInt(s, 10) || 0; return m * (/[kK]/.test(s) ? 1000 : 1); }
   function plMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
@@ -2019,8 +2087,15 @@
   document.getElementById('pcAllClose').addEventListener('click', closeAllFlow);
   document.getElementById('pcAllMask').addEventListener('click', closeAllFlow);
   // 規格詳情 dialog（篩選組 ⓘ）
-  function openSpec() { document.getElementById('pcSpecMask').classList.add('open'); document.getElementById('pcSpecDlg').classList.add('open'); lockScroll(); }
+  var _specDefault = document.getElementById('pcSpecBd').innerHTML;
+  function openSpec(title, bodyHTML) {
+    document.getElementById('pcSpecTitle').textContent = title || '規格詳情';
+    document.getElementById('pcSpecBd').innerHTML = bodyHTML || _specDefault;
+    document.getElementById('pcSpecMask').classList.add('open'); document.getElementById('pcSpecDlg').classList.add('open'); lockScroll();
+  }
   function closeSpec() { if (!document.getElementById('pcSpecDlg').classList.contains('open')) return; document.getElementById('pcSpecMask').classList.remove('open'); document.getElementById('pcSpecDlg').classList.remove('open'); unlockScroll(); }
+  // 基本資訊行內 ⓘ：開啟同一 dialog，顯示該規格釋義
+  function openSpecTip(term, text) { openSpec(term, '<p class="pc-spec-tip">' + text + '</p>'); }
   document.getElementById('plSpecInfo').addEventListener('click', function (e) { e.stopPropagation(); openSpec(); });
   document.getElementById('pcSpecClose').addEventListener('click', closeSpec);
   document.getElementById('pcSpecMask').addEventListener('click', closeSpec);
@@ -2056,7 +2131,25 @@
     else if (detCur === 5) bd.appendChild(detNotice(p));
     else bd.appendChild(detImgs(p));
   }
+  // 傳輸規格 / 到量網速（對齊 mweb detTransSpec + fillDetail throttle 邏輯）
+  function detTrans() {
+    if (sel.tab === 'daily') return '每日 ' + sel.plan.replace('/天', '') + ' 高速，超量後限速 256Kbps 不限量';
+    if (sel.tab === 'total') return sel.plan.replace('共', '共 ') + ' 高速流量，用完即止（可隨時加購）';
+    return ({ '無限不降速': '不限流量，全程不限速', '無限流量高速': '不限流量，高速上網（達公平使用量後降速）', '無限到量降速': '不限流量，達公平使用量後降速', '無限流量輕速': '不限流量，輕速上網（適合訊息／導航）' })[sel.plan] || '不限流量';
+  }
+  function detThrottle() {
+    if (sel.tab === 'unlimited') return ({ '無限不降速': '不降速，全程維持高速', '無限流量高速': '達公平使用量後降至 3 Mbps', '無限到量降速': '達公平使用量後降至 1 Mbps', '無限流量輕速': '達公平使用量後降至 256 Kbps' })[sel.plan] || '達公平使用量後降速';
+    if (sel.tab === 'total') return '額度用完後停止連線，加購後恢復';
+    return '當日額度用完後降至 256 Kbps，隔日恢復高速';
+  }
+  var SPEC_TIPS = {
+    simType: '原生卡＝當地電信商直營 SIM；國際漫遊卡＝以漫遊方式接入當地網路。',
+    validCard: '卡片需於此日期前完成啟用，逾期即失效、無法補發。',
+    activate: '抵達目的地後掃描 QR Code 安裝，開啟資料漫遊即自動連線當地網路。',
+    calc: '24小時制＝自啟用起連續 24 小時為一天；自然日制＝以當地自然日計算；總量制＝一次給定總額度、用完為止。'
+  };
   function detSvc(p) {
+    var sp = p.spec, native = sp.sim === '原生卡', dest = sel.dest || '日本', d = sel.days;
     var warns = (p.warns && p.warns.length) ? p.warns.map(function (w, i) { return (i ? '<span class="wdiv"></span>' : '') + '<span>' + w + '</span>'; }).join('') : '';
     var wrap = h('<div></div>');
     var sum = h('<div class="pl-det-sum">' +
@@ -2067,7 +2160,7 @@
     sum.querySelector('.tt').textContent = p.title;
     sum.querySelector('.prov').textContent = p.vendor + ' 提供服務';
     wrap.appendChild(sum);
-    // 折扣券 banner + popover
+    // 折扣券 banner + 領券 popover（Figma 3220-50734）
     var cp = h('<button class="pl-det-coupon"><span class="cc-pic"><svg style="display: block;" viewBox="0 0 30.9494 27.2026" fill="none" xmlns="http://www.w3.org/2000/svg"> <g id="Vector"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.58821 15.6673C5.33356 15.9219 5.19051 16.2673 5.19051 16.6274C5.19051 16.9876 5.33356 17.3329 5.58821 17.5876L7.37476 19.3741C7.59603 19.5954 7.88702 19.7335 8.19841 19.7648C8.50961 19.7961 8.82206 19.7189 9.08287 19.5463C9.60521 19.2012 10.2307 19.0471 10.8536 19.11C11.4765 19.173 12.0585 19.4492 12.5012 19.8919C12.9439 20.3346 13.22 20.9166 13.283 21.5395C13.346 22.1621 13.192 22.7874 12.8472 23.3096C12.6743 23.5705 12.597 23.8832 12.6283 24.1946C12.6596 24.506 12.7977 24.7971 13.019 25.0184L14.8055 26.8049C15.0601 27.0595 15.4055 27.2026 15.7656 27.2026C16.1257 27.2026 16.4711 27.0595 16.7258 26.8049L30.5517 12.9789C30.8063 12.7243 30.9494 12.3789 30.9494 12.0188C30.9494 11.6587 30.8063 11.3133 30.5517 11.0587L28.7651 9.2721C28.5439 9.05078 28.2529 8.91277 27.9415 8.88146C27.6303 8.85016 27.3178 8.92736 27.057 9.09996C26.5347 9.44507 25.9092 9.59917 25.2863 9.53619C24.6634 9.47322 24.0814 9.19702 23.6387 8.75434C23.196 8.31165 22.9198 7.72965 22.8569 7.10677C22.7939 6.484 22.9479 5.85861 23.2929 5.33633C23.4657 5.07545 23.5429 4.76289 23.5116 4.45158C23.4803 4.14018 23.3422 3.84912 23.1209 3.62785L21.3344 1.84137C21.0798 1.58673 20.7344 1.44367 20.3743 1.44367C20.0141 1.44367 19.6688 1.58673 19.4141 1.84137L5.58821 15.6673ZM18.6926 9.52244C18.6926 9.07249 18.3279 8.70774 17.8779 8.70774C17.428 8.70773 17.0632 9.07249 17.0632 9.52244L17.0632 18.7397C17.0632 19.1897 17.428 19.5544 17.8779 19.5544C18.3279 19.5544 18.6926 19.1897 18.6926 18.7397V9.52244ZM14.5175 13.459C14.9947 13.9362 14.9947 14.71 14.5175 15.1872C14.0402 15.6645 13.2665 15.6645 12.7892 15.1872C12.312 14.71 12.312 13.9362 12.7892 13.459C13.2665 12.9818 14.0402 12.9818 14.5175 13.459ZM22.9666 14.8032C23.4439 14.3259 23.4439 13.5522 22.9666 13.0749C22.4894 12.5977 21.7156 12.5977 21.2384 13.0749C20.7611 13.5522 20.7611 14.3259 21.2384 14.8032C21.7156 15.2804 22.4894 15.2804 22.9666 14.8032Z" fill="#F3573F"/> <path d="M8.48107 0.441234C8.51077 0.0230943 9.02868 -0.153614 9.30776 0.159173L10.6004 1.60796C10.6826 1.70007 10.7975 1.75649 10.9206 1.76524L12.8574 1.90277C13.2755 1.93246 13.4522 2.45037 13.1394 2.72946L11.6907 4.02213C11.5985 4.10431 11.5421 4.21918 11.5334 4.34231L11.3958 6.27908C11.3662 6.69722 10.8482 6.87393 10.5692 6.56114L9.27649 5.11235C9.1943 5.02025 9.07944 4.96382 8.9563 4.95508L7.01954 4.81754C6.6014 4.78785 6.42469 4.26994 6.73747 3.99086L8.18626 2.69819C8.27837 2.616 8.33479 2.50114 8.34354 2.378L8.48107 0.441234Z" fill="#FFCA28"/> <path d="M24.5764 24.1803C24.3904 23.9832 24.5329 23.6594 24.8038 23.6635L26.0588 23.682C26.1385 23.6832 26.2156 23.6532 26.2737 23.5985L27.1864 22.7369C27.3834 22.5509 27.7072 22.6934 27.7032 22.9643L27.6846 24.2193C27.6834 24.299 27.7134 24.3761 27.7682 24.4342L28.6297 25.3469C28.8157 25.5439 28.6733 25.8677 28.4023 25.8637L27.1474 25.8451C27.0676 25.8439 26.9905 25.8739 26.9325 25.9287L26.0198 26.7902C25.8227 26.9762 25.4989 26.8338 25.5029 26.5628L25.5215 25.3079C25.5227 25.2281 25.4927 25.151 25.438 25.093L24.5764 24.1803Z" fill="#02C1CF"/> <path d="M1.66157 14.2639C2.39236 14.3544 2.91136 15.0203 2.82079 15.7511C2.73022 16.4819 2.06438 17.0009 1.33359 16.9103L1.16948 16.8899C0.438691 16.7994 -0.0803084 16.1335 0.0102621 15.4027C0.100833 14.672 0.766676 14.153 1.49746 14.2435L1.66157 14.2639Z" fill="#EF7A70"/> </g> </svg></span>' +
       '<span class="cc-t">95 折</span><span class="cc-t">TWD 100</span>' +
       '<span class="cc-claim">折扣券<span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjkuMzMzMzMiIGhlaWdodD0iNS4zMzMzMyIgdmlld0JveD0iMCAwIDkuMzMzMzMgNS4zMzMzMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciAoU3Ryb2tlKSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjE5NTI2IDAuMTk1MjYyQzQuNDU1NjEgLTAuMDY1MDg3NCA0Ljg3NzcyIC0wLjA2NTA4NzQgNS4xMzgwNyAwLjE5NTI2Mkw5LjEzODA3IDQuMTk1MjZDOS4zOTg0MiA0LjQ1NTYxIDkuMzk4NDIgNC44Nzc3MiA5LjEzODA3IDUuMTM4MDdDOC44Nzc3MiA1LjM5ODQyIDguNDU1NjEgNS4zOTg0MiA4LjE5NTI2IDUuMTM4MDdMNC42NjY2NyAxLjYwOTQ4TDEuMTM4MDcgNS4xMzgwN0MwLjg3NzcyMiA1LjM5ODQyIDAuNDU1NjEyIDUuMzk4NDIgMC4xOTUyNjIgNS4xMzgwN0MtMC4wNjUwODc0IDQuODc3NzIgLTAuMDY1MDg3NCA0LjQ1NTYxIDAuMTk1MjYyIDQuMTk1MjZMNC4xOTUyNiAwLjE5NTI2MloiIGZpbGw9IiNFNjVGNTAiLz4KPC9zdmc+" width="9.33" height="5.33"></span></span>' +
@@ -2080,80 +2173,149 @@
     cp.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
     pop.addEventListener('click', function (e) { e.stopPropagation(); });
     wrap.appendChild(cp);
-    // 政策行
+    // 政策行（順序與 mweb 一致：立即確認 → 即買即用 → 取消政策 → 適用範圍）
     var pol = h('<div class="pl-det-pol"></div>');
-    if (has(p, '立即確認')) pol.appendChild(h('<div class="row"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTEgMTUiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik0xMC45ODY4IDYuODg1NzRDMTAuOTY4IDYuODA1NzEgMTAuOTI5OCA2LjczMTU1IDEwLjg3NTUgNi42Njk4MkMxMC44MjEyIDYuNjA4MDkgMTAuNzUyNSA2LjU2MDY5IDEwLjY3NTYgNi41MzE4Mkw3LjA3MzY4IDUuMTgxMTJMNy45OTAzMSAwLjU5ODA0N0M4LjAxMTY0IDAuNDkxMzczIDcuOTk3NiAwLjM4MDY1MiA3Ljk1MDMxIDAuMjgyNjhDNy45MDMwMyAwLjE4NDcwOCA3LjgyNTA4IDAuMTA0ODMgNy43MjgzIDAuMDU1MTYwNkM3LjYzMTUxIDAuMDA1NDkxMzIgNy41MjExNyAtMC4wMTEyNTg2IDcuNDE0MDEgMC4wMDc0NTE0MUM3LjMwNjg0IDAuMDI2MTYxNCA3LjIwODcgMC4wNzkzMTA2IDcuMTM0NDcgMC4xNTg4MzdMMC4xMzQ0NzUgNy42NTg4NEMwLjA3ODM4NTQgNy43MTg5MyAwLjAzNzk3NzggNy43OTE5MyAwLjAxNjgyOTYgNy44NzEzN0MtMC4wMDQzMTg1NCA3Ljk1MDggLTAuMDA1NTU0OTMgOC4wMzQyMyAwLjAxMzIzIDguMTE0MjZDMC4wMzIwMTQ5IDguMTk0MjggMC4wNzAyNDE4IDguMjY4NDUgMC4xMjQ1MjYgOC4zMzAxOEMwLjE3ODgxIDguMzkxOTEgMC4yNDc0NzcgOC40MzkzIDAuMzI0NDQ3IDguNDY4MTZMMy45MjYzNSA5LjgxODg3TDMuMDA5NzIgMTQuNDAxOUMyLjk4ODM4IDE0LjUwODYgMy4wMDI0MSAxNC42MTkzIDMuMDQ5NjkgMTQuNzE3M0MzLjA5Njk3IDE0LjgxNTMgMy4xNzQ5MiAxNC44OTUyIDMuMjcxNzEgMTQuOTQ0OUMzLjM2ODUgMTQuOTk0NSAzLjQ3ODg1IDE1LjAxMTMgMy41ODYwMiAxNC45OTI2QzMuNjkzMTkgMTQuOTczOSAzLjc5MTMzIDE0LjkyMDcgMy44NjU1NiAxNC44NDEyTDEwLjg2NTYgNy4zNDExNUMxMC45MjE2IDcuMjgxMDUgMTAuOTYyIDcuMjA4MDYgMTAuOTgzMiA3LjEyODYyQzExLjAwNDMgNy4wNDkxOSAxMS4wMDU2IDYuOTY1NzYgMTAuOTg2OCA2Ljg4NTc0VjYuODg1NzRaIiBmaWxsPSIjMTNBM0I2Ii8+Cjwvc3ZnPg==" width="11.00" height="15.00"></span>立即確認並發送憑證</div>'));
+    if (has(p, '立即確認')) pol.appendChild(h('<div class="row"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTEgMTUiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik0xMC45ODY4IDYuODg1NzRDMTAuOTY4IDYuODA1NzEgMTAuOTI5OCA2LjczMTU1IDEwLjg3NTUgNi42Njk4MkMxMC44MjEyIDYuNjA4MDkgMTAuNzUyNSA2LjU2MDY5IDEwLjY3NTYgNi41MzE4Mkw3LjA3MzY4IDUuMTgxMTJMNy45OTAzMSAwLjU5ODA0N0M4LjAxMTY0IDAuNDkxMzczIDcuOTk3NiAwLjM4MDY1MiA3Ljk1MDMxIDAuMjgyNjhDNy45MDMwMyAwLjE4NDcwOCA3LjgyNTA4IDAuMTA0ODMgNy43MjgzIDAuMDU1MTYwNkM3LjYzMTUxIDAuMDA1NDkxMzIgNy41MjExNyAtMC4wMTEyNTg2IDcuNDE0MDEgMC4wMDc0NTE0MUM3LjMwNjg0IDAuMDI2MTYxNCA3LjIwODcgMC4wNzkzMTA2IDcuMTM0NDcgMC4xNTg4MzdMMC4xMzQ0NzUgNy42NTg4NEMwLjA3ODM4NTQgNy43MTg5MyAwLjAzNzk3NzggNy43OTE5MyAwLjAxNjgyOTYgNy44NzEzN0MtMC4wMDQzMTg1NCA3Ljk1MDggLTAuMDA1NTU0OTMgOC4wMzQyMyAwLjAxMzIzIDguMTE0MjZDMC4wMzIwMTQ5IDguMTk0MjggMC4wNzAyNDE4IDguMjY4NDUgMC4xMjQ1MjYgOC4zMzAxOEMwLjE3ODgxIDguMzkxOTEgMC4yNDc0NzcgOC40MzkzIDAuMzI0NDQ3IDguNDY4MTZMMy45MjYzNSA5LjgxODg3TDMuMDA5NzIgMTQuNDAxOUMyLjk4ODM4IDE0LjUwODYgMy4wMDI0MSAxNC42MTkzIDMuMDQ5NjkgMTQuNzE3M0MzLjA5Njk3IDE0LjgxNTMgMy4xNzQ5MiAxNC44OTUyIDMuMjcxNzEgMTQuOTQ0OUMzLjM2ODUgMTQuOTk0NSAzLjQ3ODg1IDE1LjAxMTMgMy41ODYwMiAxNC45OTI2QzMuNjkzMTkgMTQuOTczOSAzLjc5MTMzIDE0LjkyMDcgMy44NjU1NiAxNC44NDEyTDEwLjg2NTYgNy4zNDExNUMxMC45MjE2IDcuMjgxMDUgMTAuOTYyIDcuMjA4MDYgMTAuOTgzMiA3LjEyODYyQzExLjAwNDMgNy4wNDkxOSAxMS4wMDU2IDYuOTY1NzYgMTAuOTg2OCA2Ljg4NTc0VjYuODg1NzRaIiBmaWxsPSIjMTNBM0I2Ii8+Cjwvc3ZnPg==" width="11.00" height="15.00"></span>立即確認並傳送憑證</div>'));
     if (has(p, '即買即用')) pol.appendChild(h('<div class="row"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE5LjUiIGhlaWdodD0iMTkuNSIgdmlld0JveD0iMCAwIDE5LjUgMTkuNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTkuNzUgMEM3LjgyMTY0IDAgNS45MzY1NyAwLjU3MTgyOCA0LjMzMzE5IDEuNjQzMTdDMi43Mjk4MiAyLjcxNDUyIDEuNDgwMTMgNC4yMzcyNiAwLjc0MjE3OSA2LjAxODg0QzAuMDA0MjI0NDkgNy44MDA0MiAtMC4xODg4NTggOS43NjA4MiAwLjE4NzM0OCAxMS42NTIxQzAuNTYzNTU0IDEzLjU0MzQgMS40OTIxNSAxNS4yODA3IDIuODU1NzEgMTYuNjQ0M0M0LjIxOTI4IDE4LjAwNzkgNS45NTY1NiAxOC45MzY1IDcuODQ3ODcgMTkuMzEyN0M5LjczOTE5IDE5LjY4ODkgMTEuNjk5NiAxOS40OTU4IDEzLjQ4MTIgMTguNzU3OEMxNS4yNjI3IDE4LjAxOTkgMTYuNzg1NSAxNi43NzAyIDE3Ljg1NjggMTUuMTY2OEMxOC45MjgyIDEzLjU2MzQgMTkuNSAxMS42Nzg0IDE5LjUgOS43NUMxOS40OTcgNy4xNjUwNiAxOC40Njg4IDQuNjg2ODQgMTYuNjQxIDIuODU5MDFDMTQuODEzMiAxLjAzMTE4IDEyLjMzNDkgMC4wMDI5ODc2MyA5Ljc1IDBWMFpNMTQuMzkzNiA4LjA0MjcyTDguODkzMDcgMTMuMjkyN0M4Ljc1MzIyIDEzLjQyNTggOC41Njc1NiAxMy41IDguMzc0NTIgMTMuNUM4LjE4MTQ3IDEzLjUgNy45OTU4MiAxMy40MjU4IDcuODU1OTYgMTMuMjkyN0w1LjEwNjQ1IDEwLjY2NzdDNC45NjI4IDEwLjUzMDEgNC44Nzk2NSAxMC4zNDExIDQuODc1MjQgMTAuMTQyM0M0Ljg3MDg0IDkuOTQzNDEgNC45NDU1NSA5Ljc1MDkyIDUuMDgyOTcgOS42MDcxQzUuMjIwMzggOS40NjMyOCA1LjQwOTI3IDkuMzc5ODkgNS42MDgxMyA5LjM3NTIzQzUuODA2OTkgOS4zNzA1OCA1Ljk5OTU2IDkuNDQ1MDQgNi4xNDM1NiA5LjU4MjI4TDguMzc0NTIgMTEuNzEyOUwxMy4zNTY0IDYuOTU3MjhDMTMuNTAwNCA2LjgyMDA0IDEzLjY5MyA2Ljc0NTU4IDEzLjg5MTkgNi43NTAyM0MxNC4wOTA3IDYuNzU0ODkgMTQuMjc5NiA2LjgzODI4IDE0LjQxNyA2Ljk4MjFDMTQuNTU0NSA3LjEyNTkyIDE0LjYyOTIgNy4zMTg0MSAxNC42MjQ4IDcuNTE3MjdDMTQuNjIwNCA3LjcxNjE0IDE0LjUzNzIgNy45MDUxMyAxNC4zOTM2IDguMDQyNzJWOC4wNDI3MloiIGZpbGw9IiMyNkJFQzkiLz4KPC9zdmc+" width="19.50" height="19.50"></span>現在訂購，立即使用</div>'));
-    pol.appendChild(h('<div class="row"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzLjA3OTQiIHZpZXdCb3g9IjAgMCAxMyAxMy4wNzk0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTEgNi41QzEgMy40NjI0MyAzLjQ2MjQzIDEgNi41IDFDOS41Mzc1NyAxIDEyIDMuNDYyNDMgMTIgNi41QzEyIDguNTgxODEgMTAuODQzMiAxMC4zOTQ0IDkuMTM2MDMgMTEuMzI4NVYxMC4yODY2QzkuMTM2MDMgMTAuMDEwNSA4LjkxMjE3IDkuNzg2NjEgOC42MzYwMyA5Ljc4NjYxQzguMzU5ODkgOS43ODY2MSA4LjEzNjAzIDEwLjAxMDUgOC4xMzYwMyAxMC4yODY2VjEyLjU3OTRDOC4xMzYwMyAxMi44NTU1IDguMzU5ODkgMTMuMDc5NCA4LjYzNjAzIDEzLjA3OTRIMTFDMTEuMjc2MSAxMy4wNzk0IDExLjUgMTIuODU1NSAxMS41IDEyLjU3OTRDMTEuNSAxMi4zMDMyIDExLjI3NjEgMTIuMDc5NCAxMSAxMi4wNzk0SDkuODM2NDhDMTEuNzMxIDEwLjk0NCAxMyA4Ljg3MDY2IDEzIDYuNUMxMyAyLjkxMDE1IDEwLjA4OTkgMCA2LjUgMEMyLjkxMDE1IDAgMCAyLjkxMDE1IDAgNi41QzAgMTAuMDg5OSAyLjkxMDE1IDEzIDYuNSAxM0M2Ljc3NjE0IDEzIDcgMTIuNzc2MSA3IDEyLjVDNyAxMi4yMjM5IDYuNzc2MTQgMTIgNi41IDEyQzMuNDYyNDMgMTIgMSA5LjUzNzU3IDEgNi41WiIgZmlsbD0iIzEzQTNCNiIvPgo8cGF0aCBkPSJNNi41IDIuNDU1NTdDNi43NzYxNCAyLjQ1NTU3IDcgMi42Nzk0MiA3IDIuOTU1NTdWMy40NTU1N0g4QzguMjc2MTQgMy40NTU1NyA4LjUgMy42Nzk0MiA4LjUgMy45NTU1N0M4LjUgNC4yMzE3MSA4LjI3NjE0IDQuNDU1NTcgOCA0LjQ1NTU3SDUuNzVDNS41NTEwOSA0LjQ1NTU3IDUuMzYwMzIgNC41MzQ1OCA1LjIxOTY3IDQuNjc1MjRDNS4wNzkwMiA0LjgxNTg5IDUgNS4wMDY2NSA1IDUuMjA1NTdDNSA1LjQwNDQ4IDUuMDc5MDIgNS41OTUyNCA1LjIxOTY3IDUuNzM1OUM1LjM2MDMyIDUuODc2NTUgNS41NTEwOSA1Ljk1NTU3IDUuNzUgNS45NTU1N0g3LjI1QzcuNzE0MTMgNS45NTU1NyA4LjE1OTI1IDYuMTM5OTQgOC40ODc0NCA2LjQ2ODEzQzguODE1NjMgNi43OTYzMiA5IDcuMjQxNDQgOSA3LjcwNTU3QzkgOC4xNjk3IDguODE1NjMgOC42MTQ4MiA4LjQ4NzQ0IDguOTQzQzguMTU5MjUgOS4yNzExOSA3LjcxNDEzIDkuNDU1NTcgNy4yNSA5LjQ1NTU3SDdWOS45NTU1N0M3IDEwLjIzMTcgNi43NzYxNCAxMC40NTU2IDYuNSAxMC40NTU2QzYuMjIzODYgMTAuNDU1NiA2IDEwLjIzMTcgNiA5Ljk1NTU3VjkuNDU1NTdINUM0LjcyMzg2IDkuNDU1NTcgNC41IDkuMjMxNzEgNC41IDguOTU1NTdDNC41IDguNjc5NDIgNC43MjM4NiA4LjQ1NTU3IDUgOC40NTU1N0g3LjI1QzcuNDQ4OTEgOC40NTU1NyA3LjYzOTY4IDguMzc2NTUgNy43ODAzMyA4LjIzNTlDNy45MjA5OCA4LjA5NTI0IDggNy45MDQ0OCA4IDcuNzA1NTdDOCA3LjUwNjY1IDcuOTIwOTggNy4zMTU4OSA3Ljc4MDMzIDcuMTc1MjRDNy42Mzk2OCA3LjAzNDU4IDcuNDQ4OTEgNi45NTU1NyA3LjI1IDYuOTU1NTdINS43NUM1LjI4NTg3IDYuOTU1NTcgNC44NDA3NSA2Ljc3MTE5IDQuNTEyNTYgNi40NDNDNC4xODQzNyA2LjExNDgxIDQgNS42Njk3IDQgNS4yMDU1N0M0IDQuNzQxNDQgNC4xODQzNyA0LjI5NjMyIDQuNTEyNTYgMy45NjgxM0M0Ljg0MDc1IDMuNjM5OTQgNS4yODU4NyAzLjQ1NTU3IDUuNzUgMy40NTU1N0g2VjIuOTU1NTdDNiAyLjY3OTQyIDYuMjIzODYgMi40NTU1NyA2LjUgMi40NTU1N1oiIGZpbGw9IiMxM0EzQjYiLz4KPC9nPgo8L3N2Zz4=" width="13.00" height="13.08"></span>' + (has(p, '免費取消') ? '免費取消' : '出發前 3 天可免費取消') + '</div>'));
-    var scope = h('<div class="row scope"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjExIiBoZWlnaHQ9IjE0IiB2aWV3Qm94PSIwIDAgMTEgMTQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBkPSJNNS41IDguMDAwMDJDNS4wMDU1NSA4LjAwMDAyIDQuNTIyMiA3Ljg1MzM3IDQuMTExMDggNy41Nzg2N0MzLjY5OTk1IDcuMzAzOTcgMy4zNzk1MiA2LjkxMzU0IDMuMTkwMyA2LjQ1NjcyQzMuMDAxMDggNS45OTk5MSAyLjk1MTU4IDUuNDk3MjYgMy4wNDgwNCA1LjAxMjNDMy4xNDQ1IDQuNTI3MzUgMy4zODI2IDQuMDgxODcgMy43MzIyMyAzLjczMjIzQzQuMDgxODYgMy4zODI2IDQuNTI3MzMgMy4xNDQ0OSA1LjAxMjI4IDMuMDQ4MDNDNS40OTcyMyAyLjk1MTU3IDUuOTk5ODkgMy4wMDExIDYuNDU2NzEgMy4xOTAzMkM2LjkxMzUzIDMuMzc5NTQgNy4zMDM5NyAzLjY5OTk4IDcuNTc4NjggNC4xMTExQzcuODUzMzggNC41MjIyMiA4IDUuMDA1NTYgOCA1LjUwMDAyQzcuOTk4MjQgNi4xNjI1MiA3LjczNDI4IDYuNzk3MzkgNy4yNjU4MiA3LjI2NTg1QzYuNzk3MzYgNy43MzQzMSA2LjE2MjUgNy45OTgyNiA1LjUgOC4wMDAwMlpNNS41IDQuMDAwMDJDNS4yMDMzMyA0LjAwMDAyIDQuOTEzMzIgNC4wODggNC42NjY2NSA0LjI1MjgyQzQuNDE5OTggNC40MTc2NSA0LjIyNzcxIDQuNjUxOTEgNC4xMTQxOCA0LjkyNkM0LjAwMDY1IDUuMjAwMDkgMy45NzA5NCA1LjUwMTY5IDQuMDI4ODIgNS43OTI2NkM0LjA4NjcgNi4wODM2MyA0LjIyOTU3IDYuMzUwOTEgNC40MzkzNSA2LjU2MDY5QzQuNjQ5MTIgNi43NzA0NiA0LjkxNjQgNi45MTMzMyA1LjIwNzM3IDYuOTcxMjFDNS40OTgzNCA3LjAyOTA5IDUuNzk5OTQgNi45OTkzNyA2LjA3NDAzIDYuODg1ODRDNi4zNDgxMiA2Ljc3MjMxIDYuNTgyMzggNi41ODAwMiA2Ljc0NzIxIDYuMzMzMzVDNi45MTIwMyA2LjA4NjY4IDcgNS43OTY2OSA3IDUuNTAwMDJDNyA1LjEwMjE5IDYuODQxOTcgNC43MjA2NSA2LjU2MDY2IDQuNDM5MzVDNi4yNzkzNiA0LjE1ODA0IDUuODk3ODMgNC4wMDAwMiA1LjUgNC4wMDAwMloiIGZpbGw9IiMyNkJFQzkiLz4KPHBhdGggZD0iTTUuNSAxNEM1LjM5NzE5IDEzLjk5ODcgNS4yOTcyMSAxMy45NjYxIDUuMjEzMzQgMTMuOTA2N0M1LjAwMDAxIDEzLjc2IDAgMTAuMiAwIDUuNUMwIDQuMDQxMzEgMC41Nzk0NjEgMi42NDIzNyAxLjYxMDkxIDEuNjEwOTJDMi42NDIzNiAwLjU3OTQ3MSA0LjA0MTMxIDAgNS41IDBDNi45NTg2OSAwIDguMzU3NjQgMC41Nzk0NzEgOS4zODkwOSAxLjYxMDkyQzEwLjQyMDUgMi42NDIzNyAxMSA0LjA0MTMxIDExIDUuNUMxMSAxMC4xNjY3IDYgMTMuNzYgNS43ODY2NiAxMy45MDY3QzUuNzAyNzkgMTMuOTY2MSA1LjYwMjgxIDEzLjk5ODcgNS41IDE0Wk01LjUgMUM0LjkwODA5IDEuMDAwODEgNC4zMjIyMyAxLjExOTA3IDMuNzc2MzcgMS4zNDc5NEMzLjIzMDUgMS41NzY4MiAyLjczNTQ4IDEuOTExNzUgMi4zMiAyLjMzMzMzQzEuNDcyNDEgMy4xNzc5NiAwLjk5MzEyOCA0LjMyMzQyIDAuOTg2NjY0IDUuNTE5OThDMC45ODY2NjQgOS4wOTk5OCA0LjQ1MzMzIDEyLjA4IDUuNDg2NjYgMTIuODkzM0M2LjUyIDEyLjA4IDkuOTg2NjYgOS4wOTMzMSA5Ljk4NjY2IDUuNTE5OThDOS45ODAyIDQuMzIzNDIgOS41MDA5MiAzLjE3Nzk2IDguNjUzMzMgMi4zMzMzM0M3LjgyMDYxIDEuNDg4MzMgNi42ODYzMyAxLjAwODcyIDUuNSAxWiIgZmlsbD0iIzI2QkVDOSIvPgo8L2c+Cjwvc3ZnPg==" width="11.00" height="14.00"></span><span>適用 <u>' + (sel.dest || '日本') + ' 等 ' + DET_COUNTRIES.length + ' 個國家/地區</u></span><span class="scope-tip"><ul></ul></span></div>');
+    pol.appendChild(h('<div class="row"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzLjA3OTQiIHZpZXdCb3g9IjAgMCAxMyAxMy4wNzk0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTEgNi41QzEgMy40NjI0MyAzLjQ2MjQzIDEgNi41IDFDOS41Mzc1NyAxIDEyIDMuNDYyNDMgMTIgNi41QzEyIDguNTgxODEgMTAuODQzMiAxMC4zOTQ0IDkuMTM2MDMgMTEuMzI4NVYxMC4yODY2QzkuMTM2MDMgMTAuMDEwNSA4LjkxMjE3IDkuNzg2NjEgOC42MzYwMyA5Ljc4NjYxQzguMzU5ODkgOS43ODY2MSA4LjEzNjAzIDEwLjAxMDUgOC4xMzYwMyAxMC4yODY2VjEyLjU3OTRDOC4xMzYwMyAxMi44NTU1IDguMzU5ODkgMTMuMDc5NCA4LjYzNjAzIDEzLjA3OTRIMTFDMTEuMjc2MSAxMy4wNzk0IDExLjUgMTIuODU1NSAxMS41IDEyLjU3OTRDMTEuNSAxMi4zMDMyIDExLjI3NjEgMTIuMDc5NCAxMSAxMi4wNzk0SDkuODM2NDhDMTEuNzMxIDEwLjk0NCAxMyA4Ljg3MDY2IDEzIDYuNUMxMyAyLjkxMDE1IDEwLjA4OTkgMCA2LjUgMEMyLjkxMDE1IDAgMCAyLjkxMDE1IDAgNi41QzAgMTAuMDg5OSAyLjkxMDE1IDEzIDYuNSAxM0M2Ljc3NjE0IDEzIDcgMTIuNzc2MSA3IDEyLjVDNyAxMi4yMjM5IDYuNzc2MTQgMTIgNi41IDEyQzMuNDYyNDMgMTIgMSA5LjUzNzU3IDEgNi41WiIgZmlsbD0iIzEzQTNCNiIvPgo8cGF0aCBkPSJNNi41IDIuNDU1NTdDNi43NzYxNCAyLjQ1NTU3IDcgMi42Nzk0MiA3IDIuOTU1NTdWMy40NTU1N0g4QzguMjc2MTQgMy40NTU1NyA4LjUgMy42Nzk0MiA4LjUgMy45NTU1N0M4LjUgNC4yMzE3MSA4LjI3NjE0IDQuNDU1NTcgOCA0LjQ1NTU3SDUuNzVDNS41NTEwOSA0LjQ1NTU3IDUuMzYwMzIgNC41MzQ1OCA1LjIxOTY3IDQuNjc1MjRDNS4wNzkwMiA0LjgxNTg5IDUgNS4wMDY2NSA1IDUuMjA1NTdDNSA1LjQwNDQ4IDUuMDc5MDIgNS41OTUyNCA1LjIxOTY3IDUuNzM1OUM1LjM2MDMyIDUuODc2NTUgNS41NTEwOSA1Ljk1NTU3IDUuNzUgNS45NTU1N0g3LjI1QzcuNzE0MTMgNS45NTU1NyA4LjE1OTI1IDYuMTM5OTQgOC40ODc0NCA2LjQ2ODEzQzguODE1NjMgNi43OTYzMiA5IDcuMjQxNDQgOSA3LjcwNTU3QzkgOC4xNjk3IDguODE1NjMgOC42MTQ4MiA4LjQ4NzQ0IDguOTQzQzguMTU5MjUgOS4yNzExOSA3LjcxNDEzIDkuNDU1NTcgNy4yNSA5LjQ1NTU3SDdWOS45NTU1N0M3IDEwLjIzMTcgNi43NzYxNCAxMC40NTU2IDYuNSAxMC40NTU2QzYuMjIzODYgMTAuNDU1NiA2IDEwLjIzMTcgNiA5Ljk1NTU3VjkuNDU1NTdINUM0LjcyMzg2IDkuNDU1NTcgNC41IDkuMjMxNzEgNC41IDguOTU1NTdDNC41IDguNjc5NDIgNC43MjM4NiA4LjQ1NTU3IDUgOC40NTU1N0g3LjI1QzcuNDQ4OTEgOC40NTU1NyA3LjYzOTY4IDguMzc2NTUgNy43ODAzMyA4LjIzNTlDNy45MjA5OCA4LjA5NTI0IDggNy45MDQ0OCA4IDcuNzA1NTdDOCA3LjUwNjY1IDcuOTIwOTggNy4zMTU4OSA3Ljc4MDMzIDcuMTc1MjRDNy42Mzk2OCA3LjAzNDU4IDcuNDQ4OTEgNi45NTU1NyA3LjI1IDYuOTU1NTdINS43NUM1LjI4NTg3IDYuOTU1NTcgNC44NDA3NSA2Ljc3MTE5IDQuNTEyNTYgNi40NDNDNC4xODQzNyA2LjExNDgxIDQgNS42Njk3IDQgNS4yMDU1N0M0IDQuNzQxNDQgNC4xODQzNyA0LjI5NjMyIDQuNTEyNTYgMy45NjgxM0M0Ljg0MDc1IDMuNjM5OTQgNS4yODU4NyAzLjQ1NTU3IDUuNzUgMy40NTU1N0g2VjIuOTU1NTdDNiAyLjY3OTQyIDYuMjIzODYgMi40NTU1NyA2LjUgMi40NTU1N1oiIGZpbGw9IiMxM0EzQjYiLz4KPC9nPgo8L3N2Zz4=" width="13.00" height="13.08"></span>' + (p.cancelType === 'free' ? '未使用可免費取消' : p.cancelType === 'cond' ? '所選日期 3 天前未使用可免費取消' : p.cancelType === 'fee' ? '可付費取消（依取消政策收手續費）' : '一經訂購不可取消') + '</div>'));
+    var scope = h('<div class="row scope"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjExIiBoZWlnaHQ9IjE0IiB2aWV3Qm94PSIwIDAgMTEgMTQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBkPSJNNS41IDguMDAwMDJDNS4wMDU1NSA4LjAwMDAyIDQuNTIyMiA3Ljg1MzM3IDQuMTExMDggNy41Nzg2N0MzLjY5OTk1IDcuMzAzOTcgMy4zNzk1MiA2LjkxMzU0IDMuMTkwMyA2LjQ1NjcyQzMuMDAxMDggNS45OTk5MSAyLjk1MTU4IDUuNDk3MjYgMy4wNDgwNCA1LjAxMjNDMy4xNDQ1IDQuNTI3MzUgMy4zODI2IDQuMDgxODcgMy43MzIyMyAzLjczMjIzQzQuMDgxODYgMy4zODI2IDQuNTI3MzMgMy4xNDQ0OSA1LjAxMjI4IDMuMDQ4MDNDNS40OTcyMyAyLjk1MTU3IDUuOTk5ODkgMy4wMDExIDYuNDU2NzEgMy4xOTAzMkM2LjkxMzUzIDMuMzc5NTQgNy4zMDM5NyAzLjY5OTk4IDcuNTc4NjggNC4xMTExQzcuODUzMzggNC41MjIyMiA4IDUuMDA1NTYgOCA1LjUwMDAyQzcuOTk4MjQgNi4xNjI1MiA3LjczNDI4IDYuNzk3MzkgNy4yNjU4MiA3LjI2NTg1QzYuNzk3MzYgNy43MzQzMSA2LjE2MjUgNy45OTgyNiA1LjUgOC4wMDAwMlpNNS41IDQuMDAwMDJDNS4yMDMzMyA0LjAwMDAyIDQuOTEzMzIgNC4wODggNC42NjY2NSA0LjI1MjgyQzQuNDE5OTggNC40MTc2NSA0LjIyNzcxIDQuNjUxOTEgNC4xMTQxOCA0LjkyNkM0LjAwMDY1IDUuMjAwMDkgMy45NzA5NCA1LjUwMTY5IDQuMDI4ODIgNS43OTI2NkM0LjA4NjcgNi4wODM2MyA0LjIyOTU3IDYuMzUwOTEgNC40MzkzNSA2LjU2MDY5QzQuNjQ5MTIgNi43NzA0NiA0LjkxNjQgNi45MTMzMyA1LjIwNzM3IDYuOTcxMjFDNS40OTgzNCA3LjAyOTA5IDUuNzk5OTQgNi45OTkzNyA2LjA3NDAzIDYuODg1ODRDNi4zNDgxMiA2Ljc3MjMxIDYuNTgyMzggNi41ODAwMiA2Ljc0NzIxIDYuMzMzMzVDNi45MTIwMyA2LjA4NjY4IDcgNS43OTY2OSA3IDUuNTAwMDJDNyA1LjEwMjE5IDYuODQxOTcgNC43MjA2NSA2LjU2MDY2IDQuNDM5MzVDNi4yNzkzNiA0LjE1ODA0IDUuODk3ODMgNC4wMDAwMiA1LjUgNC4wMDAwMloiIGZpbGw9IiMyNkJFQzkiLz4KPHBhdGggZD0iTTUuNSAxNEM1LjM5NzE5IDEzLjk5ODcgNS4yOTcyMSAxMy45NjYxIDUuMjEzMzQgMTMuOTA2N0M1LjAwMDAxIDEzLjc2IDAgMTAuMiAwIDUuNUMwIDQuMDQxMzEgMC41Nzk0NjEgMi42NDIzNyAxLjYxMDkxIDEuNjEwOTJDMi42NDIzNiAwLjU3OTQ3MSA0LjA0MTMxIDAgNS41IDBDNi45NTg2OSAwIDguMzU3NjQgMC41Nzk0NzEgOS4zODkwOSAxLjYxMDkyQzEwLjQyMDUgMi42NDIzNyAxMSA0LjA0MTMxIDExIDUuNUMxMSAxMC4xNjY3IDYgMTMuNzYgNS43ODY2NiAxMy45MDY3QzUuNzAyNzkgMTMuOTY2MSA1LjYwMjgxIDEzLjk5ODcgNS41IDE0Wk01LjUgMUM0LjkwODA5IDEuMDAwODEgNC4zMjIyMyAxLjExOTA3IDMuNzc2MzcgMS4zNDc5NEMzLjIzMDUgMS41NzY4MiAyLjczNTQ4IDEuOTExNzUgMi4zMiAyLjMzMzMzQzEuNDcyNDEgMy4xNzc5NiAwLjk5MzEyOCA0LjMyMzQyIDAuOTg2NjY0IDUuNTE5OThDMC45ODY2NjQgOS4wOTk5OCA0LjQ1MzMzIDEyLjA4IDUuNDg2NjYgMTIuODkzM0M2LjUyIDEyLjA4IDkuOTg2NjYgOS4wOTMzMSA5Ljk4NjY2IDUuNTE5OThDOS45ODAyIDQuMzIzNDIgOS41MDA5MiAzLjE3Nzk2IDguNjUzMzMgMi4zMzMzM0M3LjgyMDYxIDEuNDg4MzMgNi42ODYzMyAxLjAwODcyIDUuNSAxWiIgZmlsbD0iIzI2QkVDOSIvPgo8L2c+Cjwvc3ZnPg==" width="11.00" height="14.00"></span><span>支援 <u>' + DET_COUNTRIES.length + ' 個國家/地區</u></span><span class="scope-tip"><ul></ul></span></div>');
     var ul = scope.querySelector('ul'); DET_COUNTRIES.forEach(function (n) { var li = document.createElement('li'); li.textContent = n; ul.appendChild(li); });
     pol.appendChild(scope);
     wrap.appendChild(pol);
-    // 基本資訊
+    // 基本資訊（分組表格，值後帶 ⓘ 者可展開規格詳情，對齊 mweb 1164-97098）
     wrap.appendChild(h('<h3 class="pl-det-h2">基本資訊</h3>'));
-    var intro = h('<p class="pl-det-intro">依據購買天數，可額外享有 3GB~30GB 的熱點分享流量；由連續兩年榮獲 Opensignal 網路可靠性大獎的電信網路提供連線，市區、離島與山區都能穩定上網。<span class="more">展開</span></p>');
-    wrap.appendChild(intro);
-    var carrier = p.vendor;
-    var trans = has(p, '5G/4G') ? '5G/4G' : '5G';
+    wrap.appendChild(h('<p class="pl-det-intro">依據購買天數，可額外享有 3GB~30GB 的熱點分享流量；由連續兩年榮獲 Opensignal 網路可靠性大獎的電信網路提供連線，訊號覆蓋率高，市區、離島與山區都能穩定上網；搭配 KKday App 可隨時查詢剩餘流量，客服 24 小時線上協助。</p>'));
     var rows = [
       ['th', '卡片規格'],
       ['SIM 卡片規格', 'eSIM'],
-      ['卡片供應商', carrier + '（' + (sel.dest || '日本') + '）'],
-      ['卡片有效期', '2030-12-12 前有效'],
+      ['SIM類型', sp.sim, 'simType'],
+      ['卡片有效期', '2030-12-12 前有效', 'validCard'],
+      ['卡片供應商', p.vendor],
       ['th', '通話與簡訊'],
-      ['是否含通話', has(p, '通話') ? '是' : '否'],
-      ['支援熱點', has(p, '熱點') ? '是' : '否'],
+      ['是否含通話', sp.call ? '含' : '不含'],
+      ['是否含簡訊', sp.sms ? '含' : '不含'],
+      ['支援熱點', sp.hotspot ? '支援，可開啟個人熱點分享' : '不支援'],
       ['th', '啟用設定'],
-      ['流量啟用計算方式', sel.tab === 'total' ? '總量制' : '自然日制'],
-      ['套餐有效期', sel.days + ' 天'],
+      ['啟用方式', '抵達' + dest + '後掃碼安裝，自動連線當地網路', 'activate'],
+      ['流量啟用計算方式', sp.act, 'calc'],
+      ['套餐有效期', '啟用後連續 ' + d + ' 天'],
+      ['th', '加值與限制'],
+      ['是否加值', sp.topup ? '支援，可於 KKday App 隨時加購' : '不支援加值，流量用完即止'],
+      ['不支援裝置', '非全網通/鎖網機型，以及不支援 eSIM 的部分舊款裝置'],
       ['th', '網路詳情'],
-      ['電信商', carrier],
-      ['IP型別', has(p, '國際漫遊') ? '漫遊 IP' : '本地 IP'],
-      ['傳輸規格', trans],
-      ['到量網速', sel.tab === 'unlimited' ? '達公平使用量後降速至 256Kbps' : '當日額度用完後降速，隔日恢復']
+      ['電信商', p.carrier],
+      ['虛擬運營商MVNO', native ? '否，電信商直營網路' : '是，接入 ' + p.carrier + ' 4G/5G 網路'],
+      ['網路資源', native ? '當地電信商直營網路' : '漫遊接入 ' + p.carrier + ' 網路'],
+      ['IP型別', sp.ip === '本地IP' ? '本地 IP（當地出口）' : '漫遊 IP（內建 VPN 出口）'],
+      ['傳輸規格', sp.speed],
+      ['流量規格', detTrans()],
+      ['到量網速', detThrottle()]
     ];
     var tbl = h('<div class="pl-dt"></div>');
     rows.forEach(function (r) {
-      if (r[0] === 'th') tbl.appendChild(h('<div class="th">' + r[1] + '</div>'));
-      else { var tr = h('<div class="tr"><div class="k"></div><div class="v"></div></div>'); tr.querySelector('.k').textContent = r[0]; tr.querySelector('.v').textContent = r[1]; tbl.appendChild(tr); }
+      if (r[0] === 'th') { tbl.appendChild(h('<div class="th">' + r[1] + '</div>')); return; }
+      var tr = h('<div class="tr"><div class="k"></div><div class="v"></div></div>');
+      tr.querySelector('.k').textContent = r[0];
+      var v = tr.querySelector('.v');
+      if (r[2]) {
+        v.classList.add('v-tip');
+        v.innerHTML = '<span></span><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuNSAxQzMuNDYyNDMgMSAxIDMuNDYyNDMgMSA2LjVDMSA5LjUzNzU3IDMuNDYyNDMgMTIgNi41IDEyQzkuNTM3NTcgMTIgMTIgOS41Mzc1NyAxMiA2LjVDMTIgMy40NjI0MyA5LjUzNzU3IDEgNi41IDFaTTAgNi41QzAgMi45MTAxNSAyLjkxMDE1IDAgNi41IDBDMTAuMDg5OSAwIDEzIDIuOTEwMTUgMTMgNi41QzEzIDEwLjA4OTkgMTAuMDg5OSAxMyA2LjUgMTNDMi45MTAxNSAxMyAwIDEwLjA4OTkgMCA2LjVaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS41IDZDNS41IDUuNzIzODYgNS43MjM4NiA1LjUgNiA1LjVINi41QzYuNzc2MTQgNS41IDcgNS43MjM4NiA3IDZWOUM3LjI3NjE0IDkgNy41IDkuMjIzODYgNy41IDkuNUM3LjUgOS43NzYxNCA3LjI3NjE0IDEwIDcgMTBINi41QzYuMjIzODYgMTAgNiA5Ljc3NjE0IDYgOS41VjYuNUM1LjcyMzg2IDYuNSA1LjUgNi4yNzYxNCA1LjUgNloiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuMzc1IDQuNUM2Ljc4OTIxIDQuNSA3LjEyNSA0LjE2NDIxIDcuMTI1IDMuNzVDNy4xMjUgMy4zMzU3OSA2Ljc4OTIxIDMgNi4zNzUgM0M1Ljk2MDc5IDMgNS42MjUgMy4zMzU3OSA1LjYyNSAzLjc1QzUuNjI1IDQuMTY0MjEgNS45NjA3OSA0LjUgNi4zNzUgNC41WiIgZmlsbD0iIzcyNzI3MiIvPgo8L2c+Cjwvc3ZnPg==" width="13.00" height="13.00"></span>';
+        v.querySelector('span:first-child').textContent = r[1];
+        (function (key) { v.addEventListener('click', function () { openSpecTip(r[0], SPEC_TIPS[key]); }); })(r[2]);
+      } else v.textContent = r[1];
+      tbl.appendChild(tr);
     });
     wrap.appendChild(tbl);
     return wrap;
   }
-  function detHowto() {
-    return h('<div class="pl-det-sec">' +
-      '<h3>如何使用</h3><ul><li>前往 設定 &gt; 行動服務（蜂窩行動網路）</li><li>點選 加入 eSIM / 加入行動方案</li><li>掃描 KKday 憑證中的 QR Code</li><li>依畫面指示完成 eSIM 安裝並開啟資料漫遊</li></ul>' +
-      '<h3>憑證使用方式</h3><ul><li>電子憑證於下單後寄送至 Email，開啟即可安裝</li><li>抵達目的地連上當地網路後開始計算天數</li></ul>' +
-      '<h3>使用效期</h3><ul><li>需於卡片有效期（2030-12-12）前啟用</li></ul></div>');
+  function detHowto(p) {
+    var dest = sel.dest || '日本';
+    var s = h('<div class="pl-det-sec">' +
+      '<h3>如何使用</h3><ul>' +
+        '<li>前往 設定 &gt; 行動服務（蜂窩行動網路）</li>' +
+        '<li>點選 加入 eSIM / 加入行動方案</li>' +
+        '<li>掃描 KKday 憑證中的 QR Code</li>' +
+        '<li>依照畫面指示完成 eSIM 安裝，並開啟「資料漫遊」</li>' +
+        '<li>可將此 eSIM 命名為「' + p.carrier + ' ' + dest + '」以利辨識</li>' +
+      '</ul>' +
+      '<h3>使用對象</h3><ul><li>限以下國籍可使用：台灣、香港、日本</li></ul>' +
+      '<h3>憑證使用方式</h3><ul><li>電子憑證將寄送至 Email 信箱，開啟即可安裝</li><li>抵達目的地並首次連上當地網路後開始計算天數</li></ul>' +
+      '<h3>兌換期限</h3><ul><li>需於卡片有效期（2030-12-12）前啟用</li><li>逾期失效，恕不補發</li></ul>' +
+      '<h3>使用效期</h3><ul><li>啟用後連續 ' + sel.days + ' 天</li></ul>' +
+    '</div>');
+    return s;
   }
-  function detCancel() {
-    return h('<div class="pl-det-sec">' +
-      '<h3>取消政策</h3><ul><li>未啟用且於出發前指定期限內可申請免費取消</li><li>已啟用或已逾使用日，恕不退款</li></ul>' +
-      '<h3>改期</h3><ul><li>本商品為即買即用型，恕不提供改期，請於下單時確認天數與規格</li></ul></div>');
+  var CXL_SUPPLIER = '由於站內商品來自全球各地，訂單取消時間將依該供應商所在時區判定。供應商需 2–5 個工作天進行取消流程，依照您購買的商品取消政策收取手續費，並於取消流程完成後 14 個工作天內退款。';
+  function cxlTable(rows) {
+    return '<div class="pl-cxl"><div class="r head"><div class="c">取消日期（含）</div><div class="c">政策</div></div>' +
+      rows.map(function (r) { return '<div class="r"><div class="c">' + r[0] + '</div><div class="c">' + r[1] + '</div></div>'; }).join('') + '</div>';
+  }
+  function detCancel(p) {
+    var body;
+    if (p.cancelType === 'free') body = '<p>未使用可免費取消</p>';
+    else if (p.cancelType === 'cond') body = cxlTable([['所選日期 3 天前', '未使用可免費取消'], ['所選日期 0～2 天前', '不可取消、更改訂單、也不可請求退款']]);
+    else if (p.cancelType === 'fee') body = cxlTable([['所選日期 10 天前', '未使用可免費取消'], ['所選日期 3～5 天前', '手續費 50%'], ['所選日期 0～2 天前', '手續費 100%'], ['所選日期 0 天前', '不可取消、更改訂單、也不可請求退款']]);
+    else body = '<p>商品一經訂購完成後，即不可取消、更改訂單，亦不得請求退款</p>';
+    return h('<div class="pl-det-sec"><h3>取消政策</h3>' + body +
+      '<div class="pl-cxl-note"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuNSAxQzMuNDYyNDMgMSAxIDMuNDYyNDMgMSA2LjVDMSA5LjUzNzU3IDMuNDYyNDMgMTIgNi41IDEyQzkuNTM3NTcgMTIgMTIgOS41Mzc1NyAxMiA2LjVDMTIgMy40NjI0MyA5LjUzNzU3IDEgNi41IDFaTTAgNi41QzAgMi45MTAxNSAyLjkxMDE1IDAgNi41IDBDMTAuMDg5OSAwIDEzIDIuOTEwMTUgMTMgNi41QzEzIDEwLjA4OTkgMTAuMDg5OSAxMyA2LjUgMTNDMi45MTAxNSAxMyAwIDEwLjA4OTkgMCA2LjVaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS41IDZDNS41IDUuNzIzODYgNS43MjM4NiA1LjUgNiA1LjVINi41QzYuNzc2MTQgNS41IDcgNS43MjM4NiA3IDZWOUM3LjI3NjE0IDkgNy41IDkuMjIzODYgNy41IDkuNUM3LjUgOS43NzYxNCA3LjI3NjE0IDEwIDcgMTBINi41QzYuMjIzODYgMTAgNiA5Ljc3NjE0IDYgOS41VjYuNUM1LjcyMzg2IDYuNSA1LjUgNi4yNzYxNCA1LjUgNloiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuMzc1IDQuNUM2Ljc4OTIxIDQuNSA3LjEyNSA0LjE2NDIxIDcuMTI1IDMuNzVDNy4xMjUgMy4zMzU3OSA2Ljc4OTIxIDMgNi4zNzUgM0M1Ljk2MDc5IDMgNS42MjUgMy4zMzU3OSA1LjYyNSAzLjc1QzUuNjI1IDQuMTY0MjEgNS45NjA3OSA0LjUgNi4zNzUgNC41WiIgZmlsbD0iIzcyNzI3MiIvPgo8L2c+Cjwvc3ZnPg==" width="13.00" height="13.00"></span><div><p style="font-weight:600;color:var(--kk-text-darker)">注意</p><p>' + CXL_SUPPLIER + '</p></div></div></div>');
   }
   function detReview(p) {
-    var grade = p.rating >= 4.6 ? '非常好' : '很好';
-    var head = h('<div class="pl-det-sec"><h3>' + p.rating.toFixed(1) + ' ' + grade + '（' + p.reviews.toLocaleString('en-US') + ' 則評論）</h3></div>');
-    [['Wei***', '2026-08', '訊號穩定，掃碼即裝很快，出關就能用，推薦！'],
-     ['Chen***', '2026-07', '整趟都很順，熱點分享給同行也 OK。'],
-     ['Lin***', '2026-06', 'CP 值高，客服回覆也快。']].forEach(function (r) {
-      var el = h('<div class="pl-rev"><div class="rh"><span class="nm"></span><span class="dt"></span></div><div class="rt"></div></div>');
-      el.querySelector('.nm').textContent = r[0]; el.querySelector('.dt').textContent = r[1]; el.querySelector('.rt').textContent = r[2];
-      head.appendChild(el);
+    var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '一般');
+    var wrap = h('<div class="pl-det-sec"></div>');
+    wrap.appendChild(h('<div class="pl-rev-score"><span class="badge9">' + p.rating.toFixed(1) + '</span><span class="gcol"><span class="gt">' + grade + '</span><span class="gc">依據 ' + p.reviews.toLocaleString('en-US') + ' 則評論</span></span></div>'));
+    wrap.appendChild(h('<div class="pl-ai"><div class="ai-t"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDE0IDE0IiBmaWxsPSJub25lIj48cGF0aCBkPSJNOSAwbDEuMiAzLjhMMTQgNWwtMy44IDEuMkw5IDEwIDcuOCA2LjIgNCA1bDMuOC0xLjJMOSAwWiIgZmlsbD0iIzJFQzRGMiIvPjxwYXRoIGQ9Ik0zIDhsLjggMi4yTDYgMTFsLTIuMi44TDMgMTRsLS44LTIuMkwwIDExbDIuMi0uOEwzIDhaIiBmaWxsPSIjMTBENUUzIi8+PC9zdmc+" width="14" height="14"></span>AI 精選旅客評論摘要</div><div class="ai-b">大多數旅客認為網速穩定、性價比高，掃碼後數分鐘內即可完成安裝，落地即可上網；熱點分享給同行裝置也很實用。少數旅客反映山區訊號偶有波動、首次啟用需要連線穩定 WiFi。整體適合自由行與商務出行，客服回應速度獲一致好評。</div></div>'));
+    wrap.appendChild(h('<div class="pl-kws">' +
+      ['網速', '性價比', '客服'].map(function (k) { return '<span class="pl-kw pos"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEzIDEzIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSI2LjUiIGN5PSI2LjUiIHI9IjUuNzUiIHN0cm9rZT0iIzIxMjEyMSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48Y2lyY2xlIGN4PSI0LjYiIGN5PSI1LjIiIHI9Ii45IiBmaWxsPSIjMjEyMTIxIi8+PGNpcmNsZSBjeD0iOC40IiBjeT0iNS4yIiByPSIuOSIgZmlsbD0iIzIxMjEyMSIvPjxwYXRoIGQ9Ik00LjIgOC4yYTMgMyAwIDAgMCA0LjYgMCIgc3Ryb2tlPSIjMjEyMTIxIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" width="13" height="13"></span>' + k + '</span>'; }).join('') +
+      ['穩定性', '啟用流程', '訊號死角'].map(function (k) { return '<span class="pl-kw"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEzIDEzIiBmaWxsPSJub25lIj48Y2lyY2xlIGN4PSI2LjUiIGN5PSI2LjUiIHI9IjUuNzUiIHN0cm9rZT0iIzIxMjEyMSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48Y2lyY2xlIGN4PSI0LjYiIGN5PSI1LjIiIHI9Ii45IiBmaWxsPSIjMjEyMTIxIi8+PGNpcmNsZSBjeD0iOC40IiBjeT0iNS4yIiByPSIuOSIgZmlsbD0iIzIxMjEyMSIvPjxwYXRoIGQ9Ik00LjMgOC44aDQuNCIgc3Ryb2tlPSIjMjEyMTIxIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" width="13" height="13"></span>' + k + '</span>'; }).join('') + '</div>'));
+    wrap.appendChild(h('<h3>評語</h3>'));
+    [['唯洳', '家人', '2025/03/30', '五天的沖繩旅遊給家人買了個 5GB 總量的網路非常夠用！但如果需要導航的人，建議買無限流量～ 很方便，推薦！'],
+     ['曼蒂', '單人旅遊', '2025/04/02', '不用插卡片非常方便，買完憑證馬上就寄來了。'],
+     ['建龍', '商務旅客', '2025/03/26', '服務態度非常好！發生意外線上處理積極！棒棒！']].forEach(function (r) {
+      var stars = '';
+      for (var i = 0; i < 5; i++) stars += '<span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX3N0YXJfZmlsbCI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik0xNC45NDc5IDYuMDg4MkMxNC44ODU1IDUuODkyMjEgMTQuNzY1NCA1LjcxOTU5IDE0LjYwMzQgNS41OTI4NUMxNC40NDE0IDUuNDY2MTIgMTQuMjQ0OSA1LjM5MTE2IDE0LjAzOTcgNS4zNzc3NUwxMC4zMjc4IDUuMTE3OTlMOC45NTA4MSAxLjY1MDdDOC44NzYyOSAxLjQ1OTAxIDguNzQ1NjEgMS4yOTQzIDguNTc1ODggMS4xNzgxNkM4LjQwNjE1IDEuMDYyMDIgOC4yMDUzIDAuOTk5ODU0IDcuOTk5NjQgMC45OTk4MTlINy45OTg2NkM3Ljc5MzMyIDEuMDAwMTkgNy41OTI4NiAxLjA2MjUxIDcuNDIzNTEgMS4xNzg2M0M3LjI1NDE1IDEuMjk0NzYgNy4xMjM3OCAxLjQ1OTI4IDcuMDQ5NDQgMS42NTA3TDUuNjUxOTggNS4xMzhMMS45NjA1NyA1LjM3Nzc1QzEuNzU1MzIgNS4zOTExNiAxLjU1ODg3IDUuNDY2MTIgMS4zOTY4NiA1LjU5Mjg1QzEuMjM0ODUgNS43MTk1OSAxLjExNDggNS44OTIyMSAxLjA1MjM3IDYuMDg4MkMwLjk4NjUxNSA2LjI4Njk3IDAuOTgyMDM1IDYuNTAwOTcgMS4wMzk1MSA2LjcwMjMyQzEuMDk2OTkgNi45MDM2NyAxLjIxMzc3IDcuMDgzMDYgMS4zNzQ2NCA3LjIxNzExTDQuMjE0NDggOS42MTc1TDMuMzY5NzUgMTIuOTQwM0MzLjMxMTUzIDEzLjE2NDEgMy4zMjIyNCAxMy40MDAzIDMuNDAwNDcgMTMuNjE3OUMzLjQ3ODcxIDEzLjgzNTUgMy42MjA4MyAxNC4wMjQ1IDMuODA4MjMgMTQuMTZDMy45ODkxNiAxNC4yOTE2IDQuMjA1NTIgMTQuMzY1NyA0LjQyOTE2IDE0LjM3MjdDNC42NTI4IDE0LjM3OTcgNC44NzMzNiAxNC4zMTkyIDUuMDYyMTQgMTQuMTk5TDcuOTkxODIgMTIuMzQzMUM3Ljk5NTczIDEyLjM0MDIgNy45OTk2NCAxMi4zMzgyIDguMDA4NDMgMTIuMzQzMUwxMS4xNjA4IDE0LjM0MDJDMTEuMzMxOSAxNC40NDk1IDExLjUzMjEgMTQuNTA0NiAxMS43MzUgMTQuNDk4NEMxMS45MzggMTQuNDkyMSAxMi4xMzQ0IDE0LjQyNDcgMTIuMjk4NSAxNC4zMDVDMTIuNDY4MyAxNC4xODIzIDEyLjU5NzEgMTQuMDExMSAxMi42NjggMTMuODEzOUMxMi43Mzg5IDEzLjYxNjggMTIuNzQ4NiAxMy40MDI4IDEyLjY5NTkgMTMuMkwxMS43OTg1IDkuNTcwMTNMMTQuNjI1NiA3LjIxNzExQzE0Ljc4NjUgNy4wODMwNiAxNC45MDMzIDYuOTAzNjcgMTQuOTYwNyA2LjcwMjMyQzE1LjAxODIgNi41MDA5NyAxNS4wMTM3IDYuMjg2OTcgMTQuOTQ3OSA2LjA4ODJaIiBmaWxsPSIjMjZCRUM5Ii8+CjwvZz4KPC9zdmc+" width="16" height="16"></span>';
+      var el = h('<div class="pl-rev"><div class="rh"><span class="stars">' + stars + '</span><span class="dt"></span></div><div class="rt"></div><div class="rmeta"><span class="nm"></span> · <span class="role"></span></div></div>');
+      el.querySelector('.dt').textContent = r[2]; el.querySelector('.rt').textContent = r[3];
+      el.querySelector('.nm').textContent = r[0]; el.querySelector('.role').textContent = r[1];
+      wrap.appendChild(el);
     });
-    return head;
+    wrap.appendChild(h('<button class="pl-morebtn" data-toast="old">檢視更多評論</button>'));
+    return wrap;
   }
-  function detFee() {
+  function detFee(p) {
     return h('<div class="pl-det-sec">' +
-      '<h3>費用資訊</h3><p>方案費用已含當地上網流量與稅金，無隱藏費用。</p>' +
-      '<h3>延長 / 加值</h3><ul><li>可於 KKday App 內加購延長天數或流量（依方案而定）</li></ul></div>');
+      '<h3>費用資訊</h3>' +
+      '<h4 class="sub">費用包含</h4><div class="pl-inc"><span class="ic ic-16"><svg style="display: block;" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"> <g id="Vector"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.61168 4.65476C9.80235 4.85451 9.79499 5.17101 9.59524 5.36168L5.92855 8.86168C5.73534 9.04611 5.43128 9.04611 5.23807 8.86168L3.40476 7.11168C3.20501 6.92101 3.19765 6.60451 3.38832 6.40476C3.57899 6.20501 3.89549 6.19765 4.09524 6.38832L5.58332 7.80878L8.90476 4.63832C9.10451 4.44765 9.42101 4.45501 9.61168 4.65476Z" fill="#13A3B6"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 1C3.46243 1 1 3.46243 1 6.5C1 9.53757 3.46243 12 6.5 12C9.53757 12 12 9.53757 12 6.5C12 3.46243 9.53757 1 6.5 1ZM0 6.5C0 2.91015 2.91015 0 6.5 0C10.0899 0 13 2.91015 13 6.5C13 10.0899 10.0899 13 6.5 13C2.91015 13 0 10.0899 0 6.5Z" fill="#13A3B6"/> </g> </svg></span>eSIM 費用</div><div class="pl-inc"><span class="ic ic-16"><svg style="display: block;" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"> <g id="Vector"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.61168 4.65476C9.80235 4.85451 9.79499 5.17101 9.59524 5.36168L5.92855 8.86168C5.73534 9.04611 5.43128 9.04611 5.23807 8.86168L3.40476 7.11168C3.20501 6.92101 3.19765 6.60451 3.38832 6.40476C3.57899 6.20501 3.89549 6.19765 4.09524 6.38832L5.58332 7.80878L8.90476 4.63832C9.10451 4.44765 9.42101 4.45501 9.61168 4.65476Z" fill="#13A3B6"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 1C3.46243 1 1 3.46243 1 6.5C1 9.53757 3.46243 12 6.5 12C9.53757 12 12 9.53757 12 6.5C12 3.46243 9.53757 1 6.5 1ZM0 6.5C0 2.91015 2.91015 0 6.5 0C10.0899 0 13 2.91015 13 6.5C13 10.0899 10.0899 13 6.5 13C2.91015 13 0 10.0899 0 6.5Z" fill="#13A3B6"/> </g> </svg></span>當地上網流量與稅金</div>' +
+      '<h4 class="sub">費用不包含</h4><div class="pl-inc no"><span class="ic ic-16"><svg style="display: block;" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"> <g id="Vector"> <path d="M8.85355 4.14645C9.04882 4.34171 9.04882 4.65829 8.85355 4.85355L7.20711 6.5L8.85355 8.14645C9.04882 8.34171 9.04882 8.65829 8.85355 8.85355C8.65829 9.04882 8.34171 9.04882 8.14645 8.85355L6.5 7.20711L4.85355 8.85355C4.65829 9.04882 4.34171 9.04882 4.14645 8.85355C3.95118 8.65829 3.95118 8.34171 4.14645 8.14645L5.79289 6.5L4.14645 4.85355C3.95118 4.65829 3.95118 4.34171 4.14645 4.14645C4.34171 3.95118 4.65829 3.95118 4.85355 4.14645L6.5 5.79289L8.14645 4.14645C8.34171 3.95118 8.65829 3.95118 8.85355 4.14645Z" fill="#212121"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.5C0 2.91015 2.91015 0 6.5 0C10.0899 0 13 2.91015 13 6.5C13 10.0899 10.0899 13 6.5 13C2.91015 13 0 10.0899 0 6.5ZM6.5 1C3.46243 1 1 3.46243 1 6.5C1 9.53757 3.46243 12 6.5 12C9.53757 12 12 9.53757 12 6.5C12 3.46243 9.53757 1 6.5 1Z" fill="#212121"/> </g> </svg></span>以上未提及的費用</div>' +
+      '<h4 class="sub">延長、逾期計費</h4><ul><li>' + sel.days + ' 天方案：$' + p._basePer + ' × 天數（僅限延長 1–5 日者）</li><li>逾期未延長即自動停止服務，不另行收費</li></ul>' +
+      '<h4 class="sub">額外費用</h4><ul><li>加購流量：NT$99 / GB，用完可隨時於 KKday App 加購</li><li>實體寄送：eSIM 為電子憑證，無實體運費</li></ul>' +
+    '</div>');
   }
   function detNotice() {
     return h('<div class="pl-det-sec">' +
-      '<h3>購買須知</h3><ul><li>購買前請確認裝置支援 eSIM 且未鎖網</li><li>一組 QR Code 僅能安裝一次，請勿刪除後重裝</li><li>需開啟資料漫遊方可連線</li></ul></div>');
+      '<h3>購買須知</h3><ul>' +
+        '<li>網路速度將隨地形、氣候、建物遮蔽、使用人數及地點等因素改變，收訊不穩定時，請務必與技術客服聯絡。</li>' +
+        '<li>為維護連線品質及公平使用原則，電信商有時會針對短時間內使用極大流量的顧客進行流量管制，請儘量避免長時間觀看影片或更新軟體等大量消耗流量的行為。</li>' +
+      '</ul>' +
+      '<div class="pl-noticebox"><div class="nb-t"><span class="nb-i">!</span>注意事項</div><ul>' +
+        '<li>購買前請在撥號鍵盤輸入「*#06#」，如顯示 EID 序號即可使用 eSIM。</li>' +
+        '<li>QR Code 僅能掃描一次，不支援重複安裝，完成安裝後請勿刪除。</li>' +
+        '<li>啟用 eSIM 時請先連線穩定 WiFi，避免網路不穩導致啟用失敗；eSIM 失效後無法補發。</li>' +
+      '</ul></div>' +
+    '</div>');
   }
   function detImgs() {
-    return h('<div class="pl-det-sec"><h3>圖文詳情</h3><p>商品圖文說明（示意）：涵蓋開通流程、覆蓋範圍與常見問題排解，實際內容以商品頁為準。</p></div>');
+    return h('<div class="pl-det-sec">' +
+      '<h3>圖文說明</h3>' +
+      '<p>本商品由原生網路提供，落地即用、免換實體卡。以下步驟涵蓋裝置支援確認、安裝設定到使用提醒。</p>' +
+      '<ol class="pl-steps">' +
+        '<li>撥號輸入「*#06#」，裝置資訊有 EID 序號＝可用 eSIM。</li>' +
+        '<li>啟用前先更新系統至最新版本並連線穩定 WiFi。</li>' +
+        '<li>開啟相機掃描 eSIM QR Code，點選「行動方案」。</li>' +
+        '<li>啟用時間約 2–3 分鐘，過程請保持連線。</li>' +
+        '<li>可自訂 eSIM 名稱，方便管理多張 eSIM。</li>' +
+        '<li>將行動資料切換至此 eSIM 並開啟資料漫遊即可上網。</li>' +
+      '</ol>' +
+    '</div>');
   }
   document.getElementById('plDetClose').addEventListener('click', closePlDetail);
   document.getElementById('plDetMask').addEventListener('click', closePlDetail);
