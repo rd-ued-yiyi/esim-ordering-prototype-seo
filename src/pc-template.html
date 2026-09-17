@@ -529,6 +529,23 @@
   .pc-allsec .sh { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-allsec .sn { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); margin-top: -8px; }
   .pc-allgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  /* ============ 篩選組標題 ⓘ + 規格詳情 dialog（Figma 3167-43067 / 3242-45112） ============ */
+  .fh-info { display: flex; align-items: center; gap: 6px; }
+  .fh-info .fh-i { display: inline-flex; padding: 0; line-height: 0; }
+  .fh-info .fh-i .ic { width: 16px; height: 16px; color: var(--kk-text-medium); }
+  .fh-info .fh-i:hover .ic { color: var(--kk-primary-dark); }
+  .pc-specdlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
+    width: 640px; max-width: calc(100vw - 32px); max-height: calc(100vh - 96px); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
+  .pc-specdlg.open { display: flex; }
+  .pc-specdlg-hd { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 12px; }
+  .pc-specdlg-hd .t { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-specdlg-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 24px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .pc-spec-h { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-spec-table { width: 100%; border: 1px solid var(--kk-border-lighter); border-radius: 8px; border-collapse: separate; border-spacing: 0; overflow: hidden; table-layout: fixed; }
+  .pc-spec-table th { background: var(--kk-surface-lighter); text-align: left; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); padding: 16px; border-bottom: 1px solid var(--kk-border-lighter); }
+  .pc-spec-table td { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); padding: 16px; border-bottom: 1px solid var(--kk-border-lighter); vertical-align: top; }
+  .pc-spec-table tr:last-child td { border-bottom: 0; }
+  .pc-spec-table th:first-child, .pc-spec-table td:first-child { width: 34%; }
   /* ============ 日期日曆下拉（Figma 3223-83700） ============ */
   .pc-cal { position: fixed; z-index: 60; width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 16px; }
   .pc-cal[hidden] { display: none; }
@@ -841,7 +858,7 @@
             <button class="pc-cb" data-mock><span class="box"></span>5G/4G</button>
           </div>
           <div class="pc-fbox">
-            <div class="fh">流量激活計算方式</div>
+            <div class="fh fh-info"><span>流量激活計算方式</span><button class="fh-i" id="plSpecInfo" aria-label="規格詳情"><span class="ic ic-16">{{IC_info}}</span></button></div>
             <button class="pc-cb" data-mock><span class="box"></span>24小時制</button>
             <button class="pc-cb" data-mock><span class="box"></span>自然日制</button>
             <button class="pc-cb" data-mock><span class="box"></span>總量制</button>
@@ -951,6 +968,21 @@
   <div class="pc-alldlg-hd"><span class="t">選擇流量</span><button id="pcAllClose" aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button></div>
   <div class="pc-alldlg-tabs" id="pcAllTabs"></div>
   <div class="pc-alldlg-bd" id="pcAllBd"></div>
+</div>
+
+<!-- ============ 規格詳情 dialog（Figma 3242-45112）：篩選規格釋義表格 ============ -->
+<div class="pc-mask" id="pcSpecMask"></div>
+<div class="pc-specdlg" id="pcSpecDlg" role="dialog" aria-modal="true">
+  <div class="pc-specdlg-hd"><span class="t">規格詳情</span><button id="pcSpecClose" aria-label="關閉"><span class="ic ic-20">{{IC_cross}}</span></button></div>
+  <div class="pc-specdlg-bd">
+    <div class="pc-spec-h">流量激活方式</div>
+    <table class="pc-spec-table">
+      <tr><th>選項規格</th><th>含義</th></tr>
+      <tr><td>24小時制</td><td>自啟用起連續 24 小時算一天，跨自然日不重置。</td></tr>
+      <tr><td>自然日制</td><td>以當地自然日（00:00–24:00）計算，當日不論何時啟用皆算一天。</td></tr>
+      <tr><td>總量制</td><td>一次給定總流量額度，用完為止、不分每日配額。</td></tr>
+    </table>
+  </div>
 </div>
 
 <!-- ============ 日期日曆下拉（Figma 3223-83700） ============ -->
@@ -1838,6 +1870,12 @@
   document.getElementById('plAllFlow').addEventListener('click', openAllFlow);
   document.getElementById('pcAllClose').addEventListener('click', closeAllFlow);
   document.getElementById('pcAllMask').addEventListener('click', closeAllFlow);
+  // 規格詳情 dialog（篩選組 ⓘ）
+  function openSpec() { document.getElementById('pcSpecMask').classList.add('open'); document.getElementById('pcSpecDlg').classList.add('open'); lockScroll(); }
+  function closeSpec() { if (!document.getElementById('pcSpecDlg').classList.contains('open')) return; document.getElementById('pcSpecMask').classList.remove('open'); document.getElementById('pcSpecDlg').classList.remove('open'); unlockScroll(); }
+  document.getElementById('plSpecInfo').addEventListener('click', function (e) { e.stopPropagation(); openSpec(); });
+  document.getElementById('pcSpecClose').addEventListener('click', closeSpec);
+  document.getElementById('pcSpecMask').addEventListener('click', closeSpec);
   document.getElementById('plCrumbHome').addEventListener('click', exitList);
   document.querySelectorAll('#plSort button').forEach(function (b) { b.addEventListener('click', function () { plSort = +b.getAttribute('data-sort'); renderPlCards(); }); });
   // 點擊翻頁（整頁、有緩衝）
