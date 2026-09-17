@@ -470,8 +470,8 @@
   .pc-lbody { align-items: flex-start; }
   /* 篩選欄：每組獨立白卡片（Figma filter card：radius 12、padding 20、卡間距 16） */
   .pc-lbody .pc-ex-side { gap: 16px; }
-  .pc-lbody .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; }
-  .pc-lbody .pc-fbox .fh { margin-bottom: 16px; }
+  .pc-lbody .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; gap: 14px; }
+  .pc-lbody .pc-fbox .fh { margin-bottom: 0; }  /* 標題下不再額外加 16，改由 gap 14 統一（原標題↔首項達 36 過大） */
   /* 使用日期：緊湊白卡列（Figma 3167:43481：高 56、icon 24 + 文字，非帶邊框大格） */
   .pc-lbody .pc-fdate { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; padding: 16px 20px; cursor: pointer; }
   .pc-lbody .pc-fdate .cell { width: auto; padding: 0; border-right: 0; }
@@ -504,7 +504,7 @@
   .pl-social .grade { color: var(--kk-text-darker); font-weight: 500; }
   .pl-social .rc { color: var(--kk-text-darker); text-decoration: underline; }
   .pl-hr { width: 1px; align-self: stretch; background: var(--kk-border-lighter); flex: 0 0 auto; }
-  .pl-buy { flex: 0 0 231px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 8px; }
+  .pl-buy { flex: 0 0 231px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 8px; }  /* 價格+訂購鈕靠卡片底部對齊 */
   .pl-priceblk { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
   .pl-off { background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; padding: 2px 4px; border-radius: 4px; }
   .pl-price { display: flex; align-items: baseline; gap: 8px; }
