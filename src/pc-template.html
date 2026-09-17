@@ -72,13 +72,15 @@
   .pc-hero .h1 { padding-top: 44px; color: #fff; font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: .5px; }
   .pc-hero .sub { margin-top: 8px; color: rgba(255,255,255,.92); font-size: 16px; line-height: 24px; max-width: 640px; }
   /* 已選目的地 pill（Figma 3096-60605：白底 44、青定位 + 名稱 + ⌄） */
-  .pc-dest-pill { margin-top: 28px; height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 14px;
-    background: #fff; border-radius: 8px; box-shadow: var(--el-card); font-size: 14px; line-height: 20px; font-weight: 600; }
+  /* 已選目的地 pill：對齊 mweb .dest-bar（半透明白底 .88 + 白 1.5 邊 + 圓角 12 + 柔和陰影 + 名稱 14/20 Semibold） */
+  .pc-dest-pill { margin-top: 28px; height: 44px; max-width: 320px; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px;
+    background: rgba(255,255,255,.88); border: 1.5px solid #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(17,25,40,.06);
+    font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-dest-pill .chev { transition: transform .2s; }
   .pc-dest-pill:hover .chev { transform: translateY(1px); }
   /* 多國態：名稱列表超出省略、數量 (N) 常駐可見（對齊 mweb destName + destNum） */
-  .pc-dest-pill #pcDestName { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .dest-num { flex: 0 0 auto; color: var(--kk-text-dark); font-weight: 400; }
+  .pc-dest-pill #pcDestName { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dest-num { flex: 0 0 auto; color: var(--kk-text-darker); font-weight: 600; }
   .pc-lpill #plDestName { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .pc-hero[data-state="empty"] .pc-dest-pill { display: none; }
   .pc-hero[data-state="sel"] .h1, .pc-hero[data-state="sel"] .sub { display: none; }
