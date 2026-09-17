@@ -196,11 +196,36 @@
   /* ---------- 探索更多（Figma 2968-67063：版心 1170、左篩選欄 281 + 主列表） ---------- */
   .pc-explore { background: var(--kk-surface-light); padding: 48px 0 64px; }
   .pc-ex-title { font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 24px; }
-  .pc-ex-picks { height: 48px; display: flex; align-items: center; gap: 16px; padding: 0 20px; margin-bottom: 24px;
-    background: #fff; border-radius: 999px; box-shadow: var(--el-card); }
-  .pc-ex-picks .pick { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .pc-ex-picks .pick:hover { color: var(--kk-primary-dark); }
-  .pc-ex-picks .sep { width: 1px; height: 16px; background: var(--kk-border-light); }
+  /* 目的地 / 領取地 選框 + 錨定下拉（Figma 3026-41529 / 3213-47373 / 3213-47666）：預設只顯示目的地選框，選了目的地才出現領取地選框並自動展開 */
+  .pc-ex-selects { display: flex; gap: 8px; margin-bottom: 24px; }
+  .pc-sel2 { position: relative; }
+  #exSelDest { width: 208px; } #exSelPickup { width: 268px; }
+  .pc-sel2 .sbox { width: 100%; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px;
+    background: #fff; border: 1px solid var(--kk-border-light); border-radius: 8px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
+  .pc-sel2 .sbox .lb { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+  .pc-sel2 .sbox.ph-on .lb { color: var(--kk-text-medium); }
+  .pc-sel2 .sbox .chev { transition: transform .2s; }
+  .pc-sel2 .sbox:hover { border-color: var(--kk-primary-medium); }
+  .pc-sel2.open .sbox { border-color: var(--kk-primary-medium); }
+  .pc-sel2.open .sbox .chev { transform: rotate(180deg); }
+  .pc-sel2 .sbox .ic-20 img { width: 20px; height: 20px; } .pc-sel2 .sbox .ic-16 img { width: 16px; height: 16px; }
+  .pc-dd { position: absolute; left: 0; top: calc(100% + 8px); z-index: 30; width: 600px; max-height: 476px;
+    background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.12); display: none; flex-direction: column; overflow: hidden; }
+  .pc-sel2.open .pc-dd { display: flex; }
+  .pc-dd .bd { flex: 1 1 auto; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 20px; }
+  .pc-dd .ft { flex: 0 0 auto; display: flex; gap: 16px; padding: 16px 20px; border-top: 1px solid var(--kk-border-lighter); }
+  .pc-dd .ft button { flex: 1 1 0; height: 44px; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; }
+  .pc-dd .ft .clear { border: 1px solid var(--kk-text-dark); color: var(--kk-text-darker); }
+  .pc-dd .ft .ok { background: var(--kk-primary-button); color: #fff; }
+  .pc-dd .ft .ok:hover { background: var(--kk-primary-dark); }
+  .ex-grp { display: flex; flex-direction: column; gap: 16px; }
+  .ex-grp .gh { display: flex; align-items: center; gap: 6px; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .ex-grp .gh .dot { width: 6px; height: 6px; border-radius: 50%; background: #E65F50; }
+  .ex-grp .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ex-chip { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--kk-border-light); background: #fff;
+    font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
+  .ex-chip:hover { border-color: var(--kk-primary-medium); }
+  .ex-chip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
   .pc-ex-body { display: flex; gap: 32px; align-items: flex-start; }
   .pc-ex-side { flex: 0 0 281px; display: flex; flex-direction: column; gap: 16px; }
   .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
@@ -508,10 +533,15 @@
   <section class="pc-explore" id="pcExplore">
     <div class="colw">
       <div class="pc-ex-title">探索更多</div>
-      <div class="pc-ex-picks">
-        <button class="pick" data-dlg-open>請選擇目的地<span class="ic ic-16">{{IC_arrowDown}}</span></button>
-        <span class="sep"></span>
-        <button class="pick" data-toast="old">請選擇領取/郵寄地<span class="ic ic-16">{{IC_arrowDown}}</span></button>
+      <div class="pc-ex-selects">
+        <div class="pc-sel2" id="exSelDest">
+          <button class="sbox ph-on"><span class="ic ic-20">{{IC_locationLine}}</span><span class="lb">選擇目的地</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+          <div class="pc-dd" id="exDdDest"><div class="bd"></div></div>
+        </div>
+        <div class="pc-sel2" id="exSelPickup" hidden>
+          <button class="sbox ph-on"><span class="ic ic-20">{{IC_frontDesk}}</span><span class="lb">選擇領取/郵寄地</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+          <div class="pc-dd" id="exDdPickup"><div class="bd"></div><div class="ft"><button class="clear" id="exPickClear">清除</button><button class="ok" id="exPickOk">確定</button></div></div>
+        </div>
       </div>
       <div class="pc-ex-body">
         <aside class="pc-ex-side">
@@ -966,6 +996,60 @@
     { img: '{{IMG_SW_P4}}', type: 'SIM Card', title: '日本 SIM 卡・Docomo / IIJ / KDDI / Softbank 5G・香港寄送到府', ovl: ['郵寄', '立即確認'], tags: ['信賴商家', '3天前可免費取消', '郵寄'], rating: 4.3, reviews: 180, bought: '1K+', now: 156, was: 312 },
     { img: '{{IMG_SW_P6}}', type: 'eSIM', title: '泰國 eSIM・TrueMove H 5G 高速・可用 TikTok・即買即用', ovl: ['即買即用', '立即確認'], tags: ['信賴商家', '即買即用', '吃到飽不斷網'], rating: 4.6, reviews: 1135, bought: '70K+', now: 151, was: 240 }
   ];
+  // ===== 探索更多：目的地 / 領取地 選框 + 錨定下拉（Figma 3026-41529 / 3213-47373 / 3213-47666）=====
+  // 領取/郵寄地固定為有服務的地區（不隨目的地變）
+  var EX_PICKUP = [
+    ['台灣', ['台灣-所有城市', '台北', '台中', '高雄', '新北市']],
+    ['港澳', ['港澳-所有城市', '香港', '澳門']],
+    ['日本', ['日本-所有城市', '東京', '大阪', '京都']],
+    ['韓國', ['韓國-所有城市', '首爾', '釜山', '江原道']]
+  ];
+  var exState = { dest: null, picks: [], open: null };
+  function exChip(name, on, onTap) { var c = h('<button class="ex-chip"></button>'); c.textContent = name; if (on) c.classList.add('sel'); c.addEventListener('click', function (e) { e.stopPropagation(); onTap(); }); return c; }
+  function exGroup(title, hasSel) { var g = h('<div class="ex-grp"><div class="gh"><span class="t"></span></div><div class="chips"></div></div>'); g.querySelector('.t').textContent = title; if (hasSel) g.querySelector('.gh').insertAdjacentHTML('beforeend', '<span class="dot"></span>'); return g; }
+  function exRenderDest() {
+    var bd = document.querySelector('#exDdDest .bd'); bd.innerHTML = '';
+    var hg = exGroup('熱門', GEO.hot.indexOf(exState.dest) >= 0); var hc = hg.querySelector('.chips');
+    GEO.hot.forEach(function (n) { hc.appendChild(exChip(n, exState.dest === n, function () { exPickDest(n); })); });
+    bd.appendChild(hg);
+    GEO.continents.forEach(function (c) {
+      var g = exGroup(c.name, c.countries.indexOf(exState.dest) >= 0); var cc = g.querySelector('.chips');
+      c.countries.forEach(function (n) { cc.appendChild(exChip(n, exState.dest === n, function () { exPickDest(n); })); });
+      bd.appendChild(g);
+    });
+  }
+  function exRenderPickup() {
+    var bd = document.querySelector('#exDdPickup .bd'); bd.innerHTML = '';
+    EX_PICKUP.forEach(function (grp) {
+      var g = exGroup(grp[0], grp[1].some(function (n) { return exState.picks.indexOf(n) >= 0; })); var cc = g.querySelector('.chips');
+      grp[1].forEach(function (n) { cc.appendChild(exChip(n, exState.picks.indexOf(n) >= 0, function () {
+        var i = exState.picks.indexOf(n); if (i >= 0) exState.picks.splice(i, 1); else exState.picks.push(n); exRenderPickup();
+      })); });
+      bd.appendChild(g);
+    });
+  }
+  function exSetText(id, text, ph) { var box = document.querySelector('#' + id + ' .sbox'); box.querySelector('.lb').textContent = text || ph; box.classList.toggle('ph-on', !text); }
+  function exOpen(which) {
+    exState.open = which;
+    document.getElementById('exSelDest').classList.toggle('open', which === 'dest');
+    document.getElementById('exSelPickup').classList.toggle('open', which === 'pickup');
+  }
+  function exClose() { exState.open = null; document.getElementById('exSelDest').classList.remove('open'); document.getElementById('exSelPickup').classList.remove('open'); }
+  function exPickDest(n) {
+    exState.dest = n; exState.picks = [];
+    exSetText('exSelDest', n, '選擇目的地');
+    document.getElementById('exSelPickup').hidden = false;
+    exSetText('exSelPickup', '', '選擇領取/郵寄地');
+    exRenderPickup();
+    exOpen('pickup');  // 選了目的地：顯示領取地選框並自動展開其下拉
+  }
+  document.querySelector('#exSelDest .sbox').addEventListener('click', function (e) { e.stopPropagation(); if (exState.open === 'dest') { exClose(); } else { exRenderDest(); exOpen('dest'); } });
+  document.querySelector('#exSelPickup .sbox').addEventListener('click', function (e) { e.stopPropagation(); if (exState.open === 'pickup') { exClose(); } else { exRenderPickup(); exOpen('pickup'); } });
+  document.querySelectorAll('#exDdDest, #exDdPickup').forEach(function (d) { d.addEventListener('click', function (e) { e.stopPropagation(); }); });
+  document.getElementById('exPickClear').addEventListener('click', function () { exState.picks = []; exRenderPickup(); });
+  document.getElementById('exPickOk').addEventListener('click', function () { exSetText('exSelPickup', exState.picks.join('、'), '選擇領取/郵寄地'); exClose(); });
+  document.addEventListener('click', function () { if (exState.open) exClose(); });
+
   var pcEx = { type: [], sort: 0 };
   var TYPE_LB = { 'WiFi': 'Wifi', 'SIM Card': 'SIM Card', 'eSIM': 'eSIM' };
   function pcBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
