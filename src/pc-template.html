@@ -115,7 +115,7 @@
   .pc-pane { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
   .pc-pane .pt { font-size: 18px; line-height: 26px; font-weight: 600; }
   .pc-pane-days { flex: 0 0 224px; }
-  .pc-days-list { display: flex; flex-direction: column; gap: 12px; max-height: 238px; overflow-y: scroll; padding-right: 8px; }  /* 對齊 Figma 3096-60705 容器高；與流量區差 6 補標題高差 → 兩欄等高 */
+  .pc-days-list { display: flex; flex-direction: column; gap: 8px; max-height: 238px; overflow-y: scroll; padding-right: 8px; }  /* chip 36px + gap 8（Figma 3096-62416 pitch 44）；容器高對齊流量區 → 兩欄等高 */
   /* 天數 / 流量滾動區：滾動條常駐（覆蓋 macOS overlay 預設）：6px 軌道 + 圓角滑塊 */
   /* 注意：Chrome 一旦設了標準 scrollbar-width / scrollbar-color 就會忽略 ::-webkit-scrollbar，macOS 會退回 overlay 隱藏式滾動條；標準屬性只給 Firefox */
   @supports not selector(::-webkit-scrollbar) { .pc-days-list, .pc-flow-scroll { scrollbar-width: thin; scrollbar-color: var(--kk-border-light) var(--kk-surface-light); } }
@@ -123,8 +123,8 @@
   .pc-days-list::-webkit-scrollbar-track, .pc-flow-scroll::-webkit-scrollbar-track { background: var(--kk-surface-light); border-radius: 3px; }
   .pc-days-list::-webkit-scrollbar-thumb, .pc-flow-scroll::-webkit-scrollbar-thumb { background: var(--kk-border-light); border-radius: 3px; }
   .pc-days-list::-webkit-scrollbar-thumb:hover, .pc-flow-scroll::-webkit-scrollbar-thumb:hover { background: var(--kk-text-medium); }
-  .pc-day { flex: 0 0 auto; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px;
-    background: var(--kk-surface-light); font-size: 16px; line-height: 24px; border: 1px solid transparent; }
+  .pc-day { flex: 0 0 auto; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px;  /* Figma 3096-62417 Chip background：36px 高 */
+    background: var(--kk-surface-light); font-size: 14px; line-height: 20px; border: 1px solid transparent; }
   .pc-day:hover { background: var(--kk-surface-medium); }
   .pc-day.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
   .pc-pane-flow { flex: 1 1 0; min-width: 0; }
@@ -145,12 +145,12 @@
   .pc-flow-sec + .pc-flow-sec { border-top: 1px dashed #ADE6EB; padding-top: 20px; margin-top: 8px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .pc-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px 8px; border-radius: 8px;
-    background: var(--kk-surface-light); border: 1.5px solid transparent; }
+  .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; padding: 16px; border-radius: 8px;  /* Figma 3109-63857 Option Card：74px 高、padding 16、gap 2、標題 16/24（與 mweb .opt 同款） */
+    background: var(--kk-surface-light); }
   .pc-tier:hover { background: var(--kk-surface-medium); }
-  .pc-tier b { font-size: 18px; line-height: 26px; font-weight: 600; }
+  .pc-tier b { font-size: 16px; line-height: 24px; font-weight: 600; }
   .pc-tier span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
-  .pc-tier.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
+  .pc-tier.sel { background: var(--kk-primary-lighter); box-shadow: inset 0 0 0 1px var(--kk-primary-medium); }  /* 選中 1px 內陰影邊，不佔位（與 mweb .opt.sel 同款） */
   .pc-tier.sel b { color: var(--kk-primary-dark); }
   /* 推薦標籤：與 mweb .opt .badge 同款（Figma 871-75700）：貼卡片右上、露出上緣 4px、右移 4px，右下折紙尖角 */
   .pc-tier .badge { position: absolute; top: -4px; right: -4px; z-index: 3; background: var(--kk-text-critical); color: #fff;
