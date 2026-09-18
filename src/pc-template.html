@@ -466,7 +466,8 @@
   .pc-lbar.compact .pc-lflow-vp { overflow: hidden; display: flex; justify-content: flex-end; }
   .pc-lbar.compact .pc-lflow { width: max-content; gap: 8px; }
   /* 麵包屑 note */
-  .pc-lnote { margin: 0 0 16px; }
+  /* 列表頁裝置提醒：純文字（icon+文字），無藍底橫條（Figma 3167-39923 Inline notification） */
+  .pc-lnote { margin: 0 0 16px; height: auto; padding: 0; background: none; border-radius: 0; align-items: flex-start; color: var(--kk-text-dark); }
   .pc-lbody { align-items: flex-start; }
   /* 篩選欄：每組獨立白卡片（Figma filter card：radius 12、padding 20、卡間距 16） */
   .pc-lbody .pc-ex-side { gap: 16px; }
