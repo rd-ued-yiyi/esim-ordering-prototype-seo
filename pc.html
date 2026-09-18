@@ -824,12 +824,13 @@
   .ord-date-wrap { display: flex; align-items: stretch; gap: 8px; margin-top: 16px; }
   .ord-date-chips { flex: 1 1 0; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
   .ord-date-chips::-webkit-scrollbar { display: none; }
-  .ord-dchip { flex: 0 0 auto; width: 64px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 8px; background: var(--kk-surface-light); border: 1px solid transparent; }
+  /* 日期 chip（Figma 3244-72533）：白底 + 1px #D5D6DB 邊框；選中 #F0FAFB + #26BEC9 */
+  .ord-dchip { flex: 0 0 auto; min-width: 64px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); }
   .ord-dchip .d { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
-  .ord-dchip .w { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .ord-dchip .w { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .ord-dchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
-  .ord-dchip.sel .d { color: var(--kk-primary-dark); }
-  .ord-dmore { flex: 0 0 auto; width: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border-radius: 8px; background: var(--kk-surface-light); color: var(--kk-text-dark); font-size: 12px; }
+  .ord-dchip.sel .d { color: var(--kk-primary-medium); }
+  .ord-dmore { flex: 0 0 auto; min-width: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 12px; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); color: var(--kk-text-dark); font-size: 12px; }
   .ord-dmore .ic { width: 20px; height: 20px; }
   /* 購買數量 */
   .qty-row { display: flex; align-items: center; justify-content: space-between; }
@@ -868,25 +869,27 @@
   .tv-head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
   .tv-head-l { display: flex; flex-direction: column; gap: 4px; }
   .tv-count { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
-  .tv-count b, .tv-count .c-prog { color: var(--kk-primary-dark); font-weight: 600; }
+  .tv-count b, .tv-count .c-prog { color: var(--kk-primary-medium); font-weight: 600; }
   .tv-count .req { color: var(--kk-text-critical); }
   .tv-count .c-prog { margin-left: 4px; }
   .tv-sub { margin-top: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .tv-head-l .tv-sub { margin-top: 0; }
-  .tv-more { flex: 0 0 auto; height: 32px; padding: 0 8px 0 12px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--kk-primary-medium); border-radius: 8px; color: var(--kk-primary-dark); font-size: 14px; font-weight: 600; white-space: nowrap; }
+  .tv-more { flex: 0 0 auto; padding: 6px 8px 6px 12px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--kk-primary-medium); border-radius: 8px; color: var(--kk-primary-dark); font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap; }
   .tv-more .ic { width: 16px; height: 16px; }
   /* 旅客代表人 chips（qty=1） */
   .tv-chiprow { margin-top: 12px; display: flex; align-items: flex-start; gap: 8px; }
   .tv-chips { flex: 1 1 0; min-width: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .tv-chips.collapsed { max-height: 36px; overflow: hidden; }
-  .tv-chipbtns { flex: 0 0 auto; display: flex; align-items: center; gap: 4px; }
-  .tv-add { height: 36px; padding: 0 12px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--kk-border-light); border-radius: 8px; color: var(--kk-text-darker); font-size: 14px; white-space: nowrap; }
+  .tv-chips.collapsed { max-height: 34px; overflow: hidden; }
+  .tv-chipbtns { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; }
+  /* 新增旅客（Figma：#727272 邊框 + 深色加號/文字） */
+  .tv-add { padding: 6px 12px 6px 8px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--kk-text-dark); border-radius: 8px; color: var(--kk-text-darker); font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap; }
   .tv-add .ic { width: 16px; height: 16px; }
-  .tv-collapse { width: 36px; height: 36px; border: 1px solid var(--kk-border-light); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: var(--kk-text-dark); }
+  .tv-collapse { padding: 6px 8px; border: 1px solid var(--kk-border-light); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: var(--kk-text-dark); }
   .tv-collapse .ic { width: 20px; height: 20px; transition: transform .2s; }
   .tv-collapse.up .ic { transform: rotate(180deg); }
-  .ct-chip { flex: 0 0 auto; height: 36px; padding: 0 14px; border-radius: 8px; background: var(--kk-surface-light); font-size: 14px; color: var(--kk-text-darker); white-space: nowrap; border: 1px solid transparent; }
-  .ct-chip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
+  /* 旅客 / 快選 chip（Figma 3244-73808）：白底 + 1px #D5D6DB 邊框 + 14 Semibold；選中 #F0FAFB + #26BEC9 邊 + #26BEC9 字 */
+  .ct-chip { flex: 0 0 auto; padding: 6px 8px; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
+  .ct-chip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-medium); }
   /* 旅客資料卡（Figma 3263-27062） */
   .tv-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
   .tv-cards:empty { margin-top: 0; }
@@ -927,7 +930,7 @@
   .ord-sum-total { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--kk-border-light); }
   .ord-sum-total .lb { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .ord-sum-total .val { font-size: 20px; line-height: 20px; font-weight: 700; color: var(--kk-text-darker); font-family: 'Helvetica Neue', Arial, sans-serif; }
-  .ord-next { width: 100%; height: 48px; margin-top: 16px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; font-weight: 600; }
+  .ord-next { width: 100%; height: 48px; margin-top: 16px; display: flex; align-items: center; justify-content: center; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; }
   .ord-next:hover { background: var(--kk-primary-dark); }
   /* 取消政策 dialog */
   .pc-cxldlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none; width: 520px; max-width: calc(100vw - 32px); background: #fff; border-radius: 16px; overflow: hidden; flex-direction: column; }
@@ -2965,6 +2968,7 @@
     del: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6h11M8 3.5h4M6 6l.6 9.5a.5.5 0 0 0 .5.5h5.8a.5.5 0 0 0 .5-.5L14 6" stroke="#727272" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     cal: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4.5" width="14" height="12" rx="1.5" stroke="#727272" stroke-width="1.3"/><path d="M3 8h14M7 3v3M13 3v3" stroke="#727272" stroke-width="1.3" stroke-linecap="round"/></svg>',
     plus: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    plusDark: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#212121" stroke-width="1.6" stroke-linecap="round"/></svg>',
     cross: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     chevUp: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12l5-5 5 5" stroke="#727272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     chevR: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -3179,8 +3183,8 @@
         '<div class="tv-acts"><button class="tvE" aria-label="編輯"><span class="ic">' + OI.edit + '</span></button>' +
         '<button class="tvX" aria-label="移除"><span class="ic">' + OI.cross + '</span></button></div></div>' +
       '<div class="tv-card-bd">' +
-        f('國家/地區', t.nation) + f('性別/出生日期', t.gender + ' ' + t.birth) +
-        f('台灣身分證字號', t.twId) + f('台胞證', t.twPass) +
+        f('國籍', t.nation) + f('性別/出生日期', t.gender + ' ' + t.birth) +
+        f('台灣身分證字號', t.twId) + f('台胞證字號', t.twPass) +
         f('證件號碼（護照/身分證）', t.docNo) + f('證件效期（護照/身分證）', t.docExp) +
       '</div></div>');
     card.querySelector('.tvE').onclick = function () { openTvDlg(i); };
@@ -3197,7 +3201,7 @@
       html = '<div class="ord-sec-h"><div class="t">旅客資料</div></div>' +
         '<div class="tv-head"><div class="tv-count">選擇 <b>1</b> 位旅客代表人<span class="req">*</span></div><div class="tv-sub">12 歲以上（含）</div></div>' +
         '<div class="tv-chiprow"><div class="tv-chips" id="ordTvChips"></div>' +
-          '<div class="tv-chipbtns"><button class="tv-add" id="ordTvAdd"><span class="ic">' + OI.plus + '</span>新增旅客</button>' +
+          '<div class="tv-chipbtns"><button class="tv-add" id="ordTvAdd"><span class="ic">' + OI.plusDark + '</span>新增旅客</button>' +
           '<button class="tv-collapse" id="ordTvCollapse" aria-label="收合"><span class="ic">' + OI.chevUp + '</span></button></div></div>' +
         '<div class="tv-cards" id="ordTvCards"></div>';
     } else {
