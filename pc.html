@@ -3597,7 +3597,8 @@
       '<div class="ord-ptitle">' + p.title + '</div>' +
       '<div class="ord-pspecs">' +
         '<div class="ord-pline"><span class="ic">' + OI.file + '</span>' + ordSpecLine() + '</div>' +
-        '<div class="ord-pline"><span class="ic">' + OI.loc + '</span><span class="u">' + ordCoverageText() + '</span></div>' +
+        '<div class="ord-pline ord-cov"><span class="ic">' + OI.loc + '</span><span class="u">' + ordCoverageText() + '</span>' +
+          '<div class="ord-cov-tip"><ul>' + ordCoverageList().map(function (n) { return '<li>' + n + '</li>'; }).join('') + '</ul></div></div>' +
         (ordSt.useDate ? '<div class="ord-pline"><span class="ic">' + OI.cal + '</span>' + ordSt.useDate.y + '-' + ('0' + ordSt.useDate.m).slice(-2) + '-' + ('0' + ordSt.useDate.d).slice(-2) + '</div>' : '') +
         '<div class="ord-pline"><span class="ic">' + OI.file + '</span>eSIM ×' + ordSt.qty + '</div>' +
       '</div><div class="ord-hr"></div>' +
