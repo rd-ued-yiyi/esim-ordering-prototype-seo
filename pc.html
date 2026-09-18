@@ -779,11 +779,14 @@
   .pc-ordpage[hidden] { display: none; }
   .pc-ord-grid { display: flex; gap: 24px; align-items: flex-start; padding-top: 8px; }
   .pc-ord-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-  .pc-ord-side { flex: 0 0 340px; position: sticky; top: 76px; }
-  /* 商品摘要卡 */
-  .ord-prod { background: #fff; border-radius: 12px; padding: 16px; }
-  .ord-ptitle { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
-  .ord-pspecs { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+  .pc-ord-side { flex: 0 0 360px; position: sticky; top: 76px; }
+  /* 商品摘要卡（Figma 3244-72526：內層卡有 2px 邊框、標題 16、價格深色 16、政策列 column） */
+  .ord-prod { background: #fff; border: 2px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; }
+  .ord-prod-wrap .ord-datesec { margin-top: 20px; }
+  .ord-prod-wrap .ord-prod + .qty-row { margin-top: 20px; }
+  .ord-hr2 { height: 1px; background: var(--kk-border-lighter); margin: 20px 0; }
+  .ord-ptitle { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .ord-pspecs { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
   .ord-pline { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .ord-pline .ic { width: 20px; height: 20px; flex: 0 0 auto; }
   .ord-pline .u { text-decoration: underline; text-underline-offset: 2px; }
@@ -795,11 +798,11 @@
   .ord-cov-tip li { position: relative; padding-left: 14px; font-size: 14px; line-height: 24px; color: var(--kk-text-darker); break-inside: avoid; }
   .ord-cov-tip li::before { content: ''; position: absolute; left: 2px; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: var(--kk-text-medium); }
   .ord-hr { height: 1px; background: var(--kk-border-lighter); margin: 12px 0; }
-  .ord-price-block { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .ord-price { color: var(--kk-text-critical); font-weight: 700; }
-  .ord-price .cur { font-size: 14px; margin-right: 2px; font-family: 'Helvetica Neue', Arial, sans-serif; }
-  .ord-price .num { font-size: 22px; font-family: 'Helvetica Neue', Arial, sans-serif; }
-  .ord-cancel { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-primary-dark); }
+  .ord-price-block { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .ord-price { color: var(--kk-text-darker); font-weight: 700; line-height: 16px; }
+  .ord-price .cur { font-size: 16px; font-weight: 500; margin-right: 2px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .ord-price .num { font-size: 16px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .ord-cancel { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-primary-dark); }
   .ord-cancel .ic { width: 16px; height: 16px; }
   /* 通用卡 + section 標題 */
   .ord-card { background: #fff; border-radius: 12px; padding: 20px; }
@@ -838,8 +841,9 @@
   .ff-full { grid-column: 1 / -1; }
   .ff-label { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .ff-label .req { color: var(--kk-text-critical); margin-left: 2px; }
-  .ff-input, .ff-select { height: 44px; padding: 0 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); width: 100%; }
-  .ff-input::placeholder { color: var(--kk-text-medium); }
+  .ff-input, .ff-select { height: 48px; padding: 0 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); width: 100%; }
+  .ff-input::placeholder { color: var(--kk-text-light); }
+  .ff-select:invalid, .ff-select.placeholder { color: var(--kk-text-light); }
   .ff-selwrap { position: relative; }
   .ff-selwrap .chev { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; pointer-events: none; color: var(--kk-text-medium); }
   .ff-select { appearance: none; -webkit-appearance: none; padding-right: 34px; }
@@ -872,7 +876,7 @@
   .pc-pcard-f .k { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   .pc-pcard-f .v { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   /* 訂購人資料明細 */
-  .ord-info { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+  .ord-info { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
   .ord-info-line { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .ord-info-line .ic { width: 16px; height: 16px; color: var(--kk-text-medium); }
   /* 備註 */
@@ -884,9 +888,9 @@
   .ord-sum .t { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
   .ord-sum-row { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .ord-sum-row .amt { color: var(--kk-text-darker); }
-  .ord-sum-total { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--kk-border-lighter); }
-  .ord-sum-total .lb { font-size: 16px; font-weight: 600; color: var(--kk-text-darker); }
-  .ord-sum-total .val { font-size: 22px; font-weight: 700; color: var(--kk-text-darker); font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .ord-sum-total { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--kk-border-light); }
+  .ord-sum-total .lb { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .ord-sum-total .val { font-size: 20px; line-height: 20px; font-weight: 700; color: var(--kk-text-darker); font-family: 'Helvetica Neue', Arial, sans-serif; }
   .ord-next { width: 100%; height: 48px; margin-top: 16px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; font-weight: 600; }
   .ord-next:hover { background: var(--kk-primary-dark); }
   /* 取消政策 dialog */
@@ -2924,16 +2928,20 @@
   function ordCcOpts(val) { return ['+886', '+81', '+82', '+86', '+852', '+853', '+65', '+66', '+60', '+1', '+44'].map(function (c) { return '<option' + (c === val ? ' selected' : '') + '>' + c + '</option>'; }).join(''); }
   function ffRadio(label, name, opts, val) {
     var r = ''; opts.forEach(function (x) { r += '<label><input type="radio" name="' + name + '" value="' + x[0] + '"' + (x[0] === val ? ' checked' : '') + '><span class="radio"></span>' + x[1] + '</label>'; });
-    return '<div class="ff"><div class="ff-label">' + label + '<span class="req">*</span></div><div class="ff-radio">' + r + '</div></div>';
+    return '<div class="ff ff-full"><div class="ff-label">' + label + '<span class="req">*</span></div><div class="ff-radio">' + r + '</div></div>';
   }
-  function flightForm(pfx, f) {
+  function ordFlDateOpts() { return ordDatePresets().map(function (d) { return d.y + '/' + ('0' + d.m).slice(-2) + '/' + ('0' + d.d).slice(-2); }); }
+  // Figma 3244-72557/124119：航班類別 radio（整行）→ 機場/航廈 · 航空公司/航班編號 · 時間/日期（兩欄）→ 是否辦理落地簽證 radio（整行）
+  function flightForm(pfx, f, dir) {
     return '<div class="ord-form">' +
       ffRadio('航班類別', pfx + 'type', [['國內線', '國內線'], ['國際線', '國際線']], f.type) +
-      ffSelect('起降機場', pfx + 'airport', ['桃園機場 TPE', '成田機場 NRT', '羽田機場 HND', '仁川機場 ICN', '樟宜機場 SIN'], f.airport, '請選擇') +
-      ffText('航廈', pfx + 'terminal', '請輸入航廈（例：2 航廈）', f.terminal) +
+      ffSelect(dir + '機場', pfx + 'airport', ['桃園機場 TPE', '成田機場 NRT', '羽田機場 HND', '仁川機場 ICN', '樟宜機場 SIN'], f.airport, '請選擇') +
+      ffText('航廈', pfx + 'terminal', '請輸入航廈（例: 2 航廈）', f.terminal) +
       ffText('航空公司名稱', pfx + 'airline', '請輸入航空公司名稱', f.airline) +
-      ffText('航班編號', pfx + 'no', '請輸入航班編號（例：CI104）', f.no) +
-      ffSelect('起降時間', pfx + 'time', ['08:00', '10:00', '12:00', '14:00', '18:00', '22:00'], f.time, '請選擇') +
+      ffText('航班編號', pfx + 'no', '請輸入航班編號（例: CI104）', f.no) +
+      ffSelect(dir + '時間', pfx + 'time', ['08:00', '10:00', '12:00', '14:00', '18:00', '22:00'], f.time, '請選擇') +
+      ffSelect(dir + '日期', pfx + 'date', ordFlDateOpts(), f.date, '請選擇') +
+      ffRadio('是否辦理落地簽證', pfx + 'visa', [['是', '是'], ['否', '否']], f.visa) +
     '</div>';
   }
   function renderOrder() {
@@ -2948,14 +2956,17 @@
       '</div><div class="ord-hr"></div>' +
       '<div class="ord-price-block"><div class="ord-price"><span class="cur">NT$</span><span class="num">' + ordMoney(p.now) + '</span></div>' +
       '<button class="ord-cancel" id="ordCancelInfo">' + ordCancelText() + '<span class="ic">' + OI.info + '</span></button></div></div>';
-    var main = '<div class="ord-card ord-prod-wrap">' + w + '</div>';
+    // Figma 3244/3223：商品資訊 + 使用日期 + 購買數量 同一張卡（商品為內層帶邊框子卡）
+    var main = '<div class="ord-card ord-prod-wrap">' + w;
     if (req.date) {
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="ord-sec-title"><div class="t">啟用日期</div><span class="ic ic-16 ord-sec-info">' + OI.info + '</span></div></div>' +
-        '<div class="ord-date-wrap"><div class="ord-date-chips" id="ordDateChips"></div><button class="ord-dmore" id="ordDateMore"><span class="ic">' + OI.cal + '</span><span class="w">更多</span></button></div></div>';
+      main += '<div class="ord-datesec"><div class="ord-sec-h"><div class="ord-sec-title"><div class="t">啟用日期</div><span class="ic ic-16 ord-sec-info">' + OI.info + '</span></div></div>' +
+        '<div class="ord-date-wrap"><div class="ord-date-chips" id="ordDateChips"></div><button class="ord-dmore" id="ordDateMore"><span class="ic">' + OI.cal + '</span><span class="w">更多</span></button></div></div>' +
+        '<div class="ord-hr2"></div>';
     }
-    main += '<div class="ord-card"><div class="qty-row"><div class="t">購買數量</div><div class="qty-ctl">' +
+    main += '<div class="qty-row"><div class="t">購買數量</div><div class="qty-ctl">' +
       '<button class="qty-btn qminus" id="ordQtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '></button><span class="qty-n">' + st.qty + '</span>' +
-      '<button class="qty-btn qplus" id="ordQtyPlus"' + (st.qty >= 5 ? ' disabled' : '') + '></button></div></div></div>';
+      '<button class="qty-btn qplus" id="ordQtyPlus"' + (st.qty >= 5 ? ' disabled' : '') + '></button></div></div>';
+    main += '</div>';
     if (req.device) {
       var d = st.deviceIn;
       main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">設備資訊</div></div>' +
@@ -2963,8 +2974,8 @@
         '<div class="ord-form" data-ffscope="deviceIn">' + ffText('手機型號', 'model', '請輸入', d.model) + ffText('EID', 'eid', '請輸入', d.eid) + ffText('IMEI', 'imei', '請輸入', d.imei) + ffText('IMEI2', 'imei2', '請輸入', d.imei2) + '</div></div>';
     }
     if (req.flight) {
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">抵達航班資訊</div></div><div data-ffscope="flIn">' + flightForm('flin-', st.flIn) + '</div></div>';
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">離境航班資訊</div></div><div data-ffscope="flOut">' + flightForm('flout-', st.flOut) + '</div></div>';
+      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">抵達航班資訊</div></div><div data-ffscope="flIn">' + flightForm('flin-', st.flIn, '抵達') + '</div></div>';
+      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">離境航班資訊</div></div><div data-ffscope="flOut">' + flightForm('flout-', st.flOut, '離境') + '</div></div>';
     }
     if (req.travelers) {
       var maxTv = st.qty;
