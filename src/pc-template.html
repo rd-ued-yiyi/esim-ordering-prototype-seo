@@ -102,8 +102,8 @@
 
   /* 未選：搜尋輸入 + 熱門 chips + 最近選擇（Figma 2968-67063） */
   .pc-find { display: flex; flex-direction: column; gap: 16px; }
-  .pc-find-input { height: 56px; width: 100%; display: flex; align-items: center; gap: 10px; padding: 0 16px;
-    border: 1.5px solid var(--kk-primary-medium); border-radius: 8px; background: #fff; transition: box-shadow .15s; }
+  .pc-find-input { width: 100%; display: flex; align-items: center; gap: 8px; padding: 12px;
+    border: 1.5px solid var(--kk-primary-medium); border-radius: 12px; background: #fff; transition: box-shadow .15s; }
   .pc-find-input:hover { box-shadow: 0 0 0 3px rgba(38,190,201,.15); }
   .pc-find-input .ph { flex: 1 1 0; text-align: left; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-hotchips { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -1066,7 +1066,7 @@
         <div class="pc-card">
           <!-- 未選目的地：搜尋入口 + 熱門 + 最近選擇 -->
           <div class="pc-find" id="pcFind">
-            <button class="pc-find-input" data-dlg-open><span class="ic ic-20">{{PC_location20}}</span><span class="ph">請先選擇目的地</span><span class="ic ic-20">{{PC_searchCyan}}</span></button>
+            <button class="pc-find-input" data-dlg-open><span class="ic ic-24"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" fill="#26BEC9"/><circle cx="12" cy="10" r="2.6" fill="#fff"/></svg></span><span class="ph">請先選擇目的地</span><span class="ic ic-24"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#26BEC9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             <div class="pc-hotchips" id="pcHotChips"></div>
             <div class="pc-recent" id="pcRecent" hidden>
               <div class="rh"><span>最近選擇</span><button class="gact" id="pcRecentClear" aria-label="清除最近選擇"><span class="ic ic-16">{{IC_trash}}</span></button></div>
