@@ -787,52 +787,73 @@
   .pc-ordpage { display: block; background: var(--kk-surface-light); padding-bottom: 48px; }
   .pc-ordpage[hidden] { display: none; }
   /* 付款頁 */
+  .pay-col { display: flex; flex-direction: column; gap: 24px; }
   .pay-card { background: #fff; border-radius: 12px; padding: 20px; }
-  .pay-card + .pay-card { margin-top: 16px; }
-  .pay-h { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
-  .pay-h-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-  .pay-h-row .chev { width: 24px; height: 24px; color: var(--kk-text-darker); transition: transform .2s; }
+  .pay-prod-card { padding: 24px; }
   .pay-prod .ord-prod { border: 0; padding: 0; }
+  .pay-prod .ord-ptitle { font-size: 18px; line-height: 26px; }
+  .pay-h { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
+  .pay-h-bar { position: relative; padding-left: 12px; }
+  .pay-h-bar::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 4px; border-radius: 2px; background: var(--kk-primary-medium); }
+  .pay-block { display: flex; flex-direction: column; gap: 4px; }
+  .pay-label { font-size: 18px; line-height: 30px; color: var(--kk-text-dark); }
   /* 折扣碼按鈕 */
   .pay-coupon-btn { margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--kk-primary-medium); border-radius: 8px; color: var(--kk-primary-dark); font-size: 14px; font-weight: 600; }
   .pay-coupon-btn .ic { width: 20px; height: 20px; }
   /* KKday Points 折抵 */
-  .pay-pts-row { margin-top: 16px; display: flex; align-items: center; gap: 8px; }
+  .pay-pts-card { border-radius: 8px; }
+  .pay-pts-row { display: flex; align-items: center; gap: 12px; }
   .pay-pts-cb { width: 18px; height: 18px; flex: 0 0 auto; border: 1.5px solid var(--kk-border-light); border-radius: 4px; position: relative; cursor: pointer; }
   .pay-pts-cb.on { background: var(--kk-primary-medium); border-color: var(--kk-primary-medium); }
   .pay-pts-cb.on::after { content: ''; position: absolute; left: 5px; top: 1px; width: 5px; height: 9px; border: 2px solid #fff; border-top: 0; border-left: 0; transform: rotate(45deg); }
-  .pay-pts-lb { flex: 1 1 0; display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--kk-text-darker); }
+  .pay-pts-lb { flex: 1 1 0; display: flex; align-items: center; gap: 12px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
   .pay-pts-lb .ic { width: 16px; height: 16px; color: var(--kk-primary-medium); }
-  .pay-pts-coin { display: inline-flex; align-items: center; gap: 4px; color: #FFB400; font-weight: 600; }
-  .pay-pts-val { color: var(--kk-primary-dark); font-size: 14px; font-weight: 600; }
-  .pay-note-box { margin-top: 12px; background: var(--kk-surface-light); border-radius: 8px; padding: 12px 16px; }
-  .pay-note-box .h { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--kk-text-darker); }
-  .pay-note-box .h .ic { width: 16px; height: 16px; color: var(--kk-text-medium); }
-  .pay-note-box ul { margin: 8px 0 0; padding-left: 18px; }
-  .pay-note-box li { font-size: 12px; line-height: 18px; color: var(--kk-text-dark); }
-  /* 付款方式 */
-  .pay-method { display: flex; align-items: center; gap: 12px; padding: 20px; border-top: 1px solid var(--kk-border-lighter); cursor: pointer; }
-  .pay-method:first-of-type { border-top: 0; }
-  .pay-radio { width: 18px; height: 18px; flex: 0 0 auto; border: 1.5px solid var(--kk-border-light); border-radius: 999px; position: relative; }
+  .pay-pts-coin { display: inline-flex; align-items: center; gap: 4px; color: #FFB400; font-size: 16px; font-weight: 700; }
+  .pay-pts-coin.sm { font-size: 14px; margin-left: 4px; }
+  .pay-pts-coin .ic { width: 16px; height: 16px; }
+  .pay-pts-val { color: var(--kk-primary-medium); font-size: 16px; }
+  .pay-note-box { margin-top: 20px; background: #F7FAFC; border-radius: 8px; padding: 16px; }
+  .pay-note-box .h { display: flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pay-note-box .h .ic { width: 16px; height: 16px; color: var(--kk-text-dark); }
+  .pay-note-box ul { margin: 12px 0 0; padding-left: 34px; }
+  .pay-note-box li { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); list-style: disc; }
+  /* 付款方式 / 電子發票 卡（radius 8） */
+  .pay-mcard { background: #fff; border-radius: 8px; overflow: hidden; }
+  .pay-mhd { display: flex; align-items: center; gap: 8px; padding: 16px 20px; cursor: pointer; border-bottom: 1px solid var(--kk-border-lighter); }
+  .pay-collapsed .pay-mhd { border-bottom: 0; }
+  .pay-mhd .chev { width: 24px; height: 24px; color: var(--kk-text-darker); transition: transform .2s; }
+  .pay-mhd .chev.r, .pay-collapsed .pay-mhd .chev { transform: rotate(-90deg); }
+  .pay-mtitle { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
+  .pay-method { display: flex; align-items: center; gap: 12px; padding: 20px 20px 20px 52px; border-top: 1px solid var(--kk-border-lighter); cursor: pointer; }
+  .pay-method:first-child { border-top: 0; }
+  .pay-radio { width: 17px; height: 17px; flex: 0 0 auto; border: 1.5px solid var(--kk-border-light); border-radius: 999px; position: relative; }
   .pay-method.sel .pay-radio { border-color: var(--kk-primary-medium); }
   .pay-method.sel .pay-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 999px; background: var(--kk-primary-medium); }
   .pay-method .nm { flex: 1 1 0; font-size: 14px; color: var(--kk-text-darker); }
-  .pay-method .logo { flex: 0 0 auto; height: 20px; display: inline-flex; align-items: center; font-size: 12px; font-weight: 700; }
+  .pay-method .logo { flex: 0 0 auto; height: 20px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 700; }
   .pay-method .logo .ic { width: 24px; height: 20px; color: var(--kk-text-dark); }
-  .pay-methods-note { display: flex; gap: 6px; padding: 16px 20px 0; font-size: 12px; line-height: 18px; color: var(--kk-text-medium); }
-  .pay-methods-note .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 1px; }
-  .pay-sec-bd { padding-top: 4px; }
+  .pay-methods-note { display: flex; gap: 8px; padding: 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pay-methods-note .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 2px; color: var(--kk-text-medium); }
   .pay-collapsed .pay-sec-bd { display: none; }
-  .pay-collapsed .pay-h-row .chev { transform: rotate(-90deg); }
-  /* 付款明細 */
-  .pay-detail-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .pay-detail-row .lb { color: var(--kk-text-darker); display: inline-flex; align-items: center; gap: 4px; }
+  /* 付款明細（雙卡） */
+  .pay-detail-wrap { background: #fff; border-radius: 12px; overflow: hidden; }
+  .pay-detail-card { padding: 16px; }
+  .pay-detail-top { border-bottom: 1px dashed var(--kk-border-lighter); }
+  .pay-detail-hd { display: flex; align-items: center; gap: 8px; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
+  .pay-detail-hd .ic { width: 24px; height: 24px; color: var(--kk-text-darker); }
+  .pay-dline { height: 1px; background: var(--kk-border-lighter); margin: 16px 0; }
+  .pay-dline.dash { border-top: 1px dashed var(--kk-border-lighter); background: none; height: 0; }
+  .pay-detail-row { display: flex; align-items: center; justify-content: space-between; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pay-detail-row + .pay-detail-row { margin-top: 16px; }
+  .pay-detail-row .lb { color: var(--kk-text-darker); display: inline-flex; align-items: center; }
+  .pay-detail-row .val { font-family: 'Helvetica Neue', Arial, sans-serif; }
   .pay-detail-row .val.cyan { color: var(--kk-primary-dark); }
-  .pay-detail-hr { height: 1px; background: var(--kk-border-lighter); margin: 12px 0; }
-  .pay-detail-total .lb { font-size: 14px; font-weight: 600; }
-  .pay-detail-total .val { font-size: 20px; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif; }
-  .pay-coin { display: inline-flex; align-items: center; gap: 4px; color: #FFB400; font-weight: 600; }
-  .pay-coin .dot { width: 16px; height: 16px; border-radius: 999px; background: #FFC128; color: #B26E00; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+  .pay-detail-total .lb { font-size: 16px; font-weight: 700; color: #333; }
+  .pay-detail-total .val { font-size: 22px; line-height: 22px; font-weight: 700; }
+  .pay-detail-note { margin-top: 8px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); text-align: right; }
+  .pay-detail-reward .lb { font-size: 16px; font-weight: 700; color: #333; }
+  .pay-coin { display: inline-flex; align-items: center; gap: 4px; color: #FFB400; font-size: 16px; font-weight: 700; }
+  .pay-coin .ic { width: 20px; height: 20px; }
   /* 右欄 ConfirmBoard */
   .pay-sum { background: #fff; border-radius: 6px; box-shadow: 0 1px 4px rgba(38,50,56,.12); padding: 20px; }
   .pay-sum-row { display: flex; align-items: flex-start; justify-content: space-between; font-size: 14px; line-height: 20px; }
@@ -3059,6 +3080,8 @@
     plusDark: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#212121" stroke-width="1.6" stroke-linecap="round"/></svg>',
     infoFill: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#2D84D6"/><path d="M8 7v4M8 4.6h.01" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>',
     card: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5.5" width="18" height="13" rx="2" stroke="#727272" stroke-width="1.4"/><path d="M3 9.5h18" stroke="#727272" stroke-width="1.4"/><path d="M6 14.5h4" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    sim: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 2.5h6.5L16 7v10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5Z" stroke="#727272" stroke-width="1.3"/><rect x="6.5" y="10" width="7" height="5.5" rx="1" stroke="#727272" stroke-width="1.3"/><path d="M10 10v5.5M6.5 12.7h7" stroke="#727272" stroke-width="1.1"/></svg>',
+    coinGold: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#FFC128"/><circle cx="8" cy="8" r="5" fill="#FFD766"/><path d="M6 5v6M6 8l3.2-3M6.7 7.6l2.9 3.4" stroke="#B26E00" stroke-width="1.3" stroke-linecap="round"/></svg>',
     cross: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     chevUp: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12l5-5 5 5" stroke="#727272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     chevR: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -3513,7 +3536,7 @@
     var reward = Math.round(pay * 0.02);      // demo：訂單完成後回饋點數
     return { gross: gross, coupon: coupon, points: points, pay: pay, reward: reward };
   }
-  function coinTag(n) { return '<span class="pay-coin"><span class="dot">K</span>' + n + '</span>'; }
+  function coinTag(n) { return '<span class="pay-coin"><span class="ic">' + OI.coinGold + '</span>' + n + '</span>'; }
   var PAY_METHODS = [
     { id: 'linepay', nm: 'LINE Pay', logo: '<span class="logo" style="color:#06C755">LINE<span style="background:#06C755;color:#fff;border-radius:3px;padding:1px 4px;margin-left:2px">Pay</span></span>' },
     { id: 'card', nm: '信用卡／簽帳金融卡', logo: '<span class="logo"><span class="ic">' + OI.card + '</span></span>' },
@@ -3524,44 +3547,55 @@
   function renderPay() {
     var p = ordP, a = payAmounts();
     // 左欄
-    var main = '';
-    // 1. 商品摘要
-    main += '<div class="pay-card pay-prod"><div class="ord-prod">' +
+    var main = '<div class="pay-col">';
+    // 1. 商品摘要（p24、標題 18、規格/覆蓋/日期/SIM，Figma 3223-94482）
+    main += '<div class="pay-card pay-prod-card pay-prod"><div class="ord-prod">' +
       '<div class="ord-ptitle">' + p.title + '</div>' +
       '<div class="ord-pspecs">' +
         '<div class="ord-pline"><span class="ic">' + OI.file + '</span>' + ordSpecLine() + '</div>' +
         '<div class="ord-pline ord-cov"><span class="ic">' + OI.loc + '</span><span class="u">' + ordCoverageText() + '</span>' +
           '<div class="ord-cov-tip"><ul>' + ordCoverageList().map(function (n) { return '<li>' + n + '</li>'; }).join('') + '</ul></div></div>' +
         (ordSt.useDate ? '<div class="ord-pline"><span class="ic">' + OI.cal + '</span>' + ordSt.useDate.y + '-' + ('0' + ordSt.useDate.m).slice(-2) + '-' + ('0' + ordSt.useDate.d).slice(-2) + '</div>' : '') +
-        '<div class="ord-pline"><span class="ic">' + OI.file + '</span>eSIM ×' + ordSt.qty + '</div>' +
+        '<div class="ord-pline"><span class="ic">' + OI.sim + '</span>eSIM ×' + ordSt.qty + '</div>' +
       '</div><div class="ord-hr"></div>' +
       '<button class="ord-cancel" id="payCancelInfo">' + ordCancelText() + '<span class="ic">' + OI.info + '</span></button></div></div>';
-    // 2. 折扣碼
-    main += '<div class="pay-card"><div class="pay-h">使用或輸入折扣碼</div>' +
+    // 2. 折扣碼（標題含左側青色 accent bar）
+    main += '<div class="pay-card"><div class="pay-h pay-h-bar">使用或輸入折扣碼</div>' +
       '<button class="pay-coupon-btn" id="payCouponBtn"><span class="ic">' + OI.info + '</span>使用或輸入折扣碼</button></div>';
-    // 3. KKday Points 折抵
-    main += '<div class="pay-card"><div class="pay-h">KKday Points 折抵</div>' +
-      '<div class="pay-pts-row"><div class="pay-pts-cb' + (payState.pointsOn ? ' on' : '') + '" id="payPtsCb"></div>' +
-        '<div class="pay-pts-lb">KKday Points 折抵<span class="ic">' + OI.info + '</span><span class="pay-pts-coin"><span class="dot" style="width:16px;height:16px;border-radius:999px;background:#FFC128;color:#B26E00;font-size:11px;display:inline-flex;align-items:center;justify-content:center">K</span>240</span></div>' +
-        '<span class="pay-pts-val">' + (payState.pointsOn ? '−TWD 40' : '') + '</span></div>' +
-      '<div class="pay-note-box"><div class="h"><span class="ic">' + OI.info + '</span>注意事項</div>' +
-        '<ul><li>每 50 點 KKday Points，可折抵 0.25 美金；付款金額不低於 1 美金。</li>' +
-        '<li>使用 KKday Points 折抵訂單金額，訂單取消／退款時，將優先返還折抵之 KKday Points。</li></ul></div></div>';
-    // 4. 付款方式
-    main += '<div class="pay-card pay-sec' + (payState.methodOpen ? '' : ' pay-collapsed') + '" id="paySecMethod"><div class="pay-h-row" id="payMethodHd"><span class="pay-h">請選擇付款方式</span><span class="ic chev">' + OI.chevUp + '</span></div>' +
-      '<div class="pay-sec-bd"><div id="payMethods"></div>' +
-      '<div class="pay-methods-note"><span class="ic">' + OI.info + '</span><span>請注意本平台不會向您收取任何交易手續費；倘若下單前使用的信用卡或第三方支付平台可能會向您收取相關手續費，請參考其相關服務政策與規定，並向你所屬的交易服務商查詢後得知。</span></div></div></div>';
-    // 5. 電子發票、收據
-    main += '<div class="pay-card pay-sec' + (payState.einvoiceOpen ? '' : ' pay-collapsed') + '" id="paySecInv"><div class="pay-h-row" id="payInvHd"><span class="pay-h">電子發票、收據</span><span class="ic chev">' + OI.chevUp + '</span></div>' +
-      '<div class="pay-sec-bd"><div class="ord-form" style="margin-top:12px">' + ffSelect('發票類型', 'inv-type', ['個人（會員載具）', '手機條碼載具', '公司統編'], '個人（會員載具）', '請選擇') + '<div class="ff"></div></div></div></div>';
-    // 6. 付款明細
-    main += '<div class="pay-card"><div class="pay-h">付款明細</div>' +
-      '<div class="pay-detail-row"><span class="lb">總金額</span><span class="val">$' + ordMoney(a.gross) + '</span></div>' +
-      '<div class="pay-detail-row"><span class="lb">折扣券</span><span class="val cyan">-$' + a.coupon + '</span></div>' +
-      (a.points ? '<div class="pay-detail-row"><span class="lb">KKday Points 折抵</span><span class="val cyan">-$' + a.points + '</span></div>' : '') +
-      '<div class="pay-detail-hr"></div>' +
-      '<div class="pay-detail-row pay-detail-total"><span class="lb">支付金額</span><span class="val">NT$' + ordMoney(a.pay) + '</span></div>' +
-      '<div class="pay-detail-row"><span class="lb">訂單完成後回饋</span><span class="val">' + coinTag(a.reward) + '</span></div></div>';
+    // 3. KKday Points 折抵（灰色區塊標籤 + 白卡）
+    main += '<div class="pay-block"><div class="pay-label">KKday Points 折抵</div>' +
+      '<div class="pay-card pay-pts-card">' +
+        '<div class="pay-pts-row"><div class="pay-pts-cb' + (payState.pointsOn ? ' on' : '') + '" id="payPtsCb"></div>' +
+          '<div class="pay-pts-lb">KKday Points 折抵<span class="ic">' + OI.info + '</span><span class="pay-pts-coin"><span class="ic">' + OI.coinGold + '</span>240</span></div>' +
+          '<span class="pay-pts-val">' + (payState.pointsOn ? '−TWD 40' : '') + '</span></div>' +
+        '<div class="pay-note-box"><div class="h"><span class="ic">' + OI.info + '</span>注意事項</div>' +
+          '<ul><li>每 50 點 KKday Points，可折抵 0.25 美金；付款金額不低於 1 美金。</li>' +
+          '<li>使用 KKday Points 折抵結帳金額，訂單取消、退款時，將優先退還折抵之 KKday Points。</li></ul></div></div></div>';
+    // 4. 付款（灰色標籤 + 付款方式卡，radius 8）
+    main += '<div class="pay-block"><div class="pay-label">付款</div>' +
+      '<div class="pay-mcard pay-sec' + (payState.methodOpen ? '' : ' pay-collapsed') + '" id="paySecMethod">' +
+        '<div class="pay-mhd" id="payMethodHd"><span class="ic chev">' + OI.chevUp + '</span><span class="pay-mtitle">請選擇付款方式</span></div>' +
+        '<div class="pay-sec-bd"><div id="payMethods"></div>' +
+        '<div class="pay-methods-note"><span class="ic">' + OI.info + '</span><span>請注意本平台不會向您收取任何平台交易手續費，但你下單時使用的信用卡或第三方支付平台可能會向您收取相關手續費，請參考其相關服務政策和規定，並向你所選的交易服務商取得更多資訊。</span></div></div></div></div>';
+    // 5. 電子發票、收據（radius 8，右箭頭可展開）
+    main += '<div class="pay-mcard pay-sec' + (payState.einvoiceOpen ? '' : ' pay-collapsed') + '" id="paySecInv">' +
+      '<div class="pay-mhd pay-mhd-r" id="payInvHd"><span class="ic chev' + (payState.einvoiceOpen ? '' : ' r') + '">' + OI.chevUp + '</span><span class="pay-mtitle">電子發票、收據</span></div>' +
+      '<div class="pay-sec-bd" style="padding:0 20px 20px"><div class="ord-form" style="margin-top:12px">' + ffSelect('發票類型', 'inv-type', ['個人（會員載具）', '手機條碼載具', '公司統編'], '個人（會員載具）', '請選擇') + '<div class="ff"></div></div></div></div>';
+    // 6. 付款明細（雙卡：上卡虛線底 + 明細列；下卡 支付金額/回饋）
+    main += '<div class="pay-detail-wrap">' +
+      '<div class="pay-detail-card pay-detail-top"><div class="pay-detail-hd"><span class="ic">' + OI.cal + '</span>付款明細</div>' +
+        '<div class="pay-dline dash"></div>' +
+        '<div class="pay-detail-row"><span class="lb">總金額</span><span class="val">$' + ordMoney(a.gross) + '</span></div>' +
+        '<div class="pay-dline"></div>' +
+        '<div class="pay-detail-row"><span class="lb">折扣券</span><span class="val cyan">-$' + a.coupon + '</span></div>' +
+        (a.points ? '<div class="pay-detail-row"><span class="lb">KKday Points 折抵<span class="pay-pts-coin sm"><span class="ic">' + OI.coinGold + '</span>7143</span></span><span class="val cyan">-$' + a.points + '</span></div>' : '') +
+      '</div>' +
+      '<div class="pay-detail-card"><div class="pay-detail-row pay-detail-total"><span class="lb">支付金額</span><span class="val">NT$' + ordMoney(a.pay) + '</span></div>' +
+        '<div class="pay-detail-note">*因匯率變動，付款時可能會有價差</div>' +
+        '<div class="pay-dline"></div>' +
+        '<div class="pay-detail-row pay-detail-reward"><span class="lb">訂單完成後回饋</span><span class="val">' + coinTag(a.reward) + '</span></div>' +
+      '</div></div>';
+    main += '</div>';
     document.getElementById('payMain').innerHTML = main;
     // 右欄
     document.getElementById('paySide').innerHTML = '<div class="pay-sum">' +
