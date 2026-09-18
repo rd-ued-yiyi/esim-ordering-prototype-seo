@@ -1247,7 +1247,7 @@
       </div>
     </div>
     <div class="col">
-      <div class="pc-crumb"><a id="plCrumbHome">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a data-toast="pc">eSIM/WIFI</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>搜尋結果</span></div>
+      <div class="pc-crumb"><a id="plCrumbHome">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="plCrumbCat">eSIM/WIFI</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>搜尋結果</span></div>
       <div class="pc-note pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
       <div class="pc-ex-body pc-lbody">
         <aside class="pc-ex-side">
@@ -2834,6 +2834,7 @@
   document.getElementById('plDetClose').addEventListener('click', closePlDetail);
   document.getElementById('plDetMask').addEventListener('click', closePlDetail);
   document.getElementById('plCrumbHome').addEventListener('click', exitList);
+  document.getElementById('plCrumbCat').addEventListener('click', exitList);  // eSIM/WIFI → 回主題頁
   document.querySelectorAll('#plSort button').forEach(function (b) { b.addEventListener('click', function () { plSort = +b.getAttribute('data-sort'); renderPlCards(); }); });
   // 點擊翻頁（整頁、有緩衝）
   document.getElementById('plFlowNext').addEventListener('click', function () { flowNext(); });
@@ -2847,6 +2848,7 @@
     if (next === _plCompact) return;
     _plCompact = next;
     document.getElementById('plBar').classList.toggle('compact', next);
+    if (!next) plSyncPageToSel();  // 回到默認態：翻到選中檔位所在頁，確保選中項在可視範圍
     requestAnimationFrame(function () { applyFlow(false); });  // 卡片尺寸變了：保持同一頁、瞬時對齊、不做滑動動畫（避免滾來滾去）
   }, { passive: true });
   window.addEventListener('resize', function () {
@@ -3408,7 +3410,7 @@
   // 詳情 dialog「訂購」→ 進訂單頁（先關詳情）
   (function () { var b = document.getElementById('plDetCta'); if (b) b.addEventListener('click', function () { var p = (typeof detP !== 'undefined' && detP) ? detP : ordP; if (typeof closePlDetail === 'function') closePlDetail(); else if (typeof closeDetail === 'function') closeDetail(); if (p) enterOrder(p); }); })();
   document.getElementById('ordCrumbHome').addEventListener('click', function () { exitOrder(); exitList && exitList(); });
-  document.getElementById('ordCrumbList').addEventListener('click', function () { exitOrder(); });
+  document.getElementById('ordCrumbList').addEventListener('click', function () { exitOrder(); exitList && exitList(); });  // eSIM/WIFI → 回主題頁
   document.getElementById('ordCrumbList2').addEventListener('click', function () { exitOrder(); });
 
   renderFind(); renderPanel(); renderPcExplore();
