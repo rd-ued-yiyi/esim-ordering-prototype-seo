@@ -769,6 +769,18 @@
   .pc-cal-cell.rstart::before { left: 50%; }
   .pc-cal-cell.rend::before { right: 50%; }
   .pc-cal-cell.rstart.rend::before { display: none; }
+  /* 啟用日期 雙月日曆（Figma 3263-28053） */
+  .ord-cal { position: fixed; z-index: 60; width: 700px; max-width: calc(100vw - 24px); background: #fff; border-radius: 16px; box-shadow: 0 8px 28px rgba(17,25,40,.16); padding: 20px 24px 24px; }
+  .ord-cal[hidden] { display: none; }
+  .ord-cal-hd { display: flex; align-items: center; gap: 8px; height: 36px; margin-bottom: 8px; }
+  .ord-cal-mtitle { flex: 1 1 0; text-align: center; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .ord-cal-body { display: flex; gap: 32px; }
+  .ord-cal-col { flex: 1 1 0; min-width: 0; }
+  /* 啟用日期 ⓘ 純文字 tooltip */
+  .ord-sec-title { position: relative; }
+  .ord-sec-info { color: var(--kk-primary-medium); cursor: default; }
+  .ord-sec-tip { position: absolute; left: 0; top: calc(100% + 8px); z-index: 25; width: 320px; max-width: 80vw; display: none; background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 12px; font-size: 12px; line-height: 18px; color: var(--kk-text-dark); }
+  .ord-sec-info:hover + .ord-sec-tip, .ord-sec-tip:hover { display: block; }
   /* ================= 訂單填寫頁（Figma 3223-87439 / 3244-72510） ================= */
   body.order-mode #pcHome, body.order-mode #pcListPage, body.order-mode .pc-cat { display: none; }
   .pc-ordpage { display: block; background: var(--kk-surface-light); padding-bottom: 48px; }
@@ -947,6 +959,9 @@
   .pc-tv-ok { height: 40px; padding: 0 28px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; font-weight: 600; }
   .pc-tv-ok:hover { background: var(--kk-primary-dark); }
   .pc-ppldlg { width: 520px; }
+  /* 旅客編輯 dialog 疊在「選擇旅客」dialog 之上 */
+  #pcTvMask { z-index: 62; }
+  #pcTvDlg { z-index: 63; }
   /* 旅客編輯：國籍/性別為半欄（覆蓋 ffRadio 的 ff-full）；中英文姓名為子雙欄 */
   .tv-edit .ff-full { grid-column: auto; }
   .tv-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -1418,6 +1433,20 @@
   </div>
   <div class="pc-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
   <div class="pc-cal-grid" id="pcCalGrid"></div>
+</div>
+
+<!-- ============ 啟用日期 雙月日曆下拉（Figma 3263-28053） ============ -->
+<div class="ord-cal" id="ordCal" hidden>
+  <div class="ord-cal-hd">
+    <button class="pc-cal-nav" id="ordCalPrev" aria-label="上個月"><span class="ic rot180">{{PC_arrowRight24}}</span></button>
+    <div class="ord-cal-mtitle" id="ordCalM1"></div>
+    <div class="ord-cal-mtitle" id="ordCalM2"></div>
+    <button class="pc-cal-nav" id="ordCalNext" aria-label="下個月"><span class="ic">{{PC_arrowRight24}}</span></button>
+  </div>
+  <div class="ord-cal-body">
+    <div class="ord-cal-col"><div class="pc-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="pc-cal-grid" id="ordCalG1"></div></div>
+    <div class="ord-cal-col"><div class="pc-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="pc-cal-grid" id="ordCalG2"></div></div>
+  </div>
 </div>
 
 <!-- ============ 取消政策 dialog（Figma 3223-95014） ============ -->
@@ -2888,6 +2917,55 @@
   document.addEventListener('click', function () { if (!document.getElementById('pcCal').hidden) closeCal(); });
   window.addEventListener('scroll', function () { if (!document.getElementById('pcCal').hidden) closeCal(); }, { passive: true });
 
+  // ===== 啟用日期 雙月日曆下拉（Figma 3263-28053）：兩個月並排 + 翻月 + 單日選擇 =====
+  var ordCalView = null;
+  function ordUseDate() { var u = ordSt && ordSt.useDate; return u ? new Date(u.y, u.m - 1, u.d) : null; }
+  function openOrdCal(trigger) {
+    var today = calToday(), sel = ordUseDate();
+    ordCalView = new Date((sel || today).getFullYear(), (sel || today).getMonth(), 1);
+    var cal = document.getElementById('ordCal'); cal.hidden = false;
+    renderOrdCal();
+    var r = trigger.getBoundingClientRect(), w = cal.offsetWidth || 700;
+    cal.style.left = Math.max(12, Math.min(r.right - w, window.innerWidth - w - 12)) + 'px';
+    cal.style.top = Math.min(r.bottom + 8, window.innerHeight - cal.offsetHeight - 8) + 'px';
+  }
+  function closeOrdCal() { document.getElementById('ordCal').hidden = true; }
+  function renderOrdMonth(gridId, base) {
+    var today = calToday(), sel = ordUseDate();
+    var grid = document.getElementById(gridId); grid.innerHTML = '';
+    var pad = new Date(base.getFullYear(), base.getMonth(), 1).getDay();
+    var days = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
+    for (var i = 0; i < pad; i++) grid.appendChild(h('<div class="pc-cal-cell pad"></div>'));
+    for (var day = 1; day <= days; day++) (function (day) {
+      var d = new Date(base.getFullYear(), base.getMonth(), day); d.setHours(0, 0, 0, 0);
+      var cls = 'pc-cal-cell';
+      if (d < today) cls += ' past';
+      if (calSameDay(d, today)) cls += ' today';
+      if (calSameDay(d, sel)) cls += ' sel';
+      var cell = h('<div class="' + cls + '"><span class="d">' + day + '</span></div>');
+      if (d >= today) cell.addEventListener('click', function (e) { e.stopPropagation(); pickOrdCal(d); });
+      grid.appendChild(cell);
+    })(day);
+  }
+  function renderOrdCal() {
+    var v = ordCalView, m2 = new Date(v.getFullYear(), v.getMonth() + 1, 1), today = calToday();
+    document.getElementById('ordCalM1').textContent = v.getFullYear() + '年' + (v.getMonth() + 1) + '月';
+    document.getElementById('ordCalM2').textContent = m2.getFullYear() + '年' + (m2.getMonth() + 1) + '月';
+    document.getElementById('ordCalPrev').disabled = (v.getFullYear() === today.getFullYear() && v.getMonth() <= today.getMonth());
+    renderOrdMonth('ordCalG1', v);
+    renderOrdMonth('ordCalG2', m2);
+  }
+  function pickOrdCal(d) {
+    var wk = ['日', '一', '二', '三', '四', '五', '六'];
+    ordSt.useDate = { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate(), chip: ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2), w: '週' + wk[d.getDay()] };
+    closeOrdCal(); renderOrdDateChips();
+  }
+  document.getElementById('ordCalPrev').addEventListener('click', function (e) { e.stopPropagation(); ordCalView = new Date(ordCalView.getFullYear(), ordCalView.getMonth() - 1, 1); renderOrdCal(); });
+  document.getElementById('ordCalNext').addEventListener('click', function (e) { e.stopPropagation(); ordCalView = new Date(ordCalView.getFullYear(), ordCalView.getMonth() + 1, 1); renderOrdCal(); });
+  document.getElementById('ordCal').addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function () { if (!document.getElementById('ordCal').hidden) closeOrdCal(); });
+  window.addEventListener('scroll', function () { if (!document.getElementById('ordCal').hidden) closeOrdCal(); }, { passive: true });
+
   // ================= 訂單填寫頁（Figma 3223-87439 / 3244-72510；資料邏輯參考 mweb） =================
   var OI = {
     file: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 2.5h6l4 4V17a.5.5 0 0 1-.5.5H5.5A.5.5 0 0 1 5 17V3a.5.5 0 0 1 .5-.5Z" stroke="#727272" stroke-width="1.3"/><path d="M11 2.5V6h4M7.5 11l1.6 1.6L13 9.2" stroke="#727272" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -3012,7 +3090,7 @@
     // Figma 3244/3223：商品資訊 + 使用日期 + 購買數量 同一張卡（商品為內層帶邊框子卡）
     var main = '<div class="ord-card ord-prod-wrap">' + w;
     if (req.date) {
-      main += '<div class="ord-datesec"><div class="ord-sec-h"><div class="ord-sec-title"><div class="t">啟用日期</div><span class="ic ic-16 ord-sec-info">' + OI.info + '</span></div></div>' +
+      main += '<div class="ord-datesec"><div class="ord-sec-h"><div class="ord-sec-title"><div class="t">啟用日期</div><span class="ic ic-16 ord-sec-info">' + OI.info + '</span><div class="ord-sec-tip">請選擇 eSIM 的啟用日期。啟用日期為當地時間，實際生效時間依所在時區為準；選定後將於該日開始計算使用效期。</div></div></div>' +
         '<div class="ord-date-wrap"><div class="ord-date-chips" id="ordDateChips"></div><button class="ord-dmore" id="ordDateMore"><span class="ic">' + OI.cal + '</span><span class="w">更多</span></button></div></div>' +
         '<div class="ord-hr2"></div>';
     }
@@ -3103,7 +3181,7 @@
     });
     if (selc) requestAnimationFrame(function () { center(selc, false); });
     var more = document.getElementById('ordDateMore');
-    if (more) more.onclick = function () { toast('demo 未開發'); };  // 「更多」日曆 demo
+    if (more) more.onclick = function (e) { e.stopPropagation(); openOrdCal(more); };  // 「更多」→ 雙月日曆下拉（Figma 3263-28053）
   }
   function pName(i) { return ORD_PEOPLE[i].cnLast + ORD_PEOPLE[i].cnFirst; }
   function enName(i) { return ORD_PEOPLE[i].enLast + ', ' + ORD_PEOPLE[i].enFirst; }
@@ -3176,29 +3254,30 @@
     card.querySelector('.ctE').onclick = function () { openContactDlg(); };
   }
   // 選擇旅客 dialog（Figma 3250-25755）：兩欄名單多選（上限=數量）+ 新增旅客 + 確定
+  var ordTvSel = [];
+  function renderTvSel() {
+    var N = ordSt.qty, bd = document.getElementById('pcTvSelBd');
+    bd.innerHTML = '<div class="tv-head"><div class="tv-count">請選擇 <b>' + N + '</b> 位成人<span class="req">*</span><span class="c-prog">(' + ordTvSel.length + '/' + N + ')</span></div><div class="tv-sub">12 歲以上（含）</div></div>' +
+      '<div class="tv-sel-grid" id="pcTvSelGrid"></div>' +
+      '<button class="tv-sel-add" id="pcTvSelAdd"><span class="ic">' + OI.plus + '</span>新增旅客</button>';
+    var grid = document.getElementById('pcTvSelGrid');
+    ORD_PEOPLE.forEach(function (_, i) {
+      var b = h('<button class="tv-sel-item">' + pName(i) + '</button>');
+      if (ordTvSel.indexOf(i) >= 0) b.classList.add('sel');
+      b.onclick = function () {
+        var at = ordTvSel.indexOf(i);
+        if (at >= 0) ordTvSel.splice(at, 1);
+        else { if (ordTvSel.length >= N) { toast('最多選擇 ' + N + ' 位'); return; } ordTvSel.push(i); }
+        renderTvSel();
+      };
+      grid.appendChild(b);
+    });
+    document.getElementById('pcTvSelAdd').onclick = function () { openTvDlg(null); };
+  }
   function openTvSelectDlg() {
-    var N = ordSt.qty, sel = ordSt.travelers.slice();
-    function render() {
-      var bd = document.getElementById('pcTvSelBd');
-      bd.innerHTML = '<div class="tv-head"><div class="tv-count">請選擇 <b>' + N + '</b> 位成人<span class="req">*</span><span class="c-prog">(' + sel.length + '/' + N + ')</span></div><div class="tv-sub">12 歲以上（含）</div></div>' +
-        '<div class="tv-sel-grid" id="pcTvSelGrid"></div>' +
-        '<button class="tv-sel-add" id="pcTvSelAdd"><span class="ic">' + OI.plus + '</span>新增旅客</button>';
-      var grid = document.getElementById('pcTvSelGrid');
-      ORD_PEOPLE.forEach(function (_, i) {
-        var b = h('<button class="tv-sel-item">' + pName(i) + '</button>');
-        if (sel.indexOf(i) >= 0) b.classList.add('sel');
-        b.onclick = function () {
-          var at = sel.indexOf(i);
-          if (at >= 0) sel.splice(at, 1);
-          else { if (sel.length >= N) { toast('最多選擇 ' + N + ' 位'); return; } sel.push(i); }
-          render();
-        };
-        grid.appendChild(b);
-      });
-      document.getElementById('pcTvSelAdd').onclick = function () { openTvDlg(null); };
-    }
-    render();
-    document.getElementById('pcTvSelOk').onclick = function () { ordSt.travelers = sel.slice(); closeTvSelDlg(); renderOrdTravelers(); };
+    ordTvSel = ordSt.travelers.slice();
+    renderTvSel();
+    document.getElementById('pcTvSelOk').onclick = function () { ordSt.travelers = ordTvSel.slice(); closeTvSelDlg(); renderOrdTravelers(); };
     document.getElementById('pcTvSelMask').classList.add('open'); document.getElementById('pcTvSelDlg').classList.add('open'); lockScroll();
   }
   function closeTvSelDlg() { var d = document.getElementById('pcTvSelDlg'); if (!d.classList.contains('open')) return; document.getElementById('pcTvSelMask').classList.remove('open'); d.classList.remove('open'); unlockScroll(); }
@@ -3218,6 +3297,7 @@
   document.getElementById('pcCancelMask').addEventListener('click', closeCancelDlg);
   // 旅客編輯 dialog（Figma 3244-124855）：國籍｜中文姓 中文名 / 英文姓 英文名｜性別 / 出生日期｜台灣身分證 / 台胞證｜港澳回鄉證 / 證件號碼｜證件效期
   function openTvDlg(idx) {
+    var fromSel = document.getElementById('pcTvSelDlg').classList.contains('open');
     var t = idx != null ? ORD_PEOPLE[idx] : { nation: '中國' };
     document.getElementById('pcTvTitle').textContent = idx != null ? '編輯旅客資料' : '新增旅客資料';
     function ffSub(label, id, ph, val, sub) {
@@ -3247,8 +3327,14 @@
       obj.enLast = g('tv-enl'); obj.enFirst = g('tv-enf'); obj.gender = rg('tv-gender') || obj.gender;
       obj.birth = g('tv-birth') || obj.birth; obj.twId = g('tv-twid'); obj.twPass = g('tv-twpass');
       obj.hkMacao = g('tv-hk'); obj.docNo = g('tv-docno'); obj.docExp = g('tv-docexp') || obj.docExp;
-      if (idx == null) { obj.cc = obj.cc || '+886'; obj.app = obj.app || 'Line'; obj.appAcct = obj.appAcct || ''; obj.tel = obj.tel || ''; ORD_PEOPLE.push(obj); if (ordSt.travelers.length < ordSt.qty) ordSt.travelers.push(ORD_PEOPLE.length - 1); }
-      closeTvDlg(); renderOrdTravelers();
+      if (idx == null) {
+        obj.cc = obj.cc || '+886'; obj.app = obj.app || 'Line'; obj.appAcct = obj.appAcct || ''; obj.tel = obj.tel || '';
+        ORD_PEOPLE.push(obj); var ni = ORD_PEOPLE.length - 1;
+        if (fromSel) { if (ordTvSel.length < ordSt.qty && ordTvSel.indexOf(ni) < 0) ordTvSel.push(ni); }
+        else if (ordSt.travelers.length < ordSt.qty) ordSt.travelers.push(ni);
+      }
+      closeTvDlg();
+      if (fromSel) renderTvSel(); else renderOrdTravelers();  // 從選擇 dialog 新增：僅刷新其列表，選擇 dialog 仍在
     };
     document.getElementById('pcTvMask').classList.add('open'); document.getElementById('pcTvDlg').classList.add('open'); lockScroll();
   }
