@@ -853,24 +853,55 @@
   .ff-radio input:checked + .radio::after { content: ''; position: absolute; inset: 3px; border-radius: 999px; background: var(--kk-primary-medium); }
   .ff-sub { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   /* 旅客 / 聯絡人 chips + 卡 */
-  .ct-area { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
-  .ct-chips-vp { flex: 1 1 0; min-width: 0; overflow: hidden; }
-  .ct-chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-  .ct-chips::-webkit-scrollbar { display: none; }
+  .ord-sec-col { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .ord-sec-sub { font-size: 12px; line-height: 16px; font-weight: 400; color: var(--kk-text-dark); }
+  /* 計數頭（旅客資料） */
+  .tv-head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .tv-head-l { display: flex; flex-direction: column; gap: 4px; }
+  .tv-count { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
+  .tv-count b, .tv-count .c-prog { color: var(--kk-primary-dark); font-weight: 600; }
+  .tv-count .req { color: var(--kk-text-critical); }
+  .tv-count .c-prog { margin-left: 4px; }
+  .tv-sub { margin-top: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .tv-head-l .tv-sub { margin-top: 0; }
+  .tv-more { flex: 0 0 auto; height: 32px; padding: 0 8px 0 12px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--kk-primary-medium); border-radius: 8px; color: var(--kk-primary-dark); font-size: 14px; font-weight: 600; white-space: nowrap; }
+  .tv-more .ic { width: 16px; height: 16px; }
+  /* 旅客代表人 chips（qty=1） */
+  .tv-chiprow { margin-top: 12px; display: flex; align-items: flex-start; gap: 8px; }
+  .tv-chips { flex: 1 1 0; min-width: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tv-chips.collapsed { max-height: 36px; overflow: hidden; }
+  .tv-chipbtns { flex: 0 0 auto; display: flex; align-items: center; gap: 4px; }
+  .tv-add { height: 36px; padding: 0 12px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--kk-border-light); border-radius: 8px; color: var(--kk-text-darker); font-size: 14px; white-space: nowrap; }
+  .tv-add .ic { width: 16px; height: 16px; }
+  .tv-collapse { width: 36px; height: 36px; border: 1px solid var(--kk-border-light); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: var(--kk-text-dark); }
+  .tv-collapse .ic { width: 20px; height: 20px; transition: transform .2s; }
+  .tv-collapse.up .ic { transform: rotate(180deg); }
   .ct-chip { flex: 0 0 auto; height: 36px; padding: 0 14px; border-radius: 8px; background: var(--kk-surface-light); font-size: 14px; color: var(--kk-text-darker); white-space: nowrap; border: 1px solid transparent; }
   .ct-chip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
-  .ct-add { flex: 0 0 auto; height: 36px; padding: 0 12px; display: inline-flex; align-items: center; gap: 4px; color: var(--kk-primary-dark); font-size: 14px; font-weight: 600; }
-  .ct-add .ic { width: 16px; height: 16px; }
-  .pc-pcardbox { border: 1px solid var(--kk-border-lighter); border-radius: 8px; padding: 16px; margin-top: 12px; }
-  .pc-pcardbox + .pc-pcardbox { margin-top: 8px; }
-  .pc-pcard-hd { display: flex; align-items: center; justify-content: space-between; }
-  .pc-pcard-nm { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
-  .pc-pcard-acts { display: inline-flex; gap: 8px; color: var(--kk-text-dark); }
-  .pc-pcard-acts .ic { width: 20px; height: 20px; }
-  .pc-pcard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; }
-  .pc-pcard-f { display: flex; flex-direction: column; gap: 2px; }
-  .pc-pcard-f .k { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
-  .pc-pcard-f .v { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  /* 旅客資料卡（Figma 3263-27062） */
+  .tv-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+  .tv-cards:empty { margin-top: 0; }
+  .tv-card { border-radius: 8px; }
+  .tv-card-hd { display: flex; align-items: center; justify-content: space-between; background: #F7FAFC; border: 1px solid var(--kk-border-lighter); border-bottom: 0; border-radius: 8px 8px 0 0; padding: 4px 4px 4px 12px; }
+  .tv-nm { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .tv-div { width: 1px; height: 14px; background: var(--kk-border-light); }
+  .tv-acts { display: inline-flex; align-items: center; }
+  .tv-acts button { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .tv-acts .ic { width: 20px; height: 20px; }
+  .tv-card-bd { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 6px; background: #fff; border: 1px solid var(--kk-border-lighter); border-top: 0; border-radius: 0 0 8px 8px; padding: 12px; }
+  .tv-f { display: flex; flex-direction: column; gap: 2px; }
+  .tv-f .k { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .tv-f .v { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  /* 旅遊期間聯絡方式卡（Figma 3244-72622） */
+  .ct-card { margin-top: 20px; border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; }
+  .ct-card-hd { display: flex; align-items: center; justify-content: space-between; background: #F7FAFC; padding: 4px 4px 4px 12px; }
+  .ct-card-hd .nm { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  .ct-card-hd .ctE { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .ct-card-hd .ctE .ic { width: 20px; height: 20px; }
+  .ct-card-bd { background: #fff; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+  .ct-cf { display: flex; flex-direction: column; gap: 2px; }
+  .ct-cf .k { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .ct-cf .v { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   /* 訂購人資料明細 */
   .ord-info { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
   .ord-info-line { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
@@ -913,11 +944,29 @@
   .pc-tv-ok { height: 40px; padding: 0 28px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; font-weight: 600; }
   .pc-tv-ok:hover { background: var(--kk-primary-dark); }
   .pc-ppldlg { width: 520px; }
+  /* 旅客編輯：國籍/性別為半欄（覆蓋 ffRadio 的 ff-full）；中英文姓名為子雙欄 */
+  .tv-edit .ff-full { grid-column: auto; }
+  .tv-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  /* 選擇旅客 dialog */
+  .pc-tvseldlg { width: 560px; }
+  .pc-tv-bd .tv-head { margin-top: 0; }
+  .tv-sel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .tv-sel-item { height: 48px; padding: 0 16px; text-align: left; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; color: var(--kk-text-darker); }
+  .tv-sel-item.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); color: var(--kk-primary-dark); font-weight: 600; }
+  .tv-sel-add { width: 100%; height: 48px; margin-top: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; border: 1px solid var(--kk-border-light); border-radius: 8px; color: var(--kk-text-darker); font-size: 14px; }
+  .tv-sel-add .ic { width: 16px; height: 16px; }
+  /* 聯絡方式 dialog */
+  .ct-quick { display: flex; flex-direction: column; gap: 8px; }
+  .ct-quick-lb { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .ct-quick-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ct-dlg-div { height: 1px; background: var(--kk-border-lighter); margin: 16px 0; }
+  .ct-dlg-form { display: flex; flex-direction: column; gap: 16px; }
+  .ct-dlg-form .ord-form { margin-top: 0; }
   /* 訂單頁窄視窗：兩欄堆疊、表單改單欄（避免擁擠） */
   @media (max-width: 960px) {
     .pc-ord-grid { flex-direction: column; }
     .pc-ord-side { position: static; flex: 1 1 auto; width: 100%; }
-    .ord-form, .pc-pcard-grid { grid-template-columns: 1fr; }
+    .ord-form, .tv-duo, .tv-card-bd, .tv-sel-grid { grid-template-columns: 1fr; }
   }
   .pc-foot { background: #444; padding: 50px 80px; color: #fff; }
   .pc-foot-top { display: flex; align-items: flex-start; justify-content: space-between; }
@@ -1383,7 +1432,15 @@
   <div class="pc-tv-ft"><button class="pc-tv-ok" id="pcTvOk">確定</button></div>
 </div>
 
-<!-- ============ 訂購人 / 聯絡人 編輯 dialog（通用） ============ -->
+<!-- ============ 選擇旅客 dialog（Figma 3250-25755） ============ -->
+<div class="pc-mask" id="pcTvSelMask"></div>
+<div class="pc-tvdlg pc-tvseldlg" id="pcTvSelDlg" role="dialog" aria-modal="true">
+  <div class="pc-tv-hd"><span class="t">選擇旅客資料</span><button id="pcTvSelClose" aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button></div>
+  <div class="pc-tv-bd" id="pcTvSelBd"></div>
+  <div class="pc-tv-ft"><button class="pc-tv-ok" id="pcTvSelOk">確定</button></div>
+</div>
+
+<!-- ============ 訂購人 / 聯絡方式 編輯 dialog（通用） ============ -->
 <div class="pc-mask" id="pcPplMask"></div>
 <div class="pc-tvdlg pc-ppldlg" id="pcPplDlg" role="dialog" aria-modal="true">
   <div class="pc-tv-hd"><span class="t" id="pcPplTitle">訂購人資料</span><button id="pcPplClose" aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button></div>
@@ -2025,6 +2082,7 @@
   }
   // 卡片假數據：復刻 mweb .pkg-card 結構；warns（黃色提醒）依 mweb REQ_PATTERN 分布——並非每張都有，部分商品無需求提示
   var PL_DATA = [
+    { title: '日本 eSIM・實名制・需指定啟用日・需航班與設備資訊（最完整填寫範例）', warns: ['需指定啟用日', '需設備信息', '需航班信息', '需實名認證'], tags: ['支持熱點・通話', '5G', '原生卡'], perks: ['立即確認', '需指定啟用日', '3天前可免費取消'], rating: 4.9, reviews: 5120, bought: '12K+ 已購', vendor: 'KKday Select', now: 1299, was: 1699, per: 60, off: '23%OFF', hot: true },
     { title: '5G・漫遊・原生網絡・支援熱點', warns: [], tags: ['支持熱點・通話', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.8, reviews: 3479, bought: '10k+ 已購', vendor: 'Joytel', now: 988, was: 1234, per: 46, off: '20%OFF', hot: true },
     { title: 'KDDI 5G 高速原生日本 eSIM・不限速', warns: ['需指定啟用日'], tags: ['支持熱點', '5G', '原生卡'], perks: ['立即確認', '即買即用'], rating: 4.7, reviews: 2318, bought: '8K+ 已購', vendor: 'KDDI', now: 1180, was: 1475, per: 55, off: '20%OFF', hot: true },
     { title: 'Docomo 每日流量 eSIM・可加值・支援 ChatGPT', warns: ['需航班信息', '需設備信息'], tags: ['5G/4G', '可加值', '本地預付卡'], perks: ['立即確認', '3天前可免費取消'], rating: 4.6, reviews: 1151, bought: '5K+ 已購', vendor: 'Docomo', now: 893, was: null, per: 41, off: null, hot: true },
@@ -2839,24 +2897,36 @@
     edit: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13.5 4.5l2 2M4 16l1-3.5 8-8 2.5 2.5-8 8L4 16Z" stroke="#727272" stroke-width="1.3" stroke-linejoin="round"/></svg>',
     del: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6h11M8 3.5h4M6 6l.6 9.5a.5.5 0 0 0 .5.5h5.8a.5.5 0 0 0 .5-.5L14 6" stroke="#727272" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     cal: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4.5" width="14" height="12" rx="1.5" stroke="#727272" stroke-width="1.3"/><path d="M3 8h14M7 3v3M13 3v3" stroke="#727272" stroke-width="1.3" stroke-linecap="round"/></svg>',
-    plus: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round"/></svg>'
+    plus: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    cross: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    chevUp: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12l5-5 5 5" stroke="#727272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    chevR: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   };
   // 演示名單（與 mweb 同一份：網球王子青學隊員，日籍）
+  // 旅客名單（對齊 Figma 3244-72583 名人名單）
   var ORD_PEOPLE = [
-    { cnLast: '越前', cnFirst: '龍馬', enLast: 'ECHIZEN', enFirst: 'RYOMA', tel: '13900009009', email: 'ryoma@seigaku.jp', app: 'Line ryoma_o', nation: '日本', gender: '男', birth: '1995/12/24', twId: 'B122400024', twPass: '66122400', hkMacao: 'H12240024', docNo: 'TR1224000', docExp: '2030/12/23' },
-    { cnLast: '手塚', cnFirst: '國光', enLast: 'TEZUKA', enFirst: 'KUNIMITSU', tel: '13900001001', email: 'tezuka@seigaku.jp', app: 'Line tezuka_k', nation: '日本', gender: '男', birth: '1994/10/07', twId: 'A210071007', twPass: '21001007', hkMacao: 'H10071007', docNo: 'TR1007888', docExp: '2029/10/06' },
-    { cnLast: '不二', cnFirst: '周助', enLast: 'FUJI', enFirst: 'SYUSUKE', tel: '13900003003', email: 'fuji@seigaku.jp', app: 'Line fuji_s', nation: '日本', gender: '男', birth: '1994/02/29', twId: 'A102290229', twPass: '22900229', hkMacao: 'H02290229', docNo: 'TR0229666', docExp: '2029/08/20' },
-    { cnLast: '菊丸', cnFirst: '英二', enLast: 'KIKUMARU', enFirst: 'EIJI', tel: '13900004004', email: 'kikumaru@seigaku.jp', app: 'Line eiji_k', nation: '日本', gender: '男', birth: '1994/11/28', twId: 'B211281128', twPass: '11281128', hkMacao: 'H11281128', docNo: 'TR1128555', docExp: '2027/11/27' },
-    { cnLast: '大石', cnFirst: '秀一郎', enLast: 'OISHI', enFirst: 'SHUICHIRO', tel: '13900002002', email: 'oishi@seigaku.jp', app: 'Line oishi_s', nation: '日本', gender: '男', birth: '1994/04/30', twId: 'F204300430', twPass: '40300430', hkMacao: 'H04300430', docNo: 'TR0430777', docExp: '2028/04/29' },
-    { cnLast: '桃城', cnFirst: '武', enLast: 'MOMOSHIRO', enFirst: 'TAKESHI', tel: '13900007007', email: 'momo@seigaku.jp', app: 'Line momo_t', nation: '日本', gender: '男', birth: '1995/07/23', twId: 'B207230723', twPass: '72300723', hkMacao: 'H07230723', docNo: 'TR0723222', docExp: '2029/07/22' }
+    { cnLast: '楊', cnFirst: '冪', enLast: 'YANG', enFirst: 'MI', nation: '中國', gender: '女', birth: '1993/10/11', twId: 'A128374873', twPass: '239024778', hkMacao: 'H239024778', docNo: '239024778', docExp: '2025/10/11', cc: '+886', tel: '091283874', app: 'Line', appAcct: 'doneehuang' },
+    { cnLast: '徐', cnFirst: '佳瑩', enLast: 'HSU', enFirst: 'CHIA YING', nation: '台灣', gender: '女', birth: '1984/03/06', twId: 'B203060306', twPass: '203060306', hkMacao: 'H203060306', docNo: '306203060', docExp: '2028/03/05', cc: '+886', tel: '0912345678', app: 'Line', appAcct: 'lala.hsu' },
+    { cnLast: '張', cnFirst: '學友', enLast: 'CHEUNG', enFirst: 'HOK YAU', nation: '香港', gender: '男', birth: '1961/07/10', twId: 'H107100710', twPass: '107100710', hkMacao: 'H107100710', docNo: 'K12345678', docExp: '2030/07/09', cc: '+852', tel: '61234567', app: 'WhatsApp', appAcct: 'jacky.c' },
+    { cnLast: '蕭', cnFirst: '敬騰', enLast: 'HSIAO', enFirst: 'CHING TENG', nation: '台灣', gender: '男', birth: '1987/03/30', twId: 'A187033003', twPass: '187033003', hkMacao: 'H187033003', docNo: '303187033', docExp: '2029/03/29', cc: '+886', tel: '0922333444', app: 'Line', appAcct: 'jam.hsiao' },
+    { cnLast: '朴', cnFirst: '敘俊', enLast: 'PARK', enFirst: 'SEO JOON', nation: '韓國', gender: '男', birth: '1988/12/16', twId: 'K188121612', twPass: '188121612', hkMacao: 'H188121612', docNo: 'M87654321', docExp: '2031/12/15', cc: '+82', tel: '1023456789', app: 'Line', appAcct: 'park.sj' },
+    { cnLast: '彭', cnFirst: '于晏', enLast: 'PENG', enFirst: 'YU YAN', nation: '台灣', gender: '男', birth: '1982/03/24', twId: 'A182032403', twPass: '182032403', hkMacao: 'H182032403', docNo: '304182032', docExp: '2028/03/23', cc: '+886', tel: '0933555777', app: 'Line', appAcct: 'eddie.peng' },
+    { cnLast: '蔡', cnFirst: '依林', enLast: 'TSAI', enFirst: 'YI LIN', nation: '台灣', gender: '女', birth: '1980/09/15', twId: 'A280091509', twPass: '280091509', hkMacao: 'H280091509', docNo: '309280091', docExp: '2027/09/14', cc: '+886', tel: '0955666888', app: 'Line', appAcct: 'jolin.tsai' },
+    { cnLast: '孫', cnFirst: '藝真', enLast: 'SON', enFirst: 'YE JIN', nation: '韓國', gender: '女', birth: '1982/01/11', twId: 'K282011102', twPass: '282011102', hkMacao: 'H282011102', docNo: 'M11223344', docExp: '2030/01/10', cc: '+82', tel: '1034567890', app: 'Line', appAcct: 'son.yj' },
+    { cnLast: '全', cnFirst: '智賢', enLast: 'JUN', enFirst: 'JI HYUN', nation: '韓國', gender: '女', birth: '1981/10/30', twId: 'K281103010', twPass: '281103010', hkMacao: 'H281103010', docNo: 'M22334455', docExp: '2029/10/29', cc: '+82', tel: '1045678901', app: 'Line', appAcct: 'jun.jh' },
+    { cnLast: '宋', cnFirst: '慧喬', enLast: 'SONG', enFirst: 'HYE KYO', nation: '韓國', gender: '女', birth: '1981/11/22', twId: 'K281112211', twPass: '281112211', hkMacao: 'H281112211', docNo: 'M33445566', docExp: '2030/11/21', cc: '+82', tel: '1056789012', app: 'Line', appAcct: 'song.hk' },
+    { cnLast: '李', cnFirst: '知恩', enLast: 'LEE', enFirst: 'JI EUN', nation: '韓國', gender: '女', birth: '1993/05/16', twId: 'K293051605', twPass: '293051605', hkMacao: 'H293051605', docNo: 'M44556677', docExp: '2028/05/15', cc: '+82', tel: '1067890123', app: 'Line', appAcct: 'iu.lee' }
   ];
   var ORD_NATIONS = ['台灣', '日本', '韓國', '中國', '香港', '澳門', '新加坡', '馬來西亞', '泰國', '美國', '英國', '法國', '澳大利亞'];
   var ordP = null, ordSt = null;
   function newOrdState() {
-    var p0 = ORD_PEOPLE[0];
     return {
       qty: 1, useDate: null, deviceIn: {}, flIn: {}, flOut: {},
-      travelers: [0], contacts: [0], orderer: { first: p0.cnFirst, last: p0.cnLast, nation: p0.nation, email: p0.email, cc: '+81', phone: p0.tel, app: 'Wechat', appAcct: '' },
+      travelers: [0],
+      // 訂購人（對齊 Figma 訂購人卡：徐佳瑩／台灣／Lala.hsu）
+      orderer: { first: '佳瑩', last: '徐', nation: '台灣', email: 'Lala.hsu@kkday.com', cc: '+886', phone: '0912345678', app: 'Line', appAcct: '' },
+      // 旅遊期間聯絡方式（單一區塊，不隨數量變化；預設楊冪）
+      contact: { last: '楊', first: '冪', cc: '+886', tel: '091283874', phoneOn: true, app: 'Line', appAcct: 'doneehuang', appOn: true },
       remark: ''
     };
   }
@@ -2956,19 +3026,8 @@
       main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">抵達航班資訊</div></div><div data-ffscope="flIn">' + flightForm('flin-', st.flIn, '抵達') + '</div></div>';
       main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">離境航班資訊</div></div><div data-ffscope="flOut">' + flightForm('flout-', st.flOut, '離境') + '</div></div>';
     }
-    if (req.travelers) {
-      var maxTv = st.qty;
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">旅客資料</div></div>' +
-        '<div class="ord-subhint">選擇 <b>' + maxTv + '</b> 位旅客代表人<span class="req">*</span></div>' +
-        '<div class="ct-area"><div class="ct-chips-vp"><div class="ct-chips" id="ordTvChips"></div></div><button class="ct-add" id="ordTvAdd"><span class="ic">' + OI.plus + '</span>新增旅客</button></div>' +
-        '<div id="ordTvCards"></div></div>';
-    }
-    if (req.contacts) {
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">旅遊期間聯絡方式</div></div>' +
-        '<div class="ord-subhint">電話與 App 建議擇一填寫，以便旅途中與您聯繫</div>' +
-        '<div class="ct-area"><div class="ct-chips-vp"><div class="ct-chips" id="ordCtChips"></div></div><button class="ct-add" id="ordCtAdd"><span class="ic">' + OI.plus + '</span>新增</button></div>' +
-        '<div id="ordCtCards"></div></div>';
-    }
+    if (req.travelers) main += '<div class="ord-card" id="ordTvCard"></div>';   // 旅客資料（依數量變化，renderOrdTravelers 填充）
+    if (req.contacts) main += '<div class="ord-card" id="ordCtCard"></div>';    // 旅遊期間聯絡方式（單一區塊，renderOrdContacts 填充）
     var o = st.orderer;
     if (req.contacts) {
       // 完整版：唯讀 + 編輯（另有獨立「聯絡方式」區）
@@ -3011,8 +3070,8 @@
     byId('ordRemark').addEventListener('input', function () { st.remark = this.value; });
     bindFfScopes();
     if (req.date) renderOrdDateChips();
-    if (req.travelers) { renderOrdTravelers(); byId('ordTvAdd').onclick = function () { openTvDlg(null); }; }
-    if (req.contacts) { renderOrdContacts(); byId('ordCtAdd').onclick = function () { openPplDlg('contact'); }; }
+    if (req.travelers) renderOrdTravelers();
+    if (req.contacts) renderOrdContacts();
   }
   // 表單欄位 → state（不重繪，保留焦點）
   function bindFfScopes() {
@@ -3043,52 +3102,102 @@
     if (more) more.onclick = function () { toast('demo 未開發'); };  // 「更多」日曆 demo
   }
   function pName(i) { return ORD_PEOPLE[i].cnLast + ORD_PEOPLE[i].cnFirst; }
+  function enName(i) { return ORD_PEOPLE[i].enLast + ', ' + ORD_PEOPLE[i].enFirst; }
+  // 旅客資料卡（Figma 3263-27062）：淺藍 header 名字 + 編輯/移除；白底 2 欄 6 格
+  function tvCard(i) {
+    var t = ORD_PEOPLE[i];
+    function f(k, v) { return '<div class="tv-f"><span class="k">' + k + '</span><span class="v">' + (v || '') + '</span></div>'; }
+    var card = h('<div class="tv-card">' +
+      '<div class="tv-card-hd"><div class="tv-nm"><span>' + enName(i) + '</span><i class="tv-div"></i><span>' + pName(i) + '</span></div>' +
+        '<div class="tv-acts"><button class="tvE" aria-label="編輯"><span class="ic">' + OI.edit + '</span></button>' +
+        '<button class="tvX" aria-label="移除"><span class="ic">' + OI.cross + '</span></button></div></div>' +
+      '<div class="tv-card-bd">' +
+        f('國家/地區', t.nation) + f('性別/出生日期', t.gender + ' ' + t.birth) +
+        f('台灣身分證字號', t.twId) + f('台胞證', t.twPass) +
+        f('證件號碼（護照/身分證）', t.docNo) + f('證件效期（護照/身分證）', t.docExp) +
+      '</div></div>');
+    card.querySelector('.tvE').onclick = function () { openTvDlg(i); };
+    card.querySelector('.tvX').onclick = function () { var at = ordSt.travelers.indexOf(i); if (at >= 0) ordSt.travelers.splice(at, 1); renderOrdTravelers(); };
+    return card;
+  }
+  // 旅客資料（依購買數量變化）：qty=1 用代表人 chips（Figma 3244-72583）；qty>1 用「N 位成人 (x/N) + 再新增」（Figma 3263-27041）
   function renderOrdTravelers() {
-    var chips = document.getElementById('ordTvChips'), cards = document.getElementById('ordTvCards'); if (!chips) return;
-    chips.innerHTML = ''; cards.innerHTML = '';
-    var maxTv = ordSt.qty;
-    ORD_PEOPLE.forEach(function (_, i) {
-      var chip = h('<button class="ct-chip">' + pName(i) + '</button>');
-      if (ordSt.travelers.indexOf(i) >= 0) chip.classList.add('sel');
-      chip.onclick = function () {
-        var at = ordSt.travelers.indexOf(i);
-        if (at >= 0) { if (ordSt.travelers.length > 1) ordSt.travelers.splice(at, 1); }
-        else { if (ordSt.travelers.length >= maxTv) { toast('最多選擇 ' + maxTv + ' 位'); return; } ordSt.travelers.push(i); }
-        renderOrdTravelers();
-      };
-      chips.appendChild(chip);
-    });
-    ordSt.travelers.forEach(function (i) {
-      var t = ORD_PEOPLE[i];
-      var card = h('<div class="pc-pcardbox"><div class="pc-pcard-hd"><span class="pc-pcard-nm">' + t.enLast + ', ' + t.enFirst + '　' + pName(i) + '</span>' +
-        '<span class="pc-pcard-acts"><button class="tvE" aria-label="編輯">' + OI.edit + '</button></span></div>' +
-        '<div class="pc-pcard-grid">' +
-          '<div class="pc-pcard-f"><span class="k">國籍</span><span class="v">' + t.nation + '</span></div>' +
-          '<div class="pc-pcard-f"><span class="k">性別 / 出生日期</span><span class="v">' + t.gender + '　' + t.birth + '</span></div>' +
-          '<div class="pc-pcard-f"><span class="k">證件號碼（護照/身份證）</span><span class="v">' + t.docNo + '</span></div>' +
-          '<div class="pc-pcard-f"><span class="k">證件效期</span><span class="v">' + t.docExp + '</span></div>' +
-        '</div></div>');
-      card.querySelector('.tvE').onclick = function () { openTvDlg(i); };
-      cards.appendChild(card);
-    });
+    var card = document.getElementById('ordTvCard'); if (!card) return;
+    var N = ordSt.qty;
+    if (ordSt.travelers.length > N) ordSt.travelers = ordSt.travelers.slice(0, N);
+    var filled = ordSt.travelers.length, html;
+    if (N === 1) {
+      html = '<div class="ord-sec-h"><div class="t">旅客資料</div></div>' +
+        '<div class="tv-head"><div class="tv-count">選擇 <b>1</b> 位旅客代表人<span class="req">*</span></div><div class="tv-sub">12 歲以上（含）</div></div>' +
+        '<div class="tv-chiprow"><div class="tv-chips" id="ordTvChips"></div>' +
+          '<div class="tv-chipbtns"><button class="tv-add" id="ordTvAdd"><span class="ic">' + OI.plus + '</span>新增旅客</button>' +
+          '<button class="tv-collapse" id="ordTvCollapse" aria-label="收合"><span class="ic">' + OI.chevUp + '</span></button></div></div>' +
+        '<div class="tv-cards" id="ordTvCards"></div>';
+    } else {
+      html = '<div class="ord-sec-h"><div class="t">旅客資料</div></div>' +
+        '<div class="tv-head tv-head-row"><div class="tv-head-l"><div class="tv-count"><span class="c-n">' + N + ' 位成人</span><span class="req">*</span><span class="c-prog">(' + filled + '/' + N + ')</span></div><div class="tv-sub">12 歲以上（含）</div></div>' +
+        (filled < N ? '<button class="tv-more" id="ordTvMore">再新增 ' + (N - filled) + ' 位旅客<span class="ic">' + OI.chevR + '</span></button>' : '') +
+        '</div><div class="tv-cards" id="ordTvCards"></div>';
+    }
+    card.innerHTML = html;
+    var cards = document.getElementById('ordTvCards');
+    ordSt.travelers.forEach(function (i) { cards.appendChild(tvCard(i)); });
+    if (N === 1) {
+      var chips = document.getElementById('ordTvChips');
+      ORD_PEOPLE.forEach(function (_, i) {
+        var chip = h('<button class="ct-chip">' + pName(i) + '</button>');
+        if (ordSt.travelers.indexOf(i) >= 0) chip.classList.add('sel');
+        chip.onclick = function () { ordSt.travelers = [i]; renderOrdTravelers(); };
+        chips.appendChild(chip);
+      });
+      document.getElementById('ordTvAdd').onclick = function () { openTvDlg(null); };
+      var col = document.getElementById('ordTvCollapse');
+      col.onclick = function () { chips.classList.toggle('collapsed'); col.classList.toggle('up'); };
+    } else {
+      var mb = document.getElementById('ordTvMore'); if (mb) mb.onclick = function () { openTvSelectDlg(); };
+    }
   }
+  // 旅遊期間聯絡方式（單一區塊，不隨數量變化；Figma 3244-72622）
   function renderOrdContacts() {
-    var chips = document.getElementById('ordCtChips'), cards = document.getElementById('ordCtCards'); if (!chips) return;
-    chips.innerHTML = ''; cards.innerHTML = '';
-    ORD_PEOPLE.forEach(function (_, i) {
-      var chip = h('<button class="ct-chip">' + pName(i) + '</button>');
-      if (ordSt.contacts.indexOf(i) >= 0) chip.classList.add('sel');
-      chip.onclick = function () { if (ordSt.contacts.length === 1 && ordSt.contacts[0] === i) return; ordSt.contacts = [i]; renderOrdContacts(); };
-      chips.appendChild(chip);
-    });
-    var c = ORD_PEOPLE[ordSt.contacts[0]];
-    var card = h('<div class="pc-pcardbox"><div class="pc-pcard-hd"><span class="pc-pcard-nm">' + pName(ordSt.contacts[0]) + '</span>' +
-      '<span class="pc-pcard-acts"><button class="ctE" aria-label="編輯">' + OI.edit + '</button></span></div>' +
-      '<div class="pc-pcard-grid"><div class="pc-pcard-f"><span class="k">電話</span><span class="v">+81 ' + c.tel + '</span></div>' +
-      '<div class="pc-pcard-f"><span class="k">通訊軟體</span><span class="v">' + c.app + '</span></div></div></div>');
-    card.querySelector('.ctE').onclick = function () { openPplDlg('contact'); };
-    cards.appendChild(card);
+    var card = document.getElementById('ordCtCard'); if (!card) return;
+    var c = ordSt.contact;
+    card.innerHTML =
+      '<div class="ord-sec-h ord-sec-col"><div class="t">旅遊期間聯絡方式</div><div class="ord-sec-sub">電話與 App 建議擇一填寫，以便旅途中與您聯繫</div></div>' +
+      '<div class="ct-card">' +
+        '<div class="ct-card-hd"><span class="nm">' + c.last + c.first + '</span><button class="ctE" aria-label="編輯"><span class="ic">' + OI.edit + '</span></button></div>' +
+        '<div class="ct-card-bd">' +
+          '<div class="ct-cf"><span class="k">旅遊期間聯絡電話</span><span class="v">' + (c.phoneOn ? c.cc + ' ' + c.tel : '未提供') + '</span></div>' +
+          '<div class="ct-cf"><span class="k">APP聯絡方式</span><span class="v">' + (c.appOn ? c.app + ' ' + c.appAcct : '未提供') + '</span></div>' +
+        '</div></div>';
+    card.querySelector('.ctE').onclick = function () { openContactDlg(); };
   }
+  // 選擇旅客 dialog（Figma 3250-25755）：兩欄名單多選（上限=數量）+ 新增旅客 + 確定
+  function openTvSelectDlg() {
+    var N = ordSt.qty, sel = ordSt.travelers.slice();
+    function render() {
+      var bd = document.getElementById('pcTvSelBd');
+      bd.innerHTML = '<div class="tv-head"><div class="tv-count">請選擇 <b>' + N + '</b> 位成人<span class="req">*</span><span class="c-prog">(' + sel.length + '/' + N + ')</span></div><div class="tv-sub">12 歲以上（含）</div></div>' +
+        '<div class="tv-sel-grid" id="pcTvSelGrid"></div>' +
+        '<button class="tv-sel-add" id="pcTvSelAdd"><span class="ic">' + OI.plus + '</span>新增旅客</button>';
+      var grid = document.getElementById('pcTvSelGrid');
+      ORD_PEOPLE.forEach(function (_, i) {
+        var b = h('<button class="tv-sel-item">' + pName(i) + '</button>');
+        if (sel.indexOf(i) >= 0) b.classList.add('sel');
+        b.onclick = function () {
+          var at = sel.indexOf(i);
+          if (at >= 0) sel.splice(at, 1);
+          else { if (sel.length >= N) { toast('最多選擇 ' + N + ' 位'); return; } sel.push(i); }
+          render();
+        };
+        grid.appendChild(b);
+      });
+      document.getElementById('pcTvSelAdd').onclick = function () { openTvDlg(null); };
+    }
+    render();
+    document.getElementById('pcTvSelOk').onclick = function () { ordSt.travelers = sel.slice(); closeTvSelDlg(); renderOrdTravelers(); };
+    document.getElementById('pcTvSelMask').classList.add('open'); document.getElementById('pcTvSelDlg').classList.add('open'); lockScroll();
+  }
+  function closeTvSelDlg() { var d = document.getElementById('pcTvSelDlg'); if (!d.classList.contains('open')) return; document.getElementById('pcTvSelMask').classList.remove('open'); d.classList.remove('open'); unlockScroll(); }
   // 取消政策 dialog（Figma 3223-95014）
   function openCancelDlg() {
     document.getElementById('pcCancelBd').innerHTML =
@@ -3103,48 +3212,96 @@
   function closeCancelDlg() { if (!document.getElementById('pcCancelDlg').classList.contains('open')) return; document.getElementById('pcCancelMask').classList.remove('open'); document.getElementById('pcCancelDlg').classList.remove('open'); unlockScroll(); }
   document.getElementById('pcCancelClose').addEventListener('click', closeCancelDlg);
   document.getElementById('pcCancelMask').addEventListener('click', closeCancelDlg);
-  // 旅客編輯 dialog（Figma 3244-124855）
+  // 旅客編輯 dialog（Figma 3244-124855）：國籍｜中文姓 中文名 / 英文姓 英文名｜性別 / 出生日期｜台灣身分證 / 台胞證｜港澳回鄉證 / 證件號碼｜證件效期
   function openTvDlg(idx) {
-    var t = idx != null ? ORD_PEOPLE[idx] : { nation: '台灣' };
+    var t = idx != null ? ORD_PEOPLE[idx] : { nation: '中國' };
     document.getElementById('pcTvTitle').textContent = idx != null ? '編輯旅客資料' : '新增旅客資料';
+    function ffSub(label, id, ph, val, sub) {
+      return '<div class="ff"><div class="ff-label">' + label + '<span class="req">*</span></div>' +
+        '<input class="ff-input" data-ff="' + id + '" placeholder="' + ffEsc(ph) + '" value="' + ffEsc(val) + '">' +
+        (sub ? '<div class="ff-sub">' + sub + '</div>' : '') + '</div>';
+    }
     document.getElementById('pcTvBd').innerHTML =
-      '<div class="ord-form">' +
-        ffSelect('國籍', 'tv-nation', ORD_NATIONS, t.nation, '請選擇國籍') + '<div class="ff"></div>' +
-        ffText('中文姓', 'tv-cnl', '例：陳', t.cnLast) + ffText('中文名', 'tv-cnf', '例：品睿', t.cnFirst) +
-        ffText('英文姓', 'tv-enl', '例：CHEN', t.enLast) + ffText('英文名', 'tv-enf', '例：PIN RUI', t.enFirst) +
-        ffRadio('性別', 'tv-gender', [['男', '男'], ['女', '女']], t.gender) + '<div class="ff"></div>' +
-        ffSelect('出生日期', 'tv-birth', ['1990/01/01', '1994/10/07', '1995/12/24'], t.birth, '請選擇') +
+      '<div class="ord-form tv-edit">' +
+        ffSelect('國籍', 'tv-nation', ORD_NATIONS, t.nation, '請選擇國籍') +
+        '<div class="tv-duo">' + ffText('中文姓', 'tv-cnl', '例：陳', t.cnLast) + ffText('中文名', 'tv-cnf', '例：品睿', t.cnFirst) + '</div>' +
+        '<div class="tv-duo">' + ffSub('英文姓', 'tv-enl', '例：CHEN', t.enLast, '請參考護照英文姓名') + ffSub('英文名', 'tv-enf', '例：PIN RUI', t.enFirst, '請參考護照英文姓名') + '</div>' +
+        ffRadio('性別', 'tv-gender', [['男', '男'], ['女', '女']], t.gender) +
+        ffSelect('出生日期', 'tv-birth', ['1980/01/01', '1985/06/15', '1990/01/01', '1993/10/11'], t.birth, '請選擇') +
         ffText('台灣身分證字號', 'tv-twid', '請輸入台灣身分證字號', t.twId) +
         ffText('台胞證字號', 'tv-twpass', '請輸入台胞證字號', t.twPass) +
         ffText('港澳回鄉證號', 'tv-hk', '請輸入港澳回鄉證號', t.hkMacao) +
         ffText('證件號碼（護照/身份證）', 'tv-docno', '請輸入證件號碼', t.docNo) +
-        ffSelect('證件效期（護照/身份證）', 'tv-docexp', ['2027/12/31', '2029/10/06', '2030/12/23'], t.docExp, '請選擇') +
+        ffSelect('證件效期（護照/身份證）', 'tv-docexp', ['2027/12/31', '2028/03/05', '2029/10/06', '2030/12/23'], t.docExp, '請選擇') +
       '</div><div class="pc-tv-note">為方便您下次快速預訂，系統已保存旅客資訊。您擁有完全的控制權，可隨時前往「會員資料」或「常用旅客」刪除或編輯資料。</div>';
-    document.getElementById('pcTvOk').onclick = function () { closeTvDlg(); };  // 原型：確定即關閉
+    document.getElementById('pcTvOk').onclick = function () {
+      var bd = document.getElementById('pcTvBd');
+      var g = function (id) { var e = bd.querySelector('[data-ff="' + id + '"]'); return e ? e.value : ''; };
+      var rg = function (n) { var e = bd.querySelector('input[name="' + n + '"]:checked'); return e ? e.value : ''; };
+      var obj = idx != null ? ORD_PEOPLE[idx] : {};
+      obj.nation = g('tv-nation') || obj.nation; obj.cnLast = g('tv-cnl'); obj.cnFirst = g('tv-cnf');
+      obj.enLast = g('tv-enl'); obj.enFirst = g('tv-enf'); obj.gender = rg('tv-gender') || obj.gender;
+      obj.birth = g('tv-birth') || obj.birth; obj.twId = g('tv-twid'); obj.twPass = g('tv-twpass');
+      obj.hkMacao = g('tv-hk'); obj.docNo = g('tv-docno'); obj.docExp = g('tv-docexp') || obj.docExp;
+      if (idx == null) { obj.cc = obj.cc || '+886'; obj.app = obj.app || 'Line'; obj.appAcct = obj.appAcct || ''; obj.tel = obj.tel || ''; ORD_PEOPLE.push(obj); if (ordSt.travelers.length < ordSt.qty) ordSt.travelers.push(ORD_PEOPLE.length - 1); }
+      closeTvDlg(); renderOrdTravelers();
+    };
     document.getElementById('pcTvMask').classList.add('open'); document.getElementById('pcTvDlg').classList.add('open'); lockScroll();
   }
   function closeTvDlg() { if (!document.getElementById('pcTvDlg').classList.contains('open')) return; document.getElementById('pcTvMask').classList.remove('open'); document.getElementById('pcTvDlg').classList.remove('open'); unlockScroll(); }
   document.getElementById('pcTvClose').addEventListener('click', closeTvDlg);
   document.getElementById('pcTvMask').addEventListener('click', closeTvDlg);
-  // 訂購人 / 聯絡人編輯 dialog（通用）
+  document.getElementById('pcTvSelClose').addEventListener('click', closeTvSelDlg);
+  document.getElementById('pcTvSelMask').addEventListener('click', closeTvSelDlg);
+  // 訂購人編輯 dialog（完整版唯讀卡的編輯）
   function openPplDlg(kind) {
-    var isOrd = kind === 'orderer';
-    document.getElementById('pcPplTitle').textContent = isOrd ? '訂購人資料' : '聯絡方式';
-    var o = ordSt.orderer, c = ORD_PEOPLE[ordSt.contacts[0]];
-    document.getElementById('pcPplBd').innerHTML = isOrd
-      ? '<div class="ord-form">' + ffText('名字', 'o-first', '例：品睿', o.first) + ffText('姓氏', 'o-last', '例：陳', o.last) +
+    document.getElementById('pcPplTitle').textContent = '訂購人資料';
+    var o = ordSt.orderer;
+    document.getElementById('pcPplBd').innerHTML =
+      '<div class="ord-form">' + ffText('名字', 'o-first', '例：品睿', o.first) + ffText('姓氏', 'o-last', '例：陳', o.last) +
         ffSelect('國籍', 'o-nation', ORD_NATIONS, o.nation, '請選擇國籍') + ffText('電子郵件信箱', 'o-email', '請輸入', o.email) +
-        ffText('電話號碼', 'o-phone', '請輸入', o.phone) + '<div class="ff"></div>' + '</div>'
-      : '<div class="ord-form">' + ffText('姓名', 'c-name', '請輸入', pName(ordSt.contacts[0])) + '<div class="ff"></div>' +
-        ffText('電話號碼', 'c-tel', '請輸入', c.tel) + ffText('通訊軟體帳號', 'c-app', '請輸入', c.app) + '</div>';
+        '<div class="ff"><div class="ff-label">電話號碼<span class="req">*</span></div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="o-cc">' + ordCcOpts(o.cc) + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="o-phone" placeholder="電話號碼" value="' + ffEsc(o.phone) + '"></div></div>' +
+        '<div class="ff"></div></div>';
     document.getElementById('pcPplOk').onclick = function () {
-      if (isOrd) {
-        var bd = document.getElementById('pcPplBd');
-        var g = function (id) { var e = bd.querySelector('[data-ff="' + id + '"]'); return e ? e.value : ''; };
-        o.first = g('o-first') || o.first; o.last = g('o-last') || o.last; o.nation = g('o-nation') || o.nation; o.email = g('o-email') || o.email; o.phone = g('o-phone') || o.phone;
-        renderOrder();
-      }
-      closePplDlg();
+      var bd = document.getElementById('pcPplBd');
+      var g = function (id) { var e = bd.querySelector('[data-ff="' + id + '"]'); return e ? e.value : ''; };
+      o.first = g('o-first'); o.last = g('o-last'); o.nation = g('o-nation') || o.nation; o.email = g('o-email'); o.cc = g('o-cc') || o.cc; o.phone = g('o-phone');
+      closePplDlg(); renderOrder();
+    };
+    document.getElementById('pcPplMask').classList.add('open'); document.getElementById('pcPplDlg').classList.add('open'); lockScroll();
+  }
+  // 旅遊期間聯絡方式編輯 dialog（Figma 3244-126569）：快選旅客 + 聯絡人姓名 + 電話 是否/號碼 + App 是否/帳號
+  function openContactDlg() {
+    document.getElementById('pcPplTitle').textContent = '編輯旅遊期間聯絡方式';
+    var c = ordSt.contact;
+    function render() {
+      var bd = document.getElementById('pcPplBd');
+      bd.innerHTML =
+        '<div class="ct-quick"><div class="ct-quick-lb">快選旅客</div><div class="ct-quick-chips" id="ctQuickChips"></div></div>' +
+        '<div class="ct-dlg-div"></div>' +
+        '<div class="ct-dlg-form">' +
+          '<div class="ord-form">' + ffText('聯絡人姓', 'c-last', '例：陳', c.last) + ffText('聯絡人名', 'c-first', '例：品睿', c.first) + '</div>' +
+          ffRadio('旅遊期間聯絡電話', 'c-phoneon', [['是', '是'], ['否', '否']], c.phoneOn ? '是' : '否') +
+          '<div class="ff"><div class="ff-label">聯絡電話<span class="req">*</span></div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="c-cc">' + ordCcOpts(c.cc) + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="c-tel" placeholder="聯絡電話" value="' + ffEsc(c.tel) + '"></div></div>' +
+          ffRadio('APP 聯絡方式', 'c-appon', [['是', '是'], ['否', '否']], c.appOn ? '是' : '否') +
+          '<div class="ff"><div class="ff-label">App 帳號<span class="req">*</span></div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="c-app">' + ['Line', 'Wechat', 'WhatsApp', 'Telegram'].map(function (a) { return '<option' + (a === c.app ? ' selected' : '') + '>' + a + '</option>'; }).join('') + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="c-appacct" placeholder="請輸入賬戶" value="' + ffEsc(c.appAcct) + '"></div></div>' +
+        '</div>';
+      var qc = document.getElementById('ctQuickChips');
+      ORD_PEOPLE.forEach(function (_, i) {
+        var chip = h('<button class="ct-chip">' + pName(i) + '</button>');
+        if (ORD_PEOPLE[i].cnLast === c.last && ORD_PEOPLE[i].cnFirst === c.first) chip.classList.add('sel');
+        chip.onclick = function () { var p = ORD_PEOPLE[i]; c.last = p.cnLast; c.first = p.cnFirst; c.cc = p.cc; c.tel = p.tel; c.app = p.app; c.appAcct = p.appAcct; render(); };
+        qc.appendChild(chip);
+      });
+    }
+    render();
+    document.getElementById('pcPplOk').onclick = function () {
+      var bd = document.getElementById('pcPplBd');
+      var g = function (id) { var e = bd.querySelector('[data-ff="' + id + '"]'); return e ? e.value : ''; };
+      var rg = function (n) { var e = bd.querySelector('input[name="' + n + '"]:checked'); return e ? e.value : ''; };
+      c.last = g('c-last'); c.first = g('c-first'); c.cc = g('c-cc') || c.cc; c.tel = g('c-tel');
+      c.app = g('c-app') || c.app; c.appAcct = g('c-appacct'); c.phoneOn = rg('c-phoneon') !== '否'; c.appOn = rg('c-appon') !== '否';
+      closePplDlg(); renderOrdContacts();
     };
     document.getElementById('pcPplMask').classList.add('open'); document.getElementById('pcPplDlg').classList.add('open'); lockScroll();
   }
