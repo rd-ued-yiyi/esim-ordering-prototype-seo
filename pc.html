@@ -918,6 +918,9 @@
   .ord-tip { margin-top: 16px; display: flex; align-items: flex-start; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-darker); background: #F2FAFF; border-radius: 8px; padding: 12px; }
   .ord-tip .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 0; }
   /* 使用日期 chips */
+  .ord-date-err { margin-top: 16px; display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-critical); }
+  .ord-date-err[hidden] { display: none; }
+  .ord-date-err .ic { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; }
   .ord-date-wrap { display: flex; align-items: stretch; gap: 8px; margin-top: 16px; }
   .ord-date-chips { flex: 1 1 0; min-width: 0; display: flex; gap: 8px; }  /* 不橫向捲動：等寬鋪滿整行，更多日期用「更多」日曆 */
   /* 日期 chip（Figma 3244-72533）：白底 + 1px #D5D6DB 邊框；選中 #F0FAFB + #26BEC9 */
@@ -3124,6 +3127,7 @@
     var wk = ['日', '一', '二', '三', '四', '五', '六'];
     ordSt.useDate = { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate(), chip: ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2), w: '週' + wk[d.getDay()] };
     closeOrdCal(); renderOrdDateChips(); if (typeof refreshOrdCancel === 'function') refreshOrdCancel();
+    var e = document.getElementById('ordDateErr'); if (e) e.hidden = true;
   }
   document.getElementById('ordCalPrev').addEventListener('click', function (e) { e.stopPropagation(); ordCalView = new Date(ordCalView.getFullYear(), ordCalView.getMonth() - 1, 1); renderOrdCal(); });
   document.getElementById('ordCalNext').addEventListener('click', function (e) { e.stopPropagation(); ordCalView = new Date(ordCalView.getFullYear(), ordCalView.getMonth() + 1, 1); renderOrdCal(); });
@@ -3149,6 +3153,7 @@
     card: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5.5" width="18" height="13" rx="2" stroke="#727272" stroke-width="1.4"/><path d="M3 9.5h18" stroke="#727272" stroke-width="1.4"/><path d="M6 14.5h4" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     sim: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 2.5h6.5L16 7v10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5Z" stroke="#727272" stroke-width="1.3"/><rect x="6.5" y="10" width="7" height="5.5" rx="1" stroke="#727272" stroke-width="1.3"/><path d="M10 10v5.5M6.5 12.7h7" stroke="#727272" stroke-width="1.1"/></svg>',
     coinGold: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#FFC128"/><circle cx="8" cy="8" r="5" fill="#FFD766"/><path d="M6 5v6M6 8l3.2-3M6.7 7.6l2.9 3.4" stroke="#B26E00" stroke-width="1.3" stroke-linecap="round"/></svg>',
+    warn: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.6" stroke="#E65F50" stroke-width="1.3"/><path d="M7 4v3.4M7 9.6h.01" stroke="#E65F50" stroke-width="1.3" stroke-linecap="round"/></svg>',
     cross: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     chevUp: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12l5-5 5 5" stroke="#727272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     chevR: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -3281,7 +3286,8 @@
     var main = '<div class="ord-card ord-prod-wrap">' + w;
     if (req.date) {
       main += '<div class="ord-datesec"><div class="ord-sec-h"><div class="ord-sec-title"><div class="t">啟用日期</div><span class="ic ic-16 ord-sec-info">' + OI.info + '</span><div class="ord-sec-tip">請選擇 eSIM 的啟用日期。啟用日期為當地時間，實際生效時間依所在時區為準；選定後將於該日開始計算使用效期。</div></div></div>' +
-        '<div class="ord-date-wrap"><div class="ord-date-chips" id="ordDateChips"></div><button class="ord-dmore" id="ordDateMore"><span class="ic">' + OI.cal + '</span><span class="w">更多</span></button></div></div>' +
+        '<div class="ord-date-wrap"><div class="ord-date-chips" id="ordDateChips"></div><button class="ord-dmore" id="ordDateMore"><span class="ic">' + OI.cal + '</span><span class="w">更多</span></button></div>' +
+        '<div class="ord-date-err" id="ordDateErr" hidden><span class="ic">' + OI.warn + '</span>請選擇日期</div></div>' +
         '<div class="ord-hr2"></div>';
     }
     main += '<div class="qty-row"><div class="t">購買數量</div><div class="qty-ctl">' +
@@ -3321,7 +3327,13 @@
     if (byId('ordQtyMinus')) byId('ordQtyMinus').onclick = function () { if (st.qty > 1) { st.qty--; renderOrder(); } };
     if (byId('ordQtyPlus')) byId('ordQtyPlus').onclick = function () { if (st.qty < 5) { st.qty++; renderOrder(); } };
     if (byId('ordOrdererEdit')) byId('ordOrdererEdit').onclick = function () { openPplDlg('orderer'); };
-    byId('ordNext').onclick = function () { if (req.date && !ordSt.useDate) { toast('請選擇啟用日期'); return; } enterPay(); };
+    byId('ordNext').onclick = function () {
+      if (req.date && !ordSt.useDate) {  // 啟用日期未選：內聯錯誤 + 捲入視野（Figma 3223-89173）
+        var e = byId('ordDateErr'); if (e) { e.hidden = false; var sec = e.closest('.ord-datesec'); if (sec) sec.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+        return;
+      }
+      enterPay();
+    };
     byId('ordRemark').addEventListener('input', function () { st.remark = this.value; });
     bindFfScopes();
     if (req.date) renderOrdDateChips();
@@ -3348,7 +3360,7 @@
     ordDatePresets().slice(0, 7).forEach(function (d) {
       var c = h('<button class="ord-dchip"><span class="d">' + d.chip + '</span><span class="w">' + d.w + '</span></button>');
       if (ordSameDate(ordSt.useDate, d)) c.classList.add('sel');
-      c.onclick = function () { ordSt.useDate = d; box.querySelectorAll('.ord-dchip.sel').forEach(function (x) { x.classList.remove('sel'); }); c.classList.add('sel'); refreshOrdCancel(); };
+      c.onclick = function () { ordSt.useDate = d; box.querySelectorAll('.ord-dchip.sel').forEach(function (x) { x.classList.remove('sel'); }); c.classList.add('sel'); refreshOrdCancel(); var e = document.getElementById('ordDateErr'); if (e) e.hidden = true; };
       box.appendChild(c);
     });
     var more = document.getElementById('ordDateMore');
