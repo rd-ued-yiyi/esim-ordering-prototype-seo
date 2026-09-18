@@ -318,7 +318,12 @@
   .pc-pager button { min-width: 32px; height: 32px; padding: 0 10px; border-radius: 4px; font-size: 14px; line-height: 20px; background: #fff; }
   .pc-pager button:hover { color: var(--kk-primary-dark); }
   .pc-pager button.sel { background: var(--kk-primary-medium); color: #fff; }
-  .pc-pager button.nav { border: 1px solid var(--kk-border-lighter); display: inline-flex; align-items: center; justify-content: center; }
+  .pc-pager button.sel:hover { color: #fff; }
+  .pc-pager button.nav { border: 1px solid var(--kk-border-lighter); display: inline-flex; align-items: center; justify-content: center; color: var(--kk-text-darker); }
+  .pc-pager button.nav .ic { width: 16px; height: 16px; }
+  .pc-pager button:disabled { color: var(--kk-border-light); cursor: default; }
+  .pc-pager button.nav:disabled { border-color: var(--kk-border-lighter); }
+  .pc-pager .pc-pg-dots { min-width: 20px; height: 32px; display: inline-flex; align-items: center; justify-content: center; color: var(--kk-text-medium); font-size: 14px; }
 
   /* ---------- 目的地選擇彈窗（Figma 3076-56669 / 3096-58066 / 3096-58908）：640×800、三模式 ---------- */
   .pc-mask { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.4); display: none; }
@@ -1245,7 +1250,7 @@
             </div>
           </div>
           <div class="pl-list" id="plList"></div>
-          <div class="pc-pager"><button class="sel">1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button class="nav"><span class="ic ic-16 rot90"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCAxNCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuMjkyODkgMC4yOTI4OTNDNi42ODM0MiAtMC4wOTc2MzExIDcuMzE2NTggLTAuMDk3NjMxMSA3LjcwNzExIDAuMjkyODkzTDEzLjcwNzEgNi4yOTI4OUMxNC4wOTc2IDYuNjgzNDIgMTQuMDk3NiA3LjMxNjU4IDEzLjcwNzEgNy43MDcxMUMxMy4zMTY2IDguMDk3NjMgMTIuNjgzNCA4LjA5NzYzIDEyLjI5MjkgNy43MDcxMUw3IDIuNDE0MjFMMS43MDcxMSA3LjcwNzExQzEuMzE2NTggOC4wOTc2MyAwLjY4MzQxOCA4LjA5NzYzIDAuMjkyODkzIDcuNzA3MTFDLTAuMDk3NjMxMSA3LjMxNjU4IC0wLjA5NzYzMTEgNi42ODM0MiAwLjI5Mjg5MyA2LjI5Mjg5TDYuMjkyODkgMC4yOTI4OTNaIiBmaWxsPSIjMjEyMTIxIi8+Cjwvc3ZnPg==" width="14.00" height="8.00"></span></button></div>
+          <div class="pc-pager" id="plListPager"></div>
         </div>
       </div>
     </div>
@@ -1913,8 +1918,41 @@
   document.getElementById('exPickOk').addEventListener('click', function () { exSetText('exSelPickup', exState.picks.join('、'), '選擇領取/郵寄地'); exClose(); });
   document.addEventListener('click', function () { if (exState.open) exClose(); });
 
-  var pcEx = { type: [], sort: 0 };
+  var pcEx = { type: [], sort: 0, page: 1 };
   var TYPE_LB = { 'WiFi': 'Wifi', 'SIM Card': 'SIM Card', 'eSIM': 'eSIM' };
+  // ===== 通用分頁器（真實翻頁：依實際資料長度產生頁碼，切頁重繪並捲回列表頂） =====
+  var PGL = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var PGR = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function pagerNums(pages, cur) {
+    if (pages <= 7) { var a = []; for (var i = 1; i <= pages; i++) a.push(i); return a; }
+    var keep = {}; [1, 2, pages - 1, pages, cur - 1, cur, cur + 1].forEach(function (n) { if (n >= 1 && n <= pages) keep[n] = 1; });
+    var out = [], prev = 0;
+    for (var j = 1; j <= pages; j++) { if (keep[j]) { if (j - prev > 1) out.push('…'); out.push(j); prev = j; } }
+    return out;
+  }
+  function buildPager(el, pages, cur, go) {
+    if (!el) return;
+    el.innerHTML = '';
+    if (pages <= 1) { el.style.display = 'none'; return; }
+    el.style.display = 'flex';
+    function btn(html, cls, disabled, on) {
+      var b = h('<button class="' + cls + '"' + (disabled ? ' disabled' : '') + '>' + html + '</button>');
+      if (!disabled && on) b.addEventListener('click', on);
+      return b;
+    }
+    el.appendChild(btn('<span class="ic ic-16">' + PGL + '</span>', 'nav', cur <= 1, function () { go(cur - 1); }));
+    pagerNums(pages, cur).forEach(function (n) {
+      if (n === '…') { el.appendChild(h('<span class="pc-pg-dots">…</span>')); return; }
+      el.appendChild(btn(String(n), n === cur ? 'sel' : '', false, function () { go(n); }));
+    });
+    el.appendChild(btn('<span class="ic ic-16">' + PGR + '</span>', 'nav', cur >= pages, function () { go(cur + 1); }));
+  }
+  function pagerScroll(boxId) {
+    var box = document.getElementById(boxId); if (!box) return;
+    var y = box.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }
+  var PC_EX_PAGESZ = 6, PL_PAGESZ = 5;
   function pcBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
   function pcMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
   function pcCardHTML(p) {
@@ -1928,18 +1966,22 @@
       '<span class="pc-pprice">' + (p.was ? '<span class="was">' + pcMoney(p.was) + '</span>' : '') + '<span class="now">' + pcMoney(p.now) + '</span></span></span>' +
       '</span><span class="heart ic ic-24">' + PC_ICONS.heart + '</span></button>';
   }
-  function renderPcExplore() {
+  function renderPcExplore(keepPage) {
+    if (!keepPage) pcEx.page = 1;
     var list = PC_PRODUCTS.filter(function (p) { return !pcEx.type.length || pcEx.type.indexOf(p.type) >= 0; });
     if (pcEx.sort === 1) list.sort(function (a, b) { return a.now - b.now; });
     else if (pcEx.sort === 2) list.sort(function (a, b) { return b.rating - a.rating; });
     else if (pcEx.sort === 3) list.sort(function (a, b) { return pcBoughtNum(b.bought) - pcBoughtNum(a.bought); });
+    var pages = Math.max(1, Math.ceil(list.length / PC_EX_PAGESZ));
+    if (pcEx.page > pages) pcEx.page = pages;
     var box = document.getElementById('pcExList'); box.innerHTML = '';
     if (!list.length) box.innerHTML = '<div class="pc-empty">沒有符合條件的商品</div>';
-    list.forEach(function (p) {
+    list.slice((pcEx.page - 1) * PC_EX_PAGESZ, pcEx.page * PC_EX_PAGESZ).forEach(function (p) {
       var c = h(pcCardHTML(p));
       c.querySelector('.tt').textContent = p.title;
       box.appendChild(c);
     });
+    buildPager(document.getElementById('pcPager'), pages, pcEx.page, function (n) { pcEx.page = n; renderPcExplore(true); pagerScroll('pcExList'); });
     document.getElementById('pcExCnt').textContent = list.length ? (list.length * 15 + 12) : 0;
     document.querySelectorAll('#pcTypeBox .pc-cb').forEach(function (b) { b.classList.toggle('on', pcEx.type.indexOf(b.getAttribute('data-type')) >= 0); });
     document.querySelectorAll('#pcSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === pcEx.sort); });
@@ -1967,7 +2009,7 @@
     });
   });
   document.querySelectorAll('#pcSort button').forEach(function (b) { b.addEventListener('click', function () { pcEx.sort = +b.getAttribute('data-sort'); renderPcExplore(); }); });
-  document.querySelectorAll('#pcPager button').forEach(function (b) { b.addEventListener('click', function () { toast(TOAST.old); }); });
+  // #pcPager 由 buildPager 動態產生並綁定翻頁（見 renderPcExplore）
   (function () {  // 價格區間雙滑塊（NT$0–12,000+，仿真）
     var rmin = document.getElementById('pcRmin'), rmax = document.getElementById('pcRmax'), fill = document.getElementById('pcFill'), pv = document.getElementById('pcPv');
     function nt(n, plus) { return 'NT$' + n.toLocaleString('en-US') + (plus && n >= 12000 ? '+' : ''); }
@@ -2059,7 +2101,7 @@
     { title: '中港澳通用 5G eSIM・免翻牆・全面支援 AI', warns: ['需指定啟用日'], tags: ['5G', '國際漫遊卡'], perks: ['立即確認', '即買即用'], rating: 4.3, reviews: 180, bought: '1K+ 已購', vendor: 'Joytel', now: 445, was: 556, per: 21, off: '20%OFF', hot: false },
     { title: '亞洲多國 eSIM・一卡多國・24小時制計費', warns: [], tags: ['5G/4G', '可加值', '國際漫遊卡'], perks: ['立即確認', '不可取消'], rating: 4.2, reviews: 89, bought: '900 已購', vendor: 'GlobalSIM', now: 399, was: null, per: 18, off: null, hot: false }
   ];
-  var plSort = 0, plRangeSync = null;
+  var plSort = 0, plRangeSync = null, plListPg = 1;
   // 為每張卡建立可篩選屬性（對應側欄各組）+ 記錄基準價（3GB/天·5天 為基準 1.0）
   PL_DATA.forEach(function (p, i) {
     var s = p.tags.join(' ') + ' ' + p.perks.join(' ') + ' ' + p.title;
@@ -2159,7 +2201,8 @@
       '</div>' +
     '</div>';
   }
-  function renderPlCards() {
+  function renderPlCards(keepPage) {
+    if (!keepPage) plListPg = 1;
     var groups = plActiveGroups();
     var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax');
     var lo = rmin ? +rmin.value : 0, hi = rmax ? +rmax.value : 12000;
@@ -2167,11 +2210,13 @@
     if (plSort === 1) list.sort(function (a, b) { return plScaled(a).now - plScaled(b).now; });
     else if (plSort === 2) list.sort(function (a, b) { return b.rating - a.rating; });
     else if (plSort === 3) list.sort(function (a, b) { return plBoughtNum(b.bought) - plBoughtNum(a.bought); });
+    var pages = Math.max(1, Math.ceil(list.length / PL_PAGESZ));
+    if (plListPg > pages) plListPg = pages;
     var box = document.getElementById('plList'); box.innerHTML = '';
     if (!list.length) {
       box.innerHTML = '<div class="pl-empty">沒有符合條件的商品，試試放寬篩選</div>';
     } else {
-      list.forEach(function (p) {
+      list.slice((plListPg - 1) * PL_PAGESZ, plListPg * PL_PAGESZ).forEach(function (p) {
         var c = h(plCardHTML(p));
         c.addEventListener('click', function (e) {
           if (e.target.closest('.pl-cta')) { e.stopPropagation(); enterOrder(p); return; }  // 訂購鈕：進入訂單填寫頁
@@ -2180,6 +2225,7 @@
         box.appendChild(c);
       });
     }
+    buildPager(document.getElementById('plListPager'), pages, plListPg, function (n) { plListPg = n; renderPlCards(true); pagerScroll('plList'); });
     // 結果數：無任何篩選時顯示總量 162；有篩選則依命中比例縮放，較真實
     var noFilter = !groups.length && lo <= 0 && hi >= 12000;
     document.getElementById('plCnt').textContent = noFilter ? 162 : Math.round(162 * list.length / PL_DATA.length);
