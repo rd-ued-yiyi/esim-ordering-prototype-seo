@@ -791,9 +791,72 @@
   .ord-sec-tip { position: absolute; left: 0; top: calc(100% + 8px); z-index: 25; width: 320px; max-width: 80vw; display: none; background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 12px; font-size: 12px; line-height: 18px; color: var(--kk-text-dark); }
   .ord-sec-info:hover + .ord-sec-tip, .ord-sec-tip:hover { display: block; }
   /* ================= 訂單填寫頁（Figma 3223-87439 / 3244-72510） ================= */
-  body.order-mode #pcHome, body.order-mode #pcListPage, body.order-mode .pc-cat { display: none; }
+  body.order-mode #pcHome, body.order-mode #pcListPage, body.order-mode .pc-cat,
+  body.pay-mode #pcHome, body.pay-mode #pcListPage, body.pay-mode #pcOrderPage, body.pay-mode .pc-cat { display: none; }
   .pc-ordpage { display: block; background: var(--kk-surface-light); padding-bottom: 48px; }
   .pc-ordpage[hidden] { display: none; }
+  /* 付款頁 */
+  .pay-card { background: #fff; border-radius: 12px; padding: 20px; }
+  .pay-card + .pay-card { margin-top: 16px; }
+  .pay-h { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
+  .pay-h-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .pay-h-row .chev { width: 24px; height: 24px; color: var(--kk-text-darker); transition: transform .2s; }
+  .pay-prod .ord-prod { border: 0; padding: 0; }
+  /* 折扣碼按鈕 */
+  .pay-coupon-btn { margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--kk-primary-medium); border-radius: 8px; color: var(--kk-primary-dark); font-size: 14px; font-weight: 600; }
+  .pay-coupon-btn .ic { width: 20px; height: 20px; }
+  /* KKday Points 折抵 */
+  .pay-pts-row { margin-top: 16px; display: flex; align-items: center; gap: 8px; }
+  .pay-pts-cb { width: 18px; height: 18px; flex: 0 0 auto; border: 1.5px solid var(--kk-border-light); border-radius: 4px; position: relative; cursor: pointer; }
+  .pay-pts-cb.on { background: var(--kk-primary-medium); border-color: var(--kk-primary-medium); }
+  .pay-pts-cb.on::after { content: ''; position: absolute; left: 5px; top: 1px; width: 5px; height: 9px; border: 2px solid #fff; border-top: 0; border-left: 0; transform: rotate(45deg); }
+  .pay-pts-lb { flex: 1 1 0; display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--kk-text-darker); }
+  .pay-pts-lb .ic { width: 16px; height: 16px; color: var(--kk-primary-medium); }
+  .pay-pts-coin { display: inline-flex; align-items: center; gap: 4px; color: #FFB400; font-weight: 600; }
+  .pay-pts-val { color: var(--kk-primary-dark); font-size: 14px; font-weight: 600; }
+  .pay-note-box { margin-top: 12px; background: var(--kk-surface-light); border-radius: 8px; padding: 12px 16px; }
+  .pay-note-box .h { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--kk-text-darker); }
+  .pay-note-box .h .ic { width: 16px; height: 16px; color: var(--kk-text-medium); }
+  .pay-note-box ul { margin: 8px 0 0; padding-left: 18px; }
+  .pay-note-box li { font-size: 12px; line-height: 18px; color: var(--kk-text-dark); }
+  /* 付款方式 */
+  .pay-method { display: flex; align-items: center; gap: 12px; padding: 20px; border-top: 1px solid var(--kk-border-lighter); cursor: pointer; }
+  .pay-method:first-of-type { border-top: 0; }
+  .pay-radio { width: 18px; height: 18px; flex: 0 0 auto; border: 1.5px solid var(--kk-border-light); border-radius: 999px; position: relative; }
+  .pay-method.sel .pay-radio { border-color: var(--kk-primary-medium); }
+  .pay-method.sel .pay-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 999px; background: var(--kk-primary-medium); }
+  .pay-method .nm { flex: 1 1 0; font-size: 14px; color: var(--kk-text-darker); }
+  .pay-method .logo { flex: 0 0 auto; height: 20px; display: inline-flex; align-items: center; font-size: 12px; font-weight: 700; }
+  .pay-method .logo .ic { width: 24px; height: 20px; color: var(--kk-text-dark); }
+  .pay-methods-note { display: flex; gap: 6px; padding: 16px 20px 0; font-size: 12px; line-height: 18px; color: var(--kk-text-medium); }
+  .pay-methods-note .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 1px; }
+  .pay-sec-bd { padding-top: 4px; }
+  .pay-collapsed .pay-sec-bd { display: none; }
+  .pay-collapsed .pay-h-row .chev { transform: rotate(-90deg); }
+  /* 付款明細 */
+  .pay-detail-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pay-detail-row .lb { color: var(--kk-text-darker); display: inline-flex; align-items: center; gap: 4px; }
+  .pay-detail-row .val.cyan { color: var(--kk-primary-dark); }
+  .pay-detail-hr { height: 1px; background: var(--kk-border-lighter); margin: 12px 0; }
+  .pay-detail-total .lb { font-size: 14px; font-weight: 600; }
+  .pay-detail-total .val { font-size: 20px; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .pay-coin { display: inline-flex; align-items: center; gap: 4px; color: #FFB400; font-weight: 600; }
+  .pay-coin .dot { width: 16px; height: 16px; border-radius: 999px; background: #FFC128; color: #B26E00; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+  /* 右欄 ConfirmBoard */
+  .pay-sum { background: #fff; border-radius: 6px; box-shadow: 0 1px 4px rgba(38,50,56,.12); padding: 20px; }
+  .pay-sum-row { display: flex; align-items: flex-start; justify-content: space-between; font-size: 14px; line-height: 20px; }
+  .pay-sum-row + .pay-sum-row { margin-top: 8px; }
+  .pay-sum-row .k { color: var(--kk-text-dark); }
+  .pay-sum-row .v { color: var(--kk-text-darker); font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .pay-sum-row .v.cyan { color: var(--kk-primary-dark); text-align: right; }
+  .pay-sum-row .v .sub { display: block; font-size: 12px; line-height: 16px; font-family: inherit; }
+  .pay-sum-hr { height: 0; border-top: 1px dashed var(--kk-border-light); margin: 20px 0; }
+  .pay-sum-total { display: flex; align-items: center; justify-content: space-between; }
+  .pay-sum-total .k { font-size: 14px; color: var(--kk-text-darker); }
+  .pay-sum-total .v { font-size: 22px; line-height: 22px; font-weight: 700; color: var(--kk-text-darker); font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .pay-sum-reward { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; font-size: 14px; color: var(--kk-text-darker); }
+  .pay-confirm { width: 100%; height: 50px; margin-top: 32px; display: flex; align-items: center; justify-content: center; background: var(--kk-primary-medium); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; }
+  .pay-confirm:hover { background: var(--kk-primary-dark); }
   .pc-ord-grid { display: flex; gap: 24px; align-items: flex-start; padding-top: 8px; }
   .pc-ord-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
   .pc-ord-side { flex: 0 0 360px; position: sticky; top: 76px; }
@@ -1331,6 +1394,17 @@
       <div class="pc-ord-grid">
         <div class="pc-ord-main" id="ordMain"></div>
         <aside class="pc-ord-side" id="ordSide"></aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 付款頁（Figma 3223-94129） ============ -->
+  <section class="pc-ordpage" id="pcPayPage" hidden>
+    <div class="col">
+      <div class="pc-crumb"><a id="payCrumbHome">首頁</a><span class="ic ic-14 rot90"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCAxNCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuMjkyODkgMC4yOTI4OTNDNi42ODM0MiAtMC4wOTc2MzExIDcuMzE2NTggLTAuMDk3NjMxMSA3LjcwNzExIDAuMjkyODkzTDEzLjcwNzEgNi4yOTI4OUMxNC4wOTc2IDYuNjgzNDIgMTQuMDk3NiA3LjMxNjU4IDEzLjcwNzEgNy43MDcxMUMxMy4zMTY2IDguMDk3NjMgMTIuNjgzNCA4LjA5NzYzIDEyLjI5MjkgNy43MDcxMUw3IDIuNDE0MjFMMS43MDcxMSA3LjcwNzExQzEuMzE2NTggOC4wOTc2MyAwLjY4MzQxOCA4LjA5NzYzIDAuMjkyODkzIDcuNzA3MTFDLTAuMDk3NjMxMSA3LjMxNjU4IC0wLjA5NzYzMTEgNi42ODM0MiAwLjI5Mjg5MyA2LjI5Mjg5TDYuMjkyODkgMC4yOTI4OTNaIiBmaWxsPSIjOUM5REEwIi8+Cjwvc3ZnPg==" width="14.00" height="8.00"></span><a id="payCrumbCat">eSIM/WIFI</a><span class="ic ic-14 rot90"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCAxNCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuMjkyODkgMC4yOTI4OTNDNi42ODM0MiAtMC4wOTc2MzExIDcuMzE2NTggLTAuMDk3NjMxMSA3LjcwNzExIDAuMjkyODkzTDEzLjcwNzEgNi4yOTI4OUMxNC4wOTc2IDYuNjgzNDIgMTQuMDk3NiA3LjMxNjU4IDEzLjcwNzEgNy43MDcxMUMxMy4zMTY2IDguMDk3NjMgMTIuNjgzNCA4LjA5NzYzIDEyLjI5MjkgNy43MDcxMUw3IDIuNDE0MjFMMS43MDcxMSA3LjcwNzExQzEuMzE2NTggOC4wOTc2MyAwLjY4MzQxOCA4LjA5NzYzIDAuMjkyODkzIDcuNzA3MTFDLTAuMDk3NjMxMSA3LjMxNjU4IC0wLjA5NzYzMTEgNi42ODM0MiAwLjI5Mjg5MyA2LjI5Mjg5TDYuMjkyODkgMC4yOTI4OTNaIiBmaWxsPSIjOUM5REEwIi8+Cjwvc3ZnPg==" width="14.00" height="8.00"></span><a id="payCrumbList">搜尋結果</a><span class="ic ic-14 rot90"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCAxNCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuMjkyODkgMC4yOTI4OTNDNi42ODM0MiAtMC4wOTc2MzExIDcuMzE2NTggLTAuMDk3NjMxMSA3LjcwNzExIDAuMjkyODkzTDEzLjcwNzEgNi4yOTI4OUMxNC4wOTc2IDYuNjgzNDIgMTQuMDk3NiA3LjMxNjU4IDEzLjcwNzEgNy43MDcxMUMxMy4zMTY2IDguMDk3NjMgMTIuNjgzNCA4LjA5NzYzIDEyLjI5MjkgNy43MDcxMUw3IDIuNDE0MjFMMS43MDcxMSA3LjcwNzExQzEuMzE2NTggOC4wOTc2MyAwLjY4MzQxOCA4LjA5NzYzIDAuMjkyODkzIDcuNzA3MTFDLTAuMDk3NjMxMSA3LjMxNjU4IC0wLjA5NzYzMTEgNi42ODM0MiAwLjI5Mjg5MyA2LjI5Mjg5TDYuMjkyODkgMC4yOTI4OTNaIiBmaWxsPSIjOUM5REEwIi8+Cjwvc3ZnPg==" width="14.00" height="8.00"></span><a id="payCrumbOrder">訂單填寫</a><span class="ic ic-14 rot90"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjgiIHZpZXdCb3g9IjAgMCAxNCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuMjkyODkgMC4yOTI4OTNDNi42ODM0MiAtMC4wOTc2MzExIDcuMzE2NTggLTAuMDk3NjMxMSA3LjcwNzExIDAuMjkyODkzTDEzLjcwNzEgNi4yOTI4OUMxNC4wOTc2IDYuNjgzNDIgMTQuMDk3NiA3LjMxNjU4IDEzLjcwNzEgNy43MDcxMUMxMy4zMTY2IDguMDk3NjMgMTIuNjgzNCA4LjA5NzYzIDEyLjI5MjkgNy43MDcxMUw3IDIuNDE0MjFMMS43MDcxMSA3LjcwNzExQzEuMzE2NTggOC4wOTc2MyAwLjY4MzQxOCA4LjA5NzYzIDAuMjkyODkzIDcuNzA3MTFDLTAuMDk3NjMxMSA3LjMxNjU4IC0wLjA5NzYzMTEgNi42ODM0MiAwLjI5Mjg5MyA2LjI5Mjg5TDYuMjkyODkgMC4yOTI4OTNaIiBmaWxsPSIjOUM5REEwIi8+Cjwvc3ZnPg==" width="14.00" height="8.00"></span><span>付款</span></div>
+      <div class="pc-ord-grid">
+        <div class="pc-ord-main" id="payMain"></div>
+        <aside class="pc-ord-side" id="paySide"></aside>
       </div>
     </div>
   </section>
@@ -3051,6 +3125,7 @@
     plus: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round"/></svg>',
     plusDark: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#212121" stroke-width="1.6" stroke-linecap="round"/></svg>',
     infoFill: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#2D84D6"/><path d="M8 7v4M8 4.6h.01" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    card: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5.5" width="18" height="13" rx="2" stroke="#727272" stroke-width="1.4"/><path d="M3 9.5h18" stroke="#727272" stroke-width="1.4"/><path d="M6 14.5h4" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     cross: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     chevUp: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12l5-5 5 5" stroke="#727272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     chevR: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -3223,7 +3298,7 @@
     if (byId('ordQtyMinus')) byId('ordQtyMinus').onclick = function () { if (st.qty > 1) { st.qty--; renderOrder(); } };
     if (byId('ordQtyPlus')) byId('ordQtyPlus').onclick = function () { if (st.qty < 5) { st.qty++; renderOrder(); } };
     if (byId('ordOrdererEdit')) byId('ordOrdererEdit').onclick = function () { openPplDlg('orderer'); };
-    byId('ordNext').onclick = function () { toast('demo 未開發'); };
+    byId('ordNext').onclick = function () { if (req.date && !ordSt.useDate) { toast('請選擇啟用日期'); return; } enterPay(); };
     byId('ordRemark').addEventListener('input', function () { st.remark = this.value; });
     bindFfScopes();
     if (req.date) renderOrdDateChips();
@@ -3494,6 +3569,95 @@
     renderOrder(); window.scrollTo(0, 0);
   }
   function exitOrder() { document.body.classList.remove('order-mode'); document.getElementById('pcOrderPage').hidden = true; window.scrollTo(0, 0); }
+  // ================= 付款頁（Figma 3223-94129） =================
+  var payState = null;
+  function newPayState() { return { method: 'linepay', pointsOn: true, methodOpen: true, einvoiceOpen: false }; }
+  function payAmounts() {
+    var gross = ordP.now * ordSt.qty;
+    var coupon = 40;                          // demo：折扣券
+    var points = payState.pointsOn ? 40 : 0;  // demo：KKday Points 折抵（240 點 = TWD 40）
+    var pay = Math.max(0, gross - coupon - points);
+    var reward = Math.round(pay * 0.02);      // demo：訂單完成後回饋點數
+    return { gross: gross, coupon: coupon, points: points, pay: pay, reward: reward };
+  }
+  function coinTag(n) { return '<span class="pay-coin"><span class="dot">K</span>' + n + '</span>'; }
+  var PAY_METHODS = [
+    { id: 'linepay', nm: 'LINE Pay', logo: '<span class="logo" style="color:#06C755">LINE<span style="background:#06C755;color:#fff;border-radius:3px;padding:1px 4px;margin-left:2px">Pay</span></span>' },
+    { id: 'card', nm: '信用卡／簽帳金融卡', logo: '<span class="logo"><span class="ic">' + OI.card + '</span></span>' },
+    { id: 'travelcard', nm: '國民旅遊卡', logo: '<span class="logo"><span class="ic">' + OI.card + '</span></span>' },
+    { id: 'jkopay', nm: '街口支付', logo: '<span class="logo" style="color:#EE0A24">🅹 街口支付</span>' },
+    { id: 'pi', nm: 'Pi 拍錢包', logo: '<span class="logo" style="color:#5B2C8D">Pi 拍錢包</span>' }
+  ];
+  function renderPay() {
+    var p = ordP, a = payAmounts();
+    // 左欄
+    var main = '';
+    // 1. 商品摘要
+    main += '<div class="pay-card pay-prod"><div class="ord-prod">' +
+      '<div class="ord-ptitle">' + p.title + '</div>' +
+      '<div class="ord-pspecs">' +
+        '<div class="ord-pline"><span class="ic">' + OI.file + '</span>' + ordSpecLine() + '</div>' +
+        '<div class="ord-pline"><span class="ic">' + OI.loc + '</span><span class="u">' + ordCoverageText() + '</span></div>' +
+        (ordSt.useDate ? '<div class="ord-pline"><span class="ic">' + OI.cal + '</span>' + ordSt.useDate.y + '-' + ('0' + ordSt.useDate.m).slice(-2) + '-' + ('0' + ordSt.useDate.d).slice(-2) + '</div>' : '') +
+        '<div class="ord-pline"><span class="ic">' + OI.file + '</span>eSIM ×' + ordSt.qty + '</div>' +
+      '</div><div class="ord-hr"></div>' +
+      '<button class="ord-cancel" id="payCancelInfo">' + ordCancelText() + '<span class="ic">' + OI.info + '</span></button></div></div>';
+    // 2. 折扣碼
+    main += '<div class="pay-card"><div class="pay-h">使用或輸入折扣碼</div>' +
+      '<button class="pay-coupon-btn" id="payCouponBtn"><span class="ic">' + OI.info + '</span>使用或輸入折扣碼</button></div>';
+    // 3. KKday Points 折抵
+    main += '<div class="pay-card"><div class="pay-h">KKday Points 折抵</div>' +
+      '<div class="pay-pts-row"><div class="pay-pts-cb' + (payState.pointsOn ? ' on' : '') + '" id="payPtsCb"></div>' +
+        '<div class="pay-pts-lb">KKday Points 折抵<span class="ic">' + OI.info + '</span><span class="pay-pts-coin"><span class="dot" style="width:16px;height:16px;border-radius:999px;background:#FFC128;color:#B26E00;font-size:11px;display:inline-flex;align-items:center;justify-content:center">K</span>240</span></div>' +
+        '<span class="pay-pts-val">' + (payState.pointsOn ? '−TWD 40' : '') + '</span></div>' +
+      '<div class="pay-note-box"><div class="h"><span class="ic">' + OI.info + '</span>注意事項</div>' +
+        '<ul><li>每 50 點 KKday Points，可折抵 0.25 美金；付款金額不低於 1 美金。</li>' +
+        '<li>使用 KKday Points 折抵訂單金額，訂單取消／退款時，將優先返還折抵之 KKday Points。</li></ul></div></div>';
+    // 4. 付款方式
+    main += '<div class="pay-card pay-sec' + (payState.methodOpen ? '' : ' pay-collapsed') + '" id="paySecMethod"><div class="pay-h-row" id="payMethodHd"><span class="pay-h">請選擇付款方式</span><span class="ic chev">' + OI.chevUp + '</span></div>' +
+      '<div class="pay-sec-bd"><div id="payMethods"></div>' +
+      '<div class="pay-methods-note"><span class="ic">' + OI.info + '</span><span>請注意本平台不會向您收取任何交易手續費；倘若下單前使用的信用卡或第三方支付平台可能會向您收取相關手續費，請參考其相關服務政策與規定，並向你所屬的交易服務商查詢後得知。</span></div></div></div>';
+    // 5. 電子發票、收據
+    main += '<div class="pay-card pay-sec' + (payState.einvoiceOpen ? '' : ' pay-collapsed') + '" id="paySecInv"><div class="pay-h-row" id="payInvHd"><span class="pay-h">電子發票、收據</span><span class="ic chev">' + OI.chevUp + '</span></div>' +
+      '<div class="pay-sec-bd"><div class="ord-form" style="margin-top:12px">' + ffSelect('發票類型', 'inv-type', ['個人（會員載具）', '手機條碼載具', '公司統編'], '個人（會員載具）', '請選擇') + '<div class="ff"></div></div></div></div>';
+    // 6. 付款明細
+    main += '<div class="pay-card"><div class="pay-h">付款明細</div>' +
+      '<div class="pay-detail-row"><span class="lb">總金額</span><span class="val">$' + ordMoney(a.gross) + '</span></div>' +
+      '<div class="pay-detail-row"><span class="lb">折扣券</span><span class="val cyan">-$' + a.coupon + '</span></div>' +
+      (a.points ? '<div class="pay-detail-row"><span class="lb">KKday Points 折抵</span><span class="val cyan">-$' + a.points + '</span></div>' : '') +
+      '<div class="pay-detail-hr"></div>' +
+      '<div class="pay-detail-row pay-detail-total"><span class="lb">支付金額</span><span class="val">NT$' + ordMoney(a.pay) + '</span></div>' +
+      '<div class="pay-detail-row"><span class="lb">訂單完成後回饋</span><span class="val">' + coinTag(a.reward) + '</span></div></div>';
+    document.getElementById('payMain').innerHTML = main;
+    // 右欄
+    document.getElementById('paySide').innerHTML = '<div class="pay-sum">' +
+      '<div class="pay-sum-row"><span class="k">訂單總金額（' + ordSt.qty + ' 件商品）</span><span class="v">$' + ordMoney(a.gross) + '</span></div>' +
+      '<div class="pay-sum-row"><span class="k">折扣金額</span><span class="v cyan">-$' + a.coupon + '</span></div>' +
+      (a.points ? '<div class="pay-sum-row"><span class="k">KKday Points 折抵</span><span class="v cyan">-$' + a.points + '<span class="sub">(240 KKday Points)</span></span></div>' : '') +
+      '<div class="pay-sum-hr"></div>' +
+      '<div class="pay-sum-total"><span class="k">支付金額</span><span class="v">NT$' + ordMoney(a.pay) + '</span></div>' +
+      '<div class="pay-sum-reward"><span>訂單完成後回饋</span>' + coinTag(a.reward) + '</div>' +
+      '<button class="pay-confirm" id="payConfirmBtn">確認付款</button></div>';
+    // 綁定
+    var mBox = document.getElementById('payMethods'); mBox.innerHTML = '';
+    PAY_METHODS.forEach(function (m) {
+      var row = h('<div class="pay-method' + (payState.method === m.id ? ' sel' : '') + '"><span class="pay-radio"></span><span class="nm">' + m.nm + '</span>' + m.logo + '</div>');
+      row.onclick = function () { payState.method = m.id; renderPay(); };
+      mBox.appendChild(row);
+    });
+    document.getElementById('payCancelInfo').onclick = openCancelDlg;
+    document.getElementById('payPtsCb').onclick = function () { payState.pointsOn = !payState.pointsOn; renderPay(); };
+    document.getElementById('payMethodHd').onclick = function () { payState.methodOpen = !payState.methodOpen; renderPay(); };
+    document.getElementById('payInvHd').onclick = function () { payState.einvoiceOpen = !payState.einvoiceOpen; renderPay(); };
+    document.getElementById('payCouponBtn').onclick = function () { toast('demo 未開發'); };
+    document.getElementById('payConfirmBtn').onclick = function () { toast('demo 未開發'); };
+  }
+  function enterPay() { payState = newPayState(); document.body.classList.remove('order-mode'); document.body.classList.add('pay-mode'); document.getElementById('pcOrderPage').hidden = true; document.getElementById('pcPayPage').hidden = false; renderPay(); window.scrollTo(0, 0); }
+  function exitPay(toOrder) { document.body.classList.remove('pay-mode'); document.getElementById('pcPayPage').hidden = true; if (toOrder) { document.body.classList.add('order-mode'); document.getElementById('pcOrderPage').hidden = false; } window.scrollTo(0, 0); }
+  document.getElementById('payCrumbHome').addEventListener('click', function () { exitPay(false); exitOrder(); exitList && exitList(); });
+  document.getElementById('payCrumbCat').addEventListener('click', function () { exitPay(false); exitOrder(); exitList && exitList(); });
+  document.getElementById('payCrumbList').addEventListener('click', function () { exitPay(false); exitOrder(); });
+  document.getElementById('payCrumbOrder').addEventListener('click', function () { exitPay(true); });
   // 詳情 dialog「訂購」→ 進訂單頁（先關詳情）
   (function () { var b = document.getElementById('plDetCta'); if (b) b.addEventListener('click', function () { var p = (typeof detP !== 'undefined' && detP) ? detP : ordP; if (typeof closePlDetail === 'function') closePlDetail(); else if (typeof closeDetail === 'function') closeDetail(); if (p) enterOrder(p); }); })();
   document.getElementById('ordCrumbHome').addEventListener('click', function () { exitOrder(); exitList && exitList(); });
