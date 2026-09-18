@@ -945,6 +945,7 @@
   .pc-cxl-table th, .pc-cxl-table td { text-align: left; font-size: 14px; line-height: 20px; padding: 12px 16px; }
   .pc-cxl-table th { background: var(--kk-surface-light); color: var(--kk-text-darker); font-weight: 600; }
   .pc-cxl-table td { color: var(--kk-text-darker); border-top: 1px solid var(--kk-border-lighter); vertical-align: top; }
+  .pc-cxl-p { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-cxl-note { margin-top: 12px; display: flex; gap: 6px; font-size: 12px; line-height: 18px; color: var(--kk-text-medium); }
   .pc-cxl-note .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 1px; }
   /* 旅客 / 人員編輯 dialog */
@@ -2960,7 +2961,7 @@
   function pickOrdCal(d) {
     var wk = ['日', '一', '二', '三', '四', '五', '六'];
     ordSt.useDate = { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate(), chip: ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2), w: '週' + wk[d.getDay()] };
-    closeOrdCal(); renderOrdDateChips();
+    closeOrdCal(); renderOrdDateChips(); if (typeof refreshOrdCancel === 'function') refreshOrdCancel();
   }
   document.getElementById('ordCalPrev').addEventListener('click', function (e) { e.stopPropagation(); ordCalView = new Date(ordCalView.getFullYear(), ordCalView.getMonth() - 1, 1); renderOrdCal(); });
   document.getElementById('ordCalNext').addEventListener('click', function (e) { e.stopPropagation(); ordCalView = new Date(ordCalView.getFullYear(), ordCalView.getMonth() + 1, 1); renderOrdCal(); });
@@ -3006,7 +3007,7 @@
   var ordP = null, ordSt = null;
   function newOrdState() {
     return {
-      qty: 1, useDate: null, deviceIn: {}, flIn: {}, flOut: {},
+      qty: 1, useDate: ordDateFromFilter(), deviceIn: {}, flIn: {}, flOut: {},
       travelers: [0],
       // 訂購人（對齊 Figma 訂購人卡：徐佳瑩／台灣／Lala.hsu）
       orderer: { first: '佳瑩', last: '徐', nation: '台灣', email: 'Lala.hsu@kkday.com', cc: '+886', phone: '0912345678', app: 'Line', appAcct: '' },
@@ -3033,15 +3034,36 @@
     var l = ordCoverageList();
     return l.length <= 3 ? '適用' + l.join('、') : '適用' + l.slice(0, 3).join('、') + '等' + l.length + '個國家/地區';
   }
+  // 取消政策（對齊 mweb）：從 perks 解析免費取消天數；選了日期→換算絕對日期，未選→相對「N天前」
+  function ordCancelInfo() {
+    var cx = (ordP.perks || []).filter(function (x) { return x.indexOf('取消') >= 0; })[0] || '';
+    if (cx.indexOf('不可') >= 0) return { type: 'none', n: 0 };
+    var m = /(\d+)\s*天前/.exec(cx);
+    if (m) return { type: 'fee', n: +m[1] };
+    if (cx.indexOf('免費取消') >= 0) return { type: 'free', n: 0 };
+    return { type: 'none', n: 0 };
+  }
+  function ordFmtYmd(d) { return d.getFullYear() + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2); }
   function ordCancelText() {
-    var pk = (ordP.perks || []).filter(function (x) { return x.indexOf('取消') >= 0; })[0];
-    return pk || '不可取消';
+    var c = ordCancelInfo(), ud = ordSt && ordSt.useDate;
+    if (c.type === 'free') return '未使用可免費取消';
+    if (c.type === 'none') return '不可取消';
+    return ud ? ordFmtYmd(new Date(ud.y, ud.m - 1, ud.d - c.n)) + ' 前可免費取消' : c.n + '天前可免費取消';
   }
   function ordTotal() { return ordP.now * ordSt.qty; }
   function ordMoney(n) { return n.toLocaleString('en-US'); }
+  // 列表頁篩選/選過的日期（calSt.date 為 Date）→ 訂單頁日期 pick，帶入預選
+  function ordDateFromFilter() {
+    var d = (typeof calSt !== 'undefined' && calSt) ? calSt.date : null;
+    if (!d) return null;
+    var wk = ['日', '一', '二', '三', '四', '五', '六'];
+    return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate(), chip: ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2), w: '週' + wk[d.getDay()] };
+  }
   function ordDatePresets() {
     var wk = ['日', '一', '二', '三', '四', '五', '六'], out = [], start = new Date(2026, 8, 18);
-    for (var i = 0; i < 14; i++) { var dt = new Date(2026, 8, 18 + i), m = dt.getMonth() + 1, d = dt.getDate();
+    var ud = ordSt && ordSt.useDate;  // 選中日超出默認 2 週視窗 → 以選中日為中心重建（前 3 後）
+    if (ud) { var u = new Date(ud.y, ud.m - 1, ud.d); if (u < start || u > new Date(2026, 8, 31)) start = new Date(ud.y, ud.m - 1, ud.d - 3); }
+    for (var i = 0; i < 14; i++) { var dt = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i), m = dt.getMonth() + 1, d = dt.getDate();
       out.push({ y: dt.getFullYear(), m: m, d: d, chip: ('0' + m).slice(-2) + '-' + ('0' + d).slice(-2), w: '週' + wk[dt.getDay()] }); }
     return out;
   }
@@ -3161,12 +3183,14 @@
     ordDatePresets().slice(0, 7).forEach(function (d) {
       var c = h('<button class="ord-dchip"><span class="d">' + d.chip + '</span><span class="w">' + d.w + '</span></button>');
       if (ordSameDate(ordSt.useDate, d)) c.classList.add('sel');
-      c.onclick = function () { ordSt.useDate = d; box.querySelectorAll('.ord-dchip.sel').forEach(function (x) { x.classList.remove('sel'); }); c.classList.add('sel'); };
+      c.onclick = function () { ordSt.useDate = d; box.querySelectorAll('.ord-dchip.sel').forEach(function (x) { x.classList.remove('sel'); }); c.classList.add('sel'); refreshOrdCancel(); };
       box.appendChild(c);
     });
     var more = document.getElementById('ordDateMore');
     if (more) more.onclick = function (e) { e.stopPropagation(); openOrdCal(more); };  // 「更多」→ 雙月日曆下拉（Figma 3263-28053）
   }
+  // 日期變更後刷新商品摘要卡的取消政策文案（換算絕對日期）
+  function refreshOrdCancel() { var b = document.getElementById('ordCancelInfo'); if (b) b.innerHTML = ordCancelText() + '<span class="ic">' + OI.info + '</span>'; }
   function pName(i) { return ORD_PEOPLE[i].cnLast + ORD_PEOPLE[i].cnFirst; }
   function enName(i) { return ORD_PEOPLE[i].enLast + ', ' + ORD_PEOPLE[i].enFirst; }
   // 旅客資料卡（Figma 3263-27062）：淺藍 header 名字 + 編輯/移除；白底 2 欄 6 格
@@ -3267,13 +3291,26 @@
   function closeTvSelDlg() { var d = document.getElementById('pcTvSelDlg'); if (!d.classList.contains('open')) return; document.getElementById('pcTvSelMask').classList.remove('open'); d.classList.remove('open'); unlockScroll(); }
   // 取消政策 dialog（Figma 3223-95014）
   function openCancelDlg() {
-    document.getElementById('pcCancelBd').innerHTML =
-      '<table class="pc-cxl-table"><tr><th>取消日期（含）</th><th>取消手續費</th></tr>' +
-      '<tr><td>所選日期 10 天前</td><td>未使用可免費取消</td></tr>' +
-      '<tr><td>所選日期 3～5 天前</td><td>手續費 50%</td></tr>' +
-      '<tr><td>所選日期 0～2 天前</td><td>手續費 70%</td></tr>' +
-      '<tr><td>所選日期 0 天前</td><td>不可取消、更改訂單、也不可請求退款</td></tr></table>' +
-      '<div class="pc-cxl-note"><span class="ic">' + OI.info + '</span><span>由於站內商品來自全球各地，訂單取消時間將依該供應商所在時區判定。供應商需 2–5 個工作天進行取消流程，依照您購買的商品取消政策收取手續費，並於取消流程完成後 14 個工作天內退款。</span></div>';
+    var c = ordCancelInfo(), ud = ordSt && ordSt.useDate, html, noteExtra = '';
+    if (c.type === 'free') {
+      html = '<p class="pc-cxl-p">未使用可免費取消</p>';
+    } else if (c.type === 'none') {
+      html = '<p class="pc-cxl-p">商品一經訂購完成後，即不可取消、更改訂單，亦不得請求退款。</p>';
+    } else if (ud) {  // 收費 + 已選日期：換算絕對日期試算（對齊 mweb renderCancelSheet）
+      var free = ordFmtYmd(new Date(ud.y, ud.m - 1, ud.d - c.n)), use = ordFmtYmd(new Date(ud.y, ud.m - 1, ud.d));
+      html = '<table class="pc-cxl-table"><tr><th>取消日期（含）</th><th>取消手續費</th></tr>' +
+        '<tr><td>' + free + ' 之前</td><td>0%（未使用可免費取消）</td></tr>' +
+        '<tr><td>' + free + ' ～ ' + use + '</td><td>手續費 50%</td></tr>' +
+        '<tr><td>' + use + ' 之後</td><td>手續費 100%</td></tr></table>';
+      noteExtra = '上述以所選使用日期試算，實際請依訂單資訊為主。';
+    } else {  // 收費 + 未選日期：相對「所選日期 N 天前」
+      html = '<table class="pc-cxl-table"><tr><th>取消日期（含）</th><th>取消手續費</th></tr>' +
+        '<tr><td>所選日期 ' + c.n + ' 天前</td><td>未使用可免費取消</td></tr>' +
+        '<tr><td>所選日期 ' + c.n + ' 天內 ～ 使用日</td><td>手續費 50%</td></tr>' +
+        '<tr><td>使用日之後</td><td>手續費 100%</td></tr></table>';
+    }
+    document.getElementById('pcCancelBd').innerHTML = html +
+      '<div class="pc-cxl-note"><span class="ic">' + OI.info + '</span><span>' + noteExtra + '由於站內商品來自全球各地，訂單取消時間將依該供應商所在時區判定。供應商需 2–5 個工作天進行取消流程，依照您購買的商品取消政策收取手續費，並於取消流程完成後 14 個工作天內退款。</span></div>';
     document.getElementById('pcCancelMask').classList.add('open'); document.getElementById('pcCancelDlg').classList.add('open'); lockScroll();
   }
   function closeCancelDlg() { if (!document.getElementById('pcCancelDlg').classList.contains('open')) return; document.getElementById('pcCancelMask').classList.remove('open'); document.getElementById('pcCancelDlg').classList.remove('open'); unlockScroll(); }
