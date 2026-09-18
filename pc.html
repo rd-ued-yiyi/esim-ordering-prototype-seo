@@ -843,6 +843,8 @@
   .ff-selwrap { position: relative; }
   .ff-selwrap .chev { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; pointer-events: none; color: var(--kk-text-medium); }
   .ff-select { appearance: none; -webkit-appearance: none; padding-right: 34px; }
+  .ff-duo { display: grid; grid-template-columns: 96px 1fr; gap: 8px; }
+  .ff-duo .ff-cc .ff-select { padding-left: 12px; padding-right: 28px; }
   .ff-radio { display: flex; align-items: center; gap: 24px; height: 44px; }
   .ff-radio label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; }
   .ff-radio input { display: none; }
@@ -2870,7 +2872,7 @@
     var p0 = ORD_PEOPLE[0];
     return {
       qty: 1, useDate: null, deviceIn: {}, flIn: {}, flOut: {},
-      travelers: [0], contacts: [0], orderer: { first: p0.cnFirst, last: p0.cnLast, nation: p0.nation, email: p0.email, cc: '+81', phone: p0.tel },
+      travelers: [0], contacts: [0], orderer: { first: p0.cnFirst, last: p0.cnLast, nation: p0.nation, email: p0.email, cc: '+81', phone: p0.tel, app: 'Wechat', appAcct: '' },
       remark: ''
     };
   }
@@ -2918,6 +2920,7 @@
       '<div class="ff-selwrap"><select class="ff-select" data-ff="' + id + '">' + o + '</select><span class="ic chev">' + PC_CHEV + '</span></div></div>';
   }
   var PC_CHEV = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9C9DA0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function ordCcOpts(val) { return ['+886', '+81', '+82', '+86', '+852', '+853', '+65', '+66', '+60', '+1', '+44'].map(function (c) { return '<option' + (c === val ? ' selected' : '') + '>' + c + '</option>'; }).join(''); }
   function ffRadio(label, name, opts, val) {
     var r = ''; opts.forEach(function (x) { r += '<label><input type="radio" name="' + name + '" value="' + x[0] + '"' + (x[0] === val ? ' checked' : '') + '><span class="radio"></span>' + x[1] + '</label>'; });
     return '<div class="ff"><div class="ff-label">' + label + '<span class="req">*</span></div><div class="ff-radio">' + r + '</div></div>';
@@ -2976,11 +2979,29 @@
         '<div id="ordCtCards"></div></div>';
     }
     var o = st.orderer;
-    main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">訂購人資料</div><button class="ord-edit" id="ordOrdererEdit"><span class="ic">' + OI.edit + '</span></button></div>' +
-      '<div class="ord-info"><div class="ord-info-line"><span class="ic">' + OI.user + '</span>' + o.last + o.first + '</div>' +
-      '<div class="ord-info-line"><span class="ic">' + OI.globe + '</span>' + o.nation + '</div>' +
-      '<div class="ord-info-line"><span class="ic">' + OI.mail + '</span>' + o.email + '</div>' +
-      '<div class="ord-info-line"><span class="ic">' + OI.phone + '</span>' + o.cc + ' ' + o.phone + '</div></div></div>';
+    if (req.contacts) {
+      // 完整版：唯讀 + 編輯（另有獨立「聯絡方式」區）
+      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">訂購人資料</div><button class="ord-edit" id="ordOrdererEdit"><span class="ic">' + OI.edit + '</span></button></div>' +
+        '<div class="ord-info"><div class="ord-info-line"><span class="ic">' + OI.user + '</span>' + o.last + o.first + '</div>' +
+        '<div class="ord-info-line"><span class="ic">' + OI.globe + '</span>' + o.nation + '</div>' +
+        '<div class="ord-info-line"><span class="ic">' + OI.mail + '</span>' + o.email + '</div>' +
+        '<div class="ord-info-line"><span class="ic">' + OI.phone + '</span>' + o.cc + ' ' + o.phone + '</div></div></div>';
+    } else {
+      // 簡易版：內聯表單（Figma 3223-87439）名字/姓氏 · 國籍/email · 電話/通訊軟件
+      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">訂購人資料</div></div>' +
+        '<div class="ord-form" data-ffscope="orderer">' +
+          ffText('名字', 'first', '例：品睿', o.first) +
+          ffText('姓氏', 'last', '例：陳', o.last) +
+          ffSelect('國籍', 'nation', ORD_NATIONS, o.nation, '請選擇國籍') +
+          ffText('電子郵件信箱', 'email', '請輸入', o.email) +
+          '<div class="ff"><div class="ff-label">電話號碼<span class="req">*</span></div><div class="ff-duo">' +
+            '<div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="cc">' + ordCcOpts(o.cc) + '</select><span class="ic chev">' + PC_CHEV + '</span></div>' +
+            '<input class="ff-input" data-ff="phone" placeholder="電話號碼" value="' + ffEsc(o.phone) + '"></div></div>' +
+          '<div class="ff"><div class="ff-label">通訊軟件聯絡方式</div><div class="ff-duo">' +
+            '<div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="app">' + ['Wechat', 'Line', 'WhatsApp', 'Telegram'].map(function (a) { return '<option' + (a === o.app ? ' selected' : '') + '>' + a + '</option>'; }).join('') + '</select><span class="ic chev">' + PC_CHEV + '</span></div>' +
+            '<input class="ff-input" data-ff="appAcct" placeholder="請輸入賬戶" value="' + ffEsc(o.appAcct) + '"></div></div>' +
+        '</div></div>';
+    }
     main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">備註</div></div><div class="ord-remark-hint">額外服務除外的需求，請於此填寫</div>' +
       '<textarea class="ord-remark-ta" id="ordRemark" placeholder="請詳細描述">' + ffEsc(st.remark) + '</textarea></div>';
     document.getElementById('ordMain').innerHTML = main;
@@ -2994,7 +3015,7 @@
     byId('ordCancelInfo').onclick = openCancelDlg;
     if (byId('ordQtyMinus')) byId('ordQtyMinus').onclick = function () { if (st.qty > 1) { st.qty--; renderOrder(); } };
     if (byId('ordQtyPlus')) byId('ordQtyPlus').onclick = function () { if (st.qty < 5) { st.qty++; renderOrder(); } };
-    byId('ordOrdererEdit').onclick = function () { openPplDlg('orderer'); };
+    if (byId('ordOrdererEdit')) byId('ordOrdererEdit').onclick = function () { openPplDlg('orderer'); };
     byId('ordNext').onclick = function () { toast('demo 未開發'); };
     byId('ordRemark').addEventListener('input', function () { st.remark = this.value; });
     bindFfScopes();
