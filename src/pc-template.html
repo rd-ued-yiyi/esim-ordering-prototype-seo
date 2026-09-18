@@ -952,6 +952,11 @@
   .ff-radio input:checked + .radio { border-color: var(--kk-primary-medium); }
   .ff-radio input:checked + .radio::after { content: ''; position: absolute; inset: 3px; border-radius: 999px; background: var(--kk-primary-medium); }
   .ff-sub { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  /* 必填錯誤態（Figma 3223-90931）：紅框 + 此欄位必填 */
+  .ff-errmsg { display: none; align-items: center; gap: 4px; padding-top: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-critical); }
+  .ff-errmsg .ic { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; }
+  .ff.err .ff-input, .ff.err .ff-select { border-color: var(--kk-text-critical); }
+  .ff.err .ff-errmsg { display: flex; }
   /* 旅客 / 聯絡人 chips + 卡 */
   .ord-sec-col { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
   .ord-sec-sub { font-size: 12px; line-height: 16px; font-weight: 400; color: var(--kk-text-dark); }
@@ -3171,17 +3176,29 @@
     return out;
   }
   function ordSameDate(a, b) { return a && b && a.y === b.y && a.m === b.m && a.d === b.d; }
+  // 校驗訂單頁必填欄位（設備 / 航班的 text/select）：空 → 紅框 + 此欄位必填，回傳第一個錯誤欄
+  function validateOrdForm() {
+    var first = null;
+    document.querySelectorAll('#ordMain .ord-form .ff').forEach(function (ff) {
+      var inp = ff.querySelector('.ff-input, .ff-select');
+      if (!inp || !ff.querySelector('.ff-label .req')) { ff.classList.remove('err'); return; }  // 只驗必填 text/select
+      if (!inp.value || !String(inp.value).trim()) { ff.classList.add('err'); if (!first) first = ff; }
+      else ff.classList.remove('err');
+    });
+    return first;
+  }
   // 內聯欄位產生器
   function ffEsc(s) { return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/"/g, '&quot;'); }
+  function ffErr() { return '<div class="ff-errmsg"><span class="ic">' + OI.warn + '</span>此欄位必填</div>'; }
   function ffText(label, id, ph, val, full, req) {
-    return '<div class="ff' + (full ? ' ff-full' : '') + '"><div class="ff-label">' + label + (req === false ? '' : '<span class="req">*</span>') + '</div>' +
-      '<input class="ff-input" data-ff="' + id + '" placeholder="' + ffEsc(ph) + '" value="' + ffEsc(val) + '"></div>';
+    return '<div class="ff' + (full ? ' ff-full' : '') + (req === false ? ' ff-opt' : '') + '"><div class="ff-label">' + label + (req === false ? '' : '<span class="req">*</span>') + '</div>' +
+      '<input class="ff-input" data-ff="' + id + '" placeholder="' + ffEsc(ph) + '" value="' + ffEsc(val) + '">' + ffErr() + '</div>';
   }
   function ffSelect(label, id, opts, val, ph, full) {
     var o = '<option value="">' + ffEsc(ph) + '</option>';
     opts.forEach(function (x) { o += '<option' + (x === val ? ' selected' : '') + '>' + x + '</option>'; });
     return '<div class="ff' + (full ? ' ff-full' : '') + '"><div class="ff-label">' + label + '<span class="req">*</span></div>' +
-      '<div class="ff-selwrap"><select class="ff-select" data-ff="' + id + '">' + o + '</select><span class="ic chev">' + PC_CHEV + '</span></div></div>';
+      '<div class="ff-selwrap"><select class="ff-select" data-ff="' + id + '">' + o + '</select><span class="ic chev">' + PC_CHEV + '</span></div>' + ffErr() + '</div>';
   }
   var PC_CHEV = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9C9DA0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   function ordCcOpts(val) { return ['+886', '+81', '+82', '+86', '+852', '+853', '+65', '+66', '+60', '+1', '+44'].map(function (c) { return '<option' + (c === val ? ' selected' : '') + '>' + c + '</option>'; }).join(''); }
@@ -3225,7 +3242,7 @@
     }
     main += '<div class="qty-row"><div class="t">購買數量</div><div class="qty-ctl">' +
       '<button class="qty-btn qminus" id="ordQtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '></button><span class="qty-n">' + st.qty + '</span>' +
-      '<button class="qty-btn qplus" id="ordQtyPlus"' + (st.qty >= 5 ? ' disabled' : '') + '></button></div></div>';
+      '<button class="qty-btn qplus" id="ordQtyPlus"></button></div></div>';
     main += '</div>';
     if (req.device) {
       var d = st.deviceIn;
@@ -3258,13 +3275,15 @@
     var byId = function (i) { return document.getElementById(i); };
     byId('ordCancelInfo').onclick = openCancelDlg;
     if (byId('ordQtyMinus')) byId('ordQtyMinus').onclick = function () { if (st.qty > 1) { st.qty--; renderOrder(); } };
-    if (byId('ordQtyPlus')) byId('ordQtyPlus').onclick = function () { if (st.qty < 5) { st.qty++; renderOrder(); } };
+    if (byId('ordQtyPlus')) byId('ordQtyPlus').onclick = function () { if (st.qty < 5) { st.qty++; renderOrder(); } else { toast('最多購買 5 張'); } };
     if (byId('ordOrdererEdit')) byId('ordOrdererEdit').onclick = function () { openPplDlg('orderer'); };
     byId('ordNext').onclick = function () {
       if (req.date && !ordSt.useDate) {  // 啟用日期未選：內聯錯誤 + 捲入視野（Figma 3223-89173）
         var e = byId('ordDateErr'); if (e) { e.hidden = false; var sec = e.closest('.ord-datesec'); if (sec) sec.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
         return;
       }
+      var badFf = validateOrdForm();  // 必填欄位空：紅框 + 此欄位必填（Figma 3223-90931）
+      if (badFf) { badFf.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
       enterPay();
     };
     byId('ordRemark').addEventListener('input', function () { st.remark = this.value; });
@@ -3280,7 +3299,7 @@
       scope.querySelectorAll('[data-ff]').forEach(function (el) {
         var f = el.getAttribute('data-ff');
         var ev = el.tagName === 'SELECT' ? 'change' : 'input';
-        el.addEventListener(ev, function () { ordSt[key] = ordSt[key] || {}; ordSt[key][f] = el.value; });
+        el.addEventListener(ev, function () { ordSt[key] = ordSt[key] || {}; ordSt[key][f] = el.value; if (el.value && String(el.value).trim()) { var ff = el.closest('.ff'); if (ff) ff.classList.remove('err'); } });
       });
       scope.querySelectorAll('input[type=radio]').forEach(function (r) {
         r.addEventListener('change', function () { ordSt[key] = ordSt[key] || {}; ordSt[key].type = r.value; });
