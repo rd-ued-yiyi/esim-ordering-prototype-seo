@@ -637,11 +637,12 @@
   /* 基本資訊 */
   .det-h2 { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); margin: 24px 0 20px; }
   /* 方案描述：預設夾 2 行 + 行尾展開/收起（Figma 1249-109409） */
-  .det-intro { margin: 0 0 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .det-intro .det-intro-t { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .det-intro { position: relative; margin: 0 0 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .det-intro .det-intro-t { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }  /* 預設夾 1 行，展開/收起放行尾（Figma 1249-109409） */
   .det-intro.open .det-intro-t { -webkit-line-clamp: unset; }
-  .det-intro .det-intro-more { margin-top: 2px; display: none; border: 0; background: none; padding: 0; cursor: pointer; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-decoration: underline; text-underline-offset: 2px; }
+  .det-intro .det-intro-more { display: none; position: absolute; right: 0; bottom: 0; border: 0; padding: 0 0 0 28px; cursor: pointer; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-decoration: underline; text-underline-offset: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), #fff 22px); }
   .det-intro.clampable .det-intro-more { display: inline-block; }
+  .det-intro.open .det-intro-more { position: static; padding-left: 4px; background: none; }  /* 展開後「收起」跟在文末 */
   .det-table { border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; }
   .det-table .th { background: var(--kk-surface-lighter); padding: 12px 16px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); border-bottom: 1px solid var(--kk-border-lighter); }
   .det-table .tr { display: flex; align-items: flex-start; border-bottom: 1px solid var(--kk-border-lighter); }
@@ -650,7 +651,7 @@
   .det-table .td-v { flex: 1 1 0; min-width: 0; padding: 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-table .td-v--tip { cursor: pointer; }
   .det-table .td-v--tip .td-info { display: inline-flex; vertical-align: -3px; margin-left: 4px; width: 16px; height: 16px; color: var(--kk-text-medium); }
-  .det-table .td-v--tip:hover { color: var(--kk-primary-dark); }
+  /* hover 只作用在 ⓘ 圖示，文字不變色（依回饋） */
   .det-table .td-v--tip:hover .td-info { color: var(--kk-primary-dark); }
   /* 行內 ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：可將滑鼠移入框內 */
   .det-hovtip { position: fixed; z-index: 60; width: 327px; max-width: calc(100vw - 24px); background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
@@ -777,6 +778,13 @@
   .ord-pline { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .ord-pline .ic { width: 20px; height: 20px; flex: 0 0 auto; }
   .ord-pline .u { text-decoration: underline; text-underline-offset: 2px; }
+  /* 使用地區 hover 氣泡：完整國家清單雙欄（Figma 3223-87439） */
+  .ord-cov { position: relative; cursor: default; align-self: flex-start; }
+  .ord-cov-tip { position: absolute; left: 0; top: 100%; z-index: 20; display: none; background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 12px 16px; min-width: 260px; max-width: 380px; }
+  .ord-cov:hover .ord-cov-tip { display: block; }
+  .ord-cov-tip ul { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 32px; }
+  .ord-cov-tip li { position: relative; padding-left: 14px; font-size: 14px; line-height: 24px; color: var(--kk-text-darker); break-inside: avoid; }
+  .ord-cov-tip li::before { content: ''; position: absolute; left: 2px; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: var(--kk-text-medium); }
   .ord-hr { height: 1px; background: var(--kk-border-lighter); margin: 12px 0; }
   .ord-price-block { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .ord-price { color: var(--kk-text-critical); font-weight: 700; }
@@ -2864,7 +2872,8 @@
       '<div class="ord-ptitle">' + p.title + '</div>' +
       '<div class="ord-pspecs">' +
         '<div class="ord-pline"><span class="ic">' + OI.file + '</span>' + ordSpecLine() + '</div>' +
-        '<div class="ord-pline"><span class="ic">' + OI.loc + '</span><span class="u">' + ordCoverageText() + '</span></div>' +
+        '<div class="ord-pline ord-cov"><span class="ic">' + OI.loc + '</span><span class="u">' + ordCoverageText() + '</span>' +
+          '<div class="ord-cov-tip"><ul>' + ordCoverageList().map(function (n) { return '<li>' + n + '</li>'; }).join('') + '</ul></div></div>' +
       '</div><div class="ord-hr"></div>' +
       '<div class="ord-price-block"><div class="ord-price"><span class="cur">NT$</span><span class="num">' + ordMoney(p.now) + '</span></div>' +
       '<button class="ord-cancel" id="ordCancelInfo">' + ordCancelText() + '<span class="ic">' + OI.info + '</span></button></div></div>';
