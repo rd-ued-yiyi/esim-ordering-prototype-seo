@@ -821,14 +821,14 @@
   .ord-edit { color: var(--kk-text-dark); } .ord-edit .ic { width: 20px; height: 20px; }
   .ord-subhint { margin-top: 8px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .ord-subhint b { color: var(--kk-primary-dark); }
-  .ord-tip { margin-top: 12px; display: flex; align-items: flex-start; gap: 6px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); background: var(--kk-surface-light); border-radius: 8px; padding: 8px 12px; }
-  .ord-tip .ic { width: 16px; height: 16px; flex: 0 0 auto; color: var(--kk-primary-medium); }
+  /* 設備資訊提示（Figma Inline notification）：淺藍底 + 藍色 info fill + 深色 12 字 */
+  .ord-tip { margin-top: 16px; display: flex; align-items: flex-start; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-darker); background: #F2FAFF; border-radius: 8px; padding: 12px; }
+  .ord-tip .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 0; }
   /* 使用日期 chips */
   .ord-date-wrap { display: flex; align-items: stretch; gap: 8px; margin-top: 16px; }
-  .ord-date-chips { flex: 1 1 0; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
-  .ord-date-chips::-webkit-scrollbar { display: none; }
+  .ord-date-chips { flex: 1 1 0; min-width: 0; display: flex; gap: 8px; }  /* 不橫向捲動：等寬鋪滿整行，更多日期用「更多」日曆 */
   /* 日期 chip（Figma 3244-72533）：白底 + 1px #D5D6DB 邊框；選中 #F0FAFB + #26BEC9 */
-  .ord-dchip { flex: 0 0 auto; min-width: 64px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); }
+  .ord-dchip { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); }
   .ord-dchip .d { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .ord-dchip .w { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .ord-dchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
@@ -2980,6 +2980,7 @@
     cal: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4.5" width="14" height="12" rx="1.5" stroke="#727272" stroke-width="1.3"/><path d="M3 8h14M7 3v3M13 3v3" stroke="#727272" stroke-width="1.3" stroke-linecap="round"/></svg>',
     plus: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round"/></svg>',
     plusDark: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#212121" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    infoFill: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#2D84D6"/><path d="M8 7v4M8 4.6h.01" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>',
     cross: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     chevUp: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12l5-5 5 5" stroke="#727272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     chevR: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -3101,8 +3102,8 @@
     if (req.device) {
       var d = st.deviceIn;
       main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">設備資訊</div></div>' +
-        '<div class="ord-tip"><span class="ic">' + OI.info + '</span><span>在手機撥號鍵盤輸入「＊＃０６＃」可顯示 EID／IMEI</span></div>' +
-        '<div class="ord-form" data-ffscope="deviceIn">' + ffText('手機型號', 'model', '請輸入', d.model) + ffText('EID', 'eid', '請輸入', d.eid) + ffText('IMEI', 'imei', '請輸入', d.imei) + ffText('IMEI2', 'imei2', '請輸入', d.imei2) + '</div></div>';
+        '<div class="ord-tip"><span class="ic">' + OI.infoFill + '</span><span>在手機撥號鍵盤輸入「＊＃０６＃」可顯示 EID／IMEI2</span></div>' +
+        '<div class="ord-form" data-ffscope="deviceIn">' + ffText('手機型號', 'model', '請輸入', d.model) + ffText('EID', 'eid', '請輸入', d.eid) + ffText('IMEI2', 'imei2', '請輸入', d.imei2) + '</div></div>';
     }
     if (req.flight) {
       main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">抵達航班資訊</div></div><div data-ffscope="flIn">' + flightForm('flin-', st.flIn, '抵達') + '</div></div>';
@@ -3171,15 +3172,13 @@
   }
   function renderOrdDateChips() {
     var box = document.getElementById('ordDateChips'); if (!box) return; box.innerHTML = '';
-    function center(c, sm) { var t = c.offsetLeft - (box.clientWidth - c.offsetWidth) / 2; box.scrollTo({ left: Math.max(0, Math.min(t, box.scrollWidth - box.clientWidth)), behavior: sm ? 'smooth' : 'auto' }); }
-    var selc = null;
-    ordDatePresets().forEach(function (d) {
+    // 不橫向捲動：只列出鋪滿整行的固定日期（其餘用「更多」日曆），等寬 flex
+    ordDatePresets().slice(0, 7).forEach(function (d) {
       var c = h('<button class="ord-dchip"><span class="d">' + d.chip + '</span><span class="w">' + d.w + '</span></button>');
-      if (ordSameDate(ordSt.useDate, d)) { c.classList.add('sel'); selc = c; }
-      c.onclick = function () { ordSt.useDate = d; box.querySelectorAll('.ord-dchip.sel').forEach(function (x) { x.classList.remove('sel'); }); c.classList.add('sel'); center(c, true); };
+      if (ordSameDate(ordSt.useDate, d)) c.classList.add('sel');
+      c.onclick = function () { ordSt.useDate = d; box.querySelectorAll('.ord-dchip.sel').forEach(function (x) { x.classList.remove('sel'); }); c.classList.add('sel'); };
       box.appendChild(c);
     });
-    if (selc) requestAnimationFrame(function () { center(selc, false); });
     var more = document.getElementById('ordDateMore');
     if (more) more.onclick = function (e) { e.stopPropagation(); openOrdCal(more); };  // 「更多」→ 雙月日曆下拉（Figma 3263-28053）
   }
