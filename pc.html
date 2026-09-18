@@ -2769,6 +2769,7 @@
   var _plCompact = false;
   window.addEventListener('scroll', function () {
     if (!document.body.classList.contains('list-mode')) return;
+    if (_lockCount > 0) return;  // dialog 開啟中 body 被 position:fixed 鎖捲，會誤觸 scrollY=0；此時不重算塌縮，維持原 compact 態
     var next = window.scrollY > 20;
     if (next === _plCompact) return;
     _plCompact = next;
