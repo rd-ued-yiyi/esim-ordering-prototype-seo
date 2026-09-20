@@ -1008,6 +1008,31 @@
   .tv-f { display: flex; flex-direction: column; gap: 2px; }
   .tv-f .k { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   .tv-f .v { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
+  /* 旅客資料卡（Figma 3341-25078）：下拉選旅客 + 內聯表單 + 新增常用旅客 */
+  .tvs-list { display: flex; flex-direction: column; gap: 24px; margin-top: 16px; }
+  .tvs-card { border-radius: 8px; }
+  .tvs-hd { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: #F1F4F8; border: 1px solid var(--kk-border-lighter); border-bottom: 0; border-radius: 8px 8px 0 0; padding: 16px 20px; }
+  .tvs-hd-l { display: flex; align-items: center; gap: 20px; }
+  .tvs-t { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
+  .tvs-age { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .tvs-clear { font-size: 12px; line-height: 16px; font-weight: 600; color: var(--kk-text-darker); text-decoration: underline; }
+  .tvs-bd { border: 1px solid var(--kk-border-lighter); border-top: 0; border-radius: 0 0 8px 8px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .tvs-selfield { display: flex; flex-direction: column; gap: 4px; width: 329px; max-width: 100%; }
+  .tvs-seldd { position: relative; }
+  .tvs-sel { width: 100%; height: 48px; padding: 0 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; display: flex; align-items: center; gap: 8px; }
+  .tvs-sel .chev { width: 20px; height: 20px; margin-left: auto; flex: 0 0 auto; }
+  .tvs-av { width: 28px; height: 28px; border-radius: 999px; background: var(--kk-primary-medium); color: #fff; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .tvs-nm { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .tvs-ph { font-size: 14px; color: var(--kk-text-light); }
+  .tvs-menu { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 30; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 4px; max-height: 280px; overflow-y: auto; }
+  .tvs-menu[hidden] { display: none; }
+  .tvs-opt { width: 100%; display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px; text-align: left; }
+  .tvs-opt:hover { background: var(--kk-surface-lighter, #F7FAFC); }
+  .tvs-opt.sel .tvs-nm { color: var(--kk-primary-dark); font-weight: 600; }
+  .tvs-ck { width: 20px; height: 20px; margin-left: auto; flex: 0 0 auto; }
+  .tvs-div { height: 1px; background: var(--kk-border-lighter); }
+  .tvs-save { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; padding: 12px 24px 12px 16px; border: 1px solid var(--kk-primary-dark); border-radius: 8px; color: var(--kk-primary-dark); font-size: 16px; line-height: 24px; font-weight: 600; }
+  .tvs-save .ic { width: 20px; height: 20px; }
   /* 旅遊期間聯絡方式卡（Figma 3244-72622） */
   .ct-card { margin-top: 20px; border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; }
   .ct-card-hd { display: flex; align-items: center; justify-content: space-between; background: #F7FAFC; padding: 4px 4px 4px 12px; }
@@ -3138,6 +3163,7 @@
   document.getElementById('ordCalNext').addEventListener('click', function (e) { e.stopPropagation(); ordCalView = new Date(ordCalView.getFullYear(), ordCalView.getMonth() + 1, 1); renderOrdCal(); });
   document.getElementById('ordCal').addEventListener('click', function (e) { e.stopPropagation(); });
   document.addEventListener('click', function () { if (!document.getElementById('ordCal').hidden) closeOrdCal(); });
+  document.addEventListener('click', function () { if (document.querySelector('.tvs-menu:not([hidden])')) closeAllTvMenus(); });  // 點外部關閉旅客下拉
   window.addEventListener('scroll', function () { if (!document.getElementById('ordCal').hidden) closeOrdCal(); }, { passive: true });
 
   // ================= 訂單填寫頁（Figma 3223-87439 / 3244-72510；資料邏輯參考 mweb） =================
@@ -3159,6 +3185,8 @@
     sim: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 2.5h6.5L16 7v10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5Z" stroke="#727272" stroke-width="1.3"/><rect x="6.5" y="10" width="7" height="5.5" rx="1" stroke="#727272" stroke-width="1.3"/><path d="M10 10v5.5M6.5 12.7h7" stroke="#727272" stroke-width="1.1"/></svg>',
     coinGold: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#FFC128"/><circle cx="8" cy="8" r="5" fill="#FFD766"/><path d="M6 5v6M6 8l3.2-3M6.7 7.6l2.9 3.4" stroke="#B26E00" stroke-width="1.3" stroke-linecap="round"/></svg>',
     warn: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.6" stroke="#E65F50" stroke-width="1.3"/><path d="M7 4v3.4M7 9.6h.01" stroke="#E65F50" stroke-width="1.3" stroke-linecap="round"/></svg>',
+    chevDn: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="#9C9DA0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    check: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#13A3B6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     cross: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     chevUp: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 12l5-5 5 5" stroke="#727272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     chevR: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -3180,12 +3208,16 @@
   ];
   var ORD_NATIONS = ['台灣', '日本', '韓國', '中國', '香港', '澳門', '新加坡', '馬來西亞', '泰國', '美國', '英國', '法國', '澳大利亞'];
   var ordP = null, ordSt = null;
+  function tvBlankData() { return { nation: '', cnLast: '', cnFirst: '', enLast: '', enFirst: '', gender: '', birth: '', twId: '', twPass: '', hkMacao: '', docNo: '', docExp: '' }; }
+  function tvDataFromPerson(p) { return { nation: p.nation, cnLast: p.cnLast, cnFirst: p.cnFirst, enLast: p.enLast, enFirst: p.enFirst, gender: p.gender, birth: p.birth, twId: p.twId, twPass: p.twPass, hkMacao: p.hkMacao, docNo: p.docNo, docExp: p.docExp }; }
+  function tvDataFromOrderer(o) { var d = tvBlankData(); d.nation = o.nation; d.cnLast = o.last; d.cnFirst = o.first; return d; }
   function newOrdState() {
+    var orderer = { first: '佳瑩', last: '徐', nation: '台灣', email: 'Lala.hsu@kkday.com', cc: '+886', phone: '0912345678', app: 'Line', appAcct: '' };
     return {
       qty: 1, useDate: ordDateFromFilter(), deviceIn: {}, flIn: {}, flOut: {},
-      travelers: [0],
-      // 訂購人（對齊 Figma 訂購人卡：徐佳瑩／台灣／Lala.hsu）
-      orderer: { first: '佳瑩', last: '徐', nation: '台灣', email: 'Lala.hsu@kkday.com', cc: '+886', phone: '0912345678', app: 'Line', appAcct: '' },
+      // 每位旅客一個 slot：{ pick: 'orderer' | roster-index | null, data:{...} }；預設第 1 位＝同訂購人資料
+      tvSlots: [{ pick: 'orderer', data: tvDataFromOrderer(orderer) }],
+      orderer: orderer,  // 訂購人（Figma 訂購人卡：徐佳瑩／台灣／Lala.hsu）
       // 旅遊期間聯絡方式（單一區塊，不隨數量變化；預設楊冪）
       contact: { last: '楊', first: '冪', cc: '+886', tel: '091283874', phoneOn: true, app: 'Line', appAcct: 'doneehuang', appOn: true },
       remark: ''
@@ -3389,59 +3421,91 @@
   function refreshOrdCancel() { var b = document.getElementById('ordCancelInfo'); if (b) b.innerHTML = ordCancelText() + '<span class="ic">' + OI.info + '</span>'; }
   function pName(i) { return ORD_PEOPLE[i].cnLast + ORD_PEOPLE[i].cnFirst; }
   function enName(i) { return ORD_PEOPLE[i].enLast + ', ' + ORD_PEOPLE[i].enFirst; }
-  // 旅客資料卡（Figma 3263-27062）：淺藍 header 名字 + 編輯/移除；白底 2 欄 6 格
-  function tvCard(i) {
-    var t = ORD_PEOPLE[i];
-    function f(k, v) { return '<div class="tv-f"><span class="k">' + k + '</span><span class="v">' + (v || '') + '</span></div>'; }
-    var card = h('<div class="tv-card">' +
-      '<div class="tv-card-hd"><div class="tv-nm"><span>' + enName(i) + '</span><i class="tv-div"></i><span>' + pName(i) + '</span></div>' +
-        '<div class="tv-acts"><button class="tvE" aria-label="編輯"><span class="ic">' + OI.edit + '</span></button>' +
-        '<button class="tvX" aria-label="移除"><span class="ic">' + OI.cross + '</span></button></div></div>' +
-      '<div class="tv-card-bd">' +
-        f('國籍', t.nation) + f('性別/出生日期', t.gender + ' ' + t.birth) +
-        f('台灣身分證字號', t.twId) + f('台胞證字號', t.twPass) +
-        f('證件號碼（護照/身分證）', t.docNo) + f('證件效期（護照/身分證）', t.docExp) +
+  // 旅客資料（Figma 3341-25078）：每位旅客一張卡＝下拉選旅客 + 內聯表單 + 新增常用旅客
+  var TV_FMAP = { nation: 'nation', cnl: 'cnLast', cnf: 'cnFirst', enl: 'enLast', enf: 'enFirst', birth: 'birth', twid: 'twId', twpass: 'twPass', hk: 'hkMacao', docno: 'docNo', docexp: 'docExp' };
+  function tvSlotFields(d, idx) {
+    function subF(label, id, ph, val, sub) {
+      return '<div class="ff"><div class="ff-label">' + label + '<span class="req">*</span></div>' +
+        '<input class="ff-input" data-ff="' + id + '" placeholder="' + ffEsc(ph) + '" value="' + ffEsc(val) + '">' + ffErr() +
+        '<div class="ff-sub">' + sub + '</div></div>';
+    }
+    return ffSelect('國籍', 'nation', ORD_NATIONS, d.nation, '請選擇國籍') +
+      '<div class="tv-duo">' + ffText('中文姓', 'cnl', '例：陳', d.cnLast) + ffText('中文名', 'cnf', '例：品睿', d.cnFirst) + '</div>' +
+      '<div class="tv-duo">' + subF('英文姓', 'enl', '例：CHEN', d.enLast, '請參考護照英文姓名') + subF('英文名', 'enf', '例：PIN RUI', d.enFirst, '請參考護照英文姓名') + '</div>' +
+      ffRadio('性別', 'tvg' + idx, [['男', '男'], ['女', '女']], d.gender) +
+      ffSelect('出生日期', 'birth', ['1980/01/01', '1985/06/15', '1990/01/01', '1993/10/11'], d.birth, '請選擇') +
+      ffText('台灣身分證字號', 'twid', '請輸入台灣身分證字號', d.twId) +
+      ffText('台胞證字號', 'twpass', '請輸入台胞證字號', d.twPass) +
+      ffText('港澳回鄉證號', 'hk', '請輸入港澳回鄉證號', d.hkMacao) +
+      ffText('證件號碼（護照/身份證）', 'docno', '請輸入證件號碼', d.docNo) +
+      ffSelect('證件效期（護照/身份證）', 'docexp', ['2027/12/31', '2028/03/05', '2029/10/06', '2030/12/23'], d.docExp, '請選擇');
+  }
+  function tvSelLabel(slot) { return slot.pick === 'orderer' ? '同訂購人資料' : (slot.pick != null && slot.pick >= 0 ? pName(slot.pick) : null); }
+  function tvSelInner(slot) {
+    var lb = tvSelLabel(slot);
+    if (!lb) return '<span class="tvs-ph">請選擇</span>';
+    return '<span class="tvs-av">' + lb.charAt(0) + '</span><span class="tvs-nm">' + lb + '</span>';
+  }
+  function closeAllTvMenus() { document.querySelectorAll('.tvs-menu').forEach(function (m) { m.hidden = true; }); document.querySelectorAll('.tvs-sel.open').forEach(function (b) { b.classList.remove('open'); }); }
+  function buildTvMenu(menu, idx) {
+    var slot = ordSt.tvSlots[idx]; menu.innerHTML = '';
+    var opts = [{ key: 'orderer', label: '同訂購人資料' }].concat(ORD_PEOPLE.map(function (p, i) { return { key: i, label: pName(i) }; }));
+    opts.forEach(function (o) {
+      var seld = String(slot.pick) === String(o.key);
+      var row = h('<button class="tvs-opt' + (seld ? ' sel' : '') + '" type="button"><span class="tvs-av">' + o.label.charAt(0) + '</span><span class="tvs-nm">' + o.label + '</span>' + (seld ? '<span class="ic tvs-ck">' + OI.check + '</span>' : '') + '</button>');
+      row.onclick = function (e) { e.stopPropagation(); tvPick(idx, o.key); };
+      menu.appendChild(row);
+    });
+  }
+  function tvPick(idx, key) {
+    var slot = ordSt.tvSlots[idx];
+    slot.pick = key;
+    slot.data = key === 'orderer' ? tvDataFromOrderer(ordSt.orderer) : tvDataFromPerson(ORD_PEOPLE[key]);
+    renderOrdTravelers();
+  }
+  function tvSaveCommon(idx) {
+    var d = ordSt.tvSlots[idx].data;
+    if (!d.cnLast && !d.cnFirst && !d.enLast) { toast('請先填寫旅客資料'); return; }
+    ORD_PEOPLE.push({ cnLast: d.cnLast, cnFirst: d.cnFirst, enLast: d.enLast, enFirst: d.enFirst, nation: d.nation || '台灣', gender: d.gender || '', birth: d.birth || '', twId: d.twId, twPass: d.twPass, hkMacao: d.hkMacao, docNo: d.docNo, docExp: d.docExp, cc: '+886', tel: '', app: 'Line', appAcct: '' });
+    ordSt.tvSlots[idx].pick = ORD_PEOPLE.length - 1;
+    toast('已加入常用旅客'); renderOrdTravelers();
+  }
+  function bindTvSlotForm(scope, idx) {
+    scope.querySelectorAll('[data-ff]').forEach(function (el) {
+      var key = TV_FMAP[el.getAttribute('data-ff')]; if (!key) return;
+      var ev = el.tagName === 'SELECT' ? 'change' : 'input';
+      el.addEventListener(ev, function () { ordSt.tvSlots[idx].data[key] = el.value; if (el.value && String(el.value).trim()) { var ff = el.closest('.ff'); if (ff) ff.classList.remove('err'); } });
+    });
+    scope.querySelectorAll('input[type=radio]').forEach(function (r) { r.addEventListener('change', function () { ordSt.tvSlots[idx].data.gender = r.value; }); });
+  }
+  function tvSlotCard(idx) {
+    var slot = ordSt.tvSlots[idx];
+    var card = h('<div class="tvs-card">' +
+      '<div class="tvs-hd"><div class="tvs-hd-l"><span class="tvs-t">旅客' + (idx + 1) + '</span><span class="tvs-age">12 歲以上（含）</span></div><button class="tvs-clear" type="button">清空</button></div>' +
+      '<div class="tvs-bd">' +
+        '<div class="tvs-selfield"><div class="ff-label">請選擇旅客' + (idx + 1) + '<span class="req">*</span></div>' +
+          '<div class="tvs-seldd"><button class="tvs-sel" type="button">' + tvSelInner(slot) + '<span class="ic chev">' + OI.chevDn + '</span></button>' +
+          '<div class="tvs-menu" hidden></div></div></div>' +
+        '<div class="tvs-div"></div>' +
+        '<div class="ord-form tv-edit" data-tvslot="' + idx + '">' + tvSlotFields(slot.data, idx) + '</div>' +
+        '<button class="tvs-save" type="button"><span class="ic">' + OI.check + '</span>新增常用旅客</button>' +
       '</div></div>');
-    card.querySelector('.tvE').onclick = function () { openTvDlg(i); };
-    card.querySelector('.tvX').onclick = function () { var at = ordSt.travelers.indexOf(i); if (at >= 0) ordSt.travelers.splice(at, 1); renderOrdTravelers(); };
+    card.querySelector('.tvs-clear').onclick = function () { ordSt.tvSlots[idx] = { pick: null, data: tvBlankData() }; renderOrdTravelers(); };
+    var selBtn = card.querySelector('.tvs-sel'), menu = card.querySelector('.tvs-menu');
+    selBtn.onclick = function (e) { e.stopPropagation(); var wasOpen = !menu.hidden; closeAllTvMenus(); if (!wasOpen) { buildTvMenu(menu, idx); menu.hidden = false; selBtn.classList.add('open'); } };
+    menu.onclick = function (e) { e.stopPropagation(); };
+    card.querySelector('.tvs-save').onclick = function () { tvSaveCommon(idx); };
+    bindTvSlotForm(card.querySelector('[data-tvslot]'), idx);
     return card;
   }
-  // 旅客資料（依購買數量變化）：qty=1 用代表人 chips（Figma 3244-72583）；qty>1 用「N 位成人 (x/N) + 再新增」（Figma 3263-27041）
   function renderOrdTravelers() {
     var card = document.getElementById('ordTvCard'); if (!card) return;
-    var N = ordSt.qty;
-    if (ordSt.travelers.length > N) ordSt.travelers = ordSt.travelers.slice(0, N);
-    var filled = ordSt.travelers.length, html;
-    if (N === 1) {
-      html = '<div class="ord-sec-h"><div class="t">旅客資料</div></div>' +
-        '<div class="tv-head"><div class="tv-count">選擇 <b>1</b> 位旅客代表人<span class="req">*</span></div><div class="tv-sub">12 歲以上（含）</div></div>' +
-        '<div class="tv-chiprow"><div class="tv-chips" id="ordTvChips"></div>' +
-          '<div class="tv-chipbtns"><button class="tv-add" id="ordTvAdd"><span class="ic">' + OI.plusDark + '</span>新增旅客</button>' +
-          '<button class="tv-collapse" id="ordTvCollapse" aria-label="收合"><span class="ic">' + OI.chevUp + '</span></button></div></div>' +
-        '<div class="tv-cards" id="ordTvCards"></div>';
-    } else {
-      html = '<div class="ord-sec-h"><div class="t">旅客資料</div></div>' +
-        '<div class="tv-head tv-head-row"><div class="tv-head-l"><div class="tv-count"><span class="c-n">' + N + ' 位成人</span><span class="req">*</span><span class="c-prog">(' + filled + '/' + N + ')</span></div><div class="tv-sub">12 歲以上（含）</div></div>' +
-        (filled < N ? '<button class="tv-more" id="ordTvMore">再新增 ' + (N - filled) + ' 位旅客<span class="ic">' + OI.chevR + '</span></button>' : '') +
-        '</div><div class="tv-cards" id="ordTvCards"></div>';
-    }
-    card.innerHTML = html;
-    var cards = document.getElementById('ordTvCards');
-    ordSt.travelers.forEach(function (i) { cards.appendChild(tvCard(i)); });
-    if (N === 1) {
-      var chips = document.getElementById('ordTvChips');
-      ORD_PEOPLE.forEach(function (_, i) {
-        var chip = h('<button class="ct-chip">' + pName(i) + '</button>');
-        if (ordSt.travelers.indexOf(i) >= 0) chip.classList.add('sel');
-        chip.onclick = function () { ordSt.travelers = [i]; renderOrdTravelers(); };
-        chips.appendChild(chip);
-      });
-      document.getElementById('ordTvAdd').onclick = function () { openTvDlg(null); };
-      var col = document.getElementById('ordTvCollapse');
-      col.onclick = function () { chips.classList.toggle('collapsed'); col.classList.toggle('up'); };
-    } else {
-      var mb = document.getElementById('ordTvMore'); if (mb) mb.onclick = function () { openTvSelectDlg(); };
-    }
+    var N = ordSt.qty, slots = ordSt.tvSlots;
+    while (slots.length < N) slots.push({ pick: null, data: tvBlankData() });
+    if (slots.length > N) ordSt.tvSlots = slots.slice(0, N);
+    card.innerHTML = '<div class="ord-sec-h ord-sec-col"><div class="t">旅客資料</div><div class="ord-sec-sub">請依證件填寫每位旅客實名資料，須與證件一致</div></div><div class="tvs-list" id="ordTvList"></div>';
+    var list = document.getElementById('ordTvList');
+    for (var i = 0; i < N; i++) list.appendChild(tvSlotCard(i));
   }
   // 旅遊期間聯絡方式（單一區塊，不隨數量變化；Figma 3244-72622）
   function renderOrdContacts() {
