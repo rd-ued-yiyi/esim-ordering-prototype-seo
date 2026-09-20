@@ -178,6 +178,34 @@
   .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
     font-size: 16px; line-height: 24px; font-weight: 600; white-space: nowrap; transition: background .15s; display: inline-flex; align-items: center; gap: 8px; }
   .pc-btn:hover { background: var(--kk-primary-dark); }
+  /* 方案切換（不顯眼）：面板右上小灰連結 */
+  .pc-panel { position: relative; }
+  .pc-panel[hidden] { display: none !important; }
+  .pc-scheme-toggle { position: absolute; top: -2px; right: 0; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pc-scheme-toggle:hover { color: var(--kk-primary-dark); }
+  .pc-scheme-toggle .ic { width: 14px; height: 14px; }
+  /* 方案 B：精簡兩下拉 */
+  .pc-panelB .pc-note { margin-top: 4px; }
+  .pcb-row { display: flex; gap: 12px; align-items: stretch; }
+  .pcb-dd { position: relative; flex: 1 1 0; min-width: 0; }
+  .pcb-sel { width: 100%; height: 56px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; }
+  .pcb-sel > .ic { width: 20px; height: 20px; flex: 0 0 auto; color: var(--kk-text-medium); }
+  .pcb-txt { flex: 1 1 0; min-width: 0; text-align: left; font-size: 16px; line-height: 24px; color: var(--kk-text-light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pcb-sel.filled .pcb-txt { color: var(--kk-text-darker); }
+  .pcb-chev { margin-left: auto; }
+  .pcb-row .pc-btn { height: 56px; flex: 0 0 auto; }
+  .pcb-help { align-self: flex-start; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .pcb-help .ic { width: 16px; height: 16px; }
+  .pcb-menu { position: absolute; left: 0; top: calc(100% + 8px); z-index: 30; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 8px; min-width: 100%; }
+  .pcb-menu[hidden] { display: none; }
+  .pcb-daysmenu { max-height: 360px; overflow-y: auto; }
+  .pcb-opt { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-radius: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pcb-opt:hover { background: var(--kk-surface-lighter, #F7FAFC); }
+  .pcb-opt.sel { background: var(--kk-primary-lighter); color: var(--kk-primary-dark); }
+  .pcb-opt .ic { width: 16px; height: 16px; color: var(--kk-primary-dark); }
+  .pcb-menu-flow { width: 688px; max-width: calc(100vw - 48px); padding: 16px; }
+  .pcb-flow-tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--kk-border-lighter); margin-bottom: 16px; }
+  .pcb-flow-bd { max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
 
   /* ---------- 面包屑 ---------- */
   .pc-crumb { padding: 24px 0 8px; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-medium); }
@@ -1197,6 +1225,7 @@
           </div>
           <!-- 已選目的地：相容提示 + 選擇天數 / 選擇流量 + 摘要（Figma 3096-60605） -->
           <div class="pc-panel" id="pcPanel">
+            <button class="pc-scheme-toggle" id="pcSchemeToggle"><span class="ic ic-16"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 5.5h9l-2-2M12.5 10.5h-9l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="pc-scheme-txt">精簡版</span></button>
             <div class="pc-note"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
             <div class="pc-panel-grid">
               <div class="pc-pane pc-pane-days">
@@ -1217,6 +1246,23 @@
               <span class="sum">已選<b id="pcSummary">—</b></span>
               <button class="pc-btn" id="pcSearchBtn">搜尋套餐</button>
             </div>
+          </div>
+          <!-- 方案 B：精簡兩下拉（Figma 3109-65525 / 3342-59393） -->
+          <div class="pc-panel pc-panelB" id="pcPanelB" hidden>
+            <button class="pc-scheme-toggle" id="pcSchemeToggleB"><span class="ic ic-16"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 5.5h9l-2-2M12.5 10.5h-9l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="pc-scheme-txt">完整版</span></button>
+            <div class="pc-note"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
+            <div class="pcb-row">
+              <div class="pcb-dd" id="pcbDaysWrap">
+                <button class="pcb-sel" id="pcbDaysBtn"><span class="ic ic-20">{{PC_calendar20}}</span><span class="pcb-txt" id="pcbDaysTxt">選擇天數</span><span class="ic ic-20 pcb-chev">{{PC_arrowDown20}}</span></button>
+                <div class="pcb-menu" id="pcbDaysMenu" hidden></div>
+              </div>
+              <div class="pcb-dd" id="pcbFlowWrap">
+                <button class="pcb-sel" id="pcbFlowBtn"><span class="ic ic-20">{{PC_swap20}}</span><span class="pcb-txt" id="pcbFlowTxt">選擇流量</span><span class="ic ic-20 pcb-chev">{{PC_arrowDown20}}</span></button>
+                <div class="pcb-menu pcb-menu-flow" id="pcbFlowMenu" hidden><div class="pcb-flow-tabs" id="pcbFlowTabs"></div><div class="pcb-flow-bd" id="pcbFlowBd"></div></div>
+              </div>
+              <button class="pc-btn" id="pcbSearchBtn">搜尋套餐</button>
+            </div>
+            <button class="pc-flow-help pcb-help" id="pcbHelp">不知道怎麼選<span class="ic ic-16">{{IC_questionDark}}</span></button>
           </div>
         </div>
       </div>
@@ -1786,6 +1832,26 @@
     revealTier(scroll, selTier);
     document.querySelectorAll('#pcFlowTabs .pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === sel.tab); });
     document.getElementById('pcSummary').textContent = sel.days + '天·' + PLANS[sel.tab].lb + '·' + sel.plan;  // Figma 3096-60705：N天·計費方式·檔位
+    if (heroScheme === 'B') renderSchemeB();
+  }
+  // ===== 方案 B：精簡兩下拉（Figma 3109-65525 / 3342-59393；3342-27048 天數下拉 / 3342-27133 流量下拉） =====
+  var heroScheme = 'A';
+  var PCB_CHK = '<span class="ic"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.4l3.2 3.2L13 5" stroke="#13A3B6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+  function setHeroScheme(s) {
+    heroScheme = s;
+    document.getElementById('pcPanel').hidden = (s !== 'A');
+    document.getElementById('pcPanelB').hidden = (s !== 'B');
+    if (s === 'B') renderSchemeB();
+  }
+  function renderSchemeB() {
+    var db = document.getElementById('pcbDaysBtn'), dt = document.getElementById('pcbDaysTxt');
+    if (db) { if (sel.days) { dt.textContent = sel.days + '天'; db.classList.add('filled'); } else { dt.textContent = '選擇天數'; db.classList.remove('filled'); } }
+    var fb = document.getElementById('pcbFlowBtn'), ft = document.getElementById('pcbFlowTxt');
+    if (fb) { if (sel.plan) { ft.textContent = PLANS[sel.tab].lb + '·' + sel.plan; fb.classList.add('filled'); } else { ft.textContent = '選擇流量'; fb.classList.remove('filled'); } }
+  }
+  function closePcbMenus() {
+    var dm = document.getElementById('pcbDaysMenu'), fm = document.getElementById('pcbFlowMenu');
+    if (dm) dm.hidden = true; if (fm) fm.hidden = true;
   }
   // 選中檔位不在可視範圍時捲入（上下各留 8px），不動頁面本身
   function revealTier(scroll, el) {
@@ -1824,6 +1890,32 @@
   document.getElementById('pcSearchBtn').addEventListener('click', function () {
     enterList();  // 進入搜尋結果列表頁（同頁切換視圖）
   });
+  // 方案切換 + 方案 B 互動
+  document.getElementById('pcSchemeToggle').addEventListener('click', function () { setHeroScheme('B'); });
+  document.getElementById('pcSchemeToggleB').addEventListener('click', function () { setHeroScheme('A'); });
+  document.getElementById('pcbSearchBtn').addEventListener('click', function () { enterList(); });
+  document.getElementById('pcbHelp').addEventListener('click', openHowto);
+  document.getElementById('pcbDaysBtn').addEventListener('click', function (e) {
+    e.stopPropagation();
+    var m = document.getElementById('pcbDaysMenu'), open = !m.hidden; closePcbMenus(); if (open) return;
+    m.innerHTML = ''; m.classList.add('pcb-daysmenu');
+    for (var i = 1; i <= 30; i++) (function (d) {
+      var b = h('<button class="pcb-opt' + (sel.days === d ? ' sel' : '') + '"><span>' + d + '天</span>' + (sel.days === d ? PCB_CHK : '') + '</button>');
+      b.onclick = function (ev) { ev.stopPropagation(); sel.days = d; sel.planTouched = false; m.hidden = true; renderPanel(); renderSchemeB(); };
+      m.appendChild(b);
+    })(i);
+    m.hidden = false;
+    var s = m.querySelector('.pcb-opt.sel'); if (s) requestAnimationFrame(function () { s.scrollIntoView({ block: 'center' }); });
+  });
+  document.getElementById('pcbFlowBtn').addEventListener('click', function (e) {
+    e.stopPropagation();
+    var m = document.getElementById('pcbFlowMenu'), open = !m.hidden; closePcbMenus(); if (open) return;
+    renderFlowInto(document.getElementById('pcbFlowTabs'), document.getElementById('pcbFlowBd'), function () { m.hidden = true; renderPanel(); renderSchemeB(); });
+    m.hidden = false;
+  });
+  document.getElementById('pcbDaysMenu').addEventListener('click', function (e) { e.stopPropagation(); });
+  document.getElementById('pcbFlowMenu').addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function () { closePcbMenus(); });
 
   // ================= 目的地選擇彈窗：三模式 =================
   var dlg = { mode: 'country', multi: [], q: '' };
@@ -2520,17 +2612,21 @@
       dd.appendChild(b);
     })(i);
   }
-  // 全部流量 dialog（Figma 3191-69000）
-  function renderAllFlow() {
+  // 流量分頁+卡片渲染（供「全部流量」dialog 與方案B流量下拉共用）
+  function renderFlowInto(tabsEl, bdEl, onPick) {
     var d = sel.days;
-    var tabs = document.getElementById('pcAllTabs'); tabs.innerHTML = '';
+    tabsEl.innerHTML = '';
     TABS.forEach(function (k) {
       if (!filteredOpts(k, d).length) return;
       var t = h('<button class="pc-alltab' + (sel.tab === k ? ' sel' : '') + '"></button>'); t.textContent = PLANS[k].lb;
-      t.addEventListener('click', function () { allFlowScrollTo(k); });
-      tabs.appendChild(t);
+      t.addEventListener('click', function () {
+        var sec = bdEl.querySelector('.pc-allsec[data-sec="' + k + '"]');
+        if (sec) bdEl.scrollTo({ top: sec.offsetTop - bdEl.offsetTop - 8, behavior: 'smooth' });
+        tabsEl.querySelectorAll('.pc-alltab').forEach(function (x) { x.classList.toggle('sel', x.textContent === PLANS[k].lb); });
+      });
+      tabsEl.appendChild(t);
     });
-    var bd = document.getElementById('pcAllBd'); bd.innerHTML = '';
+    bdEl.innerHTML = '';
     TABS.forEach(function (k) {
       var opts = filteredOpts(k, d); if (!opts.length) return;
       var badge = badgeForTab(k, d);
@@ -2543,11 +2639,15 @@
         var c = h('<button class="pc-tier' + (on ? ' sel' : '') + '"><b></b><span></span>' + (badge === o.t ? '<span class="badge">推薦</span>' : '') + '</button>');
         c.querySelector('b').textContent = o.t;
         c.querySelector('span').textContent = priceLabelFor(o, d);
-        c.addEventListener('click', function () { sel.tab = k; sel.plan = o.t; sel.planTouched = true; closeAllFlow(); renderList(); });
+        c.addEventListener('click', function () { sel.tab = k; sel.plan = o.t; sel.planTouched = true; onPick(); });
         grid.appendChild(c);
       });
-      bd.appendChild(sec);
+      bdEl.appendChild(sec);
     });
+  }
+  // 全部流量 dialog（Figma 3191-69000）
+  function renderAllFlow() {
+    renderFlowInto(document.getElementById('pcAllTabs'), document.getElementById('pcAllBd'), function () { closeAllFlow(); renderList(); });
   }
   function allFlowScrollTo(k) {
     var bd = document.getElementById('pcAllBd'), sec = bd.querySelector('.pc-allsec[data-sec="' + k + '"]');
