@@ -147,7 +147,7 @@
   .pc-day { flex: 0 0 auto; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px;  /* Figma 3096-62417 Chip background：36px 高 */
     background: var(--kk-surface-light); font-size: 14px; line-height: 20px; border: 1px solid transparent; }
   .pc-day:hover { background: var(--kk-surface-medium); }
-  .pc-day.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); font-weight: 600; }
+  .pc-day.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }  /* Figma 3096-62420：選中＝淺青底 + 青邊 + 青字，文字不加粗 */
   .pc-pane-flow { flex: 1 1 0; min-width: 0; }
   .pc-flow-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
   .pc-flow-head .pt { flex: 0 0 auto; }
@@ -169,12 +169,12 @@
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   /* 依可用寬度自動增減列數：桌面 4 列，變窄時自動降為 3／2／1 列，每格維持 ≥160px 讓文字不硬折 */
   .pc-flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-  .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; padding: 16px; border-radius: 8px;  /* Figma 3109-63857 Option Card：74px 高、padding 16、gap 2、標題 16/24（與 mweb .opt 同款） */
+  .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; padding: 16px 12px; border-radius: 8px; border: 1px solid transparent;  /* Figma Option Card：74px 高、px12 py16、gap2、標題16/24；未選淺灰無邊 */
     background: var(--kk-surface-light); }
   .pc-tier:hover { background: var(--kk-surface-medium); }
   .pc-tier b { font-size: 16px; line-height: 24px; font-weight: 600; }
   .pc-tier span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
-  .pc-tier.sel { background: var(--kk-primary-lighter); box-shadow: inset 0 0 0 1px var(--kk-primary-medium); }  /* 選中 1px 內陰影邊，不佔位（與 mweb .opt.sel 同款） */
+  .pc-tier.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }  /* 選中/推薦：淺青底 #F0FAFB + 1px 青邊 #26BEC9 + 青字（Figma 3342-26802） */
   .pc-tier.sel b { color: var(--kk-primary-dark); }
   /* 推薦標籤：與 mweb .opt .badge 同款（Figma 871-75700）：貼卡片右上、露出上緣 4px、右移 4px，右下折紙尖角 */
   .pc-tier .badge { position: absolute; top: -4px; right: -4px; z-index: 3; background: var(--kk-text-critical); color: #fff;
