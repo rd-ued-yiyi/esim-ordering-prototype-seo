@@ -205,7 +205,7 @@
   .pcb-row .pc-btn { height: 56px; flex: 0 0 auto; }
   .pcb-help { align-self: flex-start; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .pcb-help .ic { width: 16px; height: 16px; }
-  .pcb-menu { position: absolute; left: 0; top: calc(100% + 8px); z-index: 30; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 8px; min-width: 100%; }
+  .pcb-menu { position: fixed; z-index: 60; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 8px; }  /* fixed：不被 hero 卡片 overflow 裁切，開窗時 JS 定位 */
   .pcb-menu[hidden] { display: none; }
   .pcb-daysmenu { max-height: 360px; overflow-y: auto; }
   .pcb-opt { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-radius: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
@@ -1962,27 +1962,35 @@
   document.getElementById('pcSchemeToggleB').addEventListener('click', function () { setHeroScheme('A'); });
   document.getElementById('pcbSearchBtn').addEventListener('click', function () { enterList(); });
   document.getElementById('pcbHelp').addEventListener('click', openHowto);
+  function placePcbMenu(btn, menu, w) {
+    var r = btn.getBoundingClientRect();
+    menu.style.width = (w || r.width) + 'px';
+    var left = Math.min(r.left, window.innerWidth - (w || r.width) - 12);
+    menu.style.left = Math.max(12, left) + 'px';
+    menu.style.top = (r.bottom + 8) + 'px';
+  }
   document.getElementById('pcbDaysBtn').addEventListener('click', function (e) {
     e.stopPropagation();
-    var m = document.getElementById('pcbDaysMenu'), open = !m.hidden; closePcbMenus(); if (open) return;
+    var btn = this, m = document.getElementById('pcbDaysMenu'), open = !m.hidden; closePcbMenus(); if (open) return;
     m.innerHTML = ''; m.classList.add('pcb-daysmenu');
     for (var i = 1; i <= 30; i++) (function (d) {
       var b = h('<button class="pcb-opt' + (sel.days === d ? ' sel' : '') + '"><span>' + d + '天</span>' + (sel.days === d ? PCB_CHK : '') + '</button>');
       b.onclick = function (ev) { ev.stopPropagation(); sel.days = d; sel.planTouched = false; m.hidden = true; renderPanel(); renderSchemeB(); };
       m.appendChild(b);
     })(i);
-    m.hidden = false;
-    var s = m.querySelector('.pcb-opt.sel'); if (s) requestAnimationFrame(function () { s.scrollIntoView({ block: 'center' }); });
+    m.hidden = false; placePcbMenu(btn, m);
+    var s = m.querySelector('.pcb-opt.sel'); if (s) m.scrollTop = Math.max(0, s.offsetTop - m.clientHeight / 2 + s.offsetHeight / 2);  // 只捲動菜單內部
   });
   document.getElementById('pcbFlowBtn').addEventListener('click', function (e) {
     e.stopPropagation();
-    var m = document.getElementById('pcbFlowMenu'), open = !m.hidden; closePcbMenus(); if (open) return;
+    var btn = this, m = document.getElementById('pcbFlowMenu'), open = !m.hidden; closePcbMenus(); if (open) return;
     renderFlowInto(document.getElementById('pcbFlowTabs'), document.getElementById('pcbFlowBd'), function () { m.hidden = true; renderPanel(); renderSchemeB(); });
-    m.hidden = false;
+    m.hidden = false; placePcbMenu(btn, m, Math.min(688, window.innerWidth - 24));
   });
   document.getElementById('pcbDaysMenu').addEventListener('click', function (e) { e.stopPropagation(); });
   document.getElementById('pcbFlowMenu').addEventListener('click', function (e) { e.stopPropagation(); });
   document.addEventListener('click', function () { closePcbMenus(); });
+  window.addEventListener('scroll', function () { closePcbMenus(); }, { passive: true });
 
   // ================= 目的地選擇彈窗：三模式 =================
   var dlg = { mode: 'country', multi: [], q: '' };
