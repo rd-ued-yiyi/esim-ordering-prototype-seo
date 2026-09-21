@@ -2615,16 +2615,18 @@
       c.querySelector('span').textContent = priceLabelFor(it.o, d);
       c.addEventListener('click', function () {
         sel.tab = it.tab; sel.plan = it.o.t; sel.planTouched = true;
-        if (_plCompact) {
-          // compact：只移動高亮，不重排 chip 組（避免選項與寬度跳動）；重繪卡片使價格隨檔位變化
-          wrap.querySelectorAll('.pc-lchip.sel').forEach(function (x) { x.classList.remove('sel'); });
-          c.classList.add('sel');
-          renderPlCards();
-        } else {
-          renderList();
-        }
+        renderList();  // 重排條件列＝以選中項為中心重新開窗（默認/compact 皆然）+ 刷新卡片
       });
       return c;
+    }
+    // 以選中項為中心，在 len 個中取 size 個的可視視窗（超界回夾）
+    function centerWindow(len, size, center) {
+      size = Math.min(size, len);
+      var a = center - Math.floor((size - 1) / 2);
+      if (a < 0) a = 0;
+      var b = a + size - 1;
+      if (b > len - 1) { b = len - 1; a = Math.max(0, b - size + 1); }
+      return { a: a, b: b };
     }
     function mkMore() {
       var c = h('<button class="pc-lchip pc-lchip--more"><b>更多</b></button>');
@@ -2652,14 +2654,12 @@
       });
       return;
     }
-    // 默認態：等寬卡鋪滿整行，末張固定「更多」
+    // 默認態：以選中檔位為中心開窗（nFlow 等寬卡）+ 末張固定「更多」
     var W = vpEl.clientWidth || 900, gap = 16, tileMin = 176;
     var slots = Math.max(2, Math.floor((W + gap) / (tileMin + gap)));  // 一行可容納格數（含「更多」）
     var nFlow = Math.max(1, slots - 1);
-    var show = all.slice(0, nFlow);
-    var selIdx = plSelIndex(all);  // 確保選中檔位可見：不在前 nFlow 時替換最後一格
-    if (selIdx >= nFlow) { show = all.slice(0, nFlow - 1); show.push(all[selIdx]); }
-    show.forEach(function (it) { wrap.appendChild(mkChip(it)); });
+    var win = centerWindow(all.length, nFlow, plSelIndex(all));
+    all.slice(win.a, win.b + 1).forEach(function (it) { wrap.appendChild(mkChip(it)); });
     wrap.appendChild(mkMore());
   }
   function applyFlow() { renderListChips(); }  // 尺寸/狀態變化即重排（無翻頁）
@@ -3361,8 +3361,8 @@
   }
   function ordDatePresets() {
     var wk = ['日', '一', '二', '三', '四', '五', '六'], out = [], start = new Date(2026, 8, 18);
-    var ud = ordSt && ordSt.useDate;  // 選中日超出默認 2 週視窗 → 以選中日為中心重建（前 3 後）
-    if (ud) { var u = new Date(ud.y, ud.m - 1, ud.d); if (u < start || u > new Date(2026, 8, 31)) start = new Date(ud.y, ud.m - 1, ud.d - 3); }
+    var ud = ordSt && ordSt.useDate;  // 有選中日（列表篩選帶入或手動選）→ 以選中日為中心（第 4 格）重建視窗，確保在可見 7 格內並高亮
+    if (ud) { start = new Date(ud.y, ud.m - 1, ud.d - 3); }
     for (var i = 0; i < 14; i++) { var dt = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i), m = dt.getMonth() + 1, d = dt.getDate();
       out.push({ y: dt.getFullYear(), m: m, d: d, chip: ('0' + m).slice(-2) + '-' + ('0' + d).slice(-2), w: '週' + wk[dt.getDay()] }); }
     return out;
