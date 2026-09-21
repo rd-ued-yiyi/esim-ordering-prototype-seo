@@ -487,12 +487,13 @@
   .pc-lsel > .ic { width: 20px; height: 20px; flex: 0 0 auto; color: var(--kk-text-medium); }
   .pc-lsel .chev { margin-left: auto; transition: transform .2s; }
   .pc-lsel-txt { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .pc-lsel--dest { flex: 1 1 0; }
-  .pc-lpick { position: relative; flex: 0 0 224px; }
+  /* Figma 3167-39791：目的地 ≈756、天數填滿剩餘 ≈368（約 2:1），非固定 224 */
+  .pc-lsel--dest { flex: 756 1 0; }
+  .pc-lpick { position: relative; flex: 368 1 0; min-width: 0; }
   .pc-lpick .pc-lsel--days { width: 100%; }
   .pc-lpick.open .pc-lsel .chev { transform: rotate(180deg); }
   /* 天數下拉（Figma 3190-40586：清單 + 選中打勾） */
-  .pc-ldd { position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: 224px; max-height: 320px; overflow-y: auto;
+  .pc-ldd { position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: 100%; min-width: 224px; max-height: 320px; overflow-y: auto;
     background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: var(--el-card); padding: 4px; display: none; }
   .pc-lpick.open .pc-ldd { display: block; }
   .pc-ldd button { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 36px; padding: 0 12px; border-radius: 6px;
