@@ -3520,23 +3520,14 @@
     if (req.travelers) main += '<div class="ord-card" id="ordTvCard"></div>';   // 旅客資料（依數量變化，renderOrdTravelers 填充）
     if (req.contacts) main += '<div class="ord-card" id="ordCtCard"></div>';    // 旅遊期間聯絡方式（單一區塊，renderOrdContacts 填充）
     var o = st.orderer;
-    if (req.contacts) {
-      // 完整版：訂購人內聯表單（Figma 3341-26092）名字/姓氏 · 國籍/email · 電話/通訊軟件
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">訂購人資料</div></div>' +
-        '<div class="ord-form" data-ffscope="orderer">' +
-          ffText('名字', 'first', '例：品睿', o.first) + ffText('姓氏', 'last', '例：陳', o.last) +
-          ffSelect('國籍', 'nation', ORD_NATIONS, o.nation, '請選擇國籍') + ffText('電子郵件信箱', 'email', '請輸入', o.email) +
-          '<div class="ff"><div class="ff-label">電話號碼<span class="req">*</span></div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="cc">' + ordCcOpts(o.cc) + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="phone" placeholder="電話號碼" value="' + ffEsc(o.phone) + '"></div></div>' +
-          '<div class="ff"><div class="ff-label">通訊軟件聯絡方式</div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="app">' + ['Wechat', 'Line', 'WhatsApp', 'Telegram'].map(function (a) { return '<option' + (a === o.app ? ' selected' : '') + '>' + a + '</option>'; }).join('') + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="appAcct" placeholder="請輸入賬戶" value="' + ffEsc(o.appAcct) + '"></div></div>' +
-        '</div></div>';
-    } else {
-      // 最少資料：唯讀卡 + 編輯鉛筆（Figma 3263-28428 / 219:17650）
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">訂購人資料</div><button class="ord-edit" id="ordOrdererEdit"><span class="ic">' + OI.edit + '</span></button></div>' +
-        '<div class="ord-info"><div class="ord-info-line"><span class="ic">' + OI.user + '</span>' + o.last + o.first + '</div>' +
-        '<div class="ord-info-line"><span class="ic">' + OI.globe + '</span>' + o.nation + '</div>' +
-        '<div class="ord-info-line"><span class="ic">' + OI.mail + '</span>' + o.email + '</div>' +
-        '<div class="ord-info-line"><span class="ic">' + OI.phone + '</span>' + o.cc + ' ' + o.phone + '</div></div></div>';
-    }
+    // 訂購人資料：統一用直接展開的內聯表單（Figma 3341-26092）名字/姓氏 · 國籍/email · 電話/通訊軟件
+    main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">訂購人資料</div></div>' +
+      '<div class="ord-form" data-ffscope="orderer">' +
+        ffText('名字', 'first', '例：品睿', o.first) + ffText('姓氏', 'last', '例：陳', o.last) +
+        ffSelect('國籍', 'nation', ORD_NATIONS, o.nation, '請選擇國籍') + ffText('電子郵件信箱', 'email', '請輸入', o.email) +
+        '<div class="ff"><div class="ff-label">電話號碼<span class="req">*</span></div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="cc">' + ordCcOpts(o.cc) + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="phone" placeholder="電話號碼" value="' + ffEsc(o.phone) + '"></div></div>' +
+        '<div class="ff"><div class="ff-label">通訊軟件聯絡方式</div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="app">' + ['Wechat', 'Line', 'WhatsApp', 'Telegram'].map(function (a) { return '<option' + (a === o.app ? ' selected' : '') + '>' + a + '</option>'; }).join('') + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="appAcct" placeholder="請輸入賬戶" value="' + ffEsc(o.appAcct) + '"></div></div>' +
+      '</div></div>';
     main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">備註</div></div><div class="ord-remark-hint">額外服務除外的需求，請於此填寫</div>' +
       '<textarea class="ord-remark-ta" id="ordRemark" placeholder="請詳細描述">' + ffEsc(st.remark) + '</textarea></div>';
     document.getElementById('ordMain').innerHTML = main;
