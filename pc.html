@@ -181,7 +181,8 @@
     font-size: 12px; line-height: 16px; font-weight: 400; font-style: normal; padding: 2px 6px; white-space: nowrap; border-radius: 4px 4px 1px 4px; }
   .pc-tier .badge::after { content: ''; position: absolute; right: 0; bottom: -4px; width: 0; height: 0;
     border-top: 4px solid var(--kk-text-critical); border-right: 4px solid transparent; }
-  .pc-panel-sum { font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-dark); }  /* 摘要標題（Figma 3342-26745 H4 #727272） */
+  .pc-panel-sum { font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-dark); }  /* 摘要標題 H4；預選＝灰 #727272 */
+  .pc-panel-sum.touched { color: var(--kk-text-darker); }  /* 手動選擇後＝深 #212121（Figma 3342-26747） */
   .pc-panel-foot { display: flex; align-items: center; justify-content: flex-end; gap: 16px; }
   .pc-panel-foot--center { justify-content: center; }  /* Figma 3096-60705：搜尋按鈕置中 */
   .pc-btn--wide { width: 400px; max-width: 100%; padding: 0; justify-content: center; }
@@ -1794,7 +1795,7 @@
     }
     return '無限到量降速';
   }
-  var sel = { dest: null, days: 5, tab: 'daily', plan: null, planTouched: false };
+  var sel = { dest: null, days: 5, tab: 'daily', plan: null, planTouched: false, touched: false };
 
   // ================= hero：未選（搜尋卡）/ 已選（天數流量面板） =================
   var HK = 'pc_hist_dest';
@@ -1837,6 +1838,7 @@
   }
   function pickDest(name, type, count) {
     sel.dest = name; sel.destType = type || 'country'; sel.destCount = count || 0;
+    sel.touched = false;  // 剛選目的地＝預選態，摘要標題灰色，待手動選天數/流量後轉深
     if (sel.destType === 'country') histAdd(name);  // 多國/區域不進「最近選擇」（避免長字串 chip）
     updateDestPill('pcDestName', 'pcDestNum');
     document.getElementById('pcHero').setAttribute('data-state', 'sel');
@@ -1853,7 +1855,7 @@
     for (var d = 1; d <= 30; d++) (function (d) {
       var b = h('<button class="pc-day"></button>'); b.textContent = d + ' 天';
       b.classList.toggle('sel', sel.days === d);
-      b.addEventListener('click', function () { sel.days = d; renderPanel(); });
+      b.addEventListener('click', function () { sel.days = d; sel.touched = true; renderPanel(); });
       days.appendChild(b);
     })(d);
     var sd = days.querySelector('.pc-day.sel');
@@ -1891,7 +1893,7 @@
         b.querySelector('b').textContent = o.t;
         b.querySelector('span').textContent = priceLabelFor(o, d);
         var on = sel.tab === k && sel.plan === o.t; b.classList.toggle('sel', on); if (on) selTier = b;
-        b.addEventListener('click', function () { sel.tab = k; sel.plan = o.t; sel.planTouched = true; renderPanel(); });
+        b.addEventListener('click', function () { sel.tab = k; sel.plan = o.t; sel.planTouched = true; sel.touched = true; renderPanel(); });
         grid.appendChild(b);
       });
       scroll.appendChild(secEl);
@@ -1899,7 +1901,9 @@
     scroll.scrollTop = keepTop;
     revealTier(scroll, selTier);
     document.querySelectorAll('#pcFlowTabs .pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === sel.tab); });
-    document.getElementById('pcPanelSum').textContent = sel.days + '天·' + PLANS[sel.tab].lb + '·' + sel.plan;  // Figma 3096-60705：摘要標題（面板上方）N天·計費方式·檔位
+    var sumEl = document.getElementById('pcPanelSum');
+    sumEl.textContent = sel.days + '天·' + PLANS[sel.tab].lb + '·' + sel.plan;  // Figma 3096-60705：摘要標題（面板上方）
+    sumEl.classList.toggle('touched', !!sel.touched);  // 預選＝灰 #727272；手動選後＝深 #212121（Figma 3096-60705 vs 3342-26747）
     if (heroScheme === 'B') renderSchemeB();
   }
   // ===== 方案 B：精簡兩下拉（Figma 3109-65525 / 3342-59393；3342-27048 天數下拉 / 3342-27133 流量下拉） =====
@@ -1976,7 +1980,7 @@
     m.innerHTML = ''; m.classList.add('pcb-daysmenu');
     for (var i = 1; i <= 30; i++) (function (d) {
       var b = h('<button class="pcb-opt' + (sel.days === d ? ' sel' : '') + '"><span>' + d + '天</span>' + (sel.days === d ? PCB_CHK : '') + '</button>');
-      b.onclick = function (ev) { ev.stopPropagation(); sel.days = d; sel.planTouched = false; m.hidden = true; renderPanel(); renderSchemeB(); };
+      b.onclick = function (ev) { ev.stopPropagation(); sel.days = d; sel.planTouched = false; sel.touched = true; m.hidden = true; renderPanel(); renderSchemeB(); };
       m.appendChild(b);
     })(i);
     m.hidden = false; placePcbMenu(btn, m);
@@ -2715,7 +2719,7 @@
         var c = h('<button class="pc-tier' + (on ? ' sel' : '') + '"><b></b><span></span>' + (badge === o.t ? '<span class="badge">推薦</span>' : '') + '</button>');
         c.querySelector('b').textContent = o.t;
         c.querySelector('span').textContent = priceLabelFor(o, d);
-        c.addEventListener('click', function () { sel.tab = k; sel.plan = o.t; sel.planTouched = true; onPick(); });
+        c.addEventListener('click', function () { sel.tab = k; sel.plan = o.t; sel.planTouched = true; sel.touched = true; onPick(); });
         grid.appendChild(c);
       });
       bdEl.appendChild(sec);
