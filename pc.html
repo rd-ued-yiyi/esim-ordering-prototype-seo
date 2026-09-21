@@ -181,9 +181,10 @@
     font-size: 12px; line-height: 16px; font-weight: 400; font-style: normal; padding: 2px 6px; white-space: nowrap; border-radius: 4px 4px 1px 4px; }
   .pc-tier .badge::after { content: ''; position: absolute; right: 0; bottom: -4px; width: 0; height: 0;
     border-top: 4px solid var(--kk-text-critical); border-right: 4px solid transparent; }
-  .pc-panel-foot { display: flex; align-items: center; justify-content: flex-end; gap: 16px; }  /* 已選摘要 + 搜尋按鈕一起靠右（Figma 3096-60705） */
-  .pc-panel-foot .sum { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
-  .pc-panel-foot .sum b { font-weight: 600; margin-left: 8px; }
+  .pc-panel-sum { font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-dark); }  /* 摘要標題（Figma 3342-26745 H4 #727272） */
+  .pc-panel-foot { display: flex; align-items: center; justify-content: flex-end; gap: 16px; }
+  .pc-panel-foot--center { justify-content: center; }  /* Figma 3096-60705：搜尋按鈕置中 */
+  .pc-btn--wide { width: 400px; max-width: 100%; padding: 0; justify-content: center; }
   .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
     font-size: 16px; line-height: 24px; font-weight: 600; white-space: nowrap; transition: background .15s; display: inline-flex; align-items: center; gap: 8px; }
   .pc-btn:hover { background: var(--kk-primary-dark); }
@@ -1236,6 +1237,7 @@
           <div class="pc-panel" id="pcPanel">
             <button class="pc-scheme-toggle" id="pcSchemeToggle"><span class="ic ic-16"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 5.5h9l-2-2M12.5 10.5h-9l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="pc-scheme-txt">精簡版</span></button>
             <div class="pc-note"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik02LjUgMEM1LjIxNDQyIDAgMy45NTc3MiAwLjM4MTIxOCAyLjg4ODggMS4wOTU0NUMxLjgxOTg4IDEuODA5NjggMC45ODY3NTYgMi44MjQ4NCAwLjQ5NDc4NiA0LjAxMjU2QzAuMDAyODE2MzIgNS4yMDAyOCAtMC4xMjU5MDUgNi41MDcyMSAwLjEyNDg5OSA3Ljc2ODA5QzAuMzc1NzAzIDkuMDI4OTYgMC45OTQ3NjggMTAuMTg3MiAxLjkwMzgxIDExLjA5NjJDMi44MTI4NSAxMi4wMDUyIDMuOTcxMDQgMTIuNjI0MyA1LjIzMTkyIDEyLjg3NTFDNi40OTI3OSAxMy4xMjU5IDcuNzk5NzMgMTIuOTk3MiA4Ljk4NzQ0IDEyLjUwNTJDMTAuMTc1MiAxMi4wMTMyIDExLjE5MDMgMTEuMTgwMSAxMS45MDQ2IDEwLjExMTJDMTIuNjE4OCA5LjA0MjI5IDEzIDcuNzg1NTggMTMgNi41QzEyLjk5ODEgNC43NzY2OSAxMi4zMTI2IDMuMTI0NTIgMTEuMDk0IDEuOTA1OTZDOS44NzU0OCAwLjY4NzM5NiA4LjIyMzMxIDAuMDAxOTUwNDkgNi41IDBWMFpNNi4zNzUwNCAzLjAwMDAyQzYuNTIzMzcgMy4wMDAwMiA2LjY2ODM4IDMuMDQ0MDEgNi43OTE3MSAzLjEyNjQyQzYuOTE1MDUgMy4yMDg4MyA3LjAxMTE4IDMuMzI1OTcgNy4wNjc5NSAzLjQ2MzAxQzcuMTI0NzEgMy42MDAwNiA3LjEzOTU2IDMuNzUwODYgNy4xMTA2MyAzLjg5NjM0QzcuMDgxNjkgNC4wNDE4MyA3LjAxMDI2IDQuMTc1NDYgNi45MDUzNyA0LjI4MDM1QzYuODAwNDggNC4zODUyNCA2LjY2Njg0IDQuNDU2NjcgNi41MjEzNSA0LjQ4NTYxQzYuMzc1ODcgNC41MTQ1NSA2LjIyNTA3IDQuNDk5NyA2LjA4ODAyIDQuNDQyOTNDNS45NTA5OCA0LjM4NjE3IDUuODMzODUgNC4yOTAwNCA1Ljc1MTQ0IDQuMTY2N0M1LjY2OTAyIDQuMDQzMzYgNS42MjUwNCAzLjg5ODM2IDUuNjI1MDQgMy43NTAwMkM1LjYyNTA0IDMuNTUxMTEgNS43MDQwNSAzLjM2MDM1IDUuODQ0NzEgMy4yMTk2OUM1Ljk4NTM2IDMuMDc5MDQgNi4xNzYxMiAzLjAwMDAyIDYuMzc1MDQgMy4wMDAwMlYzLjAwMDAyWk03LjAwMDAxIDEwSDYuNTAwMDFDNi4zNjc0IDkuOTk5OTkgNi4yNDAyMyA5Ljk0NzMxIDYuMTQ2NDYgOS44NTM1NUM2LjA1MjY5IDkuNzU5NzggNi4wMDAwMSA5LjYzMjYxIDYuMDAwMDEgOS41VjYuNUM1Ljg2NzQgNi41IDUuNzQwMjIgNi40NDczMiA1LjY0NjQ1IDYuMzUzNTVDNS41NTI2OCA2LjI1OTc5IDUuNTAwMDEgNi4xMzI2MSA1LjUwMDAxIDZDNS41MDAwMSA1Ljg2NzM5IDUuNTUyNjggNS43NDAyMSA1LjY0NjQ1IDUuNjQ2NDVDNS43NDAyMiA1LjU1MjY4IDUuODY3NCA1LjUgNi4wMDAwMSA1LjVINi41MDAwMUM2LjYzMjYxIDUuNTAwMDEgNi43NTk3OSA1LjU1MjY5IDYuODUzNTUgNS42NDY0NUM2Ljk0NzMyIDUuNzQwMjIgNyA1Ljg2NzM5IDcuMDAwMDEgNlY5QzcuMTMyNjEgOSA3LjI1OTc5IDkuMDUyNjggNy4zNTM1NiA5LjE0NjQ1QzcuNDQ3MzMgOS4yNDAyMSA3LjUwMDAxIDkuMzY3MzkgNy41MDAwMSA5LjVDNy41MDAwMSA5LjYzMjYxIDcuNDQ3MzMgOS43NTk3OCA3LjM1MzU2IDkuODUzNTVDNy4yNTk3OSA5Ljk0NzMyIDcuMTMyNjEgMTAgNy4wMDAwMSAxMFoiIGZpbGw9IiMyRDg0RDYiLz4KPC9zdmc+" width="13.00" height="13.00"></span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
+            <div class="pc-panel-sum" id="pcPanelSum">—</div>
             <div class="pc-panel-grid">
               <div class="pc-pane pc-pane-days">
                 <div class="pt">選擇天數</div>
@@ -1251,9 +1253,8 @@
                 <div class="pc-flow-scroll" id="pcFlowScroll"></div>
               </div>
             </div>
-            <div class="pc-panel-foot">
-              <span class="sum">已選<b id="pcSummary">—</b></span>
-              <button class="pc-btn" id="pcSearchBtn">搜尋套餐</button>
+            <div class="pc-panel-foot pc-panel-foot--center">
+              <button class="pc-btn pc-btn--wide" id="pcSearchBtn">搜尋套餐</button>
             </div>
           </div>
           <!-- 方案 B：精簡兩下拉（Figma 3109-65525 / 3342-59393） -->
@@ -1898,7 +1899,7 @@
     scroll.scrollTop = keepTop;
     revealTier(scroll, selTier);
     document.querySelectorAll('#pcFlowTabs .pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === sel.tab); });
-    document.getElementById('pcSummary').textContent = sel.days + '天·' + PLANS[sel.tab].lb + '·' + sel.plan;  // Figma 3096-60705：N天·計費方式·檔位
+    document.getElementById('pcPanelSum').textContent = sel.days + '天·' + PLANS[sel.tab].lb + '·' + sel.plan;  // Figma 3096-60705：摘要標題（面板上方）N天·計費方式·檔位
     if (heroScheme === 'B') renderSchemeB();
   }
   // ===== 方案 B：精簡兩下拉（Figma 3109-65525 / 3342-59393；3342-27048 天數下拉 / 3342-27133 流量下拉） =====
