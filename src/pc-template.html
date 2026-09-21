@@ -85,7 +85,7 @@
   .pc-hero[data-state="empty"] .pc-dest-pill { display: none; }
   .pc-hero[data-state="sel"] .h1, .pc-hero[data-state="sel"] .sub { display: none; }
   /* tab 條（同 mweb TabBarCard）：選中白底 + 青字 + 底條 + 右下 16 內凹補角 */
-  .pc-search { margin-top: 32px; display: flex; flex-direction: column; align-items: flex-start; }
+  .pc-search { position: relative; margin-top: 32px; display: flex; flex-direction: column; align-items: flex-start; }
   .pc-hero[data-state="sel"] .pc-search { margin-top: 16px; }
   .pc-tabs { display: inline-flex; align-items: stretch; background: rgba(255,255,255,.72); border-radius: 16px 16px 0 0; backdrop-filter: blur(4px); }
   .pc-tab { position: relative; min-width: 128px; display: flex; justify-content: center; padding: 12px 20px; }
@@ -183,11 +183,15 @@
   /* 方案切換（不顯眼）：面板右上小灰連結 */
   .pc-panel { position: relative; }
   .pc-panel[hidden] { display: none !important; }
-  /* 版型切換：不顯眼的 A / B / C 分段選擇器（直接切到對應版本） */
-  .pc-scheme-seg { position: absolute; top: -4px; right: 0; display: inline-flex; gap: 2px; padding: 2px; background: var(--kk-surface-light); border-radius: 999px; }
-  .pc-scheme-seg button { min-width: 22px; height: 20px; padding: 0 6px; border-radius: 999px; font-size: 12px; line-height: 1; color: var(--kk-text-medium); }
-  .pc-scheme-seg button:hover:not(.active) { color: var(--kk-text-darker); }
-  .pc-scheme-seg button.active { background: #fff; color: var(--kk-primary-dark); font-weight: 600; box-shadow: 0 1px 3px rgba(17,25,40,.12); }
+  /* 版型切換：卡片右側竖排 A / B / C，青底上白色浮塊、明顯（直接切到對應版本） */
+  .pc-scheme-side { position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 20px; z-index: 2;
+    display: none; flex-direction: column; align-items: center; gap: 10px; }
+  .pc-hero[data-state="sel"] .pc-scheme-side { display: flex; }  /* 僅在已選目的地（面板展開）時顯示 */
+  .pc-scheme-side-lbl { font-size: 12px; line-height: 16px; color: rgba(255,255,255,.9); margin-bottom: 2px; }
+  .pc-scheme-side button { width: 48px; height: 48px; border-radius: 14px; background: rgba(255,255,255,.28);
+    color: #fff; font-size: 18px; font-weight: 600; line-height: 1; transition: background .15s, transform .1s; }
+  .pc-scheme-side button:hover:not(.active) { background: rgba(255,255,255,.42); }
+  .pc-scheme-side button.active { background: #fff; color: var(--kk-primary-dark); box-shadow: 0 4px 12px rgba(17,25,40,.18); }
   /* 方案 B：精簡兩下拉 */
   .pc-panelB .pc-note { margin-top: 4px; }
   .pcb-row { display: flex; gap: 12px; align-items: flex-start; }
@@ -1238,7 +1242,6 @@
           </div>
           <!-- 已選目的地：相容提示 + 選擇天數 / 選擇流量 + 摘要（Figma 3096-60605） -->
           <div class="pc-panel" id="pcPanel">
-            <div class="pc-scheme-seg" role="group" aria-label="版型"><button data-scheme="A">A</button><button data-scheme="B">B</button><button data-scheme="C">C</button></div>
             <div class="pc-note"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
             <div class="pc-panel-sum" id="pcPanelSum">—</div>
             <div class="pc-panel-grid">
@@ -1262,7 +1265,6 @@
           </div>
           <!-- 方案 B：精簡兩下拉（Figma 3109-65525 / 3342-59393） -->
           <div class="pc-panel pc-panelB" id="pcPanelB" hidden>
-            <div class="pc-scheme-seg" role="group" aria-label="版型"><button data-scheme="A">A</button><button data-scheme="B">B</button><button data-scheme="C">C</button></div>
             <div class="pc-note"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
             <div class="pcb-row">
               <div class="pcb-dd" id="pcbDaysWrap">
@@ -1281,7 +1283,6 @@
           </div>
           <!-- 方案 C：左標籤表單（用卡天數下拉 + 流量內聯展開）（Figma 3109-67134） -->
           <div class="pc-panel pc-panelC" id="pcPanelC" hidden>
-            <div class="pc-scheme-seg" role="group" aria-label="版型"><button data-scheme="A">A</button><button data-scheme="B">B</button><button data-scheme="C">C</button></div>
             <div class="pc-note"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
             <div class="pcc-row pcc-row-days">
               <div class="pcc-label">用卡天數</div>
@@ -1305,6 +1306,13 @@
               <button class="pc-btn pcc-search" id="pccSearchBtn">搜尋套餐</button>
             </div>
           </div>
+        </div>
+        <!-- 版型切換：卡片右側竖排 A / B / C（直接切換對應版本） -->
+        <div class="pc-scheme-side" id="pcSchemeSide" role="group" aria-label="版型">
+          <span class="pc-scheme-side-lbl">版型</span>
+          <button data-scheme="A">A</button>
+          <button data-scheme="B">B</button>
+          <button data-scheme="C">C</button>
         </div>
       </div>
     </div>
@@ -1888,7 +1896,7 @@
     document.getElementById('pcPanel').hidden = (s !== 'A');
     document.getElementById('pcPanelB').hidden = (s !== 'B');
     document.getElementById('pcPanelC').hidden = (s !== 'C');
-    document.querySelectorAll('.pc-scheme-seg button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-scheme') === s); });
+    document.querySelectorAll('.pc-scheme-side button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-scheme') === s); });
     if (s === 'B') renderSchemeB();
     if (s === 'C') renderSchemeC();
   }
@@ -1948,8 +1956,8 @@
   document.getElementById('pcSearchBtn').addEventListener('click', function () {
     enterList();  // 進入搜尋結果列表頁（同頁切換視圖）
   });
-  // 方案切換：A / B / C 分段選擇器，直接切到對應版本
-  document.querySelectorAll('.pc-scheme-seg button').forEach(function (b) {
+  // 方案切換：卡片右側竖排 A / B / C，直接切到對應版本
+  document.querySelectorAll('.pc-scheme-side button').forEach(function (b) {
     b.addEventListener('click', function () { setHeroScheme(b.getAttribute('data-scheme')); });
   });
   setHeroScheme('A');  // 初始化分段選擇器 active 狀態
