@@ -198,6 +198,7 @@
   .pc-hero[data-state="sel"] .pc-scheme-side { display: flex; }  /* 僅在已選目的地（面板展開）時顯示 */
   .pc-scheme-side-lbl { font-size: 12px; line-height: 16px; color: rgba(255,255,255,.9); margin-bottom: 2px; }
   .pc-scheme-side button { width: 48px; height: 48px; border-radius: 14px; background: rgba(255,255,255,.28);
+    display: flex; align-items: center; justify-content: center; text-align: center;
     color: #fff; font-size: 18px; font-weight: 600; line-height: 1; transition: background .15s, transform .1s; }
   .pc-scheme-side button:hover:not(.active) { background: rgba(255,255,255,.42); }
   .pc-scheme-side button.active { background: #fff; color: var(--kk-primary-dark); box-shadow: 0 4px 12px rgba(17,25,40,.18); }
@@ -2680,11 +2681,14 @@
     for (var i = 0; i < all.length; i++) if (all[i].tab === sel.tab && all[i].o.t === sel.plan) return i;
     return 0;
   }
+  // 從「更多」選檔返回時＝true：外層以選中檔為中心重排一次；否則默認從第一檔開始鋪滿
+  var _plCenterSel = false;
   // 條件列流量：一行內鋪滿可容納的檔位卡，末張固定「更多」（開全部流量 dialog）；容納不下的檔位收進 dialog（Figma 3167-39791 / 3190-40589，無翻頁）
   function renderListChips() {
     var wrap = document.getElementById('plFlowChips'); wrap.innerHTML = '';
     var vpEl = document.querySelector('.pc-lflow-vp');
     var all = plAllTiers(), d = sel.days;
+    var centerSel = _plCenterSel; _plCenterSel = false;  // 消費一次性「以選中為中心」旗標
     var recTab = sel.tab, recPlan = badgeForTab(sel.tab, d);  // 推薦檔位（默認選中）
     function mkChip(it) {
       var on = sel.tab === it.tab && sel.plan === it.o.t;
@@ -2694,7 +2698,10 @@
       c.querySelector('span').textContent = priceLabelFor(it.o, d);
       c.addEventListener('click', function () {
         sel.tab = it.tab; sel.plan = it.o.t; sel.planTouched = true;
-        renderList();  // 重排條件列＝以選中項為中心重新開窗（默認/compact 皆然）+ 刷新卡片
+        // 外層直接點：只移動高亮 + 刷新商品卡，不重排 chip（選項保持不動，不「變來變去」）
+        wrap.querySelectorAll('.pc-lchip.sel').forEach(function (x) { x.classList.remove('sel'); });
+        c.classList.add('sel');
+        renderPlCards();
       });
       return c;
     }
@@ -2722,7 +2729,8 @@
         var W = vpEl.clientWidth, gap = parseFloat(getComputedStyle(wrap).columnGap) || 0;
         var w = chips.map(function (k) { return k.offsetWidth; });
         var si = chips.findIndex(function (k) { return k.classList.contains('sel'); }); if (si < 0) si = 0;
-        var a = si, b = si, used = w[si] + gap + moreEl.offsetWidth;  // 預留「更多」寬度
+        var startI = centerSel ? si : 0;  // 默認從第一檔起；從「更多」選檔返回才以選中為中心
+        var a = startI, b = startI, used = w[startI] + gap + moreEl.offsetWidth;  // 預留「更多」寬度
         while (true) {
           var grew = false;
           if (b + 1 < chips.length && used + gap + w[b + 1] <= W) { used += gap + w[b + 1]; b++; grew = true; }
@@ -2733,11 +2741,13 @@
       });
       return;
     }
-    // 默認態：以選中檔位為中心開窗（nFlow 等寬卡）+ 末張固定「更多」
+    // 默認態：預設從第一檔開始鋪滿一行 + 末張「更多」（Figma 3167-39791）；從「更多」選檔返回才以選中為中心
     var W = vpEl.clientWidth || 900, gap = 16, tileMin = 176;
     var slots = Math.max(2, Math.floor((W + gap) / (tileMin + gap)));  // 一行可容納格數（含「更多」）
     var nFlow = Math.max(1, slots - 1);
-    var win = centerWindow(all.length, nFlow, plSelIndex(all));
+    var si = plSelIndex(all), win;
+    if (centerSel || si >= nFlow) win = centerWindow(all.length, nFlow, si);  // 更多選檔／選中超出首屏 → 以選中為中心
+    else win = { a: 0, b: Math.min(all.length, nFlow) - 1 };                  // 預設：從第一檔開始
     all.slice(win.a, win.b + 1).forEach(function (it) { wrap.appendChild(mkChip(it)); });
     wrap.appendChild(mkMore());
   }
@@ -2787,7 +2797,7 @@
   }
   // 全部流量 dialog（Figma 3191-69000）
   function renderAllFlow() {
-    renderFlowInto(document.getElementById('pcAllTabs'), document.getElementById('pcAllBd'), function () { closeAllFlow(); renderList(); });
+    renderFlowInto(document.getElementById('pcAllTabs'), document.getElementById('pcAllBd'), function () { closeAllFlow(); _plCenterSel = true; renderList(); });
   }
   function allFlowScrollTo(k) {
     var bd = document.getElementById('pcAllBd'), sec = bd.querySelector('.pc-allsec[data-sec="' + k + '"]');
