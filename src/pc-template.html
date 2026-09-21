@@ -223,6 +223,10 @@
   .pcc-row-flow { align-items: flex-start; }
   .pcc-label { flex: 0 0 160px; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
   .pcc-row-flow .pcc-label { padding-top: 3px; }
+  /* 流量標籤下方的「不知道怎麼選」（Figma 3109-67134：移到左欄標籤下方，左對齊小灰字） */
+  .pcc-label-flow { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .pcc-help { margin-left: 0; font-size: 12px; line-height: 16px; font-weight: 400; color: var(--kk-text-dark); }
+  .pcc-help .ic { width: 16px; height: 16px; }
   .pcc-dd { position: relative; flex: 0 0 327px; max-width: 100%; }
   .pcc-sel { height: 48px; width: 100%; padding: 0 12px; }
   .pcc-flow { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
@@ -1295,11 +1299,10 @@
             </div>
             <div class="pcc-div"></div>
             <div class="pcc-row pcc-row-flow">
-              <div class="pcc-label">流量</div>
+              <div class="pcc-label pcc-label-flow"><span>流量</span><button class="pc-flow-help pcc-help" id="pccHelp">不知道怎麼選<span class="ic ic-16">{{IC_questionDark}}</span></button></div>
               <div class="pcc-flow">
                 <div class="pc-flow-head">
                   <div class="pc-ftabs" id="pccFlowTabs"></div>
-                  <button class="pc-flow-help" id="pccHelp">不知道怎麼選<span class="ic ic-16">{{IC_questionDark}}</span></button>
                 </div>
                 <div class="pc-flow-scroll pcc-flow-scroll" id="pccFlowScroll"></div>
               </div>
