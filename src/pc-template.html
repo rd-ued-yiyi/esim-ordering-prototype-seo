@@ -188,7 +188,9 @@
   .pc-scheme-toggle .ic { width: 14px; height: 14px; }
   /* 方案 B：精簡兩下拉 */
   .pc-panelB .pc-note { margin-top: 4px; }
-  .pcb-row { display: flex; gap: 12px; align-items: stretch; }
+  .pcb-row { display: flex; gap: 12px; align-items: flex-start; }
+  .pcb-flowcol { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .pcb-flowcol .pcb-dd { width: 100%; flex: 0 0 auto; }
   .pcb-dd { position: relative; flex: 1 1 0; min-width: 0; }
   .pcb-sel { width: 100%; height: 56px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; }
   .pcb-sel > .ic { width: 20px; height: 20px; flex: 0 0 auto; color: var(--kk-text-medium); }
@@ -196,7 +198,7 @@
   .pcb-sel.filled .pcb-txt { color: var(--kk-text-darker); }
   .pcb-chev { margin-left: auto; }
   .pcb-row .pc-btn { height: 56px; flex: 0 0 auto; }
-  .pcb-help { align-self: flex-start; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
+  .pcb-help { align-self: flex-start; margin-left: 0; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .pcb-help .ic { width: 16px; height: 16px; }
   .pcb-menu { position: fixed; z-index: 60; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 8px; }  /* fixed：不被 hero 卡片 overflow 裁切，開窗時 JS 定位 */
   .pcb-menu[hidden] { display: none; }
@@ -1258,13 +1260,15 @@
                 <button class="pcb-sel" id="pcbDaysBtn"><span class="ic ic-20">{{PC_calendar20}}</span><span class="pcb-txt" id="pcbDaysTxt">選擇天數</span><span class="ic ic-20 pcb-chev">{{PC_arrowDown20}}</span></button>
                 <div class="pcb-menu" id="pcbDaysMenu" hidden></div>
               </div>
-              <div class="pcb-dd" id="pcbFlowWrap">
-                <button class="pcb-sel" id="pcbFlowBtn"><span class="ic ic-20">{{PC_swap20}}</span><span class="pcb-txt" id="pcbFlowTxt">選擇流量</span><span class="ic ic-20 pcb-chev">{{PC_arrowDown20}}</span></button>
-                <div class="pcb-menu pcb-menu-flow" id="pcbFlowMenu" hidden><div class="pcb-flow-tabs" id="pcbFlowTabs"></div><div class="pcb-flow-bd" id="pcbFlowBd"></div></div>
+              <div class="pcb-flowcol">
+                <div class="pcb-dd" id="pcbFlowWrap">
+                  <button class="pcb-sel" id="pcbFlowBtn"><span class="ic ic-20">{{PC_swap20}}</span><span class="pcb-txt" id="pcbFlowTxt">選擇流量</span><span class="ic ic-20 pcb-chev">{{PC_arrowDown20}}</span></button>
+                  <div class="pcb-menu pcb-menu-flow" id="pcbFlowMenu" hidden><div class="pcb-flow-tabs" id="pcbFlowTabs"></div><div class="pcb-flow-bd" id="pcbFlowBd"></div></div>
+                </div>
+                <button class="pc-flow-help pcb-help" id="pcbHelp">不知道怎麼選<span class="ic ic-16">{{IC_questionDark}}</span></button>
               </div>
               <button class="pc-btn" id="pcbSearchBtn">搜尋套餐</button>
             </div>
-            <button class="pc-flow-help pcb-help" id="pcbHelp">不知道怎麼選<span class="ic ic-16">{{IC_questionDark}}</span></button>
           </div>
         </div>
       </div>
