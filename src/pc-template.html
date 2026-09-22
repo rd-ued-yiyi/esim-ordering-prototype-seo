@@ -1052,6 +1052,7 @@
   .tv-f .v { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   /* 旅客資料卡（Figma 3341-25078）：下拉選旅客 + 內聯表單 + 新增常用旅客 */
   .tvs-list { display: flex; flex-direction: column; gap: 24px; margin-top: 16px; }
+  .tvs-list > .tvs-solo { margin-top: 0; }  /* 單一旅客內聯表單：tvs-list 已提供上距，避免與 .ord-form 疊加 */
   .tvs-card { border-radius: 8px; }
   .tvs-hd { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: #F1F4F8; border: 1px solid var(--kk-border-lighter); border-bottom: 0; border-radius: 8px 8px 0 0; padding: 16px 20px; }
   .tvs-hd-l { display: flex; align-items: center; gap: 20px; }
@@ -3627,7 +3628,14 @@
     if (slots.length > N) ordSt.tvSlots = slots.slice(0, N);
     card.innerHTML = '<div class="ord-sec-h ord-sec-col"><div class="t">旅客資料</div><div class="ord-sec-sub">請依證件填寫每位旅客實名資料，須與證件一致</div></div><div class="tvs-list" id="ordTvList"></div>';
     var list = document.getElementById('ordTvList');
-    for (var i = 0; i < N; i++) list.appendChild(tvSlotCard(i));
+    if (N === 1) {
+      // 單一旅客：直接內聯表單，無「旅客1」卡頭／請選擇旅客下拉／新增常用旅客（Figma 3223-91498）
+      var solo = h('<div class="ord-form tv-edit tvs-solo" data-tvslot="0">' + tvSlotFields(ordSt.tvSlots[0].data, 0) + '</div>');
+      list.appendChild(solo);
+      bindTvSlotForm(solo, 0);
+    } else {
+      for (var i = 0; i < N; i++) list.appendChild(tvSlotCard(i));
+    }
   }
   // 旅遊期間聯絡方式（Figma 3341-25303）：下拉快選 + 聯絡人姓名 + 電話是否/號碼 + App是否/帳號（內聯表單）
   function ctSelInner(c) {
