@@ -3462,16 +3462,6 @@
       '<button class="qty-btn qminus" id="ordQtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '></button><span class="qty-n">' + st.qty + '</span>' +
       '<button class="qty-btn qplus" id="ordQtyPlus"></button></div></div>';
     main += '</div>';
-    if (req.device) {
-      var d = st.deviceIn;
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">設備資訊</div></div>' +
-        '<div class="ord-tip"><span class="ic">' + OI.infoFill + '</span><span>在手機撥號鍵盤輸入「＊＃０６＃」可顯示 EID／IMEI2</span></div>' +
-        '<div class="ord-form" data-ffscope="deviceIn">' + ffText('手機型號', 'model', '請輸入', d.model) + ffText('EID', 'eid', '請輸入', d.eid) + ffText('IMEI2', 'imei2', '請輸入', d.imei2) + '</div></div>';
-    }
-    if (req.flight) {
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">抵達航班資訊</div></div><div data-ffscope="flIn">' + flightForm('flin-', st.flIn, '抵達') + '</div></div>';
-      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">離境航班資訊</div></div><div data-ffscope="flOut">' + flightForm('flout-', st.flOut, '離境') + '</div></div>';
-    }
     var o = st.orderer;
     // 訂購人資料：移到旅客/聯絡之前——旅客「同訂購人資料」的參照對象需先出現（內聯表單 Figma 3341-26092）
     main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">訂購人資料</div></div>' +
@@ -3483,6 +3473,17 @@
       '</div></div>';
     if (req.travelers) main += '<div class="ord-card" id="ordTvCard"></div>';   // 旅客資料（依數量變化，renderOrdTravelers 填充）
     if (req.contacts) main += '<div class="ord-card" id="ordCtCard"></div>';    // 旅遊期間聯絡方式（單一區塊，renderOrdContacts 填充）
+    // 技術資訊（設備 / 航班）移到人/聯絡之後、備註之前（建議順序）
+    if (req.device) {
+      var d = st.deviceIn;
+      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">設備資訊</div></div>' +
+        '<div class="ord-tip"><span class="ic">' + OI.infoFill + '</span><span>在手機撥號鍵盤輸入「＊＃０６＃」可顯示 EID／IMEI2</span></div>' +
+        '<div class="ord-form" data-ffscope="deviceIn">' + ffText('手機型號', 'model', '請輸入', d.model) + ffText('EID', 'eid', '請輸入', d.eid) + ffText('IMEI2', 'imei2', '請輸入', d.imei2) + '</div></div>';
+    }
+    if (req.flight) {
+      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">抵達航班資訊</div></div><div data-ffscope="flIn">' + flightForm('flin-', st.flIn, '抵達') + '</div></div>';
+      main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">離境航班資訊</div></div><div data-ffscope="flOut">' + flightForm('flout-', st.flOut, '離境') + '</div></div>';
+    }
     main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">備註</div></div><div class="ord-remark-hint">額外服務除外的需求，請於此填寫</div>' +
       '<textarea class="ord-remark-ta" id="ordRemark" placeholder="請詳細描述">' + ffEsc(st.remark) + '</textarea></div>';
     document.getElementById('ordMain').innerHTML = main;
