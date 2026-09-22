@@ -3539,10 +3539,8 @@
       main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">抵達航班資訊</div></div><div data-ffscope="flIn">' + flightForm('flin-', st.flIn, '抵達') + '</div></div>';
       main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">離境航班資訊</div></div><div data-ffscope="flOut">' + flightForm('flout-', st.flOut, '離境') + '</div></div>';
     }
-    if (req.travelers) main += '<div class="ord-card" id="ordTvCard"></div>';   // 旅客資料（依數量變化，renderOrdTravelers 填充）
-    if (req.contacts) main += '<div class="ord-card" id="ordCtCard"></div>';    // 旅遊期間聯絡方式（單一區塊，renderOrdContacts 填充）
     var o = st.orderer;
-    // 訂購人資料：統一用直接展開的內聯表單（Figma 3341-26092）名字/姓氏 · 國籍/email · 電話/通訊軟件
+    // 訂購人資料：移到旅客/聯絡之前——旅客「同訂購人資料」的參照對象需先出現（內聯表單 Figma 3341-26092）
     main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">訂購人資料</div></div>' +
       '<div class="ord-form" data-ffscope="orderer">' +
         ffText('名字', 'first', '例：品睿', o.first) + ffText('姓氏', 'last', '例：陳', o.last) +
@@ -3550,6 +3548,8 @@
         '<div class="ff"><div class="ff-label">電話號碼<span class="req">*</span></div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="cc">' + ordCcOpts(o.cc) + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="phone" placeholder="電話號碼" value="' + ffEsc(o.phone) + '"></div></div>' +
         '<div class="ff"><div class="ff-label">通訊軟件聯絡方式</div><div class="ff-duo"><div class="ff-selwrap ff-cc"><select class="ff-select" data-ff="app">' + ['Wechat', 'Line', 'WhatsApp', 'Telegram'].map(function (a) { return '<option' + (a === o.app ? ' selected' : '') + '>' + a + '</option>'; }).join('') + '</select><span class="ic chev">' + PC_CHEV + '</span></div><input class="ff-input" data-ff="appAcct" placeholder="請輸入賬戶" value="' + ffEsc(o.appAcct) + '"></div></div>' +
       '</div></div>';
+    if (req.travelers) main += '<div class="ord-card" id="ordTvCard"></div>';   // 旅客資料（依數量變化，renderOrdTravelers 填充）
+    if (req.contacts) main += '<div class="ord-card" id="ordCtCard"></div>';    // 旅遊期間聯絡方式（單一區塊，renderOrdContacts 填充）
     main += '<div class="ord-card"><div class="ord-sec-h"><div class="t">備註</div></div><div class="ord-remark-hint">額外服務除外的需求，請於此填寫</div>' +
       '<textarea class="ord-remark-ta" id="ordRemark" placeholder="請詳細描述">' + ffEsc(st.remark) + '</textarea></div>';
     document.getElementById('ordMain').innerHTML = main;
