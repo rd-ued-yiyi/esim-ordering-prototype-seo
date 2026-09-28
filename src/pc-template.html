@@ -62,7 +62,7 @@
 
   /* ---------- hero：未選=標題+搜尋卡；已選=目的地 pill+套餐面板（Figma 2968-67063 / 3096-60605） ---------- */
   /* hero 背景：PC 專用素材整張還原（Figma 3467-85807：純青底 #26BEC9 + 波浪線 + 右上手機/地球/星光），整體依寬度等比縮放 */
-  .pc-hero { position: relative; overflow: hidden; padding-bottom: 40px; background-color: #26BEC9; }
+  .pc-hero { position: relative; overflow: hidden; padding-bottom: 60px; background-color: #26BEC9; }
   .pc-hero .col { position: relative; z-index: 1; }
   /* 整張主視覺：1440×800 精確構圖，寬度 100% 等比縮放（波浪自然到邊、插畫按原比例在右上、隨縮放始終可見） */
   .pc-hero-art { position: absolute; z-index: 0; pointer-events: none; top: 0; left: 0; width: 100%; }
@@ -75,8 +75,9 @@
   #hdB { animation: heroOrbitB 8s linear infinite, heroFadeBsolid 8s linear infinite; }
   #earthStrip { animation: earthSpin 8s linear infinite; }  /* 地球內大陸橫向捲動＝自轉（Figma 3467-85403） */
   @media (prefers-reduced-motion: reduce) { #hgA, #hdA, #hgB, #hdB, #earthStrip { animation: none !important; } }
-  .pc-hero .h1 { padding-top: 44px; color: #fff; font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: .5px; }
-  .pc-hero .sub { margin-top: 8px; color: rgba(255,255,255,.92); font-size: 16px; line-height: 24px; max-width: 640px; }
+  /* 未選態標題（Figma 3467-87397）：距頂 60、48/52 Semibold 白；副標 16/24 白、與標題間距 16；卡片距標題塊 32、距 hero 底 60 */
+  .pc-hero .h1 { padding-top: 60px; color: #fff; font-size: 48px; line-height: 52px; font-weight: 600; }
+  .pc-hero .sub { margin-top: 16px; color: #fff; font-size: 16px; line-height: 24px; max-width: 640px; }
   /* 已選目的地 pill（Figma 3096-60605：白底 44、青定位 + 名稱 + ⌄） */
   /* 已選目的地 pill：對齊 mweb .dest-bar（半透明白底 .88 + 白 1.5 邊 + 圓角 12 + 柔和陰影 + 名稱 14/20 Semibold） */
   .pc-dest-pill { margin-top: 28px; height: 44px; max-width: 320px; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px;
@@ -94,7 +95,6 @@
   .pc-search { position: relative; margin-top: 32px; display: flex; flex-direction: column; align-items: flex-start; }
   .pc-hero[data-state="sel"] .pc-search { margin-top: 16px; }
   /* 已選態 hero 上下留白（Figma 3600-58253：目的地 pill 距頂 60、卡片距底 60，hero 高 758） */
-  .pc-hero[data-state="sel"] { padding-bottom: 60px; }
   .pc-hero[data-state="sel"] .pc-dest-pill { margin-top: 60px; }
   .pc-tabs { display: inline-flex; align-items: stretch; background: rgba(255,255,255,.72); border-radius: 16px 16px 0 0; backdrop-filter: blur(4px); }
   .pc-tab { position: relative; min-width: 128px; display: flex; justify-content: center; padding: 12px 20px; }
