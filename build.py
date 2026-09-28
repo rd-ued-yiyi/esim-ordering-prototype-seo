@@ -384,6 +384,8 @@ pc_subs = {
     "{{DLG_resEarth}}":    pc_img("dlg/resEarth.svg"),
     "{{EX_arrowRight16}}": pc_img("explore/arrowRight16.svg"),  # hero 熱門「更多」chip 箭頭 16
     "{{EX_delete16}}":    pc_img("explore/delete16.svg"),  # hero 最近選擇 清除 ic_delete_line 16
+    "{{EX_arrowLeftLg}}":  pc_img("explore/arrowLeftLg.svg"),   # 列表頁流量條翻頁 ‹ ›（Figma 3701-124950）
+    "{{EX_arrowRightLg}}": pc_img("explore/arrowRightLg.svg"),
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
