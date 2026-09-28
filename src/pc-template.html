@@ -61,10 +61,27 @@
   @media (max-width: 800px) { .pc-right .it:not(.app):not([aria-label]) { display: none; } }
 
   /* ---------- hero：未選=標題+搜尋卡；已選=目的地 pill+套餐面板（Figma 2968-67063 / 3096-60605） ---------- */
-  /* hero 背景：PC 專用素材（Figma 3467-85807：純青底 #26BEC9 + 波浪線 + 右上手機/地球/星光），版心置中對齊內容欄 */
+  /* hero 背景：PC 專用素材（Figma 3467-85807：純青底 #26BEC9 + 波浪線 + 右上手機/地球/星光） */
+  /* 波浪：全寬鋪滿、兩側不留缺口不截斷（100% 寬等比） */
   .pc-hero { position: relative; overflow: hidden; padding-bottom: 40px; background-color: #26BEC9;
-    background-image: url(assets/hero-pc/hero-bg-pc.svg); background-repeat: no-repeat; background-position: top center; background-size: 1440px auto; }
+    background-image: url(assets/hero-pc/hero-waves.svg); background-repeat: no-repeat; background-position: center top; background-size: 100% auto; }
   .pc-hero .col { position: relative; z-index: 1; }
+  /* 主視覺插畫：獨立一層，錨定內容欄右緣、隨視窗縮放但始終在可視區內 */
+  .pc-hero-art { position: absolute; z-index: 0; pointer-events: none; top: 12px;
+    right: max(-16px, calc(50vw - 570px - 48px)); width: min(340px, 38vw); aspect-ratio: 314 / 284;
+    animation: haFloat 6s ease-in-out infinite; will-change: transform; }
+  .pc-hero-art svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  /* 動效：整體上下浮動 + 光點脈動 + 星星閃爍（Figma 3467-85807 動畫節點意圖） */
+  @keyframes haFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .pc-hero-art .ha-glow, .pc-hero-art .ha-star { transform-box: fill-box; transform-origin: center; }
+  .pc-hero-art .ha-glow { animation: haPulse 2.8s ease-in-out infinite; }
+  .pc-hero-art #hgB { animation-duration: 3.4s; animation-delay: -1.2s; }
+  @keyframes haPulse { 0%, 100% { opacity: .45; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.12); } }
+  .pc-hero-art .ha-star { animation: haTwinkle 3s ease-in-out infinite; }
+  .pc-hero-art #hsB { animation-duration: 2.4s; animation-delay: -.8s; }
+  .pc-hero-art #hsC { animation-duration: 3.6s; animation-delay: -1.6s; }
+  @keyframes haTwinkle { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .pc-hero-art, .pc-hero-art * { animation: none !important; } }
   .pc-hero .h1 { padding-top: 44px; color: #fff; font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: .5px; }
   .pc-hero .sub { margin-top: 8px; color: rgba(255,255,255,.92); font-size: 16px; line-height: 24px; max-width: 640px; }
   /* 已選目的地 pill（Figma 3096-60605：白底 44、青定位 + 名稱 + ⌄） */
@@ -1240,6 +1257,7 @@
   <div id="pcHome">
   <!-- hero：未選（標題+搜尋卡）/ 已選（目的地 pill + 天數流量面板） -->
   <div class="pc-hero" id="pcHero" data-state="empty">
+    <div class="pc-hero-art" aria-hidden="true">{{HERO_ILLUS_SVG}}</div>
     <div class="col">
       <h1 class="h1">全球上網</h1>
       <div class="sub">輕鬆出發，無憂暢遊全球</div>
