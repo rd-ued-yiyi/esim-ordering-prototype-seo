@@ -134,7 +134,7 @@
   /* 摘要列：H4 摘要（flex 1）+ 搜尋按鈕（gap 24） */
   .pc-panel-top { display: flex; align-items: center; gap: 24px; }
   .pc-panel-sum { flex: 1 1 0; min-width: 0; font-size: 24px; line-height: 30px; font-weight: 600; color: #ADE6EB; }  /* 預選＝$color-text-primary-light #ADE6EB */
-  .pc-panel-sum.touched { color: var(--kk-text-darker); }  /* 手動選擇後＝深 #212121 */
+  .pc-panel-sum.touched { color: var(--kk-primary-dark); }  /* 手動選擇後＝$color-text-primary-dark #13A3B6（Figma 3636-98437） */
   .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
     font-size: 16px; line-height: 24px; font-weight: 600; white-space: nowrap; transition: background .15s; display: inline-flex; align-items: center; gap: 8px; }
   .pc-btn:hover { background: var(--kk-primary-dark); }
@@ -1785,7 +1785,7 @@
     renderFlowStack(document.getElementById('pcFlowTabs'), document.getElementById('pcFlowScroll'), renderPanel);
     var sumEl = document.getElementById('pcPanelSum');
     sumEl.textContent = sel.days + '天·' + PLANS[sel.tab].lb + '·' + sel.plan;  // Figma 3096-60705：摘要標題（面板上方）
-    sumEl.classList.toggle('touched', !!sel.touched);  // 預選＝淺青 #ADE6EB（Figma 3600-58253）；手動選後＝深 #212121
+    sumEl.classList.toggle('touched', !!sel.touched);  // 預選＝淺青 #ADE6EB（Figma 3600-58253）；手動選後＝青 #13A3B6（Figma 3636-98437）
   }
   // 流量堆疊渲染：分頁錨點 + 三計費段卡片 + 推薦 badge + 選中捲入
   function renderFlowStack(tabsEl, scrollEl, onPick) {
