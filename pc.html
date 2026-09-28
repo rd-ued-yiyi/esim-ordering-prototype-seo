@@ -138,10 +138,14 @@
   .pc-chip .ic-14 img { width: 14px; height: 14px; }
   .pc-chip--more { gap: 0; padding: 0 8px 0 12px; }  /* 文字 px4 + icon 16（Figma 3600-59818） */
   .pc-chip--more .ic, .pc-chip--more .ic img { width: 16px; height: 16px; }
-  .pc-recent { display: flex; flex-direction: column; gap: 10px; }
+  .pc-recent { display: flex; flex-direction: column; gap: 8px; }
   .pc-recent[hidden] { display: none; }
   .pc-recent .rh { display: flex; align-items: center; justify-content: space-between; color: var(--kk-text-medium); font-size: 12px; line-height: 16px; }
-  .pc-recent .rh .gact { display: inline-flex; padding: 2px; }
+  .pc-recent .rh { color: var(--kk-text-dark); }
+  .pc-recent .pc-hotchips { gap: 8px; }
+  .pc-recent-clear { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; }
+  .pc-recent-clear:hover { background: var(--kk-surface-light); }
+  .pc-recent-clear .ic, .pc-recent-clear img { width: 16px; height: 16px; }
 
   /* 已選：相容提示 + 摘要列（摘要 + 搜尋套餐）+ 天數&流量卡（Figma 3600-58253 / Plan Selector Card 3636:98060） */
   .pc-hero[data-state="sel"] .pc-card { padding: 24px; }
@@ -1419,7 +1423,7 @@
             <button class="pc-find-input" data-dlg-open><span class="ic ic-24"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" fill="#26BEC9"/><circle cx="12" cy="10" r="2.6" fill="#fff"/></svg></span><span class="ph">請先選擇目的地</span><span class="ic ic-24"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#26BEC9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
             <div class="pc-hotchips" id="pcHotChips"></div>
             <div class="pc-recent" id="pcRecent" hidden>
-              <div class="rh"><span>最近選擇</span><button class="gact" id="pcRecentClear" aria-label="清除最近選擇"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0LjU4MzMiIGhlaWdodD0iMTYuMjUiIHZpZXdCb3g9IjAgMCAxNC41ODMzIDE2LjI1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iVW5pb24iPgo8cGF0aCBkPSJNNS4yMDgzMyA2LjY2NjY3QzUuNTUzNTEgNi42NjY2NyA1LjgzMzMzIDYuOTQ2NDkgNS44MzMzMyA3LjI5MTY3VjEyLjI5MTdDNS44MzMzMyAxMi42MzY4IDUuNTUzNTEgMTIuOTE2NyA1LjIwODMzIDEyLjkxNjdDNC44NjMxNiAxMi45MTY3IDQuNTgzMzMgMTIuNjM2OCA0LjU4MzMzIDEyLjI5MTdWNy4yOTE2N0M0LjU4MzMzIDYuOTQ2NDkgNC44NjMxNiA2LjY2NjY3IDUuMjA4MzMgNi42NjY2N1oiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTEwIDcuMjkxNjdDMTAgNi45NDY0OSA5LjcyMDE4IDYuNjY2NjcgOS4zNzUgNi42NjY2N0M5LjAyOTgyIDYuNjY2NjcgOC43NSA2Ljk0NjQ5IDguNzUgNy4yOTE2N1YxMi4yOTE3QzguNzUgMTIuNjM2OCA5LjAyOTgyIDEyLjkxNjcgOS4zNzUgMTIuOTE2N0M5LjcyMDE4IDEyLjkxNjcgMTAgMTIuNjM2OCAxMCAxMi4yOTE3VjcuMjkxNjdaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMy4zMzMzMyAyLjVWMi4yOTE2N0MzLjMzMzMzIDEuMDI2MDEgNC4zNTkzNSAwIDUuNjI1IDBIOC45NTgzM0MxMC4yMjQgMCAxMS4yNSAxLjAyNjAxIDExLjI1IDIuMjkxNjdWMi41SDEzLjk1ODNDMTQuMzAzNSAyLjUgMTQuNTgzMyAyLjc3OTgyIDE0LjU4MzMgMy4xMjVDMTQuNTgzMyAzLjQ3MDE4IDE0LjMwMzUgMy43NSAxMy45NTgzIDMuNzVIMTMuNzVWMTMuOTU4M0MxMy43NSAxNS4yMjQgMTIuNzI0IDE2LjI1IDExLjQ1ODMgMTYuMjVIMy4xMjVDMS44NTkzNSAxNi4yNSAwLjgzMzMzMyAxNS4yMjQgMC44MzMzMzMgMTMuOTU4M1YzLjc1SDAuNjI1QzAuMjc5ODIyIDMuNzUgMCAzLjQ3MDE4IDAgMy4xMjVDMCAyLjc3OTgyIDAuMjc5ODIyIDIuNSAwLjYyNSAyLjVIMy4zMzMzM1pNNC41ODMzMyAyLjI5MTY3QzQuNTgzMzMgMS43MTYzNyA1LjA0OTcgMS4yNSA1LjYyNSAxLjI1SDguOTU4MzNDOS41MzM2MyAxLjI1IDEwIDEuNzE2MzcgMTAgMi4yOTE2N1YyLjVINC41ODMzM1YyLjI5MTY3Wk0yLjA4MzMzIDMuNzVWMTMuOTU4M0MyLjA4MzMzIDE0LjUzMzYgMi41NDk3IDE1IDMuMTI1IDE1SDExLjQ1ODNDMTIuMDMzNiAxNSAxMi41IDE0LjUzMzYgMTIuNSAxMy45NTgzVjMuNzVIMi4wODMzM1oiIGZpbGw9IiM3MjcyNzIiLz4KPC9nPgo8L3N2Zz4=" width="14.58" height="16.25"></span></button></div>
+              <div class="rh"><span>最近選擇</span></div>
               <div class="pc-hotchips" id="pcRecentChips"></div>
             </div>
           </div>
@@ -1991,11 +1995,11 @@
       c.addEventListener('click', function () { pickDest(n); });
       rc.appendChild(c);
     });
+    // 刪除鈕跟在最後一個 chip 後（Figma 3600-59919：36×36 點擊區、16 icon 置中）
+    var clr = h('<button class="pc-recent-clear" aria-label="清除最近選擇"><span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2RlbGV0ZV9saW5lIj4KPGcgaWQ9IlVuaW9uIj4KPHBhdGggZD0iTTYuMzMzMzMgNi44MzMzM0M2LjYwOTQ4IDYuODMzMzMgNi44MzMzMyA3LjA1NzE5IDYuODMzMzMgNy4zMzMzM1YxMS4zMzMzQzYuODMzMzMgMTEuNjA5NSA2LjYwOTQ4IDExLjgzMzMgNi4zMzMzMyAxMS44MzMzQzYuMDU3MTkgMTEuODMzMyA1LjgzMzMzIDExLjYwOTUgNS44MzMzMyAxMS4zMzMzVjcuMzMzMzNDNS44MzMzMyA3LjA1NzE5IDYuMDU3MTkgNi44MzMzMyA2LjMzMzMzIDYuODMzMzNaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGQ9Ik0xMC4xNjY3IDcuMzMzMzNDMTAuMTY2NyA3LjA1NzE5IDkuOTQyODEgNi44MzMzMyA5LjY2NjY3IDYuODMzMzNDOS4zOTA1MiA2LjgzMzMzIDkuMTY2NjcgNy4wNTcxOSA5LjE2NjY3IDcuMzMzMzNWMTEuMzMzM0M5LjE2NjY3IDExLjYwOTUgOS4zOTA1MiAxMS44MzMzIDkuNjY2NjcgMTEuODMzM0M5Ljk0MjgxIDExLjgzMzMgMTAuMTY2NyAxMS42MDk1IDEwLjE2NjcgMTEuMzMzM1Y3LjMzMzMzWiIgZmlsbD0iIzcyNzI3MiIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTQuODMzMzMgMy41VjMuMzMzMzNDNC44MzMzMyAyLjMyMDgxIDUuNjU0MTQgMS41IDYuNjY2NjcgMS41SDkuMzMzMzNDMTAuMzQ1OSAxLjUgMTEuMTY2NyAyLjMyMDgxIDExLjE2NjcgMy4zMzMzM1YzLjVIMTMuMzMzM0MxMy42MDk1IDMuNSAxMy44MzMzIDMuNzIzODYgMTMuODMzMyA0QzEzLjgzMzMgNC4yNzYxNCAxMy42MDk1IDQuNSAxMy4zMzMzIDQuNUgxMy4xNjY3VjEyLjY2NjdDMTMuMTY2NyAxMy42NzkyIDEyLjM0NTkgMTQuNSAxMS4zMzMzIDE0LjVINC42NjY2N0MzLjY1NDE0IDE0LjUgMi44MzMzMyAxMy42NzkyIDIuODMzMzMgMTIuNjY2N1Y0LjVIMi42NjY2N0MyLjM5MDUyIDQuNSAyLjE2NjY3IDQuMjc2MTQgMi4xNjY2NyA0QzIuMTY2NjcgMy43MjM4NiAyLjM5MDUyIDMuNSAyLjY2NjY3IDMuNUg0LjgzMzMzWk01LjgzMzMzIDMuMzMzMzNDNS44MzMzMyAyLjg3MzEgNi4yMDY0MyAyLjUgNi42NjY2NyAyLjVIOS4zMzMzM0M5Ljc5MzU3IDIuNSAxMC4xNjY3IDIuODczMSAxMC4xNjY3IDMuMzMzMzNWMy41SDUuODMzMzNWMy4zMzMzM1pNMy44MzMzMyA0LjVWMTIuNjY2N0MzLjgzMzMzIDEzLjEyNjkgNC4yMDY0MyAxMy41IDQuNjY2NjcgMTMuNUgxMS4zMzMzQzExLjc5MzYgMTMuNSAxMi4xNjY3IDEzLjEyNjkgMTIuMTY2NyAxMi42NjY3VjQuNUgzLjgzMzMzWiIgZmlsbD0iIzcyNzI3MiIvPgo8L2c+CjwvZz4KPC9zdmc+" width="16" height="16"></span></button>');
+    clr.addEventListener('click', function () { try { localStorage.setItem(HK, '[]'); } catch (e) {} renderFind(); });
+    rc.appendChild(clr);
   }
-  document.getElementById('pcRecentClear').addEventListener('click', function () {
-    try { localStorage.setItem(HK, '[]'); } catch (e) {}
-    renderFind();
-  });
   // 目的地 pill 顯示：名稱（多國＝國家空格串，超出省略）+ 數量 (N)（對齊 mweb destName / destNum）
   function updateDestPill(nameId, numId) {
     document.getElementById(nameId).textContent = sel.dest;
