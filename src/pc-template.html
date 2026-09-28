@@ -172,7 +172,7 @@
   .pc-flow-body { display: flex; gap: 20px; height: 300px; }
   /* 計費分頁（豎排）：三格等高 gap 8；未選淺灰、選中淺青底 + 青邊 + 青字 + 右側尖角（tab（arrow）） */
   .pc-ftabs { flex: 0 0 120px; display: flex; flex-direction: column; gap: 8px; }
-  .pc-ftab { position: relative; flex: 1 1 0; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 8px;
+  .pc-ftab { position: relative; flex: 1 1 0; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 6px 8px; white-space: nowrap; border-radius: 8px;
     background: var(--kk-surface-light); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: center; border: 1px solid transparent; }
   .pc-ftab:hover:not(.sel) { background: var(--kk-surface-medium); }
   .pc-ftab.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
@@ -1793,7 +1793,7 @@
     tabsEl.innerHTML = '';
     Object.keys(PLANS).forEach(function (k) {
       var lb = PLANS[k].lb, t = h('<button class="pc-ftab" data-tab="' + k + '"></button>');
-      t.innerHTML = lb.replace(/流量$/, '') + '<br>流量';  // 豎排分頁：兩行（每日／流量），Figma tab（arrow）
+      t.textContent = lb;  // 單行不換行
       t.classList.toggle('sel', sel.tab === k);
       t.addEventListener('click', function () { flowScrollTo(k, tabsEl, scrollEl); });
       tabsEl.appendChild(t);
@@ -1828,7 +1828,14 @@
       });
       scrollEl.appendChild(secEl);
     });
-    scrollEl.appendChild(h('<div class="pc-plan-end">已經到底了～</div>'));
+    var endEl = h('<div class="pc-plan-end">已經到底了～</div>');
+    scrollEl.appendChild(endEl);
+    // 底部留足間距：確保最後一段（無限流量）能捲到滾動區頂部，scroll-spy 有機會錨定選中它
+    var secs = scrollEl.querySelectorAll('.pc-flow-sec'), lastSec = secs[secs.length - 1];
+    if (lastSec) {
+      var viewH = scrollEl.clientHeight || 300, gap = 12;
+      endEl.style.paddingBottom = Math.max(48, viewH - lastSec.offsetHeight - gap - 24 - 16) + 'px';
+    }
     scrollEl.scrollTop = keepTop;
     revealTier(scrollEl, selTier);
     tabsEl.querySelectorAll('.pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === sel.tab); });
