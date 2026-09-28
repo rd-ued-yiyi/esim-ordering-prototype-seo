@@ -382,6 +382,7 @@ pc_subs = {
     "{{DLG_clear}}":       pc_img("dlg/clear.svg"),
     "{{DLG_resLocation}}": pc_img("dlg/resLocation.svg"),
     "{{DLG_resEarth}}":    pc_img("dlg/resEarth.svg"),
+    "{{EX_arrowRight16}}": pc_img("explore/arrowRight16.svg"),  # hero 熱門「更多」chip 箭頭 16
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),

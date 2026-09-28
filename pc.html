@@ -136,6 +136,8 @@
     background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 14px; line-height: 20px; transition: background .12s; }
   .pc-chip:hover { background: var(--kk-surface-medium); }
   .pc-chip .ic-14 img { width: 14px; height: 14px; }
+  .pc-chip--more { gap: 0; padding: 0 8px 0 12px; }  /* 文字 px4 + icon 16（Figma 3600-59818） */
+  .pc-chip--more .ic, .pc-chip--more .ic img { width: 16px; height: 16px; }
   .pc-recent { display: flex; flex-direction: column; gap: 10px; }
   .pc-recent[hidden] { display: none; }
   .pc-recent .rh { display: flex; align-items: center; justify-content: space-between; color: var(--kk-text-medium); font-size: 12px; line-height: 16px; }
@@ -1978,7 +1980,7 @@
       c.addEventListener('click', function () { pickDest(n); });
       hot.appendChild(c);
     });
-    var more = h('<button class="pc-chip">更多<span class="ic ic-14 rot90"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjkiIGhlaWdodD0iNSIgdmlld0JveD0iMCAwIDkgNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjE0NjQ1IDAuMTQ2NDQ3QzQuMzQxNzEgLTAuMDQ4ODE1NSA0LjY1ODI5IC0wLjA0ODgxNTUgNC44NTM1NSAwLjE0NjQ0N0w4Ljg1MzU1IDQuMTQ2NDVDOS4wNDg4MiA0LjM0MTcxIDkuMDQ4ODIgNC42NTgyOSA4Ljg1MzU1IDQuODUzNTVDOC42NTgyOSA1LjA0ODgyIDguMzQxNzEgNS4wNDg4MiA4LjE0NjQ1IDQuODUzNTVMNC41IDEuMjA3MTFMMC44NTM1NTMgNC44NTM1NUMwLjY1ODI5MSA1LjA0ODgyIDAuMzQxNzA5IDUuMDQ4ODIgMC4xNDY0NDcgNC44NTM1NUMtMC4wNDg4MTU1IDQuNjU4MjkgLTAuMDQ4ODE1NSA0LjM0MTcxIDAuMTQ2NDQ3IDQuMTQ2NDVMNC4xNDY0NSAwLjE0NjQ0N1oiIGZpbGw9IiMyMTIxMjEiLz4KPC9zdmc+" width="9.00" height="5.00"></span></button>');
+    var more = h('<button class="pc-chip pc-chip--more">更多<span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTAuMzUzNiA3LjY0NzI2QzEwLjU0ODggNy44NDI1MiAxMC41NDg4IDguMTU5MTEgMTAuMzUzNiA4LjM1NDM3TDYuMzUzNTUgMTIuMzU0NEM2LjE1ODI5IDEyLjU0OTYgNS44NDE3MSAxMi41NDk2IDUuNjQ2NDUgMTIuMzU0NEM1LjQ1MTE4IDEyLjE1OTEgNS40NTExOCAxMS44NDI1IDUuNjQ2NDUgMTEuNjQ3M0w5LjI5Mjg5IDguMDAwODFMNS42NDY0NSA0LjM1NDM3QzUuNDUxMTggNC4xNTkxIDUuNDUxMTggMy44NDI1MiA1LjY0NjQ1IDMuNjQ3MjZDNS44NDE3MSAzLjQ1MiA2LjE1ODI5IDMuNDUyIDYuMzUzNTUgMy42NDcyNkwxMC4zNTM2IDcuNjQ3MjZaIiBmaWxsPSIjMjEyMTIxIi8+CjwvZz4KPC9zdmc+" width="16" height="16"></span></button>');  // Figma ic_arrowRight_line 16
     more.addEventListener('click', function () { openDlg(); });
     hot.appendChild(more);
     var hist = histGet();
