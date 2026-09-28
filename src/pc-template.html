@@ -2591,7 +2591,7 @@
           (sc.was ? '<span class="pl-off">' + (p.off || '20%OFF') + '</span>' : '') +
           '<div class="pl-price">' + (sc.was ? '<span class="was">' + plMoney(sc.was) + '</span>' : '') +
             '<span class="now"><span class="cur">NT$</span>' + sc.now.toLocaleString('en-US') + '</span></div>' +
-          '<span class="pl-per">≈NT$' + sc.per + '/天</span>' +
+          (sel.days > 1 ? '<span class="pl-per">≈NT$' + sc.per + '/天</span>' : '') +  // 1 天：總價即每日價，不重複顯示
         '</div>' +
         '<button class="pl-cta">訂購</button>' +
       '</div>' +
