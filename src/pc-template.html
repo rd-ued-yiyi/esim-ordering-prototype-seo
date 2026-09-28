@@ -332,6 +332,20 @@
     border: 1px solid var(--kk-border-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
   .pc-ftag .x { display: inline-flex; width: 14px; height: 14px; }
   .pc-ftag-clear { height: 28px; padding: 0 12px; border-radius: 999px; background: var(--kk-surface-light); color: var(--kk-text-dark); font-size: 12px; }
+  /* 結果數 + 排序下拉 同一條 bar（Figma 3467-85809） */
+  .pc-ex-topbar { background: #fff; border-radius: 8px; padding: 12px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .pc-sortdd { position: relative; margin-left: auto; }
+  .pc-sortdd-btn { display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-sortdd-btn .lb { color: var(--kk-text-dark); }
+  .pc-sortdd-btn .cur { font-weight: 600; }
+  .pc-sortdd-btn .chev { margin-left: 4px; transition: transform .2s; color: var(--kk-text-medium); }
+  .pc-sortdd.open .pc-sortdd-btn { border-color: var(--kk-primary-medium); }
+  .pc-sortdd.open .pc-sortdd-btn .chev { transform: rotate(180deg); }
+  .pc-sortdd-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; min-width: 184px; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.12); padding: 4px; }
+  .pc-sortdd-menu[hidden] { display: none; }
+  .pc-sortdd-menu button { display: block; width: 100%; text-align: left; padding: 10px 12px; border-radius: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-sortdd-menu button:hover { background: var(--kk-surface-light); }
+  .pc-sortdd-menu button.sel { color: var(--kk-primary-dark); font-weight: 600; background: var(--kk-primary-lighter); }
   .pc-sortbox { background: #fff; border-radius: 8px; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 14px; line-height: 20px; }
   .pc-sortbox .lb, .pc-sortbox button { white-space: nowrap; }  /* 窄視窗整顆換行，不壓字 */
   .pc-sortbox .lb { color: var(--kk-text-darker); }
@@ -1432,16 +1446,18 @@
           </div>
         </aside>
         <div class="pc-ex-main">
-          <div class="pc-ex-cntbox">
+          <div class="pc-ex-topbar">
             <span class="pc-ex-cnt"><i id="pcExCnt">162</i>個結果</span>
             <span id="pcFtags" style="display:contents"></span>
-          </div>
-          <div class="pc-sortbox" id="pcSort">
-            <span class="lb">排序：</span><span class="sp"></span>
-            <button class="sel" data-sort="0"><span class="ic">{{IC_thumbsUp}}</span>KKday 推薦</button><span class="sp"></span>
-            <button data-sort="3"><span class="ic">{{IC_fireHot}}</span>熱門程度</button><span class="sp"></span>
-            <button data-sort="2"><span class="ic">{{IC_starFill16}}</span>用戶評價（高至低）</button><span class="sp"></span>
-            <button data-sort="1">$ 價格（低至高）</button>
+            <div class="pc-sortdd" id="pcSortDd">
+              <button class="pc-sortdd-btn" id="pcSortBtn"><span class="lb">排序方式：</span><span class="cur" id="pcSortCur">KKday 推薦</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
+              <div class="pc-sortdd-menu" id="pcSort" hidden>
+                <button data-sort="0">KKday 推薦</button>
+                <button data-sort="3">熱門程度</button>
+                <button data-sort="2">用戶評價（高至低）</button>
+                <button data-sort="1">價格（低至高）</button>
+              </div>
+            </div>
           </div>
           <div class="pc-ex-list" id="pcExList"></div>
           <div class="pc-pager" id="pcPager"><button class="sel">1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button class="nav"><span class="ic ic-16 rot90">{{IC_arrowRightDark}}</span></button></div>
@@ -2332,6 +2348,7 @@
     document.getElementById('pcExCnt').textContent = list.length ? (list.length * 15 + 12) : 0;
     document.querySelectorAll('#pcTypeBox .pc-cb').forEach(function (b) { b.classList.toggle('on', pcEx.type.indexOf(b.getAttribute('data-type')) >= 0); });
     document.querySelectorAll('#pcSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === pcEx.sort); });
+    var scur = document.getElementById('pcSortCur'), ssel = document.querySelector('#pcSort button[data-sort="' + pcEx.sort + '"]'); if (scur && ssel) scur.textContent = ssel.textContent;
     // 已選條件 tag（Figma 3096-60605：結果數旁 tag + Clear all）
     var ft = document.getElementById('pcFtags'); ft.innerHTML = '';
     pcEx.type.forEach(function (t) {
@@ -2355,7 +2372,14 @@
       if (b.closest('#pcListPage')) renderPlCards();
     });
   });
-  document.querySelectorAll('#pcSort button').forEach(function (b) { b.addEventListener('click', function () { pcEx.sort = +b.getAttribute('data-sort'); renderPcExplore(); }); });
+  document.querySelectorAll('#pcSort button').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); pcEx.sort = +b.getAttribute('data-sort'); document.getElementById('pcSortDd').classList.remove('open'); document.getElementById('pcSort').hidden = true; renderPcExplore(true); }); });
+  // 排序下拉開合（Figma 3467-85809：單一「排序方式 ▾」下拉）
+  (function () {
+    var dd = document.getElementById('pcSortDd'), btn = document.getElementById('pcSortBtn'), menu = document.getElementById('pcSort');
+    if (btn) btn.addEventListener('click', function (e) { e.stopPropagation(); var open = dd.classList.toggle('open'); menu.hidden = !open; });
+    document.addEventListener('click', function () { dd.classList.remove('open'); if (menu) menu.hidden = true; });
+    if (menu) menu.addEventListener('click', function (e) { e.stopPropagation(); });
+  })();
   // #pcPager 由 buildPager 動態產生並綁定翻頁（見 renderPcExplore）
   (function () {  // 價格區間雙滑塊（NT$0–12,000+，仿真）
     var rmin = document.getElementById('pcRmin'), rmax = document.getElementById('pcRmax'), fill = document.getElementById('pcFill'), pv = document.getElementById('pcPv');
