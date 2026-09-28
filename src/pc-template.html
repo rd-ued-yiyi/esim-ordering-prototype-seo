@@ -61,14 +61,10 @@
   @media (max-width: 800px) { .pc-right .it:not(.app):not([aria-label]) { display: none; } }
 
   /* ---------- hero：未選=標題+搜尋卡；已選=目的地 pill+套餐面板（Figma 2968-67063 / 3096-60605） ---------- */
-  .pc-hero { position: relative; overflow: hidden; padding-bottom: 40px;
-    background: radial-gradient(120% 90% at 85% 20%, #5ED3DB 0%, rgba(94,211,219,0) 55%), linear-gradient(135deg, #26BEC9 0%, #13A3B6 100%); }
-  .pc-hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px;
-    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.18) 100%); pointer-events: none; }
+  /* hero 背景：PC 專用素材（Figma 3467-85807：純青底 #26BEC9 + 波浪線 + 右上手機/地球/星光），版心置中對齊內容欄 */
+  .pc-hero { position: relative; overflow: hidden; padding-bottom: 40px; background-color: #26BEC9;
+    background-image: url(assets/hero-pc/hero-bg-pc.svg); background-repeat: no-repeat; background-position: top center; background-size: 1440px auto; }
   .pc-hero .col { position: relative; z-index: 1; }
-  .pc-hero-art { position: absolute; right: 24px; top: -24px; width: 600px; max-width: 46%; pointer-events: none; z-index: 0; }
-  .pc-hero-art svg { width: 100%; height: auto; display: block; }
-  .pc-hero-art > svg > rect { display: none; }
   .pc-hero .h1 { padding-top: 44px; color: #fff; font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: .5px; }
   .pc-hero .sub { margin-top: 8px; color: rgba(255,255,255,.92); font-size: 16px; line-height: 24px; max-width: 640px; }
   /* 已選目的地 pill（Figma 3096-60605：白底 44、青定位 + 名稱 + ⌄） */
@@ -1244,7 +1240,6 @@
   <div id="pcHome">
   <!-- hero：未選（標題+搜尋卡）/ 已選（目的地 pill + 天數流量面板） -->
   <div class="pc-hero" id="pcHero" data-state="empty">
-    <div class="pc-hero-art" aria-hidden="true">{{HERO_SVG}}</div>
     <div class="col">
       <h1 class="h1">全球上網</h1>
       <div class="sub">輕鬆出發，無憂暢遊全球</div>
