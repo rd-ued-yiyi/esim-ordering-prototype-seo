@@ -174,8 +174,8 @@
   .pc-days-list::-webkit-scrollbar-track, .pc-flow-scroll::-webkit-scrollbar-track { background: transparent; }
   .pc-days-list::-webkit-scrollbar-thumb, .pc-flow-scroll::-webkit-scrollbar-thumb { background: var(--kk-border-light); border-radius: 4px; }
   .pc-days-list::-webkit-scrollbar-thumb:hover, .pc-flow-scroll::-webkit-scrollbar-thumb:hover { background: var(--kk-text-medium); }
-  /* 用卡天數欄：寬 160、標題 + gap 6 + 可捲清單（高度隨右欄拉伸） */
-  .pc-plan-days { flex: 0 0 160px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  /* 用卡天數欄：寬 160、標題 + gap 8 + 可捲清單（高度隨右欄拉伸） */
+  .pc-plan-days { flex: 0 0 160px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }  /* 小標題下間距 8（Figma 3636-98059） */
   .pc-plan-days .pc-scroll-wrap { flex: 1 1 0; }
   .pc-days-list { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 8px; }
   .pc-day { flex: 0 0 auto; width: 100%; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px;  /* Chip background：p8、20 行高 → 36px */
@@ -184,7 +184,7 @@
   .pc-day.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
   .pc-days-list .pc-plan-end { flex: 0 0 auto; }
   /* 流量欄：標題列（流量 + 不知道怎麼選）+ 300px 區（左 120 分頁 + gap 20 + 右可捲檔位） */
-  .pc-plan-flow { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .pc-plan-flow { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
   .pc-flow-head { display: flex; align-items: center; gap: 12px; }
   .pc-flow-help { display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 12px; line-height: 16px; white-space: nowrap; }
   .pc-flow-help .ic { width: 16px; height: 16px; }
