@@ -39,7 +39,7 @@
   .sec-t { font-size: 24px; line-height: 32px; font-weight: 600; color: var(--kk-text-darker); }
 
   /* ---------- header 60（Figma 2968-67063：logo + 站內搜尋 + 右側工具列） ---------- */
-  .pc-header { height: 60px; background: #fff; }
+  .pc-header { position: sticky; top: 0; z-index: 22; height: 60px; background: #fff; }  /* 全站置頂：頁面滑動時 header 固定在頂部 */
   .pc-header .col { height: 60px; display: flex; align-items: center; gap: 24px; }
   .pc-logo { width: 100px; height: 40px; flex: 0 0 auto; }
   .pc-hsearch { flex: 0 1 400px; min-width: 0; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px; overflow: hidden; white-space: nowrap;
@@ -470,7 +470,6 @@
   /* ================= 搜尋結果列表頁（Figma 3140-37910 / 3190-40586 / 3191-69000） ================= */
   body.list-mode #pcHome { display: none; }
   body.list-mode .pc-cat { display: none; }                         /* 列表頁無分類導航（Figma 3140-37910 只有 header + 條件列） */
-  body.list-mode .pc-header { position: sticky; top: 0; z-index: 22; }
   .pc-listpage { display: block; background: var(--kk-surface-light); padding-bottom: 40px; }  /* 淺灰頁底，襯托白色篩選卡 / 商品卡 */
   .pc-listpage[hidden] { display: none; }  /* [hidden] 需覆蓋 display，否則主題頁也會渲染出空的列表頁 */
   /* 條件列（sticky）：預設兩行（目的地/天數 KKSelect + 流量 Option Card 行），滑動塌縮成單行小 chip（Figma 3167-39791 ↔ 3190-40589） */
