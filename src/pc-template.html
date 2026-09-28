@@ -379,6 +379,10 @@
   .pc-pprice .now { display: inline-flex; align-items: baseline; gap: 2px; font-size: 20px; line-height: 20px; font-weight: 700; color: var(--kk-text-darker); }
   .pc-pager { display: flex; justify-content: center; gap: 12px; padding: 16px 0 0; }
   #pcPager { padding: 0; }
+  #plListPager { padding: 0; }
+  #plListPager button { width: 32px; min-width: 32px; padding: 0; border: 1px solid #DDD; color: #333; display: inline-flex; align-items: center; justify-content: center; }
+  #plListPager button.sel { border-color: var(--kk-primary-medium); color: #fff; }
+  #plListPager button:disabled { color: var(--kk-border-light); }
   #pcPager button { width: 32px; min-width: 32px; padding: 0; border: 1px solid #DDD; color: #333; display: inline-flex; align-items: center; justify-content: center; }  /* 數字 / 箭頭置中 */
   #pcPager button.sel { border-color: var(--kk-primary-medium); color: #fff; }
   #pcPager button:disabled { color: var(--kk-border-light); }
@@ -539,21 +543,21 @@
   /* ---------- footer（沿用） ---------- */
   /* ================= 搜尋結果列表頁（Figma 3140-37910 / 3190-40586 / 3191-69000） ================= */
   body.list-mode #pcHome { display: none; }
-  body.list-mode .pc-cat { display: none; }                         /* 列表頁無分類導航（Figma 3140-37910 只有 header + 條件列） */
   .pc-listpage { display: block; background: var(--kk-surface-light); padding-bottom: 40px; }  /* 淺灰頁底，襯托白色篩選卡 / 商品卡 */
   .pc-listpage[hidden] { display: none; }  /* [hidden] 需覆蓋 display，否則主題頁也會渲染出空的列表頁 */
   /* 條件列（sticky）：預設兩行（目的地/天數 KKSelect + 流量 Option Card 行），滑動塌縮成單行小 chip（Figma 3167-39791 ↔ 3190-40589） */
   .pc-lbar { position: sticky; top: 60px; z-index: 20; background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
   .pc-lbar-in { display: flex; flex-direction: column; gap: 16px; padding: 16px 0; }
-  .pc-lconds { display: flex; align-items: center; gap: 16px; }
+  .pc-lconds { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 8px; }  /* Figma 3701:124950：兩個 KKSelect 等寬、gap 8（grid 避免 padding 讓 flex:1 不等寬） */
+  .pc-lbar.compact .pc-lconds { display: flex; }
   /* KKSelect 下拉框（Figma 3378-48624：白底 1px #D5D6DB、圓角 8、48 高、前圖標＋值 14＋箭頭） */
   .pc-lsel { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; min-width: 0; }
   .pc-lsel > .ic { width: 20px; height: 20px; flex: 0 0 auto; color: var(--kk-text-medium); }
   .pc-lsel .chev { margin-left: auto; transition: transform .2s; }
   .pc-lsel-txt { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   /* Figma 3167-39791：目的地 ≈756、天數填滿剩餘 ≈368（約 2:1），非固定 224 */
-  .pc-lsel--dest { flex: 756 1 0; }
-  .pc-lpick { position: relative; flex: 368 1 0; min-width: 0; }
+  .pc-lsel--dest { flex: 1 1 0; }
+  .pc-lpick { position: relative; flex: 1 1 0; min-width: 0; }
   .pc-lpick .pc-lsel--days { width: 100%; }
   .pc-lpick.open .pc-lsel .chev { transform: rotate(180deg); }
   /* 天數下拉（Figma 3190-40586：清單 + 選中打勾） */
@@ -567,7 +571,7 @@
   /* 流量 Option Card 行：一行內鋪滿可容納的等寬卡，末張固定為「更多」（開全部流量 dialog）（Figma 3188-78133） */
   .pc-lflowwrap { display: flex; align-items: center; min-width: 0; }
   .pc-lflow-vp { flex: 1 1 0; min-width: 0; }
-  .pc-lflow { display: flex; gap: 16px; width: 100%; }
+  .pc-lflow { display: flex; gap: 8px; width: 100%; }
   .pc-lchip { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
   .pc-lchip b { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
@@ -592,11 +596,23 @@
   .pc-lbar.compact .pc-lflow { width: max-content; gap: 8px; }
   /* 麵包屑 note */
   /* 列表頁裝置提醒：純文字（icon+文字），無藍底橫條（Figma 3167-39923 Inline notification） */
-  .pc-lnote { margin: 0 0 16px; height: auto; padding: 0; background: none; border-radius: 0; align-items: flex-start; color: var(--kk-text-dark); }
+  .pc-lnote { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 24px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3674:108566：icon 20 + 14/20 #212121，距內容 24 */
   .pc-lbody { align-items: flex-start; }
   /* 篩選欄：每組獨立白卡片（Figma filter card：radius 12、padding 20、卡間距 16） */
   .pc-lbody .pc-ex-side { gap: 16px; }
-  .pc-lbody .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; gap: 14px; }
+  .pc-lbody .pc-ex-main { gap: 24px; }  /* 結果欄 → 列表 24 */
+  .pc-lbody .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; gap: 16px; }  /* Figma filter card_pc：p20、標題 / 選項間距 16 */
+  .pc-lbody .pc-cb { gap: 12px; text-align: left; }
+  .pc-lbody .pc-cb .box { border-width: 1px; }
+  .pc-lbody .pc-pv { font-size: 14px; line-height: 20px; color: var(--kk-text-medium); margin-top: -16px; }
+  /* 使用日期 chips（Figma 3674:101840）：1px #D5D6DB、r8、p8（文字 px4）14/20、gap 8；選擇日期帶 16 箭頭；選中淺青 */
+  .pl-dchips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pl-dchip { display: inline-flex; align-items: center; padding: 8px 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pl-dchip[data-d="pick"] { padding-right: 8px; }
+  .pl-dchip[data-d="pick"] .lb { margin-right: 4px; }
+  .pl-dchip .ic, .pl-dchip .ic img { width: 16px; height: 16px; }
+  .pl-dchip:hover { border-color: var(--kk-primary-medium); }
+  .pl-dchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-medium); }
   .pc-lbody .pc-fbox .fh { margin-bottom: 0; }  /* 標題下不再額外加 16，改由 gap 14 統一（原標題↔首項達 36 過大） */
   /* 使用日期：緊湊白卡列（Figma 3167:43481：高 56、icon 24 + 文字，非帶邊框大格） */
   .pc-lbody .pc-fdate { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; padding: 16px 20px; cursor: pointer; }
@@ -612,19 +628,19 @@
   .pl-cntrow .cnt i { font-style: normal; font-weight: 700; color: var(--kk-primary-dark); }
   .pl-ftags { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
   .pl-ftags:empty { display: none; }
-  .pl-ftag { display: inline-flex; align-items: center; gap: 14px; height: 24px; padding: 0 10px; border: 1px solid #999; border-radius: 100px; background: #fff; cursor: pointer; }
-  .pl-ftag .tx { font-size: 12px; line-height: 12px; font-weight: 700; color: #666; white-space: nowrap; }
-  .pl-ftag .x { width: 10px; height: 10px; color: #666; flex: 0 0 auto; }
-  .pl-ftag:hover { border-color: #666; }
-  .pl-ftag-clear { height: 24px; padding: 0 10px; border: 1px solid #999; border-radius: 100px; background: #999; color: #fff; font-size: 12px; line-height: 12px; cursor: pointer; }
-  .pl-ftag-clear:hover { background: #888; border-color: #888; }
+  /* 已選條件 Chip（與首頁探索更多同款）：pill 1px #D5D6DB、px12 py8、14/20 + 16 細線叉；清除所有 12/16 Semibold 青字底線 */
+  .pl-ftag { display: inline-flex; align-items: center; gap: 4px; padding: 8px 12px; border: 1px solid var(--kk-border-light); border-radius: 999px; background: #fff; cursor: pointer; }
+  .pl-ftag .tx { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
+  .pl-ftag .x, .pl-ftag .x img { width: 16px; height: 16px; flex: 0 0 auto; }
+  .pl-ftag:hover { border-color: var(--kk-primary-medium); }
+  .pl-ftag-clear { font-size: 12px; line-height: 16px; font-weight: 600; color: var(--kk-primary-dark); text-decoration: underline; cursor: pointer; white-space: nowrap; }
   /* Plan 卡（Figma 3167:40025）：左內容（規格警示/標題/標籤/竪排政策/評論）+ 豎分隔 + 右價格CTA */
-  .pl-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
+  .pl-list { display: flex; flex-direction: column; gap: 16px; }  /* 與分頁間距由 .pc-ex-main gap 24 提供 */
   .pl-empty { padding: 64px 0; text-align: center; color: var(--kk-text-medium); background: #fff; border-radius: 12px; }
-  .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 16px; cursor: pointer; transition: box-shadow .15s; }
+  .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 16px; cursor: pointer; transition: box-shadow .15s; box-shadow: 0 4px 24px rgba(38,50,56,.12); }  /* Figma Plan card_pc：12-Fixed 陰影 */
   .pl-card:hover { box-shadow: var(--el-hover); }
   .pl-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
-  .pl-hg { display: flex; flex-direction: column; gap: 4px; }
+  .pl-hg { display: flex; flex-direction: column; gap: 6px; }  /* 標題 & 規格 gap 6 */
   .pl-warns { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 16px; color: #E78F37; overflow: hidden; white-space: nowrap; }
   .pl-warns .wdiv { width: 1px; height: 10px; background: var(--kk-border-light); flex: 0 0 auto; }
   .pl-warns span:not(.wdiv) { flex: 0 0 auto; }
@@ -633,7 +649,7 @@
   .pl-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px; border-radius: 4px; background: var(--kk-surface-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
   .pl-tag .ic { width: 16px; height: 16px; }
   .pl-tag.hot { background: #FFF2F2; }
-  .pl-perks { display: flex; flex-direction: column; gap: 4px; }              /* 政策竪排（Figma 政策规格） */
+  .pl-perks { display: flex; flex-direction: column; gap: 6px; }              /* 政策竪排（Figma 政策规格） */
   .pl-perk { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .pl-perk .ic { width: 16px; height: 16px; flex: 0 0 auto; }
   .pl-social { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
@@ -644,12 +660,13 @@
   .pl-social .pl-ratelink { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
   .pl-social .pl-ratelink:hover .score, .pl-social .pl-ratelink:hover .rc { color: var(--kk-primary-dark); }
   .pl-hr { width: 1px; align-self: stretch; background: var(--kk-border-lighter); flex: 0 0 auto; }
-  .pl-buy { flex: 0 0 231px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 8px; }  /* 價格+訂購鈕靠卡片底部對齊 */
-  .pl-priceblk { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .pl-buy { flex: 0 0 300px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 8px; }  /* 價格+訂購鈕靠卡片底部對齊 */
+  .pl-priceblk { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .pl-priceblk .pl-price + .pl-per { margin-top: -2px; }  /* 價格與每日均價 gap 2 */
   .pl-off { background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; padding: 2px 4px; border-radius: 4px; }
   .pl-price { display: flex; align-items: baseline; gap: 8px; }
-  .pl-price .was { font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }
-  .pl-price .now { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 18px; line-height: 18px; font-weight: 700; color: var(--kk-text-darker); }
+  .pl-price .was { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }
+  .pl-price .now { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 22px; line-height: 22px; font-weight: 700; color: var(--kk-text-darker); }  /* price-bold-xxl 22/22 */
   .pl-price .now .cur { margin-right: 2px; }
   .pl-per { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .pl-cta { height: 40px; padding: 0 20px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; transition: background .15s; }
@@ -1488,8 +1505,8 @@
       </div>
     </div>
     <div class="col">
-      <div class="pc-crumb"><a id="plCrumbHome">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="plCrumbCat">eSIM/WIFI</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>搜尋結果</span></div>
-      <div class="pc-note pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></div>
+      <div class="pc-crumb pc-crumb--home"><a id="plCrumbHome">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="plCrumbCat">eSIM/WIFI</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>搜尋結果頁</span></div>
+      <div class="pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM</span></div>
       <div class="pc-ex-body pc-lbody">
         <aside class="pc-ex-side">
           <div class="pc-fbox">
@@ -1504,12 +1521,12 @@
             <button class="pc-cb" data-mock><span class="box"></span>國際漫遊卡</button>
           </div>
           <div class="pc-fbox">
-            <div class="fh">IP類型</div>
+            <div class="fh fh-info"><span>IP類型</span><button class="fh-i" data-toast="pc" aria-label="說明"><span class="ic ic-16">{{IC_info}}</span></button></div>
             <button class="pc-cb" data-mock><span class="box"></span>本地</button>
             <button class="pc-cb" data-mock><span class="box"></span>漫遊</button>
           </div>
           <div class="pc-fbox">
-            <div class="fh">傳輸規格</div>
+            <div class="fh fh-info"><span>傳輸規格</span><button class="fh-i" data-toast="pc" aria-label="說明"><span class="ic ic-16">{{IC_info}}</span></button></div>
             <button class="pc-cb" data-mock><span class="box"></span>5G</button>
             <button class="pc-cb" data-mock><span class="box"></span>5G/4G</button>
           </div>
@@ -1519,9 +1536,14 @@
             <button class="pc-cb" data-mock><span class="box"></span>自然日制</button>
             <button class="pc-cb" data-mock><span class="box"></span>總量制</button>
           </div>
-          <div class="pc-fbox pc-fdate pc-caltrigger" style="cursor:pointer">
-            <span class="cell"><span class="ic ic-24">{{PC_calendar20}}</span></span>
-            <span class="lb">使用日期</span>
+          <!-- 使用日期：今天 / 明天 / 選擇日期（開日曆）chips（Figma 3674:101840） -->
+          <div class="pc-fbox" id="plDateBox">
+            <div class="fh">使用日期</div>
+            <div class="pl-dchips">
+              <button class="pl-dchip" data-d="0">今天</button>
+              <button class="pl-dchip" data-d="1">明天</button>
+              <button class="pl-dchip pc-caltrigger" data-d="pick"><span class="lb">選擇日期</span><span class="ic">{{EX_arrowRight16}}</span></button>
+            </div>
           </div>
           <div class="pc-fbox">
             <div class="fh">服務保障</div>
@@ -1537,15 +1559,15 @@
           </div>
         </aside>
         <div class="pc-ex-main">
-          <div class="pl-topbox">
-            <div class="pl-cntrow"><span class="cnt"><i id="plCnt">162</i> 個結果</span><div class="pl-ftags" id="plFtags"></div></div>
-            <div class="pl-topdiv"></div>
-            <div class="pc-sortbox" id="plSort">
-              <span class="lb">排序：</span><span class="sp"></span>
-              <button class="sel" data-sort="0"><span class="ic">{{IC_thumbsUp}}</span>KKday 推薦</button><span class="sp"></span>
-              <button data-sort="3"><span class="ic">{{IC_fireHot}}</span>熱門程度</button><span class="sp"></span>
-              <button data-sort="2"><span class="ic">{{IC_starFill16}}</span>用戶評分（高至低）</button><span class="sp"></span>
-              <button data-sort="1">$ 價格（低至高）</button>
+          <!-- 結果數 + 已選條件 / 分隔線 / 排序項（Figma 3598-3806 Filter Summary Bar，與首頁探索更多同款） -->
+          <div class="pc-ex-topbar">
+            <div class="pc-ex-cntrow"><span class="pc-ex-cnt"><i id="plCnt">162</i>搜尋結果</span><div class="pc-ex-ftags pl-ftags" id="plFtags"></div></div>
+            <div class="pc-ex-div"></div>
+            <div class="pc-ex-sorts" id="plSort">
+              <button class="sel" data-sort="0"><span class="ic i-def">{{EX_thumbsUp}}</span><span class="ic i-sel">{{EX_thumbsUpSel}}</span>KKday 推薦</button><span class="sp"></span>
+              <button data-sort="1"><span class="ic i-def">{{EX_currency}}</span><span class="ic i-sel">{{EX_currencySel}}</span>價格低到高</button><span class="sp"></span>
+              <button data-sort="2"><span class="ic i-def">{{EX_starLine}}</span><span class="ic i-sel">{{EX_starLineSel}}</span>高評分優先</button><span class="sp"></span>
+              <button data-sort="3"><span class="ic i-def">{{EX_fireLine}}</span><span class="ic i-sel">{{EX_fireLineSel}}</span>高銷量優先</button>
             </div>
           </div>
           <div class="pl-list" id="plList"></div>
@@ -2524,8 +2546,8 @@
           '<div class="pl-title">' + p.title + '</div>' +
           '<div class="pl-tags">' + tags + '</div>' +
         '</div>' +
+        '<div class="pl-social">' + social + '</div>' +  // Figma 3701:112318：評分列在規格標籤下、政策上
         '<div class="pl-perks">' + perks + '</div>' +
-        '<div class="pl-social">' + social + '</div>' +
       '</div>' +
       '<div class="pl-hr"></div>' +
       '<div class="pl-buy">' +
@@ -2570,7 +2592,23 @@
     document.querySelectorAll('#plSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === plSort); });
     renderFtags();
   }
-  // 已選篩選 tag（Figma 3221-81088）：勾選項 + 價格區間，可單獨移除 / Clear all
+  // 使用日期 chips（今天 / 明天 / 選擇日期）：單選，選中＝淺青；選擇日期開日曆，選後 chip 顯示日期
+  var plDate = null, plDateKind = null;
+  function plDateLabel() { return plDateKind === '0' ? '今天' : plDateKind === '1' ? '明天' : calFmt(plDate); }
+  function plSetDate(d, kind) {
+    plDate = d; plDateKind = d ? kind : null;
+    if (typeof calSt !== 'undefined') calSt.date = d;  // 帶入訂單頁啟用日
+    document.querySelectorAll('#plDateBox .pl-dchip').forEach(function (b) { b.classList.toggle('sel', !!d && b.getAttribute('data-d') === kind); });
+    var pk = document.querySelector('#plDateBox .pl-dchip[data-d="pick"] .lb'); if (pk) pk.textContent = (d && kind === 'pick') ? calFmt(d) : '選擇日期';
+  }
+  document.querySelectorAll('#plDateBox .pl-dchip[data-d="0"], #plDateBox .pl-dchip[data-d="1"]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-d');
+      if (plDateKind === k) plSetDate(null); else { var d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + (+k)); plSetDate(d, k); }
+      renderPlCards();
+    });
+  });
+  // 已選篩選 tag：日期 + 勾選項 + 價格區間，可單獨移除 / 清除所有
   function renderFtags() {
     var wrap = document.getElementById('plFtags'); if (!wrap) return;
     wrap.innerHTML = '';
@@ -2579,21 +2617,23 @@
     var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax');
     var lo = rmin ? +rmin.value : 0, hi = rmax ? +rmax.value : 12000;
     var priceChanged = rmin && rmax && (lo > 0 || hi < 12000);
+    if (plDate) active.unshift({ label: plDateLabel(), date: true });
     active.forEach(function (it) {
-      var chip = h('<div class="pl-ftag"><span class="tx"></span><span class="ic x">{{IC_cross}}</span></div>');
+      var chip = h('<div class="pl-ftag"><span class="tx"></span><span class="ic x">{{EX_crossLine}}</span></div>');
       chip.querySelector('.tx').textContent = it.label;
-      chip.addEventListener('click', function () { it.cb.classList.remove('on'); renderPlCards(); });
+      chip.addEventListener('click', function () { if (it.date) plSetDate(null); else it.cb.classList.remove('on'); renderPlCards(); });
       wrap.appendChild(chip);
     });
     if (priceChanged) {
-      var pchip = h('<div class="pl-ftag"><span class="tx"></span><span class="ic x">{{IC_cross}}</span></div>');
+      var pchip = h('<div class="pl-ftag"><span class="tx"></span><span class="ic x">{{EX_crossLine}}</span></div>');
       pchip.querySelector('.tx').textContent = 'NT$' + lo.toLocaleString('en-US') + '–' + hi.toLocaleString('en-US');
       pchip.addEventListener('click', function () { rmin.value = 0; rmax.value = 12000; if (typeof plRangeSync === 'function') plRangeSync(); renderPlCards(); });
       wrap.appendChild(pchip);
     }
     if (active.length || priceChanged) {
-      var clr = h('<button class="pl-ftag-clear">Clear all</button>');
+      var clr = h('<button class="pl-ftag-clear">清除所有</button>');
       clr.addEventListener('click', function () {
+        plSetDate(null);
         document.querySelectorAll('#pcListPage .pc-ex-side .pc-cb.on').forEach(function (b) { b.classList.remove('on'); });
         if (rmin && rmax) { rmin.value = 0; rmax.value = 12000; if (typeof plRangeSync === 'function') plRangeSync(); }
         renderPlCards();
@@ -3217,6 +3257,7 @@
     renderCal();
     if (calSt.trigger) calSt.trigger.querySelector('.lb').textContent = calFmt(d);
     if (calSt.trigger && calSt.trigger.closest('#pcExplore')) { pcEx.date = d; renderPcExTags(); }
+    if (calSt.trigger && calSt.trigger.closest('#plDateBox')) { plSetDate(d, 'pick'); renderPlCards(); }
     closeCal();
   }
   document.getElementById('pcCalPrev').addEventListener('click', function (e) { e.stopPropagation(); calSt.view = new Date(calSt.view.getFullYear(), calSt.view.getMonth() - 1, 1); renderCal(); });
