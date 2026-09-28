@@ -2255,7 +2255,7 @@
     document.querySelectorAll('#pcExplore .pc-cb[data-mock].on').forEach(function (b) { items.push([b.textContent.trim(), function () { b.classList.remove('on'); }]); });
     if (pcRange && pcRange.active()) items.push([pcRange.label(), function () { pcRange.reset(); }]);
     items.forEach(function (it) {
-      var tag = h('<span class="pc-ftag"><span></span><button class="x" aria-label="移除"><span class="ic ic-14">{{IC_crossCircle}}</span></button></span>');
+      var tag = h('<span class="pc-ftag"><span></span><button class="x" aria-label="移除"><span class="ic ic-16">{{EX_crossLine}}</span></button></span>');  // Figma ic_cross_line 16
       tag.firstChild.textContent = it[0];
       tag.querySelector('.x').addEventListener('click', function (e) { e.stopPropagation(); it[1](); renderPcExplore(); });
       ft.appendChild(tag);
