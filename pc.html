@@ -2040,6 +2040,13 @@
     renderFind(); renderPanel();
     syncExploreDest(name);  // 選好即同步「探索更多」目的地（對齊 mweb finishSelect → exMapDest）
     if (document.body.classList.contains('list-mode')) renderList();  // 列表頁改目的地：同步刷新條件列與結果
+    else {  // 主題頁：選好目的地後捲到 hero 頂貼齊置頂 header（分類導航捲出視窗），天數流量面板完整入畫
+      requestAnimationFrame(function () {
+        var hero = document.getElementById('pcHero'), hd = document.querySelector('.pc-header');
+        var top = hero.getBoundingClientRect().top + window.scrollY - (hd ? hd.offsetHeight : 60);
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      });
+    }
   }
   document.getElementById('pcDestPill').addEventListener('click', function () { openDlg(); });
 
