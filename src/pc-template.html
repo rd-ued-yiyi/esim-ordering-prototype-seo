@@ -580,10 +580,10 @@
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
   /* 推薦 badge（Figma 3188-78104：珊瑚 #EF7A70 小標貼右上角） */
   .pc-lchip .rec { position: absolute; top: -5px; right: -5px; padding: 2px 4px; border-radius: 4px 4px 4px 0; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; }
-  /* 流量條（Figma 3701-124950）：‹ + N 張等寬卡 + › + 固定寬「更多」，全部 gap 8；箭頭＝白底 p8 + 16 icon、與卡同高 */
+  /* 流量條（Figma 3701-124950）：‹ + N 張等寬卡 + › + 固定寬「更多」，全部 gap 8；箭頭＝白底 p8 + 20 icon（寬 36）、與卡同高 */
   .pc-lflow { align-items: stretch; }
   .pc-lnav { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 8px; border-radius: 8px; background: #fff; }
-  .pc-lnav img { width: 16px; height: 16px; }
+  .pc-lnav img { width: 20px; height: 20px; }  /* Figma icon button：p8 + ic_arrowRight_line_lg 20 → 36 寬 */
   .pc-lnav:hover:not(:disabled) { background: var(--kk-surface-light); }
   .pc-lnav:disabled { opacity: .3; cursor: default; }
   .pc-lchip--more { flex: 0 0 auto; padding: 16px; }  /* px12 + 文字 px4 */
@@ -594,7 +594,7 @@
   .pc-lbar.compact .pc-lchip { height: 48px; padding: 8px 12px; flex-direction: row; }
   .pc-lbar.compact .pc-lchip b { font-size: 14px; line-height: 20px; }
   .pc-lbar.compact .pc-lchip span { display: none; }
-  .pc-lbar.compact .pc-lchip--more { padding: 8px 16px; }
+  .pc-lbar.compact .pc-lchip--more { padding: 8px 12px; }  /* Figma 3710-147063：更多 52 寬 */
   /* 麵包屑 note */
   /* 列表頁裝置提醒：純文字（icon+文字），無藍底橫條（Figma 3167-39923 Inline notification） */
   .pc-lnote { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 24px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3674:108566：icon 20 + 14/20 #212121，距內容 24 */
@@ -2705,7 +2705,7 @@
       return c;
     }
     // 一頁檔數：默認 5 張（每張 ≥150）、塌縮 3 顆（每顆 ≥96），依可用寬度自動增減
-    var W = vpEl.clientWidth || 900, gap = 8, navW = 32, moreW = _plCompact ? 60 : 64;
+    var W = vpEl.clientWidth || 900, gap = 8, navW = 36, moreW = _plCompact ? 60 : 64;
     var minW = _plCompact ? 96 : 150, cap = _plCompact ? 3 : 5;
     var n = Math.max(1, Math.min(cap, Math.floor((W - 2 * navW - moreW - 3 * gap + gap) / (minW + gap))));
     n = Math.min(n, all.length);

@@ -1,5 +1,5 @@
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="ic_arrowLeft_line_lg">
-<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M10.4393 2.64645C10.6346 2.84171 10.6346 3.15829 10.4393 3.35355L5.79288 8L10.4393 12.6464C10.6346 12.8417 10.6346 13.1583 10.4393 13.3536C10.2441 13.5488 9.92748 13.5488 9.73222 13.3536L4.73222 8.35355C4.53696 8.15829 4.53696 7.84171 4.73222 7.64645L9.73222 2.64645C9.92748 2.45118 10.2441 2.45118 10.4393 2.64645Z" fill="#212121"/>
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="translate(20 0) scale(-1 1)">
+<g id="ic_arrowRight_line_lg">
+<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M7.05806 3.30806C7.30214 3.06398 7.69786 3.06398 7.94194 3.30806L14.1919 9.55806C14.436 9.80214 14.436 10.1979 14.1919 10.4419L7.94194 16.6919C7.69786 16.936 7.30214 16.936 7.05806 16.6919C6.81398 16.4479 6.81398 16.0521 7.05806 15.8081L12.8661 10L7.05806 4.19194C6.81398 3.94786 6.81398 3.55214 7.05806 3.30806Z" fill="#212121"/>
 </g>
-</svg>
+</g></svg>

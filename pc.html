@@ -596,10 +596,10 @@
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
   /* 推薦 badge（Figma 3188-78104：珊瑚 #EF7A70 小標貼右上角） */
   .pc-lchip .rec { position: absolute; top: -5px; right: -5px; padding: 2px 4px; border-radius: 4px 4px 4px 0; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; }
-  /* 流量條（Figma 3701-124950）：‹ + N 張等寬卡 + › + 固定寬「更多」，全部 gap 8；箭頭＝白底 p8 + 16 icon、與卡同高 */
+  /* 流量條（Figma 3701-124950）：‹ + N 張等寬卡 + › + 固定寬「更多」，全部 gap 8；箭頭＝白底 p8 + 20 icon（寬 36）、與卡同高 */
   .pc-lflow { align-items: stretch; }
   .pc-lnav { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 8px; border-radius: 8px; background: #fff; }
-  .pc-lnav img { width: 16px; height: 16px; }
+  .pc-lnav img { width: 20px; height: 20px; }  /* Figma icon button：p8 + ic_arrowRight_line_lg 20 → 36 寬 */
   .pc-lnav:hover:not(:disabled) { background: var(--kk-surface-light); }
   .pc-lnav:disabled { opacity: .3; cursor: default; }
   .pc-lchip--more { flex: 0 0 auto; padding: 16px; }  /* px12 + 文字 px4 */
@@ -610,7 +610,7 @@
   .pc-lbar.compact .pc-lchip { height: 48px; padding: 8px 12px; flex-direction: row; }
   .pc-lbar.compact .pc-lchip b { font-size: 14px; line-height: 20px; }
   .pc-lbar.compact .pc-lchip span { display: none; }
-  .pc-lbar.compact .pc-lchip--more { padding: 8px 16px; }
+  .pc-lbar.compact .pc-lchip--more { padding: 8px 12px; }  /* Figma 3710-147063：更多 52 寬 */
   /* 麵包屑 note */
   /* 列表頁裝置提醒：純文字（icon+文字），無藍底橫條（Figma 3167-39923 Inline notification） */
   .pc-lnote { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 24px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3674:108566：icon 20 + 14/20 #212121，距內容 24 */
@@ -2873,7 +2873,7 @@
       return c;
     }
     // 一頁檔數：默認 5 張（每張 ≥150）、塌縮 3 顆（每顆 ≥96），依可用寬度自動增減
-    var W = vpEl.clientWidth || 900, gap = 8, navW = 32, moreW = _plCompact ? 60 : 64;
+    var W = vpEl.clientWidth || 900, gap = 8, navW = 36, moreW = _plCompact ? 60 : 64;
     var minW = _plCompact ? 96 : 150, cap = _plCompact ? 3 : 5;
     var n = Math.max(1, Math.min(cap, Math.floor((W - 2 * navW - moreW - 3 * gap + gap) / (minW + gap))));
     n = Math.min(n, all.length);
@@ -2881,8 +2881,8 @@
     if (centerSel) _plFlowStart = si - Math.floor((n - 1) / 2);
     else if (!keepPage && (si < _plFlowStart || si >= _plFlowStart + n)) _plFlowStart = si - Math.floor((n - 1) / 2);  // 選中不在當頁 → 以選中為中心
     _plFlowStart = Math.max(0, Math.min(maxStart, _plFlowStart));
-    var prev = h('<button class="pc-lnav" aria-label="上一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93TGVmdF9saW5lX2xnIj4KPHBhdGggaWQ9IlZlY3RvciIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMC40MzkzIDIuNjQ2NDVDMTAuNjM0NiAyLjg0MTcxIDEwLjYzNDYgMy4xNTgyOSAxMC40MzkzIDMuMzUzNTVMNS43OTI4OCA4TDEwLjQzOTMgMTIuNjQ2NEMxMC42MzQ2IDEyLjg0MTcgMTAuNjM0NiAxMy4xNTgzIDEwLjQzOTMgMTMuMzUzNkMxMC4yNDQxIDEzLjU0ODggOS45Mjc0OCAxMy41NDg4IDkuNzMyMjIgMTMuMzUzNkw0LjczMjIyIDguMzUzNTVDNC41MzY5NiA4LjE1ODI5IDQuNTM2OTYgNy44NDE3MSA0LjczMjIyIDcuNjQ2NDVMOS43MzIyMiAyLjY0NjQ1QzkuOTI3NDggMi40NTExOCAxMC4yNDQxIDIuNDUxMTggMTAuNDM5MyAyLjY0NjQ1WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+Cjwvc3ZnPg==" width="16" height="16"></button>');
-    var next = h('<button class="pc-lnav" aria-label="下一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZV9sZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS42NDY0NSAyLjY0NjQ1QzUuODQxNzEgMi40NTExOCA2LjE1ODI5IDIuNDUxMTggNi4zNTM1NSAyLjY0NjQ1TDExLjM1MzYgNy42NDY0NUMxMS41NDg4IDcuODQxNzEgMTEuNTQ4OCA4LjE1ODI5IDExLjM1MzYgOC4zNTM1NUw2LjM1MzU1IDEzLjM1MzZDNi4xNTgyOSAxMy41NDg4IDUuODQxNzEgMTMuNTQ4OCA1LjY0NjQ1IDEzLjM1MzZDNS40NTExOCAxMy4xNTgzIDUuNDUxMTggMTIuODQxNyA1LjY0NjQ1IDEyLjY0NjRMMTAuMjkyOSA4TDUuNjQ2NDUgMy4zNTM1NUM1LjQ1MTE4IDMuMTU4MjkgNS40NTExOCAyLjg0MTcxIDUuNjQ2NDUgMi42NDY0NVoiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="16" height="16"></button>');
+    var prev = h('<button class="pc-lnav" aria-label="上一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMCAwKSBzY2FsZSgtMSAxKSI+CjxnIGlkPSJpY19hcnJvd1JpZ2h0X2xpbmVfbGciPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuMDU4MDYgMy4zMDgwNkM3LjMwMjE0IDMuMDYzOTggNy42OTc4NiAzLjA2Mzk4IDcuOTQxOTQgMy4zMDgwNkwxNC4xOTE5IDkuNTU4MDZDMTQuNDM2IDkuODAyMTQgMTQuNDM2IDEwLjE5NzkgMTQuMTkxOSAxMC40NDE5TDcuOTQxOTQgMTYuNjkxOUM3LjY5Nzg2IDE2LjkzNiA3LjMwMjE0IDE2LjkzNiA3LjA1ODA2IDE2LjY5MTlDNi44MTM5OCAxNi40NDc5IDYuODEzOTggMTYuMDUyMSA3LjA1ODA2IDE1LjgwODFMMTIuODY2MSAxMEw3LjA1ODA2IDQuMTkxOTRDNi44MTM5OCAzLjk0Nzg2IDYuODEzOTggMy41NTIxNCA3LjA1ODA2IDMuMzA4MDZaIiBmaWxsPSIjMjEyMTIxIi8+CjwvZz4KPC9nPjwvc3ZnPg==" width="20" height="20"></button>');
+    var next = h('<button class="pc-lnav" aria-label="下一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZV9sZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNy4wNTgwNiAzLjMwODA2QzcuMzAyMTQgMy4wNjM5OCA3LjY5Nzg2IDMuMDYzOTggNy45NDE5NCAzLjMwODA2TDE0LjE5MTkgOS41NTgwNkMxNC40MzYgOS44MDIxNCAxNC40MzYgMTAuMTk3OSAxNC4xOTE5IDEwLjQ0MTlMNy45NDE5NCAxNi42OTE5QzcuNjk3ODYgMTYuOTM2IDcuMzAyMTQgMTYuOTM2IDcuMDU4MDYgMTYuNjkxOUM2LjgxMzk4IDE2LjQ0NzkgNi44MTM5OCAxNi4wNTIxIDcuMDU4MDYgMTUuODA4MUwxMi44NjYxIDEwTDcuMDU4MDYgNC4xOTE5NEM2LjgxMzk4IDMuOTQ3ODYgNi44MTM5OCAzLjU1MjE0IDcuMDU4MDYgMy4zMDgwNloiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></button>');
     prev.disabled = _plFlowStart <= 0; next.disabled = _plFlowStart >= maxStart;
     prev.addEventListener('click', function () { _plFlowStart = Math.max(0, _plFlowStart - n); _plKeepPage = true; renderListChips(); });
     next.addEventListener('click', function () { _plFlowStart = Math.min(maxStart, _plFlowStart + n); _plKeepPage = true; renderListChips(); });
