@@ -2142,8 +2142,9 @@
   }
   function exClose() { exState.open = null; document.getElementById('exSelDest').classList.remove('open'); document.getElementById('exSelPickup').classList.remove('open'); }
   function exPickDest(n) {
-    exState.dest = n; exState.picks = [];
+    exState.dest = n; exState.picks = []; exState.pickDone = [];
     exSetText('exSelDest', n, '請選擇目的地');
+    renderPcExTags();
     document.getElementById('exSelPickup').hidden = false;
     exSetText('exSelPickup', '', '請選擇領取/郵寄地');
     exRenderPickup();
@@ -2153,10 +2154,11 @@
   document.querySelector('#exSelPickup .sbox').addEventListener('click', function (e) { e.stopPropagation(); if (exState.open === 'pickup') { exClose(); } else { exRenderPickup(); exOpen('pickup'); } });
   document.querySelectorAll('#exDdDest, #exDdPickup').forEach(function (d) { d.addEventListener('click', function (e) { e.stopPropagation(); }); });
   document.getElementById('exPickClear').addEventListener('click', function () { exState.picks = []; exRenderPickup(); });
-  document.getElementById('exPickOk').addEventListener('click', function () { exSetText('exSelPickup', exState.picks.join('、'), '請選擇領取/郵寄地'); exClose(); });
+  document.getElementById('exPickOk').addEventListener('click', function () { exState.pickDone = exState.picks.slice(); exSetText('exSelPickup', exState.picks.join('、'), '請選擇領取/郵寄地'); exClose(); renderPcExTags(); });
   document.addEventListener('click', function () { if (exState.open) exClose(); });
 
-  var pcEx = { type: [], sort: 0, page: 1 };
+  var pcEx = { type: [], sort: 0, page: 1, date: null };
+  var pcRange = null;  // 首頁價格滑塊控制（供 chip 顯示 / 重設）
   var TYPE_LB = { 'WiFi': 'Wifi', 'SIM Card': 'SIM Card', 'eSIM': 'eSIM' };
   // ===== 通用分頁器（真實翻頁：依實際資料長度產生頁碼，切頁重繪並捲回列表頂） =====
   var PGL = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -2226,16 +2228,47 @@
     document.getElementById('pcExCnt').textContent = list.length ? (list.length * 15 + 12) : 0;
     document.querySelectorAll('#pcTypeBox .pc-cb').forEach(function (b) { b.classList.toggle('on', pcEx.type.indexOf(b.getAttribute('data-type')) >= 0); });
     document.querySelectorAll('#pcSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === pcEx.sort); });
-    // 已選條件 tag（Figma 3096-60605：結果數旁 tag + Clear all）
-    var ft = document.getElementById('pcFtags'); ft.innerHTML = '';
-    pcEx.type.forEach(function (t) {
-      var tag = h('<span class="pc-ftag">' + TYPE_LB[t] + '<button class="x" aria-label="移除"><span class="ic ic-14">{{IC_crossCircle}}</span></button></span>');
-      tag.querySelector('.x').addEventListener('click', function () { pcEx.type.splice(pcEx.type.indexOf(t), 1); renderPcExplore(); });
+    renderPcExTags();
+  }
+  // 已選條件 Chip：側欄所有搜尋 / 篩選條件（目的地、領取地、出發日期、通訊產品、領取方式、商品特性、旅遊天數、價格區間）皆顯示，可逐一移除或清除所有
+  function exResetDest() {  // 移除目的地＝連同其領取地一併清除
+    exState.dest = null; exState.picks = []; exState.pickDone = [];
+    exSetText('exSelDest', '', '請選擇目的地');
+    exSetText('exSelPickup', '', '請選擇領取/郵寄地');
+    document.getElementById('exSelPickup').hidden = true;
+  }
+  function exResetDate() {
+    pcEx.date = null;
+    var t = document.querySelector('#pcExplore .pc-caltrigger .lb'); if (t) t.textContent = '出發日期';
+    if (calSt.trigger && calSt.trigger.closest('#pcExplore')) calSt.date = null;
+  }
+  function renderPcExTags() {
+    var ft = document.getElementById('pcFtags'); if (!ft) return;
+    ft.innerHTML = '';
+    var items = [];
+    if (exState.dest) items.push([exState.dest, function () { exResetDest(); }]);
+    (exState.pickDone || []).forEach(function (n) {
+      items.push([n, function () { exState.picks = exState.picks.filter(function (x) { return x !== n; }); exState.pickDone = exState.pickDone.filter(function (x) { return x !== n; }); exSetText('exSelPickup', exState.pickDone.join('、'), '請選擇領取/郵寄地'); }]);
+    });
+    if (pcEx.date) items.push([calFmt(pcEx.date), function () { exResetDate(); }]);
+    pcEx.type.forEach(function (t) { items.push([TYPE_LB[t], function () { pcEx.type.splice(pcEx.type.indexOf(t), 1); }]); });
+    document.querySelectorAll('#pcExplore .pc-cb[data-mock].on').forEach(function (b) { items.push([b.textContent.trim(), function () { b.classList.remove('on'); }]); });
+    if (pcRange && pcRange.active()) items.push([pcRange.label(), function () { pcRange.reset(); }]);
+    items.forEach(function (it) {
+      var tag = h('<span class="pc-ftag"><span></span><button class="x" aria-label="移除"><span class="ic ic-14">{{IC_crossCircle}}</span></button></span>');
+      tag.firstChild.textContent = it[0];
+      tag.querySelector('.x').addEventListener('click', function (e) { e.stopPropagation(); it[1](); renderPcExplore(); });
       ft.appendChild(tag);
     });
-    if (pcEx.type.length) {
+    if (items.length) {
       var clr = h('<button class="pc-ftag-clear">清除所有</button>');
-      clr.addEventListener('click', function () { pcEx.type = []; renderPcExplore(); });
+      clr.addEventListener('click', function (e) {
+        e.stopPropagation();
+        exResetDest(); exResetDate(); pcEx.type = [];
+        document.querySelectorAll('#pcExplore .pc-cb[data-mock].on').forEach(function (b) { b.classList.remove('on'); });
+        if (pcRange) pcRange.reset();
+        renderPcExplore();
+      });
       ft.appendChild(clr);
     }
   }
@@ -2247,6 +2280,7 @@
       b.classList.toggle('on');
       // 列表頁側欄篩選：即時過濾卡片
       if (b.closest('#pcListPage')) renderPlCards();
+      if (b.closest('#pcExplore')) renderPcExTags();
     });
   });
   // 排序項（Figma 3467-85809：KKday 推薦 / 價格低到高 / 高評分優先 / 高銷量優先，選中＝青字 + 青圖標）
@@ -2261,9 +2295,14 @@
       fill.style.left = (lo / 12000 * 100) + '%'; fill.style.right = (100 - hi / 12000 * 100) + '%';
       pv.textContent = nt(lo) + ' – ' + nt(hi, true);
     }
-    rmin.addEventListener('input', upd);
-    rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 100) rmax.value = +rmin.value + 100; upd(); });
+    rmin.addEventListener('input', function () { upd(); renderPcExTags(); });
+    rmax.addEventListener('input', function () { if (+rmax.value < +rmin.value + 100) rmax.value = +rmin.value + 100; upd(); renderPcExTags(); });
     upd();
+    pcRange = {
+      active: function () { return +rmin.value > 0 || +rmax.value < 12000; },
+      label: function () { return pv.textContent; },
+      reset: function () { rmin.value = 0; rmax.value = 12000; upd(); }
+    };
   })();
 
   // SIM卡 / WIFI tab：勾選對應商品類別 + 平滑錨定到探索更多（tab 保持 eSIM）
@@ -2304,7 +2343,7 @@
   }
   function syncExploreDest(name) {
     var mapped = exMapDestPC(name);
-    exState.dest = mapped; exState.picks = [];
+    exState.dest = mapped; exState.picks = []; exState.pickDone = [];
     if (mapped) {
       exSetText('exSelDest', mapped, '請選擇目的地');
       document.getElementById('exSelPickup').hidden = false;
@@ -3121,6 +3160,7 @@
     calSt.date = d;  // 單日選擇
     renderCal();
     if (calSt.trigger) calSt.trigger.querySelector('.lb').textContent = calFmt(d);
+    if (calSt.trigger && calSt.trigger.closest('#pcExplore')) { pcEx.date = d; renderPcExTags(); }
     closeCal();
   }
   document.getElementById('pcCalPrev').addEventListener('click', function (e) { e.stopPropagation(); calSt.view = new Date(calSt.view.getFullYear(), calSt.view.getMonth() - 1, 1); renderCal(); });
