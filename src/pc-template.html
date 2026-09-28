@@ -73,7 +73,8 @@
   #hdA { animation: heroOrbitA 8s linear infinite, heroFadeAsolid 8s linear infinite; }
   #hgB { animation: heroOrbitB 8s linear infinite, heroFadeBglow 8s linear infinite; }
   #hdB { animation: heroOrbitB 8s linear infinite, heroFadeBsolid 8s linear infinite; }
-  @media (prefers-reduced-motion: reduce) { #hgA, #hdA, #hgB, #hdB { animation: none !important; } }
+  #earthStrip { animation: earthSpin 8s linear infinite; }  /* 地球內大陸橫向捲動＝自轉（Figma 3467-85403） */
+  @media (prefers-reduced-motion: reduce) { #hgA, #hdA, #hgB, #hdB, #earthStrip { animation: none !important; } }
   .pc-hero .h1 { padding-top: 44px; color: #fff; font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: .5px; }
   .pc-hero .sub { margin-top: 8px; color: rgba(255,255,255,.92); font-size: 16px; line-height: 24px; max-width: 640px; }
   /* 已選目的地 pill（Figma 3096-60605：白底 44、青定位 + 名稱 + ⌄） */

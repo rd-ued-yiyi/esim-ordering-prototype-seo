@@ -4,3 +4,4 @@
 @keyframes heroFadeAsolid{0%,18.66%{opacity:1}25%,41.8%{opacity:0}54.166%,100%{opacity:1}}
 @keyframes heroFadeBglow{0%,60.66%{opacity:.28}66.66%,91.66%{opacity:0}95.66%,100%{opacity:.28}}
 @keyframes heroFadeBsolid{0%,60.66%{opacity:1}66.66%,91.66%{opacity:0}95.66%,100%{opacity:1}}
+@keyframes earthSpin{from{transform:translateX(0)}to{transform:translateX(-225.162px)}}
