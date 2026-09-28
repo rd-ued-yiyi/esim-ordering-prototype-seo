@@ -207,54 +207,61 @@
   .pc-crumb a { color: var(--kk-primary-dark); cursor: pointer; }
   .pc-crumb a:hover { text-decoration: underline; }
 
-  /* ---------- 為什麼選擇 KKday：白底 4 欄橫排（Figma 2968-67063，無卡片） ---------- */
-  .pc-why { padding: 40px 0 0; }
-  .pc-why .sec-t { margin-bottom: 24px; }
-  .pc-whys { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }  /* 依寬度自動增減列數（桌面 4 欄，窄屏降 2） */
-  .pc-whyc { display: flex; gap: 12px; align-items: flex-start; }
-  .pc-whyc .ic { width: 40px; height: 40px; }
-  .pc-whyc .tx { display: flex; flex-direction: column; gap: 4px; }
-  .pc-whyc b { font-size: 16px; line-height: 24px; font-weight: 600; }
-  .pc-whyc p { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
+  /* 首頁麵包屑（Figma 3467-85809 breadcrumb：高 68 垂直置中、gap 4、首頁 #068B9F、當前 #9C9DA0） */
+  .pc-crumb--home { height: 68px; padding: 0; gap: 4px; }
+  .pc-crumb--home a { color: var(--kk-primary-darker); }
 
-  /* ---------- 常見問題（Figma 3467-85809）：標題 + 白卡A（eSIM 安裝指南）+ 白卡B（FAQ 手風琴） ---------- */
-  .pc-faq { padding: 48px 0 56px; }
-  .pc-faq-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .pc-faq-head .more { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); text-decoration: underline; text-underline-offset: 3px; }
-  /* eSIM 安裝指南：白卡（標題 + iOS / Android 入口） */
-  .pc-guide-card { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
-  .pc-guide-t { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin-right: 12px; }
-  .pc-guide { height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 20px;
-    border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); transition: border-color .15s, box-shadow .15s; }
-  .pc-guide:hover { border-color: var(--kk-primary-medium); box-shadow: var(--el-card); }
+  /* ---------- 為什麼選擇 KKday（Figma 3467-85809 Benefits Section_pc）：py32、標題 24/30 + gap 32、4 欄等寬 gap 32 ---------- */
+  .pc-why { padding: 32px 0; }
+  .pc-why .sec-t { margin-bottom: 32px; line-height: 30px; }
+  .pc-whys { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }  /* 1440 下 4 欄，變窄自動降列 */
+  .pc-whyc { display: flex; gap: 20px; align-items: flex-start; }
+  .pc-whyc .ic { flex: 0 0 48px; width: 48px; height: 48px; }
+  .pc-whyc .ic img { width: 48px; height: 48px; }
+  .pc-whyc .tx { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .pc-whyc b { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-whyc p { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+
+  /* ---------- 常見問題（Figma 3467-85809 FAQ Card_pc）：pt32 pb48、標題 / 安裝指南卡 / 問題卡 間距 32 ---------- */
+  .pc-faq { padding: 32px 0 48px; }
+  .pc-faq-head { display: flex; align-items: center; gap: 20px; margin-bottom: 32px; }
+  .pc-faq-head .sec-t { flex: 1 1 0; line-height: 30px; }
+  .pc-faq-head .more { font-size: 16px; line-height: 24px; font-weight: 500; color: var(--kk-text-darker); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }  /* KKTextLink Medium 16 */
+  /* eSIM 安裝指南卡：1px #E6E9ED 邊、p24、r12、標題與按鈕組 gap 48、按鈕間 gap 24 */
+  .pc-guide-card { display: flex; align-items: center; gap: 48px; border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+  .pc-guide-t { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-guide-btns { display: flex; align-items: center; gap: 24px; }
+  /* KKButton outline：1px #727272、pl12 pr20 py8、r8、icon 20 + gap 4、Semibold 16/24 */
+  .pc-guide { display: inline-flex; align-items: center; gap: 4px; padding: 8px 20px 8px 12px;
+    border: 1px solid var(--kk-text-dark); border-radius: 8px; background: #fff; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); transition: background .15s; }
+  .pc-guide:hover { background: var(--kk-surface-lighter); }
   .pc-guide .ic { width: 20px; height: 20px; }
-  /* FAQ 手風琴：整組包在一張白卡內，項間分隔線 */
-  .pc-faq-list { background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 0 24px; }
-  .pc-faq-item { border-bottom: 1px solid var(--kk-border-lighter); }
-  .pc-faq-item:last-child { border-bottom: 0; }
-  .pc-faq-q { width: 100%; display: flex; align-items: center; gap: 16px; padding: 20px 0; text-align: left; }
-  .pc-faq-q .q { flex: 1 1 0; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
-  .pc-faq-q .chev { transition: transform .2s ease; color: var(--kk-text-medium); }
+  /* 問題卡：1px 邊、p24、r12；項目 py12 gap16、項間 gap 8 + 1px 分隔線 */
+  .pc-faq-list { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+  .pc-faq-item + .pc-faq-item { border-top: 1px solid var(--kk-border-lighter); padding-top: 8px; }
+  .pc-faq-q { width: 100%; display: flex; align-items: center; gap: 16px; padding: 12px 0; text-align: left; }
+  .pc-faq-q .q { flex: 1 1 0; min-width: 0; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-faq-q .chev { flex: 0 0 20px; transition: transform .2s ease; }
   .pc-faq-item.open .pc-faq-q .chev { transform: rotate(180deg); }
-  .pc-faq-a { display: none; padding: 0 0 20px; font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
+  .pc-faq-a { display: none; padding: 0 36px 12px 0; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .pc-faq-item.open .pc-faq-a { display: block; }
 
   /* ---------- 探索更多（Figma 2968-67063：版心 1170、左篩選欄 281 + 主列表） ---------- */
-  .pc-explore { background: var(--kk-surface-light); padding: 48px 0 64px; }
-  .pc-ex-title { font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 24px; }
+  /* Figma 3467-85809 Explore More Section_pc：py48、內容 1140、標題 24/30 + gap 32、左 280 篩選 + gap 24 + 主列表 */
+  .pc-explore { background: var(--kk-surface-light); padding: 48px 0; }
+  .pc-ex-title { font-size: 24px; line-height: 30px; font-weight: 600; margin-bottom: 32px; }
   /* 目的地 / 領取地 選框 + 錨定下拉（Figma 3026-41529 / 3213-47373 / 3213-47666）：預設只顯示目的地選框，選了目的地才出現領取地選框並自動展開 */
   .pc-ex-selects { display: flex; gap: 8px; margin-bottom: 24px; }
   .pc-sel2 { position: relative; }
-  #exSelDest { width: 208px; } #exSelPickup { width: 268px; }
-  .pc-sel2 .sbox { width: 100%; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px;
-    background: #fff; border: 1px solid var(--kk-border-light); border-radius: 8px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
-  .pc-sel2 .sbox .lb { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
-  .pc-sel2 .sbox.ph-on .lb { color: var(--kk-text-medium); }
-  .pc-sel2 .sbox .chev { transition: transform .2s; }
-  .pc-sel2 .sbox:hover { border-color: var(--kk-primary-medium); }
-  .pc-sel2.open .sbox { border-color: var(--kk-primary-medium); }
-  .pc-sel2.open .sbox .chev { transform: rotate(180deg); }
-  .pc-sel2 .sbox .ic-20 img { width: 20px; height: 20px; } .pc-sel2 .sbox .ic-16 img { width: 16px; height: 16px; }
+  .pc-sel2[hidden] { display: none; }
+  /* 目的地 / 領取地選框＝filter date_pc 列：白底 r12、左 64 圖標格（p20 + 24 icon）+ 1px #E6E9ED 分隔 + 置中 Semibold 16/24 */
+  .pc-sel2 .sbox { width: 100%; display: flex; align-items: stretch; background: #fff; border-radius: 12px; overflow: hidden;
+    font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); transition: box-shadow .15s; }
+  .pc-sel2 .sbox .cell, .pc-fdate .cell { flex: 0 0 64px; display: flex; align-items: center; justify-content: center; padding: 20px 0; border-right: 1px solid var(--kk-border-lighter); }
+  .pc-sel2 .sbox .cell img, .pc-fdate .cell img { width: 24px; height: 24px; }
+  .pc-sel2 .sbox .lb { flex: 1 1 0; min-width: 0; padding: 12px 20px; display: flex; align-items: center; justify-content: center; text-align: center;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pc-sel2 .sbox:hover, .pc-sel2.open .sbox { box-shadow: inset 0 0 0 1px var(--kk-primary-medium); }  /* inset 描邊不改高度（與出發日期列同高 64） */
   .pc-dd { position: absolute; left: 0; top: calc(100% + 8px); z-index: 30; width: 600px; max-height: 476px;
     background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.12); display: none; flex-direction: column; overflow: hidden; }
   .pc-sel2.open .pc-dd { display: flex; }
@@ -272,12 +279,18 @@
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
   .ex-chip:hover { border-color: var(--kk-primary-medium); }
   .ex-chip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
-  .pc-ex-body { display: flex; gap: 32px; align-items: flex-start; }
-  .pc-ex-side { flex: 0 0 281px; display: flex; flex-direction: column; gap: 16px; }
+  .pc-ex-body { display: flex; gap: 24px; align-items: flex-start; }
+  .pc-ex-side { flex: 0 0 280px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  /* 首頁側欄篩選卡（Figma filter card_pc）：p20 r12、標題與選項 / 選項之間 gap 16、checkbox 20 1px #D5D6DB r4 */
+  #pcExplore .pc-fbox { gap: 16px; }
+  #pcExplore .pc-cb { gap: 12px; text-align: left; }
+  #pcExplore .pc-cb .box { border-width: 1px; }
+  #pcExplore .pc-pv { font-size: 14px; line-height: 20px; color: var(--kk-text-medium); margin-top: -16px; }
+  #pcExplore .pc-fdate { gap: 0; }
+  #pcExplore .pc-fdate .lb { padding: 12px 20px; }
   .pc-fbox { background: #fff; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
   .pc-fbox .fh { font-size: 16px; line-height: 24px; font-weight: 600; }
   .pc-fdate { flex-direction: row; align-items: stretch; padding: 0; overflow: hidden; }
-  .pc-fdate .cell { width: 64px; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--kk-border-lighter); padding: 20px 0; }
   .pc-fdate .lb { flex: 1 1 0; display: flex; align-items: center; justify-content: center; font-size: 16px; line-height: 24px; font-weight: 600; }
   .pc-cb { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; line-height: 20px; }
   .pc-cb .box { width: 20px; height: 20px; border: 1.5px solid var(--kk-border-light); border-radius: 4px; background: #fff; position: relative; flex: 0 0 auto; }
@@ -292,6 +305,7 @@
   .pc-range input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; pointer-events: auto; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 1.5px solid var(--kk-border-light); box-shadow: 0 1px 4px rgba(38,50,56,.16); cursor: pointer; }
   .pc-range input[type=range]::-moz-range-thumb { pointer-events: auto; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 1.5px solid var(--kk-border-light); cursor: pointer; }
   .pc-ex-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  #pcExplore .pc-ex-main { gap: 24px; }
   .pc-ex-cntbox { background: #fff; border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .pc-ex-cnt { font-size: 16px; line-height: 24px; }
   .pc-ex-cnt i { font-style: normal; font-weight: 600; color: var(--kk-primary-dark); margin-right: 4px; }
@@ -299,20 +313,25 @@
     border: 1px solid var(--kk-border-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
   .pc-ftag .x { display: inline-flex; width: 14px; height: 14px; }
   .pc-ftag-clear { height: 28px; padding: 0 12px; border-radius: 999px; background: var(--kk-surface-light); color: var(--kk-text-dark); font-size: 12px; }
-  /* 結果數 + 排序下拉 同一條 bar（Figma 3467-85809） */
-  .pc-ex-topbar { background: #fff; border-radius: 8px; padding: 12px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .pc-sortdd { position: relative; margin-left: auto; }
-  .pc-sortdd-btn { display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
-  .pc-sortdd-btn .lb { color: var(--kk-text-dark); }
-  .pc-sortdd-btn .cur { font-weight: 600; }
-  .pc-sortdd-btn .chev { margin-left: 4px; transition: transform .2s; color: var(--kk-text-medium); }
-  .pc-sortdd.open .pc-sortdd-btn { border-color: var(--kk-primary-medium); }
-  .pc-sortdd.open .pc-sortdd-btn .chev { transform: rotate(180deg); }
-  .pc-sortdd-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; min-width: 184px; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.12); padding: 4px; }
-  .pc-sortdd-menu[hidden] { display: none; }
-  .pc-sortdd-menu button { display: block; width: 100%; text-align: left; padding: 10px 12px; border-radius: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
-  .pc-sortdd-menu button:hover { background: var(--kk-surface-light); }
-  .pc-sortdd-menu button.sel { color: var(--kk-primary-dark); font-weight: 600; background: var(--kk-primary-lighter); }
+  /* 結果數 / 分隔線 / 排序項（Figma 3467-85809 Filter Summary Bar）：白底 p20 r12 gap 20 */
+  .pc-ex-topbar { background: #fff; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+  .pc-ex-cntrow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+  .pc-ex-topbar .pc-ex-cnt { display: inline-flex; gap: 4px; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-ex-topbar .pc-ex-cnt i { margin: 0; color: var(--kk-primary-dark); }
+  .pc-ex-ftags { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .pc-ex-ftags:empty { display: none; }
+  /* 已選條件 Chip：pill、1px #D5D6DB、px12 py8、14/20 + 16 叉；清除所有＝12/16 Semibold 青字底線 */
+  #pcExplore .pc-ftag { height: auto; padding: 8px 12px; gap: 4px; font-size: 14px; line-height: 20px; }
+  #pcExplore .pc-ftag .x { width: 16px; height: 16px; }
+  #pcExplore .pc-ftag-clear { height: auto; padding: 0; background: none; border-radius: 0; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--kk-primary-dark); text-decoration: underline; }
+  .pc-ex-div { height: 1px; background: var(--kk-border-lighter); }
+  .pc-ex-sorts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .pc-ex-sorts button { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-ex-sorts button .ic { width: 20px; height: 20px; }
+  .pc-ex-sorts button .i-sel, .pc-ex-sorts button.sel .i-def { display: none; }
+  .pc-ex-sorts button.sel .i-sel { display: inline-flex; }
+  .pc-ex-sorts button.sel, .pc-ex-sorts button:hover { color: var(--kk-primary-dark); }
+  .pc-ex-sorts .sp { align-self: stretch; width: 1px; background: var(--kk-border-lighter); }
   .pc-sortbox { background: #fff; border-radius: 8px; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 14px; line-height: 20px; }
   .pc-sortbox .lb, .pc-sortbox button { white-space: nowrap; }  /* 窄視窗整顆換行，不壓字 */
   .pc-sortbox .lb { color: var(--kk-text-darker); }
@@ -323,29 +342,41 @@
   .pc-sortbox button.sel { color: var(--kk-primary-dark); font-weight: 600; }
   .pc-ex-list { display: flex; flex-direction: column; gap: 16px; }
   .pc-empty { padding: 48px 0; text-align: center; color: var(--kk-text-medium); background: #fff; border-radius: 12px; }
-  /* 商品卡（Figma 2968-67063）：左 240 方圖 + 活動標籤，右標題/評分/標籤/價格 */
-  .pc-pcard { position: relative; display: flex; gap: 20px; background: #fff; border-radius: 12px; padding: 16px; width: 100%; transition: box-shadow .15s, transform .15s; }
+  /* 商品卡（Figma 3467-85809 [PC] Product Card (L)）：白底 r12 高 240 裁切；左 240 方圖貼邊；右 px24 py16 上下分佈 */
+  .pc-pcard { position: relative; display: flex; align-items: stretch; height: 240px; background: #fff; border-radius: 12px; overflow: hidden; width: 100%; text-align: left; transition: box-shadow .15s, transform .15s; }
   .pc-pcard:hover { box-shadow: var(--el-hover); transform: translateY(-2px); }
-  .pc-pcard .ph { position: relative; flex: 0 0 240px; height: 240px; border-radius: 8px; overflow: hidden; background: var(--kk-surface-light); }
-  .pc-pcard .ph img { width: 100%; height: 100%; object-fit: cover; }
-  .pc-pcard .ph .ovl { position: absolute; left: 8px; top: 8px; display: flex; gap: 6px; }
-  .pc-pcard .ph .ovl span { padding: 3px 8px; border-radius: 4px; background: rgba(33,33,33,.72); color: #fff; font-size: 12px; line-height: 16px; }
-  .pc-pcard .bd { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-  .pc-pcard .tt { font-size: 18px; line-height: 26px; font-weight: 600; padding-right: 40px;
+  .pc-pcard .ph { position: relative; flex: 0 0 240px; height: 240px; background: var(--kk-surface-light); }
+  .pc-pcard .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* 活動標籤：left/top 16、gap 4；rgba(0,0,0,.6) + blur 5、px4 py2 r4、12/16 白 */
+  .pc-pcard .ph .ovl { position: absolute; left: 16px; top: 16px; right: 16px; display: flex; gap: 4px; }
+  .pc-pcard .ph .ovl span { padding: 2px 4px; border-radius: 4px; background: rgba(0,0,0,.6); backdrop-filter: blur(5px); color: #fff; font-size: 12px; line-height: 16px; white-space: nowrap; }
+  .pc-pcard .bd { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 16px 24px; }
+  .pc-pcard .top { display: flex; flex-direction: column; gap: 12px; }
+  .pc-pcard .hd { display: flex; gap: 16px; align-items: flex-start; }
+  .pc-pcard .hw { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .pc-pcard .tt { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker);
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .pc-pcard .heart { position: absolute; right: 20px; top: 20px; }
-  .pc-prate { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }  /* 窄視窗允許換行，不撐破卡片 */
+  .pc-pcard .heart { flex: 0 0 24px; width: 24px; height: 24px; }
+  .pc-pcard .heart img { width: 24px; height: 24px; }
+  /* 評分列：星 16 + 4.9 Semibold 14/20 + (評論數)・已訂購 #727272 */
+  .pc-prate { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .pc-prate .ic { width: 16px; height: 16px; }
-  .pc-prate b { font-size: 16px; color: var(--kk-text-darker); }
-  .pc-ptags { display: flex; gap: 8px; flex-wrap: wrap; }
-  .pc-ptag { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 8px; border-radius: 4px; background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 12px; line-height: 16px; }
-  .pc-ptag .ic { width: 14px; height: 14px; }
-  .pc-pfoot { margin-top: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-  .pc-off { padding: 2px 8px; border-radius: 4px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
-  .pc-pprice { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
-  .pc-pprice .was { font-size: 14px; line-height: 20px; color: var(--kk-text-medium); text-decoration: line-through; }
-  .pc-pprice .now { font-size: 22px; line-height: 30px; font-weight: 700; }
+  .pc-prate b { font-weight: 600; color: var(--kk-text-darker); }
+  /* 屬性標籤：#F1F4F8、px4 py2、r4、12/16；首個帶信賴商家 16 icon */
+  .pc-ptags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .pc-ptag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px; border-radius: 4px; background: var(--kk-surface-light); color: var(--kk-text-darker); font-size: 12px; line-height: 16px; white-space: nowrap; }
+  .pc-ptag .ic { width: 16px; height: 16px; }
+  .pc-pfoot { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .pc-off { padding: 2px 4px; border-radius: 4px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
+  /* 價格：原價 16/16 #9C9DA0 刪除線 + gap 4 + 售價 Bold 20/20（NT$ 與數字 gap 2） */
+  .pc-pprice { display: flex; align-items: baseline; gap: 4px; white-space: nowrap; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  .pc-pprice .was { font-size: 16px; line-height: 16px; color: var(--kk-text-medium); text-decoration: line-through; }
+  .pc-pprice .now { display: inline-flex; align-items: baseline; gap: 2px; font-size: 20px; line-height: 20px; font-weight: 700; color: var(--kk-text-darker); }
   .pc-pager { display: flex; justify-content: center; gap: 12px; padding: 16px 0 0; }
+  #pcPager { padding: 0; }
+  #pcPager button { width: 32px; min-width: 32px; padding: 0; border: 1px solid #DDD; color: #333; }
+  #pcPager button.sel { border-color: var(--kk-primary-medium); color: #fff; }
+  #pcPager button:disabled { color: var(--kk-border-light); }
   .pc-pager button { min-width: 32px; height: 32px; padding: 0 10px; border-radius: 4px; font-size: 14px; line-height: 20px; background: #fff; }
   .pc-pager button:hover { color: var(--kk-primary-dark); }
   .pc-pager button.sel { background: var(--kk-primary-medium); color: #fff; }
@@ -1263,17 +1294,17 @@
   </div>
 
   <!-- 面包屑 -->
-  <div class="col"><div class="pc-crumb"><a data-toast="pc">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>eSIM/WIFI</span></div></div>
+  <div class="col"><div class="pc-crumb pc-crumb--home"><a data-toast="pc">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>eSIM/WIFI</span></div></div>
 
   <!-- 為什麼選擇 KKday：4 欄橫排 -->
   <section class="pc-why">
     <div class="col">
       <div class="sec-t">為什麼選擇KKday？</div>
       <div class="pc-whys">
-        <div class="pc-whyc"><span class="ic">{{PICTO_tours}}</span><span class="tx"><b>簡單易用</b><p>透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</p></span></div>
-        <div class="pc-whyc"><span class="ic">{{PICTO_cruise}}</span><span class="tx"><b>靈活彈性</b><p>天數與流量自由組合，行程有變也能隨時加購延長。</p></span></div>
-        <div class="pc-whyc"><span class="ic">{{PICTO_travel}}</span><span class="tx"><b>80+ 國家覆蓋</b><p>一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</p></span></div>
-        <div class="pc-whyc"><span class="ic">{{PICTO_tours}}</span><span class="tx"><b>客服支援</b><p>24 小時中文客服線上，安裝與連線問題隨時協助。</p></span></div>
+        <div class="pc-whyc"><span class="ic">{{EX_pictoTours}}</span><span class="tx"><b>簡單易用</b><p>透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</p></span></div>
+        <div class="pc-whyc"><span class="ic">{{EX_pictoCruise}}</span><span class="tx"><b>靈活彈性</b><p>天數與流量自由組合，行程有變也能隨時加購延長。</p></span></div>
+        <div class="pc-whyc"><span class="ic">{{EX_pictoTravel}}</span><span class="tx"><b>80+ 國家覆蓋</b><p>一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</p></span></div>
+        <div class="pc-whyc"><span class="ic">{{EX_pictoTours}}</span><span class="tx"><b>客服支援</b><p>24 小時中文客服線上，安裝與連線問題隨時協助。</p></span></div>
       </div>
     </div>
   </section>
@@ -1284,11 +1315,11 @@
       <div class="pc-faq-head"><span class="sec-t">常見問題</span><button class="more" data-toast="pc">查看更多</button></div>
       <div class="pc-guide-card">
         <span class="pc-guide-t">eSIM 安裝指南</span>
-        <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_apple}}</span>iOS</button>
-        <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_android}}</span>Android</button>
+        <span class="pc-guide-btns"><button class="pc-guide" data-toast="pc"><span class="ic">{{PC_apple}}</span>iOS</button>
+        <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_android}}</span>Android</button></span>
       </div>
       <div class="pc-faq-list">
-      <div class="pc-faq-item open">
+      <div class="pc-faq-item">
         <button class="pc-faq-q"><span class="q">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
         <div class="pc-faq-a">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 &gt; 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
       </div>
@@ -1314,22 +1345,21 @@
 
   <!-- 探索更多：左篩選欄 + 排序 + 商品列表（Figma 2968-67063） -->
   <section class="pc-explore" id="pcExplore">
-    <div class="colw">
+    <div class="col">
       <div class="pc-ex-title">探索更多</div>
-      <div class="pc-ex-selects">
-        <div class="pc-sel2" id="exSelDest">
-          <button class="sbox ph-on"><span class="ic ic-20">{{IC_locationLine}}</span><span class="lb">選擇目的地</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
-          <div class="pc-dd" id="exDdDest"><div class="bd"></div></div>
-        </div>
-        <div class="pc-sel2" id="exSelPickup" hidden>
-          <button class="sbox ph-on"><span class="ic ic-20">{{IC_frontDesk}}</span><span class="lb">選擇領取/郵寄地</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
-          <div class="pc-dd" id="exDdPickup"><div class="bd"></div><div class="ft"><button class="clear" id="exPickClear">清除</button><button class="ok" id="exPickOk">確定</button></div></div>
-        </div>
-      </div>
       <div class="pc-ex-body">
         <aside class="pc-ex-side">
+          <!-- 目的地 / 領取地 / 出發日期：同款 filter date_pc 列（左 64 圖標格 + 分隔線 + 置中標籤）（Figma 3467-85809） -->
+          <div class="pc-sel2" id="exSelDest">
+            <button class="sbox ph-on"><span class="cell">{{EX_location}}</span><span class="lb">請選擇目的地</span></button>
+            <div class="pc-dd" id="exDdDest"><div class="bd"></div></div>
+          </div>
+          <div class="pc-sel2" id="exSelPickup" hidden>
+            <button class="sbox ph-on"><span class="cell">{{EX_frontDesk}}</span><span class="lb">請選擇領取/郵寄地</span></button>
+            <div class="pc-dd" id="exDdPickup"><div class="bd"></div><div class="ft"><button class="clear" id="exPickClear">清除</button><button class="ok" id="exPickOk">確定</button></div></div>
+          </div>
           <div class="pc-fbox pc-fdate pc-caltrigger" style="cursor:pointer">
-            <span class="cell"><span class="ic ic-24">{{PC_calendar20}}</span></span>
+            <span class="cell">{{EX_calendar}}</span>
             <span class="lb">出發日期</span>
           </div>
           <div class="pc-fbox" id="pcTypeBox">
@@ -1366,17 +1396,15 @@
           </div>
         </aside>
         <div class="pc-ex-main">
+          <!-- 結果數 + 已選條件 / 分隔線 / 排序項（Figma 3467-85809 Filter Summary Bar） -->
           <div class="pc-ex-topbar">
-            <span class="pc-ex-cnt"><i id="pcExCnt">162</i>個結果</span>
-            <span id="pcFtags" style="display:contents"></span>
-            <div class="pc-sortdd" id="pcSortDd">
-              <button class="pc-sortdd-btn" id="pcSortBtn"><span class="lb">排序方式：</span><span class="cur" id="pcSortCur">KKday 推薦</span><span class="ic ic-16 chev">{{IC_arrowDown}}</span></button>
-              <div class="pc-sortdd-menu" id="pcSort" hidden>
-                <button data-sort="0">KKday 推薦</button>
-                <button data-sort="3">熱門程度</button>
-                <button data-sort="2">用戶評價（高至低）</button>
-                <button data-sort="1">價格（低至高）</button>
-              </div>
+            <div class="pc-ex-cntrow"><span class="pc-ex-cnt"><i id="pcExCnt">162</i>搜尋結果</span><span class="pc-ex-ftags" id="pcFtags"></span></div>
+            <div class="pc-ex-div"></div>
+            <div class="pc-ex-sorts" id="pcSort">
+              <button data-sort="0"><span class="ic i-def">{{EX_thumbsUp}}</span><span class="ic i-sel">{{EX_thumbsUpSel}}</span>KKday 推薦</button><span class="sp"></span>
+              <button data-sort="1"><span class="ic i-def">{{EX_currency}}</span><span class="ic i-sel">{{EX_currencySel}}</span>價格低到高</button><span class="sp"></span>
+              <button data-sort="2"><span class="ic i-def">{{EX_starLine}}</span><span class="ic i-sel">{{EX_starLineSel}}</span>高評分優先</button><span class="sp"></span>
+              <button data-sort="3"><span class="ic i-def">{{EX_fireLine}}</span><span class="ic i-sel">{{EX_fireLineSel}}</span>高銷量優先</button>
             </div>
           </div>
           <div class="pc-ex-list" id="pcExList"></div>
@@ -2062,7 +2090,7 @@
   });
 
   // ================= 探索更多 =================
-  var PC_ICONS = { star: '{{IC_starFill16}}', medal: '{{PC_medal}}', heart: '{{PC_heartGrey}}' };
+  var PC_ICONS = { star: '{{IC_starFill16}}', medal: '{{PC_medal}}', heart: '{{PC_heartGrey}}', exStar: '{{EX_starFill}}', exHeart: '{{EX_heartLine}}', exTrusted: '{{EX_trusted}}' };
   var PC_PRODUCTS = [
     { img: '{{IMG_SW_C3}}', type: 'eSIM', title: '中港澳 5G eSIM・嚴選電信商・全面支援 AI・免翻牆', ovl: ['即買即用', '免翻牆'], tags: ['信賴商家', '免費取消', '立即確認'], rating: 4.5, reviews: 426, bought: '1K+', now: 2045, was: 2272 },
     { img: '{{IMG_SW_C1}}', type: 'eSIM', title: '日本 eSIM 無限流量・Rakuten / KDDI / Docomo 三大電信・支援 ChatGPT', ovl: ['即買即用', '免費取消'], tags: ['信賴商家', '免費取消', '立即確認'], rating: 4.7, reviews: 2318, bought: '100K+', now: 1180, was: 1475 },
@@ -2116,9 +2144,9 @@
   function exClose() { exState.open = null; document.getElementById('exSelDest').classList.remove('open'); document.getElementById('exSelPickup').classList.remove('open'); }
   function exPickDest(n) {
     exState.dest = n; exState.picks = [];
-    exSetText('exSelDest', n, '選擇目的地');
+    exSetText('exSelDest', n, '請選擇目的地');
     document.getElementById('exSelPickup').hidden = false;
-    exSetText('exSelPickup', '', '選擇領取/郵寄地');
+    exSetText('exSelPickup', '', '請選擇領取/郵寄地');
     exRenderPickup();
     exOpen('pickup');  // 選了目的地：顯示領取地選框並自動展開其下拉
   }
@@ -2126,7 +2154,7 @@
   document.querySelector('#exSelPickup .sbox').addEventListener('click', function (e) { e.stopPropagation(); if (exState.open === 'pickup') { exClose(); } else { exRenderPickup(); exOpen('pickup'); } });
   document.querySelectorAll('#exDdDest, #exDdPickup').forEach(function (d) { d.addEventListener('click', function (e) { e.stopPropagation(); }); });
   document.getElementById('exPickClear').addEventListener('click', function () { exState.picks = []; exRenderPickup(); });
-  document.getElementById('exPickOk').addEventListener('click', function () { exSetText('exSelPickup', exState.picks.join('、'), '選擇領取/郵寄地'); exClose(); });
+  document.getElementById('exPickOk').addEventListener('click', function () { exSetText('exSelPickup', exState.picks.join('、'), '請選擇領取/郵寄地'); exClose(); });
   document.addEventListener('click', function () { if (exState.open) exClose(); });
 
   var pcEx = { type: [], sort: 0, page: 1 };
@@ -2166,16 +2194,19 @@
   var PC_EX_PAGESZ = 6, PL_PAGESZ = 5;
   function pcBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
   function pcMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
+  // 商品卡（Figma 3467-85809 [PC] Product Card (L)）：高 240、左 240 方圖貼邊 + 活動標籤；右 px24 py16：標題/評分 + 收藏、屬性標籤、底部折扣標籤 + 價格
   function pcCardHTML(p) {
     var off = p.was ? '折扣標籤' : '';
     return '<button class="pc-pcard" data-toast="old">' +
       '<span class="ph"><img alt="" src="' + p.img + '"><span class="ovl">' + p.ovl.map(function (s) { return '<span>' + s + '</span>'; }).join('') + '</span></span>' +
-      '<span class="bd"><span class="tt"></span>' +
-      '<span class="pc-prate"><span class="ic">' + PC_ICONS.star + '</span><b>' + p.rating.toFixed(1) + '</b><span>(' + p.reviews.toLocaleString('en-US') + ')</span><span>・</span><span>' + p.bought + ' 個已訂購</span></span>' +
-      '<span class="pc-ptags">' + p.tags.map(function (s, i) { return '<span class="pc-ptag">' + (i === 0 ? '<span class="ic">' + PC_ICONS.medal + '</span>' : '') + s + '</span>'; }).join('') + '</span>' +
-      '<span class="pc-pfoot">' + (off ? '<span class="pc-off">' + off + '</span>' : '') +
-      '<span class="pc-pprice">' + (p.was ? '<span class="was">' + pcMoney(p.was) + '</span>' : '') + '<span class="now">' + pcMoney(p.now) + '</span></span></span>' +
-      '</span><span class="heart ic ic-24">' + PC_ICONS.heart + '</span></button>';
+      '<span class="bd"><span class="top">' +
+        '<span class="hd"><span class="hw"><span class="tt"></span>' +
+          '<span class="pc-prate"><span class="ic">' + PC_ICONS.exStar + '</span><b>' + p.rating.toFixed(1) + '</b><span class="m">(' + p.reviews.toLocaleString('en-US') + ')・' + p.bought + ' 個已訂購</span></span></span>' +
+          '<span class="heart">' + PC_ICONS.exHeart + '</span></span>' +
+        '<span class="pc-ptags">' + p.tags.map(function (s, i) { return '<span class="pc-ptag">' + (i === 0 ? '<span class="ic">' + PC_ICONS.exTrusted + '</span>' : '') + s + '</span>'; }).join('') + '</span>' +
+      '</span><span class="pc-pfoot">' + (off ? '<span class="pc-off">' + off + '</span>' : '') +
+        '<span class="pc-pprice">' + (p.was ? '<span class="was">' + pcMoney(p.was) + '</span>' : '') + '<span class="now"><span>NT$</span><span>' + p.now.toLocaleString('en-US') + '</span></span></span></span>' +
+      '</span></button>';
   }
   function renderPcExplore(keepPage) {
     if (!keepPage) pcEx.page = 1;
@@ -2196,7 +2227,6 @@
     document.getElementById('pcExCnt').textContent = list.length ? (list.length * 15 + 12) : 0;
     document.querySelectorAll('#pcTypeBox .pc-cb').forEach(function (b) { b.classList.toggle('on', pcEx.type.indexOf(b.getAttribute('data-type')) >= 0); });
     document.querySelectorAll('#pcSort button').forEach(function (b) { b.classList.toggle('sel', +b.getAttribute('data-sort') === pcEx.sort); });
-    var scur = document.getElementById('pcSortCur'), ssel = document.querySelector('#pcSort button[data-sort="' + pcEx.sort + '"]'); if (scur && ssel) scur.textContent = ssel.textContent;
     // 已選條件 tag（Figma 3096-60605：結果數旁 tag + Clear all）
     var ft = document.getElementById('pcFtags'); ft.innerHTML = '';
     pcEx.type.forEach(function (t) {
@@ -2205,7 +2235,7 @@
       ft.appendChild(tag);
     });
     if (pcEx.type.length) {
-      var clr = h('<button class="pc-ftag-clear">Clear all</button>');
+      var clr = h('<button class="pc-ftag-clear">清除所有</button>');
       clr.addEventListener('click', function () { pcEx.type = []; renderPcExplore(); });
       ft.appendChild(clr);
     }
@@ -2220,14 +2250,8 @@
       if (b.closest('#pcListPage')) renderPlCards();
     });
   });
-  document.querySelectorAll('#pcSort button').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); pcEx.sort = +b.getAttribute('data-sort'); document.getElementById('pcSortDd').classList.remove('open'); document.getElementById('pcSort').hidden = true; renderPcExplore(true); }); });
-  // 排序下拉開合（Figma 3467-85809：單一「排序方式 ▾」下拉）
-  (function () {
-    var dd = document.getElementById('pcSortDd'), btn = document.getElementById('pcSortBtn'), menu = document.getElementById('pcSort');
-    if (btn) btn.addEventListener('click', function (e) { e.stopPropagation(); var open = dd.classList.toggle('open'); menu.hidden = !open; });
-    document.addEventListener('click', function () { dd.classList.remove('open'); if (menu) menu.hidden = true; });
-    if (menu) menu.addEventListener('click', function (e) { e.stopPropagation(); });
-  })();
+  // 排序項（Figma 3467-85809：KKday 推薦 / 價格低到高 / 高評分優先 / 高銷量優先，選中＝青字 + 青圖標）
+  document.querySelectorAll('#pcSort button').forEach(function (b) { b.addEventListener('click', function () { pcEx.sort = +b.getAttribute('data-sort'); renderPcExplore(true); }); });
   // #pcPager 由 buildPager 動態產生並綁定翻頁（見 renderPcExplore）
   (function () {  // 價格區間雙滑塊（NT$0–12,000+，仿真）
     var rmin = document.getElementById('pcRmin'), rmax = document.getElementById('pcRmax'), fill = document.getElementById('pcFill'), pv = document.getElementById('pcPv');
@@ -2283,11 +2307,11 @@
     var mapped = exMapDestPC(name);
     exState.dest = mapped; exState.picks = [];
     if (mapped) {
-      exSetText('exSelDest', mapped, '選擇目的地');
+      exSetText('exSelDest', mapped, '請選擇目的地');
       document.getElementById('exSelPickup').hidden = false;
-      exSetText('exSelPickup', '', '選擇領取/郵寄地');
+      exSetText('exSelPickup', '', '請選擇領取/郵寄地');
     } else {
-      exSetText('exSelDest', '', '選擇目的地');
+      exSetText('exSelDest', '', '請選擇目的地');
       document.getElementById('exSelPickup').hidden = true;
     }
     renderPcExplore();
