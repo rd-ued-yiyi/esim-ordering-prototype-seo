@@ -368,6 +368,20 @@ pc_subs = {
     "{{EX_apple}}":        pc_img("explore/appleLogo.svg"),    # 安裝指南按鈕 #212121（Figma 3467-85809）
     "{{EX_android}}":      pc_img("explore/androidLogo.svg"),
     "{{EX_crossLine}}":    pc_img("explore/crossLine.svg"),  # 已選 Chip 刪除細線叉 16（Figma 3467-85809）
+    # 選擇目的地 dialog（Figma 3554-49785 / 49810 / 49892）
+    "{{DLG_cross}}":       pc_img("dlg/cross.svg"),
+    "{{DLG_search}}":      pc_img("dlg/search.svg"),
+    "{{DLG_location}}":    pc_img("dlg/location.svg"),
+    "{{DLG_locationSel}}": pc_img("dlg/locationSel.svg"),
+    "{{DLG_earth}}":       pc_img("dlg/earth.svg"),
+    "{{DLG_earthSel}}":    file_img("assets/pc/dlg/earth.svg", recolor=("#212121", "#26BEC9")),
+    "{{DLG_multi}}":       pc_img("dlg/multi.svg"),
+    "{{DLG_multiSel}}":    pc_img("dlg/multiSel.svg"),
+    "{{DLG_fire}}":        pc_img("dlg/fire.svg"),
+    "{{DLG_delete}}":      pc_img("dlg/delete.svg"),
+    "{{DLG_clear}}":       pc_img("dlg/clear.svg"),
+    "{{DLG_resLocation}}": pc_img("dlg/resLocation.svg"),
+    "{{DLG_resEarth}}":    pc_img("dlg/resEarth.svg"),
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),

@@ -466,6 +466,56 @@
   .pc-dlg-ft .ghost { border: 1px solid var(--kk-border-light); color: var(--kk-text-darker); }
   .pc-dlg-ft .ok { background: var(--kk-primary-button); color: #fff; }
   .pc-dlg-ft .ok:disabled { background: rgba(26,182,193,.4); cursor: default; }
+  /* ===== 選擇目的地 dialog 對齊 Figma 3554-49785（國家/地區）/ 3554-49810（多國自由選擇）/ 3554-49892（搜尋結果） ===== */
+  #pcDlgMask { background: rgba(0,0,0,.5); }
+  #pcDlg .pc-dlg-hd { height: 64px; align-items: flex-start; gap: 8px; padding: 20px 20px 12px; }
+  #pcDlg .pc-dlg-hd .t { flex: 1 1 0; padding: 2px 4px; font-size: 22px; line-height: 28px; }
+  #pcDlg .pc-dlg-hd button { margin: 0; border-radius: 16px; }
+  #pcDlg .pc-dlg-hd button .ic, #pcDlg .pc-dlg-hd button .ic > img { width: 20px; height: 20px; }
+  /* 搜尋列：42 高、#F1F4F8 底 + 1px #D5D6DB、r32、px16 gap8、icon 18、16/24；輸入中（有關鍵字）無邊 */
+  #pcDlg .pc-dlg-search { margin: 16px 24px 0; gap: 8px; padding: 0 16px; border: 1px solid var(--kk-border-light); border-radius: 32px; }
+  #pcDlg.searching .pc-dlg-search { border-color: transparent; }
+  #pcDlg .pc-dlg-search > .ic, #pcDlg .pc-dlg-search > .ic img { width: 18px; height: 18px; }
+  #pcDlg .pc-dlg-search input { font-size: 16px; line-height: 24px; }
+  #pcDlg .pc-dlg-search .pc-dlg-clear .ic, #pcDlg .pc-dlg-search .pc-dlg-clear img { width: 20px; height: 20px; }
+  /* 模式 Chip：pill、1px #D5D6DB、px12 py8、icon 16 + 文字 px4 14/20；選中＝#F0FAFB + #26BEC9 邊 + #26BEC9 字（不加粗） */
+  #pcDlg .pc-dlg-modes { gap: 10px; padding: 20px 24px 16px; }
+  #pcDlg .pc-mode { height: auto; gap: 0; padding: 8px 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  #pcDlg .pc-mode .ic, #pcDlg .pc-mode .ic img { width: 16px; height: 16px; margin-right: 4px; }
+  #pcDlg .pc-mode::after { content: ''; width: 4px; }
+  #pcDlg .pc-mode.sel { font-weight: 400; color: var(--kk-primary-medium); }
+  /* 內容區：py8、分組間距 32；分組 px24、標題與選項 gap 16；分頁列滿寬 */
+  #pcDlg .pc-dlg-bd { padding: 8px 0 24px; }
+  #pcDlg .dlg-group { padding: 0 24px; margin-top: 32px; }
+  #pcDlg .dlg-group:first-child { margin-top: 0; }
+  #pcDlg .dlg-group .gh { gap: 8px; margin-bottom: 16px; }
+  #pcDlg .dlg-group .gh .ic-24, #pcDlg .dlg-group .gh .ic-24 img { width: 24px; height: 24px; }
+  #pcDlg .dlg-group .gh .gact .ic img { width: 20px; height: 20px; }
+  /* 目的地 Chip：3 欄等寬 grid gap 8、1px #D5D6DB、r8、p8（文字 px4）置中 14/20；選中＝#F0FAFB + #26BEC9 邊字 */
+  #pcDlg .dlg-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  #pcDlg .dlg-chip { justify-content: center; padding: 8px 12px; border-color: var(--kk-border-light); overflow: hidden; text-overflow: ellipsis; }
+  #pcDlg .dlg-chip:hover { border-color: var(--kk-primary-medium); }
+  #pcDlg .dlg-chip.sel { color: var(--kk-primary-medium); }
+  /* 洲別分頁（KKTab）：滿寬、px12、底線 #E6E9ED；項目 pt12 px12、選中 Semibold #13A3B6 + 2px 底條（距文字 10） */
+  #pcDlg .dlg-tabs { margin-top: 32px; padding: 0 12px; }
+  #pcDlg .dlg-tabs:first-child { margin-top: 0; }
+  #pcDlg .dlg-tab { padding: 12px 12px 12px; }
+  #pcDlg .dlg-tab.sel::after { border-radius: 2px 2px 0 0; }
+  #pcDlg .dlg-tabs + .dlg-group { margin-top: 32px; }
+  #pcDlg .dlg-rows { gap: 8px; }
+  /* 多選提示 + 底部按鈕：提示 12/16 上邊線 pt12 px24 gap8、已選數 Medium #26BEC9；按鈕 p24 gap16、清除 1px #727272 */
+  #pcDlg .dlg-hint { gap: 8px; padding: 12px 24px 0; border-top: 1px solid var(--kk-border-lighter); }
+  #pcDlg .dlg-hint b { font-weight: 500; color: var(--kk-primary-medium); }
+  #pcDlg .pc-dlg-ft { border-top: 0; }
+  #pcDlg .pc-dlg-ft .ghost { border-color: var(--kk-text-dark); }
+  /* 搜尋結果：列表 py12 px24；項目 px12 py8（內 py8 gap12）、r8、hover #F1F4F8；名稱 14/20 命中字 #13A3B6、副標 12/16 #9C9DA0 gap4 */
+  #pcDlg .pc-dlg-results { padding: 28px 24px 24px; }  /* 搜尋列區塊 pb16 + 列表 py12 */
+  #pcDlg .pc-dlg-empty { padding-top: 64px; }
+  #pcDlg .pc-dlg-result { gap: 12px; padding: 16px 12px; }
+  #pcDlg .pc-dlg-result .ic { margin-top: 0; }
+  #pcDlg .pc-dlg-result .ic img { width: 20px; height: 20px; }
+  #pcDlg .pc-dlg-result .rc { gap: 4px; }
+  #pcDlg .pc-dlg-result .nm mark { color: var(--kk-primary-dark); }
   .pc-dlg[data-mode="country"] .pc-dlg-ft, .pc-dlg[data-mode="country"] .dlg-hint,
   .pc-dlg[data-mode="region"] .pc-dlg-ft, .pc-dlg[data-mode="region"] .dlg-hint { display: none; }
 
@@ -1551,14 +1601,14 @@
 <!-- ============ 目的地選擇彈窗（三模式） ============ -->
 <div class="pc-mask" id="pcDlgMask"></div>
 <div class="pc-dlg" id="pcDlg" data-mode="country" role="dialog" aria-modal="true">
-  <div class="pc-dlg-hd"><span class="t">請選擇目的地</span><button id="pcDlgClose" aria-label="關閉"><span class="ic ic-24">{{IC_cross}}</span></button></div>
-  <div class="pc-dlg-search"><span class="ic ic-16">{{IC_searchGrey}}</span><input id="pcDlgQ" placeholder="輸入國家或地區名稱搜尋" autocomplete="off"><button class="pc-dlg-clear" id="pcDlgClearKw" aria-label="清除" hidden><span class="ic ic-16">{{IC_crossCircle}}</span></button></div>
+  <div class="pc-dlg-hd"><span class="t">請選擇目的地</span><button id="pcDlgClose" aria-label="關閉"><span class="ic">{{DLG_cross}}</span></button></div>
+  <div class="pc-dlg-search"><span class="ic">{{DLG_search}}</span><input id="pcDlgQ" placeholder="輸入國家或地區名稱搜尋" autocomplete="off"><button class="pc-dlg-clear" id="pcDlgClearKw" aria-label="清除" hidden><span class="ic">{{DLG_clear}}</span></button></div>
   <div class="pc-dlg-results" id="pcDlgResults"></div>
   <div class="pc-dlg-empty" id="pcDlgEmpty"></div>
   <div class="pc-dlg-modes" id="pcDlgModes">
-    <button class="pc-mode sel" data-mode="country"><span class="ic ic-16 ic-off">{{IC_locationDark}}</span><span class="ic ic-16 ic-on">{{IC_locationLineCyan}}</span>國家/地區</button>
-    <button class="pc-mode" data-mode="region"><span class="ic ic-16 ic-off">{{IC_earthLine}}</span><span class="ic ic-16 ic-on">{{IC_earthCyan}}</span>多國區域</button>
-    <button class="pc-mode" data-mode="multi"><span class="ic ic-16 ic-off">{{IC_multi}}</span><span class="ic ic-16 ic-on">{{IC_multiCyan}}</span>多國自由選擇</button>
+    <button class="pc-mode sel" data-mode="country"><span class="ic ic-off">{{DLG_location}}</span><span class="ic ic-on">{{DLG_locationSel}}</span>國家/地區</button>
+    <button class="pc-mode" data-mode="region"><span class="ic ic-off">{{DLG_earth}}</span><span class="ic ic-on">{{DLG_earthSel}}</span>多國區域</button>
+    <button class="pc-mode" data-mode="multi"><span class="ic ic-off">{{DLG_multi}}</span><span class="ic ic-on">{{DLG_multiSel}}</span>多國自由選擇</button>
   </div>
   <div class="pc-dlg-bd" id="pcDlgBody"></div>
   <div class="dlg-hint"><span>最多可選擇5個</span><span id="pcDlgSelInfo" hidden>已選擇 <b id="pcDlgSelCount">0</b> 個</span></div>
@@ -1972,7 +2022,7 @@
     }
     dialog.classList.remove('no-result');
     items.forEach(function (it) {
-      var icon = it.type === 'country' ? '{{IC_locationDark}}' : '{{IC_earthLine}}';
+      var icon = it.type === 'country' ? '{{DLG_resLocation}}' : '{{DLG_resEarth}}';
       var row = h('<button class="pc-dlg-result"><span class="ic ic-20">' + icon + '</span><span class="rc"><span class="nm"></span><span class="sub"></span></span></button>');
       row.querySelector('.nm').innerHTML = it.name.split(dlg.q).join('<mark>' + dlg.q + '</mark>');
       row.querySelector('.sub').textContent = it.sub;
@@ -1982,7 +2032,7 @@
   }
 
   function dlgGroup(title, fire, action) {
-    return h('<div class="dlg-group"><div class="gh">' + (fire ? '<span class="ic ic-20">{{IC_fire}}</span>' : '') + '<span>' + title + '</span>' + (action || '') + '</div></div>');
+    return h('<div class="dlg-group"><div class="gh">' + (fire ? '<span class="ic ic-24">{{DLG_fire}}</span>' : '') + '<span>' + title + '</span>' + (action || '') + '</div></div>');
   }
   function dlgChip(name, onTap, selected) {
     var c = h('<button class="dlg-chip' + (selected ? ' sel' : '') + '"></button>'); c.textContent = name;
@@ -2011,7 +2061,7 @@
     if (dlg.mode === 'country') {
       var hist = histGet().filter(match);
       if (hist.length && !dlg.q) {
-        var g = dlgGroup('最近選擇', false, '<button class="gact" id="dlgHistClear" aria-label="清除"><span class="ic ic-20">{{IC_trash}}</span></button>');
+        var g = dlgGroup('最近選擇', false, '<button class="gact" id="dlgHistClear" aria-label="清除"><span class="ic ic-20">{{DLG_delete}}</span></button>');
         var chips = h('<div class="dlg-chips"></div>');
         hist.forEach(function (n) { chips.appendChild(dlgChip(n, pickDest)); });
         g.appendChild(chips); bd.appendChild(g);
