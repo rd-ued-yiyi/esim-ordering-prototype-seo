@@ -2417,7 +2417,7 @@
   function pcCardHTML(p) {
     var off = p.was ? '折扣標籤' : '';
     return '<button class="pc-pcard" data-toast="old">' +
-      '<span class="ph"><img alt="" src="' + p.img + '"><span class="ovl">' + p.ovl.map(function (s) { return '<span>' + s + '</span>'; }).join('') + '</span></span>' +
+      '<span class="ph"><img alt="" src="' + p.img + '"></span>' +  // 圖片上不疊活動標籤
       '<span class="bd"><span class="top">' +
         '<span class="hd"><span class="hw"><span class="tt"></span>' +
           '<span class="pc-prate"><span class="ic">' + PC_ICONS.exStar + '</span><b>' + p.rating.toFixed(1) + '</b><span class="m">(' + p.reviews.toLocaleString('en-US') + ')・' + p.bought + ' 個已訂購</span></span></span>' +
