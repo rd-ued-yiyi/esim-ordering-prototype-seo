@@ -130,7 +130,7 @@ SHOTS = [
 
 subs = {
     "{{HERO_SVG}}":        (ROOT / "assets" / "hero" / "hero-scene.svg").read_text(encoding="utf-8"),
-    "{{HERO_ILLUS_SVG}}":  (ROOT / "assets" / "hero-pc" / "hero-illus.svg").read_text(encoding="utf-8"),
+    "{{HERO_ILLUS_SVG}}":  (ROOT / "assets" / "hero-pc" / "hero-bg-pc.svg").read_text(encoding="utf-8"),
     "{{HERO_MOTION_CSS}}": (ROOT / "assets" / "hero-pc" / "hero-motion.css").read_text(encoding="utf-8"),
     # 目的地選擇資料（洲別/熱門/多國區域）：mweb 與 PC 共用一份，改一處兩端同步
     "{{GEO_DATA}}":        (ROOT / "src" / "geo-data.js").read_text(encoding="utf-8").strip(),

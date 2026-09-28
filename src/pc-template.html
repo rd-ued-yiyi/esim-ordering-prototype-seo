@@ -61,15 +61,12 @@
   @media (max-width: 800px) { .pc-right .it:not(.app):not([aria-label]) { display: none; } }
 
   /* ---------- hero：未選=標題+搜尋卡；已選=目的地 pill+套餐面板（Figma 2968-67063 / 3096-60605） ---------- */
-  /* hero 背景：PC 專用素材（Figma 3467-85807：純青底 #26BEC9 + 波浪線 + 右上手機/地球/星光） */
-  /* 波浪：全寬鋪滿、兩側不留缺口不截斷（100% 寬等比） */
-  .pc-hero { position: relative; overflow: hidden; padding-bottom: 40px; background-color: #26BEC9;
-    background-image: url(assets/hero-pc/hero-waves.svg); background-repeat: no-repeat; background-position: center top; background-size: 100% auto; }
+  /* hero 背景：PC 專用素材整張還原（Figma 3467-85807：純青底 #26BEC9 + 波浪線 + 右上手機/地球/星光），整體依寬度等比縮放 */
+  .pc-hero { position: relative; overflow: hidden; padding-bottom: 40px; background-color: #26BEC9; }
   .pc-hero .col { position: relative; z-index: 1; }
-  /* 主視覺插畫：獨立一層，錨定內容欄右緣、隨視窗縮放但始終在可視區內 */
-  .pc-hero-art { position: absolute; z-index: 0; pointer-events: none; top: 12px;
-    right: max(-16px, calc(50vw - 570px - 48px)); width: min(340px, 38vw); aspect-ratio: 314 / 284; }
-  .pc-hero-art svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  /* 整張主視覺：1440×800 精確構圖，寬度 100% 等比縮放（波浪自然到邊、插畫按原比例在右上、隨縮放始終可見） */
+  .pc-hero-art { position: absolute; z-index: 0; pointer-events: none; top: 0; left: 0; width: 100%; }
+  .pc-hero-art svg { width: 100%; height: auto; display: block; }
   /* hero 動效：兩顆光點沿橢圓軌道繞地球公轉、繞到背面淡出（Figma 3467-85807 動畫節點精確關鍵幀，8s linear infinite） */
 {{HERO_MOTION_CSS}}
   #hgA { animation: heroOrbitA 8s linear infinite, heroFadeAglow 8s linear infinite; }
