@@ -348,6 +348,7 @@ pc_subs = {
     "{{PC_location20}}":    pc_img("imgIcLocationLine.svg"),
     "{{PC_calendar20}}":    pc_img("imgIcCalendarLine.svg"),
     "{{PC_swap20}}":        pc_img("imgIcSwapVerticalLine.svg"),
+    "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
     "{{PC_avatar}}":        png_datauri("pc/imgEllipse2.png"),
     "{{PC_apple}}":         pc_img("imgIcAppleLogoFill.svg"),
