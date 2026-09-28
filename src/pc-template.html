@@ -250,23 +250,26 @@
   .pc-whyc b { font-size: 16px; line-height: 24px; font-weight: 600; }
   .pc-whyc p { font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
 
-  /* ---------- eSIM 安裝指南：標題 + 兩個入口同排（Figma 2968-67063） ---------- */
-  .pc-guide-row { padding: 48px 0 0; display: flex; align-items: center; gap: 24px; }
-  .pc-guide { height: 48px; display: inline-flex; align-items: center; gap: 8px; padding: 0 20px;
-    border: 1px solid var(--kk-border-lighter); border-radius: 8px; background: #fff; font-size: 16px; line-height: 24px; transition: border-color .15s, box-shadow .15s; }
-  .pc-guide:hover { border-color: var(--kk-primary-medium); box-shadow: var(--el-card); }
-  .pc-guide .ic { width: 24px; height: 24px; }
-
-  /* ---------- 常見問題：整寬單欄手風琴（Figma 2968-67063） ---------- */
+  /* ---------- 常見問題（Figma 3467-85809）：標題 + 白卡A（eSIM 安裝指南）+ 白卡B（FAQ 手風琴） ---------- */
   .pc-faq { padding: 48px 0 56px; }
-  .pc-faq-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .pc-faq-head .more { font-size: 14px; line-height: 20px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .pc-faq-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .pc-faq-head .more { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); text-decoration: underline; text-underline-offset: 3px; }
+  /* eSIM 安裝指南：白卡（標題 + iOS / Android 入口） */
+  .pc-guide-card { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+  .pc-guide-t { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin-right: 12px; }
+  .pc-guide { height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 20px;
+    border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); transition: border-color .15s, box-shadow .15s; }
+  .pc-guide:hover { border-color: var(--kk-primary-medium); box-shadow: var(--el-card); }
+  .pc-guide .ic { width: 20px; height: 20px; }
+  /* FAQ 手風琴：整組包在一張白卡內，項間分隔線 */
+  .pc-faq-list { background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 0 24px; }
   .pc-faq-item { border-bottom: 1px solid var(--kk-border-lighter); }
-  .pc-faq-q { width: 100%; display: flex; align-items: center; gap: 16px; padding: 20px 0; }
-  .pc-faq-q .q { flex: 1 1 0; font-size: 16px; line-height: 24px; font-weight: 600; }
-  .pc-faq-q .chev { transition: transform .2s ease; }
+  .pc-faq-item:last-child { border-bottom: 0; }
+  .pc-faq-q { width: 100%; display: flex; align-items: center; gap: 16px; padding: 20px 0; text-align: left; }
+  .pc-faq-q .q { flex: 1 1 0; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-faq-q .chev { transition: transform .2s ease; color: var(--kk-text-medium); }
   .pc-faq-item.open .pc-faq-q .chev { transform: rotate(180deg); }
-  .pc-faq-a { display: none; padding: 0 0 20px; font-size: 14px; line-height: 22px; color: var(--kk-text-darker); }
+  .pc-faq-a { display: none; padding: 0 0 20px; font-size: 14px; line-height: 22px; color: var(--kk-text-dark); }
   .pc-faq-item.open .pc-faq-a { display: block; }
 
   /* ---------- 探索更多（Figma 2968-67063：版心 1170、左篩選欄 281 + 主列表） ---------- */
@@ -1341,19 +1344,16 @@
     </div>
   </section>
 
-  <!-- eSIM 安裝指南：標題 + 兩入口同排 -->
-  <div class="col">
-    <div class="pc-guide-row">
-      <span class="sec-t">eSIM 安裝指南</span>
-      <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_apple}}</span>iOS</button>
-      <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_android}}</span>Android</button>
-    </div>
-  </div>
-
-  <!-- 常見問題：整寬單欄 -->
+  <!-- 常見問題（Figma 3467-85809）：標題 + eSIM 安裝指南白卡 + FAQ 手風琴白卡 -->
   <section class="pc-faq">
     <div class="col">
       <div class="pc-faq-head"><span class="sec-t">常見問題</span><button class="more" data-toast="pc">查看更多</button></div>
+      <div class="pc-guide-card">
+        <span class="pc-guide-t">eSIM 安裝指南</span>
+        <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_apple}}</span>iOS</button>
+        <button class="pc-guide" data-toast="pc"><span class="ic">{{PC_android}}</span>Android</button>
+      </div>
+      <div class="pc-faq-list">
       <div class="pc-faq-item open">
         <button class="pc-faq-q"><span class="q">如何確認我的手機支援 eSIM？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
         <div class="pc-faq-a">在撥號介面輸入 *#06#，出現 EID 序號即代表支援 eSIM；也可在「設定 &gt; 行動服務」檢視是否有「加入 eSIM」選項。購買前請確認手機未繫結電信商合約鎖。</div>
@@ -1373,6 +1373,7 @@
       <div class="pc-faq-item">
         <button class="pc-faq-q"><span class="q">一台手機可以同時安裝多張 eSIM 嗎？</span><span class="ic ic-20 chev">{{PC_chevDown}}</span></button>
         <div class="pc-faq-a">可以，iPhone 可儲存 8 張以上 eSIM 並同時啟用兩張，多國行程可提前裝好備用。</div>
+      </div>
       </div>
     </div>
   </section>
