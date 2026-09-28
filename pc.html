@@ -501,9 +501,9 @@
   #pcDlg .pc-mode::after { content: ''; width: 4px; }
   #pcDlg .pc-mode.sel { font-weight: 400; color: var(--kk-primary-medium); }
   /* 內容區：py8、分組間距 32；分組 px24、標題與選項 gap 16；分頁列滿寬 */
-  #pcDlg .pc-dlg-bd { padding: 8px 0 24px; }
+  #pcDlg .pc-dlg-bd { padding: 0 0 24px; }  /* 頂部 8 改由首個子元素 margin 提供：padding 會讓捲動內容從吸頂分頁上方露出 */
   #pcDlg .dlg-group { padding: 0 24px; margin-top: 32px; }
-  #pcDlg .dlg-group:first-child { margin-top: 0; }
+  #pcDlg .dlg-group:first-child { margin-top: 8px; }
   #pcDlg .dlg-group .gh { gap: 8px; margin-bottom: 16px; }
   #pcDlg .dlg-group .gh .ic-24, #pcDlg .dlg-group .gh .ic-24 img { width: 24px; height: 24px; }
   #pcDlg .dlg-group .gh .gact .ic img { width: 20px; height: 20px; }
@@ -514,7 +514,7 @@
   #pcDlg .dlg-chip.sel { color: var(--kk-primary-medium); }
   /* 洲別分頁（KKTab）：滿寬、px12、底線 #E6E9ED；項目 pt12 px12、選中 Semibold #13A3B6 + 2px 底條（距文字 10） */
   #pcDlg .dlg-tabs { margin-top: 32px; padding: 0 12px; }
-  #pcDlg .dlg-tabs:first-child { margin-top: 0; }
+  #pcDlg .dlg-tabs:first-child { margin-top: 8px; }
   #pcDlg .dlg-tab { padding: 12px 12px 12px; }
   #pcDlg .dlg-tab.sel::after { border-radius: 2px 2px 0 0; }
   #pcDlg .dlg-tabs + .dlg-group { margin-top: 32px; }
