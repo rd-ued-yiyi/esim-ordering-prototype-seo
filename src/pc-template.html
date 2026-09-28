@@ -93,6 +93,9 @@
   /* tab 條（同 mweb TabBarCard）：選中白底 + 青字 + 底條 + 右下 16 內凹補角 */
   .pc-search { position: relative; margin-top: 32px; display: flex; flex-direction: column; align-items: flex-start; }
   .pc-hero[data-state="sel"] .pc-search { margin-top: 16px; }
+  /* 已選態 hero 上下留白（Figma 3600-58253：目的地 pill 距頂 60、卡片距底 60，hero 高 758） */
+  .pc-hero[data-state="sel"] { padding-bottom: 60px; }
+  .pc-hero[data-state="sel"] .pc-dest-pill { margin-top: 60px; }
   .pc-tabs { display: inline-flex; align-items: stretch; background: rgba(255,255,255,.72); border-radius: 16px 16px 0 0; backdrop-filter: blur(4px); }
   .pc-tab { position: relative; min-width: 128px; display: flex; justify-content: center; padding: 12px 20px; }
   .pc-tab .tb-in { display: flex; flex-direction: column; align-items: stretch; }
