@@ -386,6 +386,11 @@ pc_subs = {
     "{{EX_delete16}}":    pc_img("explore/delete16.svg"),  # hero 最近選擇 清除 ic_delete_line 16
     "{{EX_arrowLeftLg}}":  pc_img("explore/arrowLeftLg.svg"),   # 列表頁流量條翻頁 ‹ ›（Figma 3701-124950）
     "{{EX_arrowRightLg}}": pc_img("explore/arrowRightLg.svg"),
+    # 列表頁方案卡政策 / HOT 圖標（Figma 3701-112318）
+    "{{PL_flash}}":        pc_img("plan/flash.svg"),
+    "{{PL_check}}":        pc_img("plan/check.svg"),
+    "{{PL_reload}}":       pc_img("plan/reload.svg"),
+    "{{PL_fire}}":         file_img("assets/pc/plan/fire.svg", recolor=("black", "#E65F50")),
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
