@@ -2174,6 +2174,7 @@
     document.getElementById('pcDlgMask').classList.add('open');
     d.classList.add('open');
     document.getElementById('pcDlgQ').value = ''; dlg.q = '';
+    document.getElementById('pcDlgBody').scrollTop = 0;  // 每次開啟從頂部開始
     renderDlg();
     if (!wasOpen) lockScroll();
     var inp = document.getElementById('pcDlgQ');  // PC：開啟即聚焦搜尋框（桌面適合，不彈鍵盤）
@@ -2196,6 +2197,7 @@
       document.querySelectorAll('#pcDlgModes .pc-mode').forEach(function (x) { x.classList.toggle('sel', x === m); });
       document.getElementById('pcDlg').setAttribute('data-mode', dlg.mode);
       renderDlg();
+      document.getElementById('pcDlgBody').scrollTop = 0;  // 切換模式回到頂部
     });
   });
   document.getElementById('pcDlgQ').addEventListener('input', function () { dlg.q = this.value.trim(); renderDlg(); });
@@ -2243,24 +2245,43 @@
     return c;
   }
   function match(n) { return !dlg.q || n.indexOf(dlg.q) >= 0; }
+  // 洲別分頁＝錨點 + scroll-spy：點擊把該洲標題捲到吸頂分頁下方；捲動時高亮所在洲
+  function dlgSecTop(pane, el) { return el.getBoundingClientRect().top - pane.getBoundingClientRect().top + pane.scrollTop; }
+  function dlgSetTab(bar, i) { bar.querySelectorAll('.dlg-tab').forEach(function (x, j) { x.classList.toggle('sel', j === i); }); }
+  function dlgSpy(pane) {
+    var bar = pane.querySelector('.dlg-tabs'); if (!bar) return;
+    if (pane._spyGuard && Date.now() < pane._spyGuard) return;
+    var line = pane.getBoundingClientRect().top + bar.offsetHeight + 24, cur = 0;
+    pane.querySelectorAll('[data-sec]').forEach(function (sec) { if (sec.getBoundingClientRect().top <= line) cur = +sec.getAttribute('data-sec').slice(1); });
+    dlgSetTab(bar, cur);
+  }
   function contTabs(pane, prefix) {
     var bar = h('<div class="dlg-tabs"></div>');
     GEO.continents.forEach(function (c, i) {
       var t = h('<button class="dlg-tab' + (i === 0 ? ' sel' : '') + '"></button>'); t.textContent = c.name;
       t.addEventListener('click', function () {
-        bar.querySelectorAll('.dlg-tab').forEach(function (x) { x.classList.remove('sel'); }); t.classList.add('sel');
-        var s = pane.querySelector('[data-sec="' + prefix + i + '"]');
-        if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        var s = pane.querySelector('[data-sec="' + prefix + i + '"]'); if (!s) return;
+        dlgSetTab(bar, i);
+        pane._spyGuard = Date.now() + 700;  // 平滑捲動期間暫停 spy，避免高亮跳動
+        pane.scrollTo({ top: Math.max(0, dlgSecTop(pane, s) - bar.offsetHeight - 16), behavior: 'smooth' });
       });
       bar.appendChild(t);
     });
+    if (!pane._spyBound) { pane._spyBound = true; pane.addEventListener('scroll', function () { dlgSpy(pane); }, { passive: true }); }
     return bar;
+  }
+  // 底部補白：確保最後一洲也能捲到分頁下方（錨定到非洲等短分組）
+  function dlgTabSpacer(pane) {
+    var bar = pane.querySelector('.dlg-tabs'), secs = pane.querySelectorAll('[data-sec]'); if (!bar || !secs.length) return;
+    var last = secs[secs.length - 1], need = pane.clientHeight - bar.offsetHeight - 16 - last.offsetHeight - 24;
+    if (need > 0) { var sp = document.createElement('div'); sp.style.height = need + 'px'; pane.appendChild(sp); }
+    dlgSpy(pane);
   }
   function renderDlg() {
     document.getElementById('pcDlgClearKw').hidden = !dlg.q;
     if (dlg.q) { renderDlgSearch(); return; }                 // 有關鍵字：走扁平搜尋結果（隱藏模式栏/分組）
     document.getElementById('pcDlg').classList.remove('searching', 'no-result');
-    var bd = document.getElementById('pcDlgBody'); bd.innerHTML = '';
+    var bd = document.getElementById('pcDlgBody'), keepTop = bd.scrollTop; bd.innerHTML = '';
     if (dlg.mode === 'country') {
       var hist = histGet().filter(match);
       if (hist.length && !dlg.q) {
@@ -2334,6 +2355,8 @@
       document.getElementById('pcDlgSelCount').textContent = dlg.multi.length;
       document.getElementById('pcDlgOk').disabled = dlg.multi.length < 2;  // 多國組合至少 2 個
     }
+    bd.scrollTop = keepTop;  // 重繪（如多選點國家）保留捲動位置，不跳回頂部
+    dlgTabSpacer(bd);
   }
   document.getElementById('pcDlgClear').addEventListener('click', function () { dlg.multi = []; renderDlg(); });
   document.getElementById('pcDlgOk').addEventListener('click', function () {
