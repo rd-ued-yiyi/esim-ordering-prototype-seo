@@ -365,6 +365,8 @@ pc_subs = {
     "{{EX_fireLineSel}}":   file_img("assets/pc/explore/fireLine.svg", recolor=("black", "#13A3B6")),
     "{{EX_starFill}}":      pc_img("explore/starFill.svg"),
     "{{EX_heartLine}}":     pc_img("explore/heartLine.svg"),
+    "{{EX_apple}}":        pc_img("explore/appleLogo.svg"),    # 安裝指南按鈕 #212121（Figma 3467-85809）
+    "{{EX_android}}":      pc_img("explore/androidLogo.svg"),
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
