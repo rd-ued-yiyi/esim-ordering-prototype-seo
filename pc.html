@@ -599,7 +599,10 @@
   /* 流量條（Figma 3701-124950）：‹ + N 張等寬卡 + › + 固定寬「更多」，全部 gap 8；箭頭＝白底 p8 + 20 icon（寬 36）、與卡同高 */
   .pc-lflow { align-items: stretch; }
   .pc-lnav { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 8px; border-radius: 8px; background: #fff; }
-  .pc-lnav img { width: 20px; height: 20px; }  /* Figma icon button：p8 + ic_arrowRight_line_lg 20 → 36 寬 */
+  .pc-lnav img { width: 20px; height: 20px; }
+  .pc-lstrip-vp { flex: 1 1 0; min-width: 0; overflow: hidden; }
+  .pc-lstrip { display: flex; gap: 8px; height: 100%; will-change: transform; }
+  .pc-lstrip .pc-lchip { min-width: 0; }  /* Figma icon button：p8 + ic_arrowRight_line_lg 20 → 36 寬 */
   .pc-lnav:hover:not(:disabled) { background: var(--kk-surface-light); }
   .pc-lnav:disabled { opacity: .3; cursor: default; }
   .pc-lchip--more { flex: 0 0 auto; padding: 16px; }  /* px12 + 文字 px4 */
@@ -2852,7 +2855,7 @@
   }
   // 從「更多」選檔返回時＝true：以選中檔為中心重排一次
   var _plCenterSel = false, _plFlowStart = 0, _plKeepPage = false;  // _plKeepPage：箭頭翻頁時不因選中不在當頁而拉回
-  // 條件列流量（Figma 3701-124950 / 3710-147063）：‹ + 一頁 N 檔 + › + 「更多」；箭頭逐頁翻動，首末頁箭頭禁用
+  // 條件列流量（Figma 3701-124950 / 3710-147063）：‹ + 一頁 N 檔 + › + 「更多」；全部檔位鋪在一條 strip 上，翻頁＝平移 strip（0.3s 滑動）
   function renderListChips() {
     var wrap = document.getElementById('plFlowChips'); wrap.innerHTML = '';
     var vpEl = document.querySelector('.pc-lflow-vp');
@@ -2873,7 +2876,7 @@
       return c;
     }
     // 一頁檔數：默認 5 張（每張 ≥150）、塌縮 3 顆（每顆 ≥96），依可用寬度自動增減
-    var W = vpEl.clientWidth || 900, gap = 8, navW = 36, moreW = _plCompact ? 60 : 64;
+    var W = vpEl.clientWidth || 900, gap = 8, navW = 36, moreW = _plCompact ? 52 : 64;
     var minW = _plCompact ? 96 : 150, cap = _plCompact ? 3 : 5;
     var n = Math.max(1, Math.min(cap, Math.floor((W - 2 * navW - moreW - 3 * gap + gap) / (minW + gap))));
     n = Math.min(n, all.length);
@@ -2883,15 +2886,23 @@
     _plFlowStart = Math.max(0, Math.min(maxStart, _plFlowStart));
     var prev = h('<button class="pc-lnav" aria-label="上一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMCAwKSBzY2FsZSgtMSAxKSI+CjxnIGlkPSJpY19hcnJvd1JpZ2h0X2xpbmVfbGciPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuMDU4MDYgMy4zMDgwNkM3LjMwMjE0IDMuMDYzOTggNy42OTc4NiAzLjA2Mzk4IDcuOTQxOTQgMy4zMDgwNkwxNC4xOTE5IDkuNTU4MDZDMTQuNDM2IDkuODAyMTQgMTQuNDM2IDEwLjE5NzkgMTQuMTkxOSAxMC40NDE5TDcuOTQxOTQgMTYuNjkxOUM3LjY5Nzg2IDE2LjkzNiA3LjMwMjE0IDE2LjkzNiA3LjA1ODA2IDE2LjY5MTlDNi44MTM5OCAxNi40NDc5IDYuODEzOTggMTYuMDUyMSA3LjA1ODA2IDE1LjgwODFMMTIuODY2MSAxMEw3LjA1ODA2IDQuMTkxOTRDNi44MTM5OCAzLjk0Nzg2IDYuODEzOTggMy41NTIxNCA3LjA1ODA2IDMuMzA4MDZaIiBmaWxsPSIjMjEyMTIxIi8+CjwvZz4KPC9nPjwvc3ZnPg==" width="20" height="20"></button>');
     var next = h('<button class="pc-lnav" aria-label="下一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZV9sZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNy4wNTgwNiAzLjMwODA2QzcuMzAyMTQgMy4wNjM5OCA3LjY5Nzg2IDMuMDYzOTggNy45NDE5NCAzLjMwODA2TDE0LjE5MTkgOS41NTgwNkMxNC40MzYgOS44MDIxNCAxNC40MzYgMTAuMTk3OSAxNC4xOTE5IDEwLjQ0MTlMNy45NDE5NCAxNi42OTE5QzcuNjk3ODYgMTYuOTM2IDcuMzAyMTQgMTYuOTM2IDcuMDU4MDYgMTYuNjkxOUM2LjgxMzk4IDE2LjQ0NzkgNi44MTM5OCAxNi4wNTIxIDcuMDU4MDYgMTUuODA4MUwxMi44NjYxIDEwTDcuMDU4MDYgNC4xOTE5NEM2LjgxMzk4IDMuOTQ3ODYgNi44MTM5OCAzLjU1MjE0IDcuMDU4MDYgMy4zMDgwNloiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></button>');
-    prev.disabled = _plFlowStart <= 0; next.disabled = _plFlowStart >= maxStart;
-    prev.addEventListener('click', function () { _plFlowStart = Math.max(0, _plFlowStart - n); _plKeepPage = true; renderListChips(); });
-    next.addEventListener('click', function () { _plFlowStart = Math.min(maxStart, _plFlowStart + n); _plKeepPage = true; renderListChips(); });
-    wrap.appendChild(prev);
-    all.slice(_plFlowStart, _plFlowStart + n).forEach(function (it) { wrap.appendChild(mkChip(it)); });
-    wrap.appendChild(next);
+    var track = h('<div class="pc-lstrip-vp"><div class="pc-lstrip"></div></div>'), strip = track.firstChild;
+    all.forEach(function (it) { strip.appendChild(mkChip(it)); });
     var more = h('<button class="pc-lchip pc-lchip--more"><b>更多</b></button>');
     more.addEventListener('click', openAllFlow);
-    wrap.appendChild(more);
+    wrap.appendChild(prev); wrap.appendChild(track); wrap.appendChild(next); wrap.appendChild(more);
+    // 量測 strip 視窗寬 → 每格寬；平移到當前頁（首次不動畫）
+    var chipW = 0;
+    function layout(animate) {
+      var TW = track.clientWidth; chipW = (TW - (n - 1) * gap) / n;
+      strip.querySelectorAll('.pc-lchip').forEach(function (c) { c.style.flex = '0 0 ' + chipW + 'px'; });
+      strip.style.transition = animate ? 'transform .3s ease' : 'none';
+      strip.style.transform = 'translateX(' + (-_plFlowStart * (chipW + gap)) + 'px)';
+      prev.disabled = _plFlowStart <= 0; next.disabled = _plFlowStart >= maxStart;
+    }
+    layout(false);
+    prev.addEventListener('click', function () { _plFlowStart = Math.max(0, _plFlowStart - n); layout(true); });
+    next.addEventListener('click', function () { _plFlowStart = Math.min(maxStart, _plFlowStart + n); layout(true); });
   }
   function applyFlow() { renderListChips(); }  // 尺寸/狀態變化即重排（無翻頁）
   // 天數下拉（1–30 天，選中打勾）
