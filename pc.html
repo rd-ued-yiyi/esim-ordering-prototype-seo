@@ -272,12 +272,11 @@
   .pc-sel2[hidden] { display: none; }
   /* 目的地 / 領取地選框＝filter date_pc 列：白底 r12、左 64 圖標格（p20 + 24 icon）+ 1px #E6E9ED 分隔 + 置中 Semibold 16/24 */
   .pc-sel2 .sbox { width: 100%; display: flex; align-items: stretch; background: #fff; border-radius: 12px; overflow: hidden;
-    font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); transition: box-shadow .15s; }
+    font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }  /* 無 hover / 展開描邊 */
   .pc-sel2 .sbox .cell, .pc-fdate .cell { flex: 0 0 64px; display: flex; align-items: center; justify-content: center; padding: 20px 0; border-right: 1px solid var(--kk-border-lighter); }
   .pc-sel2 .sbox .cell img, .pc-fdate .cell img { width: 24px; height: 24px; }
   .pc-sel2 .sbox .lb { flex: 1 1 0; min-width: 0; padding: 12px 20px; display: flex; align-items: center; justify-content: center; text-align: center;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .pc-sel2 .sbox:hover, .pc-sel2.open .sbox { box-shadow: inset 0 0 0 1px var(--kk-primary-medium); }  /* inset 描邊不改高度（與出發日期列同高 64） */
   .pc-dd { position: absolute; left: 0; top: calc(100% + 8px); z-index: 30; width: 600px; max-height: 476px;
     background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.12); display: none; flex-direction: column; overflow: hidden; }
   .pc-sel2.open .pc-dd { display: flex; }
