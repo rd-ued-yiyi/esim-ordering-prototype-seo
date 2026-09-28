@@ -66,7 +66,7 @@
   .pc-hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px;
     background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.18) 100%); pointer-events: none; }
   .pc-hero .col { position: relative; z-index: 1; }
-  .pc-hero-art { position: absolute; right: -40px; top: 12px; width: 560px; pointer-events: none; z-index: 0; }
+  .pc-hero-art { position: absolute; right: 24px; top: -24px; width: 600px; max-width: 46%; pointer-events: none; z-index: 0; }
   .pc-hero-art svg { width: 100%; height: auto; display: block; }
   .pc-hero-art > svg > rect { display: none; }
   .pc-hero .h1 { padding-top: 44px; color: #fff; font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: .5px; }
@@ -1227,6 +1227,7 @@
   <div id="pcHome">
   <!-- hero：未選（標題+搜尋卡）/ 已選（目的地 pill + 天數流量面板） -->
   <div class="pc-hero" id="pcHero" data-state="empty">
+    <div class="pc-hero-art" aria-hidden="true">{{HERO_SVG}}</div>
     <div class="col">
       <h1 class="h1">全球上網</h1>
       <div class="sub">輕鬆出發，無憂暢遊全球</div>
