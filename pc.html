@@ -711,12 +711,16 @@
   .pc-alldlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
     width: 640px; max-width: calc(100vw - 32px); max-height: calc(100vh - 80px); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
   .pc-alldlg.open { display: flex; }
-  .pc-alldlg-hd { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 12px; }
-  .pc-alldlg-hd .t { font-size: 18px; line-height: 26px; font-weight: 600; }
-  .pc-alldlg-tabs { display: flex; gap: 24px; padding: 0 24px; border-bottom: 1px solid var(--kk-border-lighter); }
-  .pc-alltab { position: relative; padding: 8px 0 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  /* 標題列 / tab 與商品詳情 dialog 同規（KKDialog Header PC 64 + KKTab）：關閉鈕 32 圓 + 20 叉、tab px12 p12 16/24 */
+  .pc-alldlg-hd { flex: 0 0 auto; height: 64px; box-sizing: border-box; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 20px 20px 12px; }
+  .pc-alldlg-hd .t { flex: 1 1 0; padding: 2px 4px; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-alldlg-hd button { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 16px; color: var(--kk-text-darker); }
+  .pc-alldlg-hd button:hover { background: var(--kk-surface-light); }
+  .pc-alldlg-hd button .ic, .pc-alldlg-hd button .ic img { width: 20px; height: 20px; }
+  .pc-alldlg-tabs { flex: 0 0 auto; display: flex; gap: 0; padding: 0 12px; border-bottom: 1px solid var(--kk-border-lighter); }
+  .pc-alltab { position: relative; padding: 12px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); white-space: nowrap; }
   .pc-alltab.sel { color: var(--kk-primary-dark); font-weight: 600; }
-  .pc-alltab.sel::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; }
+  .pc-alltab.sel::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; }
   .pc-alldlg-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 16px 24px 24px; display: flex; flex-direction: column; gap: 20px; }
   .pc-allsec { display: flex; flex-direction: column; gap: 12px; }
   .pc-allsec .sh { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
@@ -1877,7 +1881,7 @@
 <!-- ============ 全部流量 dialog（Figma 3191-69000）：選擇流量，三段 3 欄卡片 ============ -->
 <div class="pc-mask" id="pcAllMask"></div>
 <div class="pc-alldlg" id="pcAllDlg" role="dialog" aria-modal="true">
-  <div class="pc-alldlg-hd"><span class="t">選擇流量</span><button id="pcAllClose" aria-label="關閉"><span class="ic ic-24"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></button></div>
+  <div class="pc-alldlg-hd"><span class="t">選擇流量</span><button id="pcAllClose" aria-label="關閉"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Nyb3NzX2xpbmVfc2VtaWJvbGRfbGciPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTE2LjIxNDMgNC45NjQyNkMxNi41Mzk3IDQuNjM4ODIgMTYuNTM5NyA0LjExMTE4IDE2LjIxNDMgMy43ODU3NEMxNS44ODg4IDMuNDYwMzEgMTUuMzYxMiAzLjQ2MDMxIDE1LjAzNTcgMy43ODU3NEwxMCA4LjgyMTQ5TDQuOTY0MjYgMy43ODU3NEM0LjYzODgyIDMuNDYwMzEgNC4xMTExOCAzLjQ2MDMxIDMuNzg1NzQgMy43ODU3NEMzLjQ2MDMxIDQuMTExMTggMy40NjAzMSA0LjYzODgyIDMuNzg1NzQgNC45NjQyNkw4LjgyMTQ5IDEwTDMuNzg1NzQgMTUuMDM1N0MzLjQ2MDMxIDE1LjM2MTIgMy40NjAzMSAxNS44ODg4IDMuNzg1NzQgMTYuMjE0M0M0LjExMTE4IDE2LjUzOTcgNC42Mzg4MiAxNi41Mzk3IDQuOTY0MjYgMTYuMjE0M0wxMCAxMS4xNzg1TDE1LjAzNTcgMTYuMjE0M0MxNS4zNjEyIDE2LjUzOTcgMTUuODg4OCAxNi41Mzk3IDE2LjIxNDMgMTYuMjE0M0MxNi41Mzk3IDE1Ljg4ODggMTYuNTM5NyAxNS4zNjEyIDE2LjIxNDMgMTUuMDM1N0wxMS4xNzg1IDEwTDE2LjIxNDMgNC45NjQyNloiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L2c+Cjwvc3ZnPg==" width="20" height="20"></span></button></div>
   <div class="pc-alldlg-tabs" id="pcAllTabs"></div>
   <div class="pc-alldlg-bd" id="pcAllBd"></div>
 </div>
