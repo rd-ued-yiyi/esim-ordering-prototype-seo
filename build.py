@@ -410,6 +410,12 @@ pc_subs = {
     "{{DLG_arrowRight16}}": pc_img("dlg/arrowRight16.svg"),  # 貼心提醒 TextLink 箭頭 ic_arrowRight_line_semibold_lg 16
     "{{EX_arrowSemi16}}":  pc_img("explore/arrowSemi16.svg"),   # 列表頁流量輪播箭頭 ic_arrowRight_line_semibold 16（Figma 3792:159534）
     "{{EX_arrowSemi16L}}": pc_img("explore/arrowSemi16L.svg"),
+    # 套餐詳情（Figma 3701-133325）：費用圖標 20、購買須知警示 20、評論分頁箭頭 24
+    "{{DET_checkCircle20}}": pc_img("det/checkCircle20t.svg"),
+    "{{DET_crossCircle20}}": pc_img("det/crossCircle20.svg"),
+    "{{DET_warnFill20}}":    pc_img("det/warnFill20.svg"),
+    "{{DET_pgLeft24}}":      pc_img("det/pgLeft24.svg"),
+    "{{DET_pgRight24}}":     file_img("assets/pc/det/pgRight24.svg", recolor=("black", "#212121")),
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),

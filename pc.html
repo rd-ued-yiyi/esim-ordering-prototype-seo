@@ -917,7 +917,40 @@
   /* 圖文說明 */
   .det-fig { margin-top: 8px; }
   .det-fig img { display: block; width: 100%; border-radius: 8px; }
-  .det-pid { padding: 16px 0 24px; text-align: center; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .det-pid { padding: 8px 0 48px; text-align: center; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }  /* Figma 3701:133369：pt8 pb48 */
+  /* ===== 套餐詳情對齊 Figma 3701-133325 ===== */
+  /* 標題列：pt20 pb12 px20、標題 22/28 flex-1 px4 py2、關閉 32 圓 20 icon */
+  .pl-det-hd { height: 64px; align-items: flex-start; gap: 8px; padding: 20px 20px 12px; }
+  .pl-det-hd .t { flex: 1 1 0; padding: 2px 4px; font-size: 22px; line-height: 28px; }
+  .pl-det-hd button { border-radius: 16px; }
+  /* KKTab：px12、項目 p12 16/24；選中 Semibold #13A3B6 + 2px 底條（貼項目底緣，寬＝文字） */
+  .pl-det-tabs { gap: 0; padding: 0 12px; }
+  .pl-det-tab { padding: 12px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
+  .pl-det-tab.sel::after { left: 12px; right: 12px; }
+  /* 子標題（Subtitle-lg）：上距 20、下距 16；子項 gap 8 */
+  .det-sub { margin: 20px 0 16px; }
+  .det-inc { gap: 8px; }
+  .det-inc .ic img { width: 20px; height: 20px; display: block; }
+  /* 取消政策：px20；注意提示 icon 16 + gap 4、文字 12/16 #727272（「注意」不加粗） */
+  .det-sec[data-sec="cancel"] { padding: 24px 20px; }
+  .cxl-note-txt p:first-child { color: var(--kk-text-dark); font-weight: 400; }
+  /* 評論：標題 H5 22/28 + 20；篩選列後 32 + 1px 分隔線 + 32；卡片間 gap 32（無分隔線）；分頁 pt20 pb40 靠右 48×40 前後鈕 */
+  .det-rev-title { font-size: 22px; line-height: 28px; margin: 0 0 20px; }
+  .det-kws { margin-bottom: 0; }
+  .det-rlist { gap: 32px; margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--kk-border-lighter); }
+  .det-rcard { padding: 0; border-top: 0; }
+  .det-rlist .det-rcard:first-child { padding-top: 0; }
+  .det-rev-pager { justify-content: flex-end; gap: 8px; margin: 0; padding: 20px 0 40px; }
+  .det-rev-pager button { width: 48px; min-width: 48px; height: 40px; padding: 8px 12px; border: 1px solid var(--kk-text-darker); border-radius: 8px; background: #fff; display: inline-flex; align-items: center; }
+  .det-rev-pager button img { width: 24px; height: 24px; display: block; }
+  .det-rev-pager button:disabled { border-color: var(--kk-border-lighter); cursor: default; }
+  /* 購買須知：注意事項 Inline notification #FFF8E1 p12 r8、icon 20 + gap 8、標題 Semibold 14/20、清單 gap 2 */
+  .det-noticebox { margin-top: 20px; padding: 12px; display: flex; gap: 8px; align-items: flex-start; }
+  .det-noticebox .nb-i { width: 20px; height: 20px; border-radius: 0; background: none; flex: 0 0 auto; }
+  .det-noticebox .nb-i img { width: 20px; height: 20px; display: block; }
+  .det-noticebox .nb-body { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .det-noticebox .nb-t { gap: 0; }
+  .det-noticebox .det-list { margin-top: 0; gap: 2px; }
   /* ============ 日期日曆下拉（Figma 3223-83700） ============ */
   .pc-cal { position: fixed; z-index: 60; width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 16px; }
   .pc-cal[hidden] { display: none; }
@@ -3308,7 +3341,7 @@
   function detReview(p) {
     var grade = p.rating >= 4.6 ? '非常好' : (p.rating >= 4.0 ? '很好' : '一般');
     var wrap = h('<div class="det-sec" data-sec="review"></div>');
-    wrap.appendChild(h('<div class="det-rev-title">旅客評論</div>'));
+    wrap.appendChild(h('<div class="det-rev-title">評論</div>'));
     // 評分資訊
     wrap.appendChild(h('<div class="det-score"><span class="badge9">' + p.rating.toFixed(1) + '</span><span class="gcol"><span class="gt">' + grade + '</span><span class="gc">依據 ' + p.reviews.toLocaleString('en-US') + ' 則評論</span></span></div>'));
     // AI 摘要
@@ -3351,19 +3384,18 @@
     });
     wrap.appendChild(list);
     // 分頁
-    wrap.appendChild(h('<div class="det-rev-pager">' +
-      [1, 2, 3, 4, 5].map(function (n) { return '<button class="' + (n === 1 ? 'sel' : '') + '" data-toast="old">' + n + '</button>'; }).join('') +
-      '<button data-toast="old">›</button></div>'));
+    // 分頁（Figma Pagination Section）：靠右 上一頁（首頁停用）/ 下一頁
+    wrap.appendChild(h('<div class="det-rev-pager"><button disabled aria-label="上一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93TGVmdF9saW5lIj4KPHBhdGggaWQ9IlZlY3RvciIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04LjQ2OTY3IDEyLjUzMTZDOC4xNzY3OCAxMi4yMzg3IDguMTc2NzggMTEuNzYzOCA4LjQ2OTY3IDExLjQ3MDlMMTQuNDY5NyA1LjQ3MDg5QzE0Ljc2MjYgNS4xNzggMTUuMjM3NCA1LjE3OCAxNS41MzAzIDUuNDcwODlDMTUuODIzMiA1Ljc2Mzc4IDE1LjgyMzIgNi4yMzg2NiAxNS41MzAzIDYuNTMxNTVMMTAuMDYwNyAxMi4wMDEyTDE1LjUzMDMgMTcuNDcwOUMxNS44MjMyIDE3Ljc2MzggMTUuODIzMiAxOC4yMzg3IDE1LjUzMDMgMTguNTMxNkMxNS4yMzc0IDE4LjgyNDQgMTQuNzYyNiAxOC44MjQ0IDE0LjQ2OTcgMTguNTMxNkw4LjQ2OTY3IDEyLjUzMTZaIiBmaWxsPSIjQkFCQkJFIi8+CjwvZz4KPC9zdmc+" width="24" height="24"></button><button data-toast="old" aria-label="下一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTUuNTMwMyAxMS40NzA5QzE1LjgyMzIgMTEuNzYzOCAxNS44MjMyIDEyLjIzODcgMTUuNTMwMyAxMi41MzE2TDkuNTMwMzMgMTguNTMxNkM5LjIzNzQ0IDE4LjgyNDQgOC43NjI1NiAxOC44MjQ0IDguNDY5NjcgMTguNTMxNkM4LjE3Njc4IDE4LjIzODcgOC4xNzY3OCAxNy43NjM4IDguNDY5NjcgMTcuNDcwOUwxMy45MzkzIDEyLjAwMTJMOC40Njk2NyA2LjUzMTU1QzguMTc2NzggNi4yMzg2NiA4LjE3Njc4IDUuNzYzNzggOC40Njk2NyA1LjQ3MDg5QzguNzYyNTYgNS4xNzggOS4yMzc0NCA1LjE3OCA5LjUzMDMzIDUuNDcwODlMMTUuNTMwMyAxMS40NzA5WiIgZmlsbD0iIzIxMjEyMSIvPgo8L2c+Cjwvc3ZnPg==" width="24" height="24"></button></div>'));
     return wrap;
   }
   function detFee(p) {
     return h('<div class="det-sec" data-sec="fee">' +
       '<h2 class="det-h5">費用資訊</h2>' +
       '<h3 class="det-sub" style="margin-top:0">費用包含</h3>' +
-      '<div class="det-inc"><span class="ic"><svg style="display: block;" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"> <g id="Vector"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.61168 4.65476C9.80235 4.85451 9.79499 5.17101 9.59524 5.36168L5.92855 8.86168C5.73534 9.04611 5.43128 9.04611 5.23807 8.86168L3.40476 7.11168C3.20501 6.92101 3.19765 6.60451 3.38832 6.40476C3.57899 6.20501 3.89549 6.19765 4.09524 6.38832L5.58332 7.80878L8.90476 4.63832C9.10451 4.44765 9.42101 4.45501 9.61168 4.65476Z" fill="#13A3B6"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 1C3.46243 1 1 3.46243 1 6.5C1 9.53757 3.46243 12 6.5 12C9.53757 12 12 9.53757 12 6.5C12 3.46243 9.53757 1 6.5 1ZM0 6.5C0 2.91015 2.91015 0 6.5 0C10.0899 0 13 2.91015 13 6.5C13 10.0899 10.0899 13 6.5 13C2.91015 13 0 10.0899 0 6.5Z" fill="#13A3B6"/> </g> </svg></span>eSIM費用</div>' +
-      '<div class="det-inc"><span class="ic"><svg style="display: block;" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"> <g id="Vector"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.61168 4.65476C9.80235 4.85451 9.79499 5.17101 9.59524 5.36168L5.92855 8.86168C5.73534 9.04611 5.43128 9.04611 5.23807 8.86168L3.40476 7.11168C3.20501 6.92101 3.19765 6.60451 3.38832 6.40476C3.57899 6.20501 3.89549 6.19765 4.09524 6.38832L5.58332 7.80878L8.90476 4.63832C9.10451 4.44765 9.42101 4.45501 9.61168 4.65476Z" fill="#13A3B6"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 1C3.46243 1 1 3.46243 1 6.5C1 9.53757 3.46243 12 6.5 12C9.53757 12 12 9.53757 12 6.5C12 3.46243 9.53757 1 6.5 1ZM0 6.5C0 2.91015 2.91015 0 6.5 0C10.0899 0 13 2.91015 13 6.5C13 10.0899 10.0899 13 6.5 13C2.91015 13 0 10.0899 0 6.5Z" fill="#13A3B6"/> </g> </svg></span>eSIM其他費用</div>' +
+      '<div class="det-inc"><span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2NoZWNrQ2lyY2xlX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy44ODk2IDcuNjkzNDVDMTQuMTI3OSA3Ljk0MzE0IDE0LjExODcgOC4zMzg3NiAxMy44NjkgOC41NzcxTDkuMjg1NjkgMTIuOTUyMUM5LjA0NDE3IDEzLjE4MjYgOC42NjQxIDEzLjE4MjYgOC40MjI1OSAxMi45NTIxTDYuMTMwOTUgMTAuNzY0NkM1Ljg4MTI2IDEwLjUyNjMgNS44NzIwNyAxMC4xMzA2IDYuMTEwNDEgOS44ODA5NUM2LjM0ODc0IDkuNjMxMjcgNi43NDQzNiA5LjYyMjA3IDYuOTk0MDUgOS44NjA0MUw4Ljg1NDE0IDExLjYzNkwxMy4wMDYgNy42NzI5QzEzLjI1NTYgNy40MzQ1NyAxMy42NTEzIDcuNDQzNzcgMTMuODg5NiA3LjY5MzQ1WiIgZmlsbD0iIzEzQTNCNiIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEwIDMuMTI1QzYuMjAzMDQgMy4xMjUgMy4xMjUgNi4yMDMwNCAzLjEyNSAxMEMzLjEyNSAxMy43OTcgNi4yMDMwNCAxNi44NzUgMTAgMTYuODc1QzEzLjc5NyAxNi44NzUgMTYuODc1IDEzLjc5NyAxNi44NzUgMTBDMTYuODc1IDYuMjAzMDQgMTMuNzk3IDMuMTI1IDEwIDMuMTI1Wk0xLjg3NSAxMEMxLjg3NSA1LjUxMjY5IDUuNTEyNjkgMS44NzUgMTAgMS44NzVDMTQuNDg3MyAxLjg3NSAxOC4xMjUgNS41MTI2OSAxOC4xMjUgMTBDMTguMTI1IDE0LjQ4NzMgMTQuNDg3MyAxOC4xMjUgMTAgMTguMTI1QzUuNTEyNjkgMTguMTI1IDEuODc1IDE0LjQ4NzMgMS44NzUgMTBaIiBmaWxsPSIjMTNBM0I2Ii8+CjwvZz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span>eSIM費用</div>' +
+      '<div class="det-inc"><span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2NoZWNrQ2lyY2xlX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy44ODk2IDcuNjkzNDVDMTQuMTI3OSA3Ljk0MzE0IDE0LjExODcgOC4zMzg3NiAxMy44NjkgOC41NzcxTDkuMjg1NjkgMTIuOTUyMUM5LjA0NDE3IDEzLjE4MjYgOC42NjQxIDEzLjE4MjYgOC40MjI1OSAxMi45NTIxTDYuMTMwOTUgMTAuNzY0NkM1Ljg4MTI2IDEwLjUyNjMgNS44NzIwNyAxMC4xMzA2IDYuMTEwNDEgOS44ODA5NUM2LjM0ODc0IDkuNjMxMjcgNi43NDQzNiA5LjYyMjA3IDYuOTk0MDUgOS44NjA0MUw4Ljg1NDE0IDExLjYzNkwxMy4wMDYgNy42NzI5QzEzLjI1NTYgNy40MzQ1NyAxMy42NTEzIDcuNDQzNzcgMTMuODg5NiA3LjY5MzQ1WiIgZmlsbD0iIzEzQTNCNiIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEwIDMuMTI1QzYuMjAzMDQgMy4xMjUgMy4xMjUgNi4yMDMwNCAzLjEyNSAxMEMzLjEyNSAxMy43OTcgNi4yMDMwNCAxNi44NzUgMTAgMTYuODc1QzEzLjc5NyAxNi44NzUgMTYuODc1IDEzLjc5NyAxNi44NzUgMTBDMTYuODc1IDYuMjAzMDQgMTMuNzk3IDMuMTI1IDEwIDMuMTI1Wk0xLjg3NSAxMEMxLjg3NSA1LjUxMjY5IDUuNTEyNjkgMS44NzUgMTAgMS44NzVDMTQuNDg3MyAxLjg3NSAxOC4xMjUgNS41MTI2OSAxOC4xMjUgMTBDMTguMTI1IDE0LjQ4NzMgMTQuNDg3MyAxOC4xMjUgMTAgMTguMTI1QzUuNTEyNjkgMTguMTI1IDEuODc1IDE0LjQ4NzMgMS44NzUgMTBaIiBmaWxsPSIjMTNBM0I2Ii8+CjwvZz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span>eSIM其他費用</div>' +
       '<h3 class="det-sub">費用不包含</h3>' +
-      '<div class="det-inc"><span class="ic"><svg style="display: block;" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"> <g id="Vector"> <path d="M8.85355 4.14645C9.04882 4.34171 9.04882 4.65829 8.85355 4.85355L7.20711 6.5L8.85355 8.14645C9.04882 8.34171 9.04882 8.65829 8.85355 8.85355C8.65829 9.04882 8.34171 9.04882 8.14645 8.85355L6.5 7.20711L4.85355 8.85355C4.65829 9.04882 4.34171 9.04882 4.14645 8.85355C3.95118 8.65829 3.95118 8.34171 4.14645 8.14645L5.79289 6.5L4.14645 4.85355C3.95118 4.65829 3.95118 4.34171 4.14645 4.14645C4.34171 3.95118 4.65829 3.95118 4.85355 4.14645L6.5 5.79289L8.14645 4.14645C8.34171 3.95118 8.65829 3.95118 8.85355 4.14645Z" fill="#212121"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.5C0 2.91015 2.91015 0 6.5 0C10.0899 0 13 2.91015 13 6.5C13 10.0899 10.0899 13 6.5 13C2.91015 13 0 10.0899 0 6.5ZM6.5 1C3.46243 1 1 3.46243 1 6.5C1 9.53757 3.46243 12 6.5 12C9.53757 12 12 9.53757 12 6.5C12 3.46243 9.53757 1 6.5 1Z" fill="#212121"/> </g> </svg></span>以上未提及的費用</div>' +
+      '<div class="det-inc"><span class="ic"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Nyb3NzQ2lyY2xlX2xpbmUiPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTEyLjk0MTkgNy4wNTgwNkMxMy4xODYgNy4zMDIxNCAxMy4xODYgNy42OTc4NiAxMi45NDE5IDcuOTQxOTRMMTAuODgzOSAxMEwxMi45NDE5IDEyLjA1ODFDMTMuMTg2IDEyLjMwMjEgMTMuMTg2IDEyLjY5NzkgMTIuOTQxOSAxMi45NDE5QzEyLjY5NzkgMTMuMTg2IDEyLjMwMjEgMTMuMTg2IDEyLjA1ODEgMTIuOTQxOUwxMCAxMC44ODM5TDcuOTQxOTQgMTIuOTQxOUM3LjY5Nzg2IDEzLjE4NiA3LjMwMjE0IDEzLjE4NiA3LjA1ODA2IDEyLjk0MTlDNi44MTM5OCAxMi42OTc5IDYuODEzOTggMTIuMzAyMSA3LjA1ODA2IDEyLjA1ODFMOS4xMTYxMiAxMEw3LjA1ODA2IDcuOTQxOTRDNi44MTM5OCA3LjY5Nzg2IDYuODEzOTggNy4zMDIxNCA3LjA1ODA2IDcuMDU4MDZDNy4zMDIxNCA2LjgxMzk4IDcuNjk3ODYgNi44MTM5OCA3Ljk0MTk0IDcuMDU4MDZMMTAgOS4xMTYxMkwxMi4wNTgxIDcuMDU4MDZDMTIuMzAyMSA2LjgxMzk4IDEyLjY5NzkgNi44MTM5OCAxMi45NDE5IDcuMDU4MDZaIiBmaWxsPSIjOUM5REEwIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMS44NzUgMTBDMS44NzUgNS41MTI2OSA1LjUxMjY5IDEuODc1IDEwIDEuODc1QzE0LjQ4NzMgMS44NzUgMTguMTI1IDUuNTEyNjkgMTguMTI1IDEwQzE4LjEyNSAxNC40ODczIDE0LjQ4NzMgMTguMTI1IDEwIDE4LjEyNUM1LjUxMjY5IDE4LjEyNSAxLjg3NSAxNC40ODczIDEuODc1IDEwWk0xMCAzLjEyNUM2LjIwMzA0IDMuMTI1IDMuMTI1IDYuMjAzMDQgMy4xMjUgMTBDMy4xMjUgMTMuNzk3IDYuMjAzMDQgMTYuODc1IDEwIDE2Ljg3NUMxMy43OTcgMTYuODc1IDE2Ljg3NSAxMy43OTcgMTYuODc1IDEwQzE2Ljg3NSA2LjIwMzA0IDEzLjc5NyAzLjEyNSAxMCAzLjEyNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L2c+Cjwvc3ZnPg==" width="20" height="20"></span>以上未提及的費用</div>' +
       '<h3 class="det-sub">延長、逾期計費</h3>' +
       '<ul class="det-list"><li>' + sel.days + ' 天方案：$' + p._basePer + ' × 天數（僅限延長 1–5 日者）</li><li>逾期未延長即自動停止服務，不另行收費</li></ul>' +
       '<h3 class="det-sub">額外費用</h3>' +
@@ -3377,12 +3409,12 @@
         '<li>網路速度將隨地形、氣候、建物遮蔽、使用人數及地點等因素改變，收訊不穩定時，請務必與技術客服聯絡。</li>' +
         '<li>為維護網路連線品質及公平使用原則，世界各國的電信公司有時會針對短時間內使用極大網路流量的顧客進行流量管制，故可能導致無法上網或降低網速，為確保可正常使用，請儘量避免長時間觀看影片或更新軟體等需大量消耗流量的工具。</li>' +
       '</ul>' +
-      '<div class="det-noticebox"><div class="nb-t"><span class="nb-i">!</span>注意事項</div>' +
+      '<div class="det-noticebox"><span class="nb-i"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX3dhcm5pbmdDaXJjbGVfZmlsbCI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik0xMCAxLjg3NUM4LjM5MzAzIDEuODc1IDYuODIyMTQgMi4zNTE1MiA1LjQ4NiAzLjI0NDMxQzQuMTQ5ODUgNC4xMzcxIDMuMTA4NDQgNS40MDYwNSAyLjQ5MzQ4IDYuODkwN0MxLjg3ODUyIDguMzc1MzUgMS43MTc2MiAxMC4wMDkgMi4wMzExMiAxMS41ODUxQzIuMzQ0NjMgMTMuMTYxMiAzLjExODQ2IDE0LjYwODkgNC4yNTQ3NiAxNS43NDUyQzUuMzkxMDYgMTYuODgxNSA2LjgzODggMTcuNjU1NCA4LjQxNDkgMTcuOTY4OUM5Ljk5MDk5IDE4LjI4MjQgMTEuNjI0NyAxOC4xMjE1IDEzLjEwOTMgMTcuNTA2NUMxNC41OTQgMTYuODkxNiAxNS44NjI5IDE1Ljg1MDIgMTYuNzU1NyAxNC41MTRDMTcuNjQ4NSAxMy4xNzc5IDE4LjEyNSAxMS42MDcgMTguMTI1IDEwQzE4LjEyMDkgNy44NDYzOCAxNy4yNjM1IDUuNzgyMTYgMTUuNzQwNyA0LjI1OTMyQzE0LjIxNzggMi43MzY0OCAxMi4xNTM2IDEuODc5MTMgMTAgMS44NzVaTTkuMzc1IDYuMjVDOS4zNzUgNi4wODQyNCA5LjQ0MDg1IDUuOTI1MjcgOS41NTgwNiA1LjgwODA2QzkuNjc1MjcgNS42OTA4NSA5LjgzNDI0IDUuNjI1IDEwIDUuNjI1QzEwLjE2NTggNS42MjUgMTAuMzI0NyA1LjY5MDg1IDEwLjQ0MTkgNS44MDgwNkMxMC41NTkyIDUuOTI1MjcgMTAuNjI1IDYuMDg0MjQgMTAuNjI1IDYuMjVWMTAuNjI1QzEwLjYyNSAxMC43OTA4IDEwLjU1OTIgMTAuOTQ5NyAxMC40NDE5IDExLjA2NjlDMTAuMzI0NyAxMS4xODQyIDEwLjE2NTggMTEuMjUgMTAgMTEuMjVDOS44MzQyNCAxMS4yNSA5LjY3NTI3IDExLjE4NDIgOS41NTgwNiAxMS4wNjY5QzkuNDQwODUgMTAuOTQ5NyA5LjM3NSAxMC43OTA4IDkuMzc1IDEwLjYyNVY2LjI1Wk0xMCAxNC4zNzVDOS44MTQ1OCAxNC4zNzUgOS42MzMzMyAxNC4zMiA5LjQ3OTE2IDE0LjIxN0M5LjMyNDk5IDE0LjExNCA5LjIwNDgyIDEzLjk2NzYgOS4xMzM4NyAxMy43OTYzQzkuMDYyOTEgMTMuNjI1IDkuMDQ0MzQgMTMuNDM2NSA5LjA4MDUyIDEzLjI1NDZDOS4xMTY2OSAxMy4wNzI3IDkuMjA1OTggMTIuOTA1NyA5LjMzNzA5IDEyLjc3NDZDOS40NjgyIDEyLjY0MzUgOS42MzUyNSAxMi41NTQyIDkuODE3MTEgMTIuNTE4QzkuOTk4OTYgMTIuNDgxOCAxMC4xODc1IDEyLjUwMDQgMTAuMzU4OCAxMi41NzE0QzEwLjUzMDEgMTIuNjQyMyAxMC42NzY1IDEyLjc2MjUgMTAuNzc5NSAxMi45MTY3QzEwLjg4MjUgMTMuMDcwOCAxMC45Mzc1IDEzLjI1MjEgMTAuOTM3NSAxMy40Mzc1QzEwLjkzNzUgMTMuNjg2MSAxMC44Mzg3IDEzLjkyNDYgMTAuNjYyOSAxNC4xMDA0QzEwLjQ4NzEgMTQuMjc2MiAxMC4yNDg2IDE0LjM3NSAxMCAxNC4zNzVaIiBmaWxsPSIjRkZBMDAwIi8+CjwvZz4KPC9zdmc+" width="20" height="20"></span><div class="nb-body"><div class="nb-t">注意事項</div>' +
         '<ul class="det-list">' +
           '<li>購買前請先在手機撥號鍵盤輸入「*#06#」如顯示EID序號即可使用eSIM</li>' +
           '<li>QR Code 僅能掃描一次，不支援重複安裝，完成安裝後請勿刪除以確保服務正常使用</li>' +
           '<li>啟用eSIM時請先連線穩定WiFi，避免網路不穩定導致啟用失敗，eSIM失效後無法補發</li>' +
-        '</ul></div>' +
+        '</ul></div></div>' +
     '</div>');
   }
   function detImgs() {
