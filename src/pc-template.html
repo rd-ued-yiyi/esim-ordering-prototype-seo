@@ -724,15 +724,18 @@
   .pc-specdlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
     width: 640px; max-width: calc(100vw - 32px); max-height: calc(100vh - 96px); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
   .pc-specdlg.open { display: flex; }
-  .pc-specdlg-hd { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 12px; }
-  .pc-specdlg-hd .t { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
-  .pc-specdlg-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 24px 24px; display: flex; flex-direction: column; gap: 12px; }
+  /* Figma 3701-130833：標題列 64 pt20 pb12 px20 + 關閉 32 圓 20 叉；內文 p24 gap 20；表格兩欄各半、表頭 p16、列 min 52 */
+  .pc-specdlg-hd { flex: 0 0 auto; height: 64px; box-sizing: border-box; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 20px 20px 12px; }
+  .pc-specdlg-hd .t { flex: 1 1 0; padding: 2px 4px; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-specdlg-hd button { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 16px; color: var(--kk-text-darker); }
+  .pc-specdlg-hd button:hover { background: var(--kk-surface-light); }
+  .pc-specdlg-hd button .ic, .pc-specdlg-hd button .ic img { width: 20px; height: 20px; }
+  .pc-specdlg-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
   .pc-spec-h { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-spec-table { width: 100%; border: 1px solid var(--kk-border-lighter); border-radius: 8px; border-collapse: separate; border-spacing: 0; overflow: hidden; table-layout: fixed; }
   .pc-spec-table th { background: var(--kk-surface-lighter); text-align: left; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); padding: 16px; border-bottom: 1px solid var(--kk-border-lighter); }
-  .pc-spec-table td { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); padding: 16px; border-bottom: 1px solid var(--kk-border-lighter); vertical-align: top; }
-  .pc-spec-table tr:last-child td { border-bottom: 0; }
-  .pc-spec-table th:first-child, .pc-spec-table td:first-child { width: 34%; }
+  .pc-spec-table td { height: 52px; box-sizing: border-box; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); padding: 16px; border-bottom: 1px solid var(--kk-border-lighter); vertical-align: middle; }
+  .pc-spec-table th:first-child, .pc-spec-table td:first-child { width: 50%; }
   /* ============ 商品詳情 dialog（Figma 3183-43487 / 3190-39080 / 3220-50734，內容邏輯對齊 mweb） ============ */
   .pl-detdlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
     width: 640px; max-width: calc(100vw - 32px); height: min(840px, calc(100vh - 64px)); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
@@ -1786,7 +1789,7 @@
 <!-- ============ 規格詳情 dialog（Figma 3242-45112）：篩選規格釋義表格 ============ -->
 <div class="pc-mask" id="pcSpecMask"></div>
 <div class="pc-specdlg" id="pcSpecDlg" role="dialog" aria-modal="true">
-  <div class="pc-specdlg-hd"><span class="t" id="pcSpecTitle">規格詳情</span><button id="pcSpecClose" aria-label="關閉"><span class="ic ic-20">{{IC_cross}}</span></button></div>
+  <div class="pc-specdlg-hd"><span class="t" id="pcSpecTitle">規格詳情</span><button id="pcSpecClose" aria-label="關閉"><span class="ic ic-20">{{DLG_cross}}</span></button></div>
   <div class="pc-specdlg-bd" id="pcSpecBd">
     <div class="pc-spec-h">流量激活方式</div>
     <table class="pc-spec-table">
