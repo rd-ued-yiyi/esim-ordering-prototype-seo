@@ -416,6 +416,7 @@ pc_subs = {
     "{{DET_warnFill20}}":    pc_img("det/warnFill20.svg"),
     "{{DET_pgLeft24}}":      pc_img("det/pgLeft24.svg"),
     "{{DET_pgRight24}}":     file_img("assets/pc/det/pgRight24.svg", recolor=("black", "#212121")),
+    "{{DET_info16}}": pc_img("det/info16.svg"),  # 規格表 tooltip ic_info_line 16（#9C9DA0）
     "{{DET_expandArrow16}}": file_img("assets/pc/det/expandArrow16.svg", recolor=("black", "#212121")),  # 基本資訊「展開」箭頭 16
     "{{EX_crumbArrow14}}":  pc_img("explore/crumbArrow14.svg"),  # 麵包屑箭頭 ic_arrowRight_line 14 #9C9DA0（Figma 3710-148692）
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),

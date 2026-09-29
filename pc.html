@@ -818,21 +818,22 @@
   /* 基本資訊 */
   .det-h2 { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); margin: 24px 0 20px; }
   /* 方案描述：預設夾 2 行 + 行尾展開/收起（Figma 1249-109409） */
-  .det-intro { position: relative; margin: 0 0 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .det-intro .det-intro-t { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }  /* 預設夾 1 行，展開/收起放行尾（Figma 1249-109409） */
-  .det-intro.open .det-intro-t { -webkit-line-clamp: unset; }
-  .det-intro .det-intro-more { display: none; position: absolute; right: 0; bottom: 0; border: 0; padding: 0 0 0 28px; cursor: pointer; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-decoration: underline; text-underline-offset: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), #fff 22px); }
-  .det-intro.clampable .det-intro-more { display: inline-block; }
-  .det-intro.open .det-intro-more { position: static; padding-left: 4px; background: none; }  /* 展開後「收起」跟在文末 */
+  .det-intro { display: flex; align-items: flex-end; gap: 16px; margin: 0 0 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3701-135615：文字 + 展開鈕 gap16 底對齊 */
+  .det-intro .det-intro-t { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }  /* 收合：單行尾部省略 */
+  .det-intro.open .det-intro-t { white-space: normal; }
+  .det-intro .det-intro-more { display: none; flex: 0 0 auto; border: 0; padding: 0; cursor: pointer; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); background: none; }
+  .det-intro.clampable .det-intro-more { display: inline-flex; }
   .det-table { border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; }
   .det-table .th { background: var(--kk-surface-lighter); padding: 12px 16px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); border-bottom: 1px solid var(--kk-border-lighter); }
-  .det-table .tr { display: flex; align-items: flex-start; border-bottom: 1px solid var(--kk-border-lighter); }
+  .det-table .tr { display: flex; align-items: stretch; border-bottom: 1px solid var(--kk-border-lighter); }
   .det-table .tr:last-child { border-bottom: 0; }
   .det-table .td-k { flex: 0 0 120px; padding: 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); box-sizing: border-box; }
   .det-table .td-v { flex: 1 1 0; min-width: 0; padding: 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .det-table .td-hit { display: inline; }
+  .det-table .td-hit { display: inline-flex; align-items: flex-start; gap: 8px; max-width: 100%; vertical-align: top; }
+  .det-table .td-hit .vv { min-width: 0; }
   .det-table .td-v--tip .td-hit { cursor: pointer; }  /* hover 範圍＝文字 + icon */
-  .det-table .td-v--tip .td-info { display: inline-flex; vertical-align: -3px; margin-left: 4px; width: 16px; height: 16px; color: var(--kk-text-medium); }
+  .det-table .td-v--tip .td-info { display: flex; flex: 0 0 16px; width: 16px; height: 16px; margin: 2px 0; }
+  .det-table .td-v--tip .td-info img { width: 16px; height: 16px; display: block; }
   /* hover 只作用在 ⓘ 圖示，文字不變色（依回饋） */
   .det-table .td-v--tip .td-hit:hover .td-info { color: var(--kk-primary-dark); }
   /* 行內 ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：可將滑鼠移入框內 */
@@ -959,15 +960,13 @@
   /* 簡要資訊 → 基本資訊：1px #E6E9ED 分隔線，上下各 24 */
   .det-h2 { margin: 24px 0 20px; padding-top: 24px; border-top: 1px solid var(--kk-border-lighter); }
   /* 基本資訊描述「展開」：Semibold 14 + 16 箭頭 gap 4 */
-  .det-intro .det-intro-more { display: none; align-items: center; gap: 4px; font-weight: 600; }
-  .det-intro.clampable .det-intro-more { display: inline-flex; }
+  .det-intro .det-intro-more { align-items: center; gap: 4px; }
   .det-intro .det-intro-more .ic, .det-intro .det-intro-more img { width: 16px; height: 16px; display: block; transition: transform .2s; }
   .det-intro.open .det-intro-more .ic { transform: rotate(180deg); }
   /* 規格表（Figma 3701:133349）：標籤欄 200、表頭 44（py12）、列 52（py16）、值與 tooltip icon gap 8 */
   .det-table .th { height: 44px; padding: 0 16px; display: flex; align-items: center; box-sizing: border-box; }
   .det-table .td-k { flex: 0 0 200px; padding: 16px 16px 15px; }
   .det-table .td-v { padding: 16px 16px 15px; }
-  .det-table .td-v--tip .td-info { margin-left: 8px; }
   /* 清單：Figma list-disc 縮排 21；如何使用步驟、購買須知主清單項目間無間距 */
   .det-list li { padding-left: 21px; }
   .det-list li::before { left: 6px; }
@@ -1897,7 +1896,7 @@
 <!-- ============ 商品詳情 dialog（Figma 3183-43487 / 3190-39080 / 3220-50734，資訊邏輯參考 mweb） ============ -->
 <div class="pc-mask" id="plDetMask"></div>
 <div class="pl-detdlg" id="plDetDlg" role="dialog" aria-modal="true">
-  <div class="pl-det-hd"><span class="t">詳情</span><button id="plDetClose" aria-label="關閉"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzLjA2NzciIGhlaWdodD0iMTMuMDY3NyIgdmlld0JveD0iMCAwIDEzLjA2NzcgMTMuMDY3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IlZlY3RvciI+CjxwYXRoIGQ9Ik0xMi44NDgxIDEuMjgwMzNDMTMuMTQxIDAuOTg3NDM3IDEzLjE0MSAwLjUxMjU2MyAxMi44NDgxIDAuMjE5NjdDMTIuNTU1MiAtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMS43ODc0IDAuMjE5NjdMNi41MzM4NyA1LjQ3MzIxTDEuMjgwMzMgMC4yMTk2N0MwLjk4NzQzNyAtMC4wNzMyMjMzIDAuNTEyNTYzIC0wLjA3MzIyMzMgMC4yMTk2NyAwLjIxOTY3Qy0wLjA3MzIyMzMgMC41MTI1NjMgLTAuMDczMjIzMyAwLjk4NzQzNyAwLjIxOTY3IDEuMjgwMzNMNS40NzMyMSA2LjUzMzg3TDAuMjE5NjcgMTEuNzg3NEMtMC4wNzMyMjMzIDEyLjA4MDMgLTAuMDczMjIzMyAxMi41NTUyIDAuMjE5NjcgMTIuODQ4MUMwLjUxMjU2MyAxMy4xNDEgMC45ODc0MzcgMTMuMTQxIDEuMjgwMzMgMTIuODQ4MUw2LjUzMzg3IDcuNTk0NTNMMTEuNzg3NCAxMi44NDgxQzEyLjA4MDMgMTMuMTQxIDEyLjU1NTIgMTMuMTQxIDEyLjg0ODEgMTIuODQ4MUMxMy4xNDEgMTIuNTU1MiAxMy4xNDEgMTIuMDgwMyAxMi44NDgxIDExLjc4NzRMNy41OTQ1MyA2LjUzMzg3TDEyLjg0ODEgMS4yODAzM1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+" width="13.07" height="13.07"></span></button></div>
+  <div class="pl-det-hd"><span class="t">詳情</span><button id="plDetClose" aria-label="關閉"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Nyb3NzX2xpbmVfc2VtaWJvbGRfbGciPgo8ZyBpZD0iVmVjdG9yIj4KPHBhdGggZD0iTTE2LjIxNDMgNC45NjQyNkMxNi41Mzk3IDQuNjM4ODIgMTYuNTM5NyA0LjExMTE4IDE2LjIxNDMgMy43ODU3NEMxNS44ODg4IDMuNDYwMzEgMTUuMzYxMiAzLjQ2MDMxIDE1LjAzNTcgMy43ODU3NEwxMCA4LjgyMTQ5TDQuOTY0MjYgMy43ODU3NEM0LjYzODgyIDMuNDYwMzEgNC4xMTExOCAzLjQ2MDMxIDMuNzg1NzQgMy43ODU3NEMzLjQ2MDMxIDQuMTExMTggMy40NjAzMSA0LjYzODgyIDMuNzg1NzQgNC45NjQyNkw4LjgyMTQ5IDEwTDMuNzg1NzQgMTUuMDM1N0MzLjQ2MDMxIDE1LjM2MTIgMy40NjAzMSAxNS44ODg4IDMuNzg1NzQgMTYuMjE0M0M0LjExMTE4IDE2LjUzOTcgNC42Mzg4MiAxNi41Mzk3IDQuOTY0MjYgMTYuMjE0M0wxMCAxMS4xNzg1TDE1LjAzNTcgMTYuMjE0M0MxNS4zNjEyIDE2LjUzOTcgMTUuODg4OCAxNi41Mzk3IDE2LjIxNDMgMTYuMjE0M0MxNi41Mzk3IDE1Ljg4ODggMTYuNTM5NyAxNS4zNjEyIDE2LjIxNDMgMTUuMDM1N0wxMS4xNzg1IDEwTDE2LjIxNDMgNC45NjQyNloiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L2c+Cjwvc3ZnPg==" width="20" height="20"></span></button></div>
   <div class="pl-det-tabs" id="plDetTabs"></div>
   <div class="pl-det-bd" id="plDetBd"></div>
   <div class="pl-det-foot">
@@ -3286,7 +3285,7 @@
     moreBtn.addEventListener('click', function () { var op = intro.classList.toggle('open'); setMore(op); });
     wrap.appendChild(intro);
     // 夾行後若溢出才顯示「展開」（等插入 DOM 量測）
-    requestAnimationFrame(function () { var tEl = intro.querySelector('.det-intro-t'); if (tEl.scrollHeight - tEl.clientHeight > 1) intro.classList.add('clampable'); });
+    requestAnimationFrame(function () { var tEl = intro.querySelector('.det-intro-t'); if (tEl.scrollWidth - tEl.clientWidth > 1) intro.classList.add('clampable'); });
     var rows = [
       ['th', '卡片規格'],
       ['SIM 卡片規格', 'eSIM'],
@@ -3323,7 +3322,7 @@
       if (r[2]) {
         v.classList.add('td-v--tip');
         var hit = v.querySelector('.td-hit');
-        hit.insertAdjacentHTML('beforeend', '<span class="td-info ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuNSAxQzMuNDYyNDMgMSAxIDMuNDYyNDMgMSA2LjVDMSA5LjUzNzU3IDMuNDYyNDMgMTIgNi41IDEyQzkuNTM3NTcgMTIgMTIgOS41Mzc1NyAxMiA2LjVDMTIgMy40NjI0MyA5LjUzNzU3IDEgNi41IDFaTTAgNi41QzAgMi45MTAxNSAyLjkxMDE1IDAgNi41IDBDMTAuMDg5OSAwIDEzIDIuOTEwMTUgMTMgNi41QzEzIDEwLjA4OTkgMTAuMDg5OSAxMyA2LjUgMTNDMi45MTAxNSAxMyAwIDEwLjA4OTkgMCA2LjVaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS41IDZDNS41IDUuNzIzODYgNS43MjM4NiA1LjUgNiA1LjVINi41QzYuNzc2MTQgNS41IDcgNS43MjM4NiA3IDZWOUM3LjI3NjE0IDkgNy41IDkuMjIzODYgNy41IDkuNUM3LjUgOS43NzYxNCA3LjI3NjE0IDEwIDcgMTBINi41QzYuMjIzODYgMTAgNiA5Ljc3NjE0IDYgOS41VjYuNUM1LjcyMzg2IDYuNSA1LjUgNi4yNzYxNCA1LjUgNloiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuMzc1IDQuNUM2Ljc4OTIxIDQuNSA3LjEyNSA0LjE2NDIxIDcuMTI1IDMuNzVDNy4xMjUgMy4zMzU3OSA2Ljc4OTIxIDMgNi4zNzUgM0M1Ljk2MDc5IDMgNS42MjUgMy4zMzU3OSA1LjYyNSAzLjc1QzUuNjI1IDQuMTY0MjEgNS45NjA3OSA0LjUgNi4zNzUgNC41WiIgZmlsbD0iIzcyNzI3MiIvPgo8L2c+Cjwvc3ZnPg==" width="13.00" height="13.00"></span>');
+        hit.insertAdjacentHTML('beforeend', '<span class="td-info"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2luZm9fbGluZSI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTggMi41QzQuOTYyNDMgMi41IDIuNSA0Ljk2MjQzIDIuNSA4QzIuNSAxMS4wMzc2IDQuOTYyNDMgMTMuNSA4IDEzLjVDMTEuMDM3NiAxMy41IDEzLjUgMTEuMDM3NiAxMy41IDhDMTMuNSA0Ljk2MjQzIDExLjAzNzYgMi41IDggMi41Wk0xLjUgOEMxLjUgNC40MTAxNSA0LjQxMDE1IDEuNSA4IDEuNUMxMS41ODk5IDEuNSAxNC41IDQuNDEwMTUgMTQuNSA4QzE0LjUgMTEuNTg5OSAxMS41ODk5IDE0LjUgOCAxNC41QzQuNDEwMTUgMTQuNSAxLjUgMTEuNTg5OSAxLjUgOFoiIGZpbGw9IiM5QzlEQTAiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03IDcuNUM3IDcuMjIzODYgNy4yMjM4NiA3IDcuNSA3SDhDOC4yNzYxNCA3IDguNSA3LjIyMzg2IDguNSA3LjVWMTAuNUM4Ljc3NjE0IDEwLjUgOSAxMC43MjM5IDkgMTFDOSAxMS4yNzYxIDguNzc2MTQgMTEuNSA4LjUgMTEuNUg4QzcuNzIzODYgMTEuNSA3LjUgMTEuMjc2MSA3LjUgMTFWOEM3LjIyMzg2IDggNyA3Ljc3NjE0IDcgNy41WiIgZmlsbD0iIzlDOURBMCIvPgo8cGF0aCBkPSJNNy44NzUgNkM4LjI4OTIxIDYgOC42MjUgNS42NjQyMSA4LjYyNSA1LjI1QzguNjI1IDQuODM1NzkgOC4yODkyMSA0LjUgNy44NzUgNC41QzcuNDYwNzkgNC41IDcuMTI1IDQuODM1NzkgNy4xMjUgNS4yNUM3LjEyNSA1LjY2NDIxIDcuNDYwNzkgNiA3Ljg3NSA2WiIgZmlsbD0iIzlDOURBMCIvPgo8L2c+CjwvZz4KPC9zdmc+" width="16" height="16"></span>');
         var icon = v.querySelector('.td-info');
         (function (key) {  // 只在文字 + icon 上 hover 才顯示，儲存格空白處不觸發
           hit.addEventListener('mouseenter', function () { detShowTip(icon, SPEC_TIPS[key]); });

@@ -802,21 +802,22 @@
   /* 基本資訊 */
   .det-h2 { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); margin: 24px 0 20px; }
   /* 方案描述：預設夾 2 行 + 行尾展開/收起（Figma 1249-109409） */
-  .det-intro { position: relative; margin: 0 0 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .det-intro .det-intro-t { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }  /* 預設夾 1 行，展開/收起放行尾（Figma 1249-109409） */
-  .det-intro.open .det-intro-t { -webkit-line-clamp: unset; }
-  .det-intro .det-intro-more { display: none; position: absolute; right: 0; bottom: 0; border: 0; padding: 0 0 0 28px; cursor: pointer; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-decoration: underline; text-underline-offset: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), #fff 22px); }
-  .det-intro.clampable .det-intro-more { display: inline-block; }
-  .det-intro.open .det-intro-more { position: static; padding-left: 4px; background: none; }  /* 展開後「收起」跟在文末 */
+  .det-intro { display: flex; align-items: flex-end; gap: 16px; margin: 0 0 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3701-135615：文字 + 展開鈕 gap16 底對齊 */
+  .det-intro .det-intro-t { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }  /* 收合：單行尾部省略 */
+  .det-intro.open .det-intro-t { white-space: normal; }
+  .det-intro .det-intro-more { display: none; flex: 0 0 auto; border: 0; padding: 0; cursor: pointer; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); background: none; }
+  .det-intro.clampable .det-intro-more { display: inline-flex; }
   .det-table { border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; }
   .det-table .th { background: var(--kk-surface-lighter); padding: 12px 16px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); border-bottom: 1px solid var(--kk-border-lighter); }
-  .det-table .tr { display: flex; align-items: flex-start; border-bottom: 1px solid var(--kk-border-lighter); }
+  .det-table .tr { display: flex; align-items: stretch; border-bottom: 1px solid var(--kk-border-lighter); }
   .det-table .tr:last-child { border-bottom: 0; }
   .det-table .td-k { flex: 0 0 120px; padding: 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); box-sizing: border-box; }
   .det-table .td-v { flex: 1 1 0; min-width: 0; padding: 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .det-table .td-hit { display: inline; }
+  .det-table .td-hit { display: inline-flex; align-items: flex-start; gap: 8px; max-width: 100%; vertical-align: top; }
+  .det-table .td-hit .vv { min-width: 0; }
   .det-table .td-v--tip .td-hit { cursor: pointer; }  /* hover 範圍＝文字 + icon */
-  .det-table .td-v--tip .td-info { display: inline-flex; vertical-align: -3px; margin-left: 4px; width: 16px; height: 16px; color: var(--kk-text-medium); }
+  .det-table .td-v--tip .td-info { display: flex; flex: 0 0 16px; width: 16px; height: 16px; margin: 2px 0; }
+  .det-table .td-v--tip .td-info img { width: 16px; height: 16px; display: block; }
   /* hover 只作用在 ⓘ 圖示，文字不變色（依回饋） */
   .det-table .td-v--tip .td-hit:hover .td-info { color: var(--kk-primary-dark); }
   /* 行內 ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：可將滑鼠移入框內 */
@@ -943,15 +944,13 @@
   /* 簡要資訊 → 基本資訊：1px #E6E9ED 分隔線，上下各 24 */
   .det-h2 { margin: 24px 0 20px; padding-top: 24px; border-top: 1px solid var(--kk-border-lighter); }
   /* 基本資訊描述「展開」：Semibold 14 + 16 箭頭 gap 4 */
-  .det-intro .det-intro-more { display: none; align-items: center; gap: 4px; font-weight: 600; }
-  .det-intro.clampable .det-intro-more { display: inline-flex; }
+  .det-intro .det-intro-more { align-items: center; gap: 4px; }
   .det-intro .det-intro-more .ic, .det-intro .det-intro-more img { width: 16px; height: 16px; display: block; transition: transform .2s; }
   .det-intro.open .det-intro-more .ic { transform: rotate(180deg); }
   /* 規格表（Figma 3701:133349）：標籤欄 200、表頭 44（py12）、列 52（py16）、值與 tooltip icon gap 8 */
   .det-table .th { height: 44px; padding: 0 16px; display: flex; align-items: center; box-sizing: border-box; }
   .det-table .td-k { flex: 0 0 200px; padding: 16px 16px 15px; }
   .det-table .td-v { padding: 16px 16px 15px; }
-  .det-table .td-v--tip .td-info { margin-left: 8px; }
   /* 清單：Figma list-disc 縮排 21；如何使用步驟、購買須知主清單項目間無間距 */
   .det-list li { padding-left: 21px; }
   .det-list li::before { left: 6px; }
@@ -1787,7 +1786,7 @@
 <!-- ============ 商品詳情 dialog（Figma 3183-43487 / 3190-39080 / 3220-50734，資訊邏輯參考 mweb） ============ -->
 <div class="pc-mask" id="plDetMask"></div>
 <div class="pl-detdlg" id="plDetDlg" role="dialog" aria-modal="true">
-  <div class="pl-det-hd"><span class="t">詳情</span><button id="plDetClose" aria-label="關閉"><span class="ic ic-20">{{IC_cross}}</span></button></div>
+  <div class="pl-det-hd"><span class="t">詳情</span><button id="plDetClose" aria-label="關閉"><span class="ic ic-20">{{DLG_cross}}</span></button></div>
   <div class="pl-det-tabs" id="plDetTabs"></div>
   <div class="pl-det-bd" id="plDetBd"></div>
   <div class="pl-det-foot">
@@ -3118,7 +3117,7 @@
     moreBtn.addEventListener('click', function () { var op = intro.classList.toggle('open'); setMore(op); });
     wrap.appendChild(intro);
     // 夾行後若溢出才顯示「展開」（等插入 DOM 量測）
-    requestAnimationFrame(function () { var tEl = intro.querySelector('.det-intro-t'); if (tEl.scrollHeight - tEl.clientHeight > 1) intro.classList.add('clampable'); });
+    requestAnimationFrame(function () { var tEl = intro.querySelector('.det-intro-t'); if (tEl.scrollWidth - tEl.clientWidth > 1) intro.classList.add('clampable'); });
     var rows = [
       ['th', '卡片規格'],
       ['SIM 卡片規格', 'eSIM'],
@@ -3155,7 +3154,7 @@
       if (r[2]) {
         v.classList.add('td-v--tip');
         var hit = v.querySelector('.td-hit');
-        hit.insertAdjacentHTML('beforeend', '<span class="td-info ic ic-16">{{IC_info}}</span>');
+        hit.insertAdjacentHTML('beforeend', '<span class="td-info">{{DET_info16}}</span>');
         var icon = v.querySelector('.td-info');
         (function (key) {  // 只在文字 + icon 上 hover 才顯示，儲存格空白處不觸發
           hit.addEventListener('mouseenter', function () { detShowTip(icon, SPEC_TIPS[key]); });
