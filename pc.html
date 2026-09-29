@@ -788,21 +788,22 @@
   .det-coupon .claim { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: #E65F50; font-size: 14px; line-height: 20px; font-weight: 600; flex: 0 0 auto; }
   .det-coupon .claim .car, .det-coupon .claim .car img { width: 16px; height: 16px; display: block; }
   /* 領取折扣 popover（Figma 3220-51471）：349 寬、上三角、藍底提示 + 兩張券卡 */
-  .pl-cpop { position: absolute; left: 16px; top: calc(100% + 12px); z-index: 8; width: 349px; max-width: calc(100% - 16px); background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.12); padding: 8px 12px; display: none; flex-direction: column; gap: 8px; cursor: default; }
+  /* 領取折扣 tooltip（Figma 3701:138942 Tooltip coupon）：400 寬、貼 banner 下緣靠右、白底 r8 陰影 0 4 12、p16 gap 16、無尖角 */
+  .pl-cpop { position: absolute; right: 0; top: 100%; z-index: 8; width: 400px; max-width: 100%; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; flex-direction: column; gap: 16px; text-align: left; cursor: default; }
   .pl-cpop.show { display: flex; }
-  .pl-cpop::before { content: ''; position: absolute; left: 16px; top: -7px; width: 14px; height: 8px; background: #fff; clip-path: polygon(50% 0, 0 100%, 100% 100%); }
   .pl-cpop .cp-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: #F2FAFF; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pl-cpop .cp-note .ic { width: 20px; height: 20px; color: #2D84D6; flex: 0 0 auto; }
-  .pl-cpop .cp-card { border: 1px solid var(--kk-border-lighter); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
-  .pl-cpop .cp-r1 { display: flex; align-items: center; justify-content: space-between; height: 32px; }
+  .pl-cpop .cp-cards { display: flex; flex-direction: column; gap: 12px; }
+  .pl-cpop .cp-card { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .pl-cpop .cp-r1 { display: flex; align-items: center; justify-content: space-between; }
   .pl-cpop .cp-amt { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 24px; line-height: 24px; font-weight: 700; color: var(--kk-text-darker); }
-  .pl-cpop .cp-btn { flex: 0 0 auto; height: 28px; padding: 0 12px; border-radius: 4px; font-size: 14px; line-height: 20px; font-weight: 600; cursor: pointer; }
-  .pl-cpop .cp-btn.get { background: var(--kk-primary-medium); color: #fff; border: 0; }
-  .pl-cpop .cp-btn.use { background: #fff; color: var(--kk-primary-medium); border: 1px solid var(--kk-primary-medium); }
-  .pl-cpop .cp-txt { display: flex; flex-direction: column; gap: 4px; }
-  .pl-cpop .cp-cond { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
-  .pl-cpop .cp-desc { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .pl-cpop .cp-exp { font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .pl-cpop .cp-btn { flex: 0 0 auto; padding: 6px 12px; border-radius: 8px; font-size: 14px; line-height: 20px; font-weight: 600; cursor: pointer; }
+  .pl-cpop .cp-btn.get { background: var(--kk-primary-button); color: #fff; border: 0; }
+  .pl-cpop .cp-btn.use { background: #fff; color: var(--kk-primary-dark); border: 1px solid var(--kk-primary-dark); }
+  .pl-cpop .cp-txt { display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 20px; }
+  .pl-cpop .cp-cond { font-weight: 600; color: var(--kk-text-darker); }
+  .pl-cpop .cp-desc { color: var(--kk-text-dark); }
+  .pl-cpop .cp-exp { color: var(--kk-text-dark); }
   /* 政策行 */
   .det-policies { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-policies .perk { position: relative; display: inline-flex; align-items: center; gap: 8px; }
@@ -828,10 +829,11 @@
   .det-table .tr:last-child { border-bottom: 0; }
   .det-table .td-k { flex: 0 0 120px; padding: 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); box-sizing: border-box; }
   .det-table .td-v { flex: 1 1 0; min-width: 0; padding: 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .det-table .td-v--tip { cursor: pointer; }
+  .det-table .td-hit { display: inline; }
+  .det-table .td-v--tip .td-hit { cursor: pointer; }  /* hover 範圍＝文字 + icon */
   .det-table .td-v--tip .td-info { display: inline-flex; vertical-align: -3px; margin-left: 4px; width: 16px; height: 16px; color: var(--kk-text-medium); }
   /* hover 只作用在 ⓘ 圖示，文字不變色（依回饋） */
-  .det-table .td-v--tip:hover .td-info { color: var(--kk-primary-dark); }
+  .det-table .td-v--tip .td-hit:hover .td-info { color: var(--kk-primary-dark); }
   /* 行內 ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：可將滑鼠移入框內 */
   .det-hovtip { position: fixed; z-index: 60; width: 327px; max-width: calc(100vw - 24px); background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .det-hovtip[hidden] { display: none; }
@@ -3220,13 +3222,15 @@
       '<span class="claim">折扣券<span class="car"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93RG93bl9saW5lX3NlbWlib2xkIj4KPHBhdGggaWQ9IlZlY3RvciIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04LjQ3MTQgMTAuNDcyMkM4LjIxMTA2IDEwLjczMjYgNy43ODg5NSAxMC43MzI2IDcuNTI4NiAxMC40NzIyTDMuNTI4NiA2LjQ3MjIyQzMuMjY4MjUgNi4yMTE4NyAzLjI2ODI1IDUuNzg5NzYgMy41Mjg2IDUuNTI5NDFDMy43ODg5NSA1LjI2OTA2IDQuMjExMDYgNS4yNjkwNiA0LjQ3MTQxIDUuNTI5NDFMOCA5LjA1ODAxTDExLjUyODYgNS41Mjk0MUMxMS43ODg5IDUuMjY5MDYgMTIuMjExMSA1LjI2OTA2IDEyLjQ3MTQgNS41Mjk0MUMxMi43MzE4IDUuNzg5NzYgMTIuNzMxOCA2LjIxMTg3IDEyLjQ3MTQgNi40NzIyMkw4LjQ3MTQgMTAuNDcyMloiIGZpbGw9IiNFNjVGNTAiLz4KPC9nPgo8L3N2Zz4=" width="16" height="16"></span></span>' +
       '<span class="pl-cpop">' +
         '<span class="cp-note"><span class="ic ic-20"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik02LjUgMEM1LjIxNDQyIDAgMy45NTc3MiAwLjM4MTIxOCAyLjg4ODggMS4wOTU0NUMxLjgxOTg4IDEuODA5NjggMC45ODY3NTYgMi44MjQ4NCAwLjQ5NDc4NiA0LjAxMjU2QzAuMDAyODE2MzIgNS4yMDAyOCAtMC4xMjU5MDUgNi41MDcyMSAwLjEyNDg5OSA3Ljc2ODA5QzAuMzc1NzAzIDkuMDI4OTYgMC45OTQ3NjggMTAuMTg3MiAxLjkwMzgxIDExLjA5NjJDMi44MTI4NSAxMi4wMDUyIDMuOTcxMDQgMTIuNjI0MyA1LjIzMTkyIDEyLjg3NTFDNi40OTI3OSAxMy4xMjU5IDcuNzk5NzMgMTIuOTk3MiA4Ljk4NzQ0IDEyLjUwNTJDMTAuMTc1MiAxMi4wMTMyIDExLjE5MDMgMTEuMTgwMSAxMS45MDQ2IDEwLjExMTJDMTIuNjE4OCA5LjA0MjI5IDEzIDcuNzg1NTggMTMgNi41QzEyLjk5ODEgNC43NzY2OSAxMi4zMTI2IDMuMTI0NTIgMTEuMDk0IDEuOTA1OTZDOS44NzU0OCAwLjY4NzM5NiA4LjIyMzMxIDAuMDAxOTUwNDkgNi41IDBWMFpNNi4zNzUwNCAzLjAwMDAyQzYuNTIzMzcgMy4wMDAwMiA2LjY2ODM4IDMuMDQ0MDEgNi43OTE3MSAzLjEyNjQyQzYuOTE1MDUgMy4yMDg4MyA3LjAxMTE4IDMuMzI1OTcgNy4wNjc5NSAzLjQ2MzAxQzcuMTI0NzEgMy42MDAwNiA3LjEzOTU2IDMuNzUwODYgNy4xMTA2MyAzLjg5NjM0QzcuMDgxNjkgNC4wNDE4MyA3LjAxMDI2IDQuMTc1NDYgNi45MDUzNyA0LjI4MDM1QzYuODAwNDggNC4zODUyNCA2LjY2Njg0IDQuNDU2NjcgNi41MjEzNSA0LjQ4NTYxQzYuMzc1ODcgNC41MTQ1NSA2LjIyNTA3IDQuNDk5NyA2LjA4ODAyIDQuNDQyOTNDNS45NTA5OCA0LjM4NjE3IDUuODMzODUgNC4yOTAwNCA1Ljc1MTQ0IDQuMTY2N0M1LjY2OTAyIDQuMDQzMzYgNS42MjUwNCAzLjg5ODM2IDUuNjI1MDQgMy43NTAwMkM1LjYyNTA0IDMuNTUxMTEgNS43MDQwNSAzLjM2MDM1IDUuODQ0NzEgMy4yMTk2OUM1Ljk4NTM2IDMuMDc5MDQgNi4xNzYxMiAzLjAwMDAyIDYuMzc1MDQgMy4wMDAwMlYzLjAwMDAyWk03LjAwMDAxIDEwSDYuNTAwMDFDNi4zNjc0IDkuOTk5OTkgNi4yNDAyMyA5Ljk0NzMxIDYuMTQ2NDYgOS44NTM1NUM2LjA1MjY5IDkuNzU5NzggNi4wMDAwMSA5LjYzMjYxIDYuMDAwMDEgOS41VjYuNUM1Ljg2NzQgNi41IDUuNzQwMjIgNi40NDczMiA1LjY0NjQ1IDYuMzUzNTVDNS41NTI2OCA2LjI1OTc5IDUuNTAwMDEgNi4xMzI2MSA1LjUwMDAxIDZDNS41MDAwMSA1Ljg2NzM5IDUuNTUyNjggNS43NDAyMSA1LjY0NjQ1IDUuNjQ2NDVDNS43NDAyMiA1LjU1MjY4IDUuODY3NCA1LjUgNi4wMDAwMSA1LjVINi41MDAwMUM2LjYzMjYxIDUuNTAwMDEgNi43NTk3OSA1LjU1MjY5IDYuODUzNTUgNS42NDY0NUM2Ljk0NzMyIDUuNzQwMjIgNyA1Ljg2NzM5IDcuMDAwMDEgNlY5QzcuMTMyNjEgOSA3LjI1OTc5IDkuMDUyNjggNy4zNTM1NiA5LjE0NjQ1QzcuNDQ3MzMgOS4yNDAyMSA3LjUwMDAxIDkuMzY3MzkgNy41MDAwMSA5LjVDNy41MDAwMSA5LjYzMjYxIDcuNDQ3MzMgOS43NTk3OCA3LjM1MzU2IDkuODUzNTVDNy4yNTk3OSA5Ljk0NzMyIDcuMTMyNjEgMTAgNy4wMDAwMSAxMFoiIGZpbGw9IiMyRDg0RDYiLz4KPC9zdmc+" width="13.00" height="13.00"></span>領取成功後可以在付款時選擇抵扣使用</span>' +
+        '<span class="cp-cards">' +
         '<span class="cp-card">' +
           '<span class="cp-r1"><span class="cp-amt">TWD 1,000</span><span class="cp-btn get">領取</span></span>' +
-          '<span class="cp-txt"><span class="cp-cond">訂購金額須滿 TWD 50,000</span><span class="cp-desc">假日不加價！超值雙人住宿 x 纜車入園來回優惠</span><span class="cp-exp">有效期限：2021-10-02</span></span>' +
+          '<span class="cp-txt"><span class="cp-cond">訂購金額須滿 TWD 50,000</span><span class="cp-desc">假日不加價！超值雙人住宿 x 纜車入園來回</span><span class="cp-exp">有效期限：2021-10-02</span></span>' +
         '</span>' +
         '<span class="cp-card">' +
-          '<span class="cp-r1"><span class="cp-amt">TWD 1,000</span><span class="cp-btn use">去使用</span></span>' +
-          '<span class="cp-txt"><span class="cp-cond">訂購金額須滿 TWD 50,000</span><span class="cp-desc">假日不加價！超值雙人住宿 x 纜車入園來回優惠</span><span class="cp-exp">即將失效：剩 1 天</span></span>' +
+          '<span class="cp-r1"><span class="cp-amt">TWD 1,000</span><span class="cp-btn use">已領取</span></span>' +
+          '<span class="cp-txt"><span class="cp-cond">訂購金額須滿 TWD 50,000</span><span class="cp-desc">假日不加價！超值雙人住宿 x 纜車入園來回</span><span class="cp-exp">有效期限：2021-10-02</span></span>' +
+        '</span>' +
         '</span>' +
       '</span></button>');
     var pop = cp.querySelector('.pl-cpop');
@@ -3282,17 +3286,18 @@
     var tbl = h('<div class="det-table"></div>');
     rows.forEach(function (r) {
       if (r[0] === 'th') { tbl.appendChild(h('<div class="th">' + r[1] + '</div>')); return; }
-      var tr = h('<div class="tr"><div class="td-k"></div><div class="td-v"><span class="vv"></span></div></div>');
+      var tr = h('<div class="tr"><div class="td-k"></div><div class="td-v"><span class="td-hit"><span class="vv"></span></span></div></div>');
       tr.querySelector('.td-k').textContent = r[0];
       var v = tr.querySelector('.td-v');
       v.querySelector('.vv').textContent = r[1];
       if (r[2]) {
         v.classList.add('td-v--tip');
-        v.insertAdjacentHTML('beforeend', '<span class="td-info ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuNSAxQzMuNDYyNDMgMSAxIDMuNDYyNDMgMSA2LjVDMSA5LjUzNzU3IDMuNDYyNDMgMTIgNi41IDEyQzkuNTM3NTcgMTIgMTIgOS41Mzc1NyAxMiA2LjVDMTIgMy40NjI0MyA5LjUzNzU3IDEgNi41IDFaTTAgNi41QzAgMi45MTAxNSAyLjkxMDE1IDAgNi41IDBDMTAuMDg5OSAwIDEzIDIuOTEwMTUgMTMgNi41QzEzIDEwLjA4OTkgMTAuMDg5OSAxMyA2LjUgMTNDMi45MTAxNSAxMyAwIDEwLjA4OTkgMCA2LjVaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS41IDZDNS41IDUuNzIzODYgNS43MjM4NiA1LjUgNiA1LjVINi41QzYuNzc2MTQgNS41IDcgNS43MjM4NiA3IDZWOUM3LjI3NjE0IDkgNy41IDkuMjIzODYgNy41IDkuNUM3LjUgOS43NzYxNCA3LjI3NjE0IDEwIDcgMTBINi41QzYuMjIzODYgMTAgNiA5Ljc3NjE0IDYgOS41VjYuNUM1LjcyMzg2IDYuNSA1LjUgNi4yNzYxNCA1LjUgNloiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuMzc1IDQuNUM2Ljc4OTIxIDQuNSA3LjEyNSA0LjE2NDIxIDcuMTI1IDMuNzVDNy4xMjUgMy4zMzU3OSA2Ljc4OTIxIDMgNi4zNzUgM0M1Ljk2MDc5IDMgNS42MjUgMy4zMzU3OSA1LjYyNSAzLjc1QzUuNjI1IDQuMTY0MjEgNS45NjA3OSA0LjUgNi4zNzUgNC41WiIgZmlsbD0iIzcyNzI3MiIvPgo8L2c+Cjwvc3ZnPg==" width="13.00" height="13.00"></span>');
+        var hit = v.querySelector('.td-hit');
+        hit.insertAdjacentHTML('beforeend', '<span class="td-info ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJWZWN0b3IiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYuNSAxQzMuNDYyNDMgMSAxIDMuNDYyNDMgMSA2LjVDMSA5LjUzNzU3IDMuNDYyNDMgMTIgNi41IDEyQzkuNTM3NTcgMTIgMTIgOS41Mzc1NyAxMiA2LjVDMTIgMy40NjI0MyA5LjUzNzU3IDEgNi41IDFaTTAgNi41QzAgMi45MTAxNSAyLjkxMDE1IDAgNi41IDBDMTAuMDg5OSAwIDEzIDIuOTEwMTUgMTMgNi41QzEzIDEwLjA4OTkgMTAuMDg5OSAxMyA2LjUgMTNDMi45MTAxNSAxMyAwIDEwLjA4OTkgMCA2LjVaIiBmaWxsPSIjNzI3MjcyIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNS41IDZDNS41IDUuNzIzODYgNS43MjM4NiA1LjUgNiA1LjVINi41QzYuNzc2MTQgNS41IDcgNS43MjM4NiA3IDZWOUM3LjI3NjE0IDkgNy41IDkuMjIzODYgNy41IDkuNUM3LjUgOS43NzYxNCA3LjI3NjE0IDEwIDcgMTBINi41QzYuMjIzODYgMTAgNiA5Ljc3NjE0IDYgOS41VjYuNUM1LjcyMzg2IDYuNSA1LjUgNi4yNzYxNCA1LjUgNloiIGZpbGw9IiM3MjcyNzIiLz4KPHBhdGggZD0iTTYuMzc1IDQuNUM2Ljc4OTIxIDQuNSA3LjEyNSA0LjE2NDIxIDcuMTI1IDMuNzVDNy4xMjUgMy4zMzU3OSA2Ljc4OTIxIDMgNi4zNzUgM0M1Ljk2MDc5IDMgNS42MjUgMy4zMzU3OSA1LjYyNSAzLjc1QzUuNjI1IDQuMTY0MjEgNS45NjA3OSA0LjUgNi4zNzUgNC41WiIgZmlsbD0iIzcyNzI3MiIvPgo8L2c+Cjwvc3ZnPg==" width="13.00" height="13.00"></span>');
         var icon = v.querySelector('.td-info');
-        (function (key) {
-          v.addEventListener('mouseenter', function () { detShowTip(icon, SPEC_TIPS[key]); });
-          v.addEventListener('mouseleave', detHideTip);
+        (function (key) {  // 只在文字 + icon 上 hover 才顯示，儲存格空白處不觸發
+          hit.addEventListener('mouseenter', function () { detShowTip(icon, SPEC_TIPS[key]); });
+          hit.addEventListener('mouseleave', detHideTip);
         })(r[2]);
       }
       tbl.appendChild(tr);
