@@ -423,7 +423,7 @@
   .pc-dlg-search .pc-dlg-clear .ic { width: 16px; height: 16px; }
   /* 搜尋態：隱藏模式栏 / 分組 / 底部，顯示扁平結果列表（對齊 mweb renderSearch） */
   .pc-dlg.searching .pc-dlg-modes, .pc-dlg.searching .pc-dlg-bd,
-  .pc-dlg.searching .pc-dlg-ft, .pc-dlg.searching .dlg-hint { display: none; }
+  .pc-dlg.searching .pc-dlg-ft, .pc-dlg.searching .dlg-hint, .pc-dlg.searching .dlg-selchips { display: none; }
   .pc-dlg-results { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 12px 24px; display: none; }
   .pc-dlg.searching .pc-dlg-results { display: block; }
   .pc-dlg.searching.no-result .pc-dlg-results { display: none; }
@@ -524,6 +524,12 @@
   #pcDlg .dlg-hint { gap: 8px; padding: 12px 24px 0; border-top: 1px solid var(--kk-border-lighter); }
   #pcDlg .dlg-hint b { font-weight: 500; color: var(--kk-primary-medium); }
   #pcDlg .pc-dlg-ft { border-top: 0; }
+  /* 多選已選 chips（Figma 3554-49811）：提示下 gap 8、chips wrap gap 12；chip pill #F0FAFB + 1px #26BEC9、px12 py8、字 px4 14/20 #26BEC9 + 16 叉 */
+  #pcDlg .dlg-selchips { display: flex; flex-wrap: wrap; gap: 12px; padding: 8px 24px 0; }
+  #pcDlg .dlg-selchips[hidden] { display: none; }
+  #pcDlg .dlg-selchip { display: inline-flex; align-items: center; padding: 7px 11px;  /* 邊框內縮 → 外高 36 */ border-radius: 999px; background: var(--kk-primary-lighter); border: 1px solid var(--kk-primary-medium); font-size: 14px; line-height: 20px; color: var(--kk-primary-medium); cursor: pointer; }
+  #pcDlg .dlg-selchip .tx { padding: 0 4px; }
+  #pcDlg .dlg-selchip .ic, #pcDlg .dlg-selchip .ic img { width: 16px; height: 16px; display: block; }
   #pcDlg .pc-dlg-ft .ghost { border-color: var(--kk-text-dark); }
   /* 搜尋結果：列表 py12 px24；項目 px12 py8（內 py8 gap12）、r8、hover #F1F4F8；名稱 14/20 命中字 #13A3B6、副標 12/16 #9C9DA0 gap4 */
   #pcDlg .pc-dlg-results { padding: 28px 24px 24px; }  /* 搜尋列區塊 pb16 + 列表 py12 */
@@ -533,8 +539,8 @@
   #pcDlg .pc-dlg-result .ic img { width: 20px; height: 20px; }
   #pcDlg .pc-dlg-result .rc { gap: 4px; }
   #pcDlg .pc-dlg-result .nm mark { color: var(--kk-primary-dark); }
-  .pc-dlg[data-mode="country"] .pc-dlg-ft, .pc-dlg[data-mode="country"] .dlg-hint,
-  .pc-dlg[data-mode="region"] .pc-dlg-ft, .pc-dlg[data-mode="region"] .dlg-hint { display: none; }
+  .pc-dlg[data-mode="country"] .pc-dlg-ft, .pc-dlg[data-mode="country"] .dlg-hint, .pc-dlg[data-mode="country"] .dlg-selchips,
+  .pc-dlg[data-mode="region"] .pc-dlg-ft, .pc-dlg[data-mode="region"] .dlg-hint, .pc-dlg[data-mode="region"] .dlg-selchips { display: none; }
 
   /* 選擇建議 dialog（Figma 3140-37478；表格視覺與 mweb 選擇建議一致） */
   .pc-howto-dlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
@@ -1733,6 +1739,7 @@
   </div>
   <div class="pc-dlg-bd" id="pcDlgBody"></div>
   <div class="dlg-hint"><span>最多可選擇5個</span><span id="pcDlgSelInfo" hidden>已選擇 <b id="pcDlgSelCount">0</b> 個</span></div>
+  <div class="dlg-selchips" id="pcDlgSelChips" hidden></div>
   <div class="pc-dlg-ft">
     <button class="ghost" id="pcDlgClear">清除</button>
     <button class="ok" id="pcDlgOk" disabled>確定</button>
@@ -2298,6 +2305,14 @@
       });
       document.getElementById('pcDlgSelInfo').hidden = !dlg.multi.length;
       document.getElementById('pcDlgSelCount').textContent = dlg.multi.length;
+      // 已選 chips（可關閉）：點叉移除該國並重繪
+      var sc = document.getElementById('pcDlgSelChips'); sc.innerHTML = ''; sc.hidden = !dlg.multi.length;
+      dlg.multi.forEach(function (n) {
+        var ch = h('<button class="dlg-selchip" type="button"><span class="tx"></span><span class="ic">{{DLG_chipCross16}}</span></button>');
+        ch.querySelector('.tx').textContent = n;
+        ch.addEventListener('click', function () { dlg.multi.splice(dlg.multi.indexOf(n), 1); renderDlg(); });
+        sc.appendChild(ch);
+      });
       document.getElementById('pcDlgOk').disabled = dlg.multi.length < 2;  // 多國組合至少 2 個
     }
     bd.scrollTop = keepTop;  // 重繪（如多選點國家）保留捲動位置，不跳回頂部

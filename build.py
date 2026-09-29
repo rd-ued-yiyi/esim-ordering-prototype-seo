@@ -369,6 +369,7 @@ pc_subs = {
     "{{EX_android}}":      pc_img("explore/androidLogo.svg"),
     "{{EX_crossLine}}":    pc_img("explore/crossLine.svg"),  # 已選 Chip 刪除細線叉 16（Figma 3467-85809）
     # 選擇目的地 dialog（Figma 3554-49785 / 49810 / 49892）
+    "{{DLG_chipCross16}}": pc_img("dlg/chipCross16.svg"),  # 多選已選 chip 叉 16（Figma 3554-49811）
     "{{DLG_cross}}":       pc_img("dlg/cross.svg"),
     "{{DLG_search}}":      pc_img("dlg/search.svg"),
     "{{DLG_location}}":    pc_img("dlg/location.svg"),
