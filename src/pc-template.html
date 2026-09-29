@@ -132,7 +132,7 @@
   .pc-recent-clear .ic, .pc-recent-clear img { width: 16px; height: 16px; }
 
   /* 已選：相容提示 + 摘要列（摘要 + 搜尋套餐）+ 天數&流量卡（Figma 3600-58253 / Plan Selector Card 3636:98060） */
-  .pc-hero[data-state="sel"] .pc-card { padding: 24px; }
+  .pc-hero[data-state="sel"] .pc-card { padding: 24px 24px 0; }  /* 底欄自帶 p24，卡片底不再留白 */
   .pc-panel { display: none; flex-direction: column; gap: 20px; }
   .pc-hero[data-state="sel"] .pc-panel { display: flex; }
   .pc-hero[data-state="sel"] .pc-find { display: none; }
@@ -140,19 +140,19 @@
   .pc-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: #F2FAFF; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-note .ic { flex: 0 0 auto; }
   .pc-note u { margin-left: 12px; font-weight: 500; text-underline-offset: 2px; cursor: pointer; }
-  /* 摘要列：H4 摘要（flex 1）+ 搜尋按鈕（gap 24） */
-  .pc-panel-top { display: flex; align-items: center; gap: 24px; }
-  .pc-panel-sum { flex: 1 1 0; min-width: 0; font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-medium); }  /* 預選＝$color-text-medium #9C9DA0（Figma 3636-98060） */
+  /* 卡片底欄（Figma 3792:155411）：上邊線 #E6E9ED、p24、摘要（靠右）與按鈕 gap 48；向外撐到卡片邊緣、續接卡片下圓角 */
+  .pc-panel-foot2 { display: flex; align-items: center; gap: 48px; margin: 4px -24px 0; padding: 24px; border-top: 1px solid var(--kk-border-lighter); background: #fff; border-radius: 0 0 16px 16px; }
+  .pc-panel-sum { flex: 1 1 0; min-width: 0; text-align: right; font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-medium); }  /* 預選＝$color-text-medium #9C9DA0（Figma 3636-98060） */
   .pc-panel-sum.touched { color: var(--kk-text-darker); }  /* 手動選擇後＝$color-text-darker #212121（Figma 3636-98437） */
   .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
     font-size: 16px; line-height: 24px; font-weight: 600; white-space: nowrap; transition: background .15s; display: inline-flex; align-items: center; gap: 8px; }
   .pc-btn:hover { background: var(--kk-primary-dark); }
   .pc-btn--search { flex: 0 0 240px; width: 240px; justify-content: center; padding: 12px 24px 12px 16px; gap: 4px; }  /* Figma Button 3636-98059：寬 240、內容置中、pl16 pr24 py12、icon 20 + gap 4 */
   .pc-btn--search .ic { width: 20px; height: 20px; }
-  /* 天數&流量卡：白底、p12、r12、陰影 0 4 24 rgba(38,50,56,.12)、左右欄 gap 24 + 中間 1px 分隔線 */
-  .pc-plan { display: flex; gap: 24px; align-items: stretch; padding: 12px; border-radius: 12px; background: #fff; box-shadow: 0 4px 24px rgba(38,50,56,.12); }
+  /* 天數&流量（Figma 3792:154301）：直接放在卡片內（無內層白卡 / 陰影），左 140 + 1px 分隔線 + 右欄，gap 24，高 334 */
+  .pc-plan { display: flex; gap: 24px; align-items: stretch; height: 334px; }
   .pc-plan-vline { flex: 0 0 1px; background: #E6E9ED; }
-  .pc-plan-t { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-plan-t { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }  /* H6 */
   .pc-plan-end { padding: 24px 0 48px; text-align: center; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }  /* 已經到底了～ */
   /* 滾動區：底部 60px 白色漸層遮罩 + 常駐 8px 灰滑塊（#D5D6DB r4） */
   .pc-scroll-wrap { position: relative; min-height: 0; }
@@ -165,7 +165,7 @@
   .pc-days-list::-webkit-scrollbar-thumb, .pc-flow-scroll::-webkit-scrollbar-thumb { background: var(--kk-border-light); border-radius: 4px; }
   .pc-days-list::-webkit-scrollbar-thumb:hover, .pc-flow-scroll::-webkit-scrollbar-thumb:hover { background: var(--kk-text-medium); }
   /* 用卡天數欄：寬 160、標題 + gap 8 + 可捲清單（高度隨右欄拉伸） */
-  .pc-plan-days { flex: 0 0 160px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }  /* 小標題下間距 8（Figma 3636-98059） */
+  .pc-plan-days { flex: 0 0 140px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }  /* 寬 140、標題下 8 */
   .pc-plan-days .pc-scroll-wrap { flex: 1 1 0; }
   .pc-days-list { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 8px; }
   .pc-day { flex: 0 0 auto; width: 100%; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px;  /* Chip background：p8、20 行高 → 36px */
@@ -175,26 +175,26 @@
   .pc-days-list .pc-plan-end { flex: 0 0 auto; }
   /* 流量欄：標題列（流量 + 不知道怎麼選）+ 300px 區（左 120 分頁 + gap 20 + 右可捲檔位） */
   .pc-plan-flow { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .pc-plan-flow .pc-flow-head { height: 26px; }
   .pc-flow-head { display: flex; align-items: center; gap: 12px; }
   .pc-flow-help { display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 12px; line-height: 16px; white-space: nowrap; }
   .pc-flow-help .ic { width: 16px; height: 16px; }
   .pc-flow-body { display: flex; gap: 20px; height: 300px; }
-  /* 計費分頁（豎排）：三格等高 gap 8；未選淺灰、選中淺青底 + 青邊 + 青字 + 右側尖角（tab（arrow）） */
-  .pc-ftabs { flex: 0 0 120px; display: flex; flex-direction: column; gap: 8px; }
-  .pc-ftab { position: relative; flex: 1 1 0; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 6px 8px; white-space: nowrap; border-radius: 8px;
-    background: var(--kk-surface-light); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: center; border: 1px solid transparent; }
-  .pc-ftab:hover:not(.sel) { background: var(--kk-surface-medium); }
-  .pc-ftab.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
-  .pc-ftab.sel::after { content: ''; position: absolute; top: calc(50% + 1.5px); right: -5.5px; width: 9px; height: 9px; background: var(--kk-primary-lighter);
-    border-top: 1px solid var(--kk-primary-medium); border-right: 1px solid var(--kk-primary-medium); border-top-right-radius: 2px; transform: translateY(-50%) rotate(45deg); }
+  /* 計費分頁（Figma tab bar 3792:154713）：豎排 100 寬、右邊線 #E6E9ED；項目 p12 文字靠右 14/20；選中 Semibold #13A3B6 + 右緣 2px #26BEC9 豎條 */
+  .pc-ftabs { flex: 0 0 100px; align-self: flex-start; display: flex; flex-direction: column; border-right: 1px solid var(--kk-border-lighter); }
+  .pc-ftab { position: relative; width: 100%; display: flex; align-items: center; justify-content: flex-end; padding: 12px; white-space: nowrap;
+    background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: right; }
+  .pc-ftab:hover:not(.sel) { color: var(--kk-primary-dark); }
+  .pc-ftab.sel { color: var(--kk-primary-dark); font-weight: 600; }
+  .pc-ftab.sel::after { content: ''; position: absolute; top: 0; bottom: 0; right: -1px; width: 2px; background: var(--kk-primary-medium); border-radius: 2px 0 0 2px; }
   .pc-plan-flow .pc-scroll-wrap { flex: 1 1 0; min-width: 0; }
-  .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; padding-right: 8px; }
+  .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; padding-right: 0; }
   .pc-flow-sec { display: flex; flex-direction: column; gap: 8px; }
   /* 計費段之間：1px 虛線 #ADE6EB（dash 2 2，Figma Line 27） */
   .pc-flow-sec + .pc-flow-sec { border-top: 1px dashed #ADE6EB; padding-top: 12px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   /* 依可用寬度自動增減列數：1440 下 4 列（Figma），變窄自動降列，每格 ≥150px 文字不硬折 */
-  .pc-flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .pc-flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }  /* Figma 784 寬 5 列（150.4）；含 8px 滾動條後仍維持 5 列 */
   .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; padding: 16px 12px; border-radius: 8px; border: 1px solid transparent;  /* Option Card：74px 高、px12 py16、gap2 */
     background: var(--kk-surface-light); }
   .pc-tier:hover { background: var(--kk-surface-medium); }
@@ -1343,10 +1343,6 @@
           <!-- 已選目的地：相容提示 + 摘要列（摘要 + 搜尋套餐）+ 天數&流量卡（Figma 3600-58253） -->
           <div class="pc-panel" id="pcPanel">
             <div class="pc-note"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></span></div>
-            <div class="pc-panel-top">
-              <div class="pc-panel-sum" id="pcPanelSum">—</div>
-              <button class="pc-btn pc-btn--search" id="pcSearchBtn"><span class="ic">{{PC_search20}}</span>搜尋套餐</button>
-            </div>
             <div class="pc-plan">
               <div class="pc-plan-days">
                 <div class="pc-plan-t">用卡天數</div>
@@ -1364,6 +1360,11 @@
                   <div class="pc-scroll-wrap"><div class="pc-flow-scroll" id="pcFlowScroll"></div></div>
                 </div>
               </div>
+            </div>
+            <!-- 卡片底欄（Figma Plan Selector Card footer 3792:155411）：上邊線、摘要靠右 + 搜尋套餐 -->
+            <div class="pc-panel-foot2">
+              <div class="pc-panel-sum" id="pcPanelSum">—</div>
+              <button class="pc-btn pc-btn--search" id="pcSearchBtn"><span class="ic">{{PC_search20}}</span>搜尋套餐</button>
             </div>
           </div>
         </div>
