@@ -790,7 +790,7 @@
   .det-provider { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   /* 折扣券 banner（Figma 936-48931）：#FFF2F2 底 + 32 picto + 票券描邊 + 領取 popover */
   .det-coupon { position: relative; margin-top: 24px;  /* Figma 3701-133338：摘要卡→券 24 */ display: flex; align-items: center; gap: 12px; width: 100%;
-    background: #FFF2F2; border: 0; border-radius: 12px; padding: 6px 8px; cursor: pointer; text-align: left; }  /* Figma Coupon banner：px8 py6 r12 gap 12 */
+    background: #FFF2F2; border: 0; border-radius: 12px; padding: 12px; cursor: pointer; text-align: left; }  /* Figma 3701-133342 Coupon banner PC：p12 r12、icon→券 12、券間 8 */
   .det-coupon .cp-pic { width: 32px; height: 32px; flex: 0 0 auto; display: block; }
   .det-coupon .cp-pic svg, .det-coupon .cp-pic img { width: 32px; height: 32px; display: block; }
   .det-coupon .tks { display: inline-flex; align-items: center; gap: 8px; }
@@ -799,7 +799,7 @@
   .det-coupon .tkt > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .det-coupon .tkt .dash { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; pointer-events: none; }
   .det-coupon .tkt .dash svg { width: 100%; height: auto; display: block; }
-  .det-coupon .tkt i { position: relative; font-style: normal; font-size: 12px; line-height: 16px; font-weight: 600; color: #E65F50; white-space: nowrap; }
+  .det-coupon .tkt i { position: relative; font-style: normal; font-size: 12px; line-height: 16px; font-weight: 500; color: #E65F50; white-space: nowrap; }  /* Subtitle-sm Medium */
   .det-coupon .claim { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: #E65F50; font-size: 14px; line-height: 20px; font-weight: 600; flex: 0 0 auto; }
   .det-coupon .claim .car, .det-coupon .claim .car img { width: 16px; height: 16px; display: block; }
   /* 領取折扣 popover（Figma 3220-51471）：349 寬、上三角、藍底提示 + 兩張券卡 */
