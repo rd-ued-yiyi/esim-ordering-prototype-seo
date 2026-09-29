@@ -407,6 +407,7 @@ pc_subs = {
     "{{DET_location20}}":  pc_img("det/location20.svg"),
     "{{DET_coupon32}}":    pc_img("det/coupon32.svg"),
     "{{DET_arrow16}}":     pc_img("det/arrow16.svg"),
+    "{{DLG_arrowRight16}}": pc_img("dlg/arrowRight16.svg"),  # 貼心提醒 TextLink 箭頭 ic_arrowRight_line_semibold_lg 16
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
