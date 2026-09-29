@@ -209,10 +209,10 @@
     transition: top .25s cubic-bezier(.4,0,.2,1), height .25s cubic-bezier(.4,0,.2,1); }
   .pc-ftabs:not(:has(.pc-ftab.sel))::after { opacity: 0; }
   .pc-plan-flow .pc-scroll-wrap { flex: 1 1 0; min-width: 0; }
-  .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; padding-right: 0; }
+  .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 16px; padding-right: 0; }  /* Figma 3636-98813：段落與虛線上下各 16 */
   .pc-flow-sec { display: flex; flex-direction: column; gap: 8px; }
   /* 計費段之間：1px 虛線 #ADE6EB（dash 2 2，Figma Line 27） */
-  .pc-flow-sec + .pc-flow-sec { border-top: 1px dashed #ADE6EB; padding-top: 12px; }
+  .pc-flow-sec + .pc-flow-sec { border-top: 1px dashed #ADE6EB; padding-top: 16px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   /* 依可用寬度自動增減列數：1440 下 4 列（Figma），變窄自動降列，每格 ≥150px 文字不硬折 */
   .pc-flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }  /* Figma 784 寬 5 列（150.4）；含 8px 滾動條後仍維持 5 列 */
@@ -2190,7 +2190,7 @@
     // 底部留足間距：確保最後一段（無限流量）能捲到滾動區頂部，scroll-spy 有機會錨定選中它
     var secs = scrollEl.querySelectorAll('.pc-flow-sec'), lastSec = secs[secs.length - 1];
     if (lastSec) {
-      var viewH = scrollEl.clientHeight || 300, gap = 12;
+      var viewH = scrollEl.clientHeight || 300, gap = 16;
       endEl.style.paddingBottom = Math.max(48, viewH - lastSec.offsetHeight - gap - 24 - 16) + 'px';
     }
     scrollEl.scrollTop = keepTop;
