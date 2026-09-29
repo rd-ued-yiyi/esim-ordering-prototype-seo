@@ -1097,12 +1097,13 @@
   .pc-ord-side { flex: 0 0 360px; position: sticky; top: 76px; }
   /* 商品摘要卡（Figma 3244-72526：內層卡有 2px 邊框、標題 16、價格深色 16、政策列 column） */
   .ord-prod { background: #fff; border: 2px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; }
-  .ord-prod-wrap .ord-datesec { margin-top: 20px; }
-  .ord-prod-wrap .ord-prod + .qty-row { margin-top: 20px; }
-  .ord-hr2 { height: 1px; background: var(--kk-border-lighter); margin: 20px 0; }
-  .ord-ptitle { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  .ord-card.ord-prod-wrap { padding: 24px; }  /* Figma 3710-143311：外卡 p24、區塊間 24 */
+  .ord-prod-wrap .ord-datesec { margin-top: 24px; }
+  .ord-prod-wrap .ord-prod + .qty-row { margin-top: 24px; }
+  .ord-hr2 { height: 1px; background: var(--kk-border-lighter); margin: 24px 0; }
+  .ord-ptitle { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
   .ord-pspecs { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
-  .ord-pline { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  .ord-pline { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .ord-pline .ic { width: 20px; height: 20px; flex: 0 0 auto; }
   .ord-pline .u { text-decoration: underline; text-underline-offset: 2px; }
   /* 使用地區 hover 氣泡：完整國家清單雙欄（Figma 3223-87439） */
@@ -1112,7 +1113,7 @@
   .ord-cov-tip ul { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 32px; }
   .ord-cov-tip li { position: relative; padding-left: 14px; font-size: 14px; line-height: 24px; color: var(--kk-text-darker); break-inside: avoid; }
   .ord-cov-tip li::before { content: ''; position: absolute; left: 2px; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: var(--kk-text-medium); }
-  .ord-hr { height: 1px; background: var(--kk-border-lighter); margin: 12px 0; }
+  .ord-hr { height: 1px; background: var(--kk-border-lighter); margin: 16px 0; }
   .ord-price-block { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
   .ord-price { color: var(--kk-text-darker); font-weight: 700; line-height: 16px; }
   .ord-price .cur { font-size: 16px; font-weight: 500; margin-right: 2px; font-family: 'Helvetica Neue', Arial, sans-serif; }
@@ -1123,8 +1124,8 @@
   .ord-card { background: #fff; border-radius: 12px; padding: 20px; }
   .ord-sec-h { display: flex; align-items: center; justify-content: space-between; }
   .ord-sec-h .t { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
-  .ord-sec-title { display: inline-flex; align-items: center; gap: 4px; }
-  .ord-sec-info { color: var(--kk-primary-medium); }
+  .ord-sec-title { display: inline-flex; align-items: center; gap: 8px; }
+  .ord-sec-info { color: var(--kk-primary-medium); padding: 4px; box-sizing: content-box; }
   .ord-edit { color: var(--kk-text-dark); } .ord-edit .ic { width: 20px; height: 20px; }
   .ord-subhint { margin-top: 8px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .ord-subhint b { color: var(--kk-primary-dark); }
@@ -1132,19 +1133,19 @@
   .ord-tip { margin-top: 16px; display: flex; align-items: flex-start; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-darker); background: #F2FAFF; border-radius: 8px; padding: 12px; }
   .ord-tip .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 0; }
   /* 使用日期 chips */
-  .ord-date-err { margin-top: 16px; display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-critical); }
+  .ord-date-err { margin-top: 8px; display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-critical); }
   .ord-date-err[hidden] { display: none; }
   .ord-date-err .ic { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; }
   .ord-date-wrap { display: flex; align-items: stretch; gap: 8px; margin-top: 16px; }
-  .ord-date-chips { flex: 1 1 0; min-width: 0; display: flex; gap: 8px; }  /* 不橫向捲動：等寬鋪滿整行，更多日期用「更多」日曆 */
+  .ord-date-chips { display: contents; }  /* 7 個日期 chip + 日曆 chip 同層等寬鋪滿整行（Figma 8 格 gap 8） */
   /* 日期 chip（Figma 3244-72533）：白底 + 1px #D5D6DB 邊框；選中 #F0FAFB + #26BEC9 */
-  .ord-dchip { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); }
+  .ord-dchip { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; box-sizing: border-box; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); }
   .ord-dchip .d { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .ord-dchip .w { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .ord-dchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
   .ord-dchip.sel .d { color: var(--kk-primary-medium); }
-  .ord-dmore { flex: 0 0 auto; min-width: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 12px; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); color: var(--kk-text-dark); font-size: 12px; }
-  .ord-dmore .ic { width: 20px; height: 20px; }
+  .ord-dmore { flex: 1 1 0; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 8px 12px; box-sizing: border-box; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); }  /* 日曆 chip：與日期 chip 等寬，只放 16 icon */
+  .ord-dmore .ic, .ord-dmore .ic img { width: 16px; height: 16px; }
   /* 購買數量（Figma 3710-143311）：標題 18/26 + gap 24 + Stepper（32 圓鈕 1px 邊 + 20 icon、數字 40 寬 16/24、gap 4），靠左 */
   .qty-row { display: flex; align-items: center; justify-content: flex-start; gap: 24px; }
   .qty-row .t { font-size: 18px; line-height: 26px; font-weight: 600; }
@@ -3462,8 +3463,8 @@
 
   // ================= 訂單填寫頁（Figma 3223-87439 / 3244-72510；資料邏輯參考 mweb） =================
   var OI = {
-    file: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 2.5h6l4 4V17a.5.5 0 0 1-.5.5H5.5A.5.5 0 0 1 5 17V3a.5.5 0 0 1 .5-.5Z" stroke="#727272" stroke-width="1.3"/><path d="M11 2.5V6h4M7.5 11l1.6 1.6L13 9.2" stroke="#727272" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    loc: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17s5-4.5 5-9a5 5 0 1 0-10 0c0 4.5 5 9 5 9Z" stroke="#727272" stroke-width="1.3"/><circle cx="10" cy="8" r="1.8" stroke="#727272" stroke-width="1.3"/></svg>',
+    file: '{{ORD_fileCheck20}}',  // ic_fileCheck_line 20 #212121
+    loc: '{{ORD_location20}}',  // ic_location_line 20 #212121
     info: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="#26BEC9" stroke-width="1.3"/><path d="M8 7.2v3.4M8 5.1h.01" stroke="#26BEC9" stroke-width="1.4" stroke-linecap="round"/></svg>',
     user: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.6" stroke="#9C9DA0" stroke-width="1.3"/><path d="M3.2 13c.4-2.4 2.4-3.8 4.8-3.8S12.4 10.6 12.8 13" stroke="#9C9DA0" stroke-width="1.3" stroke-linecap="round"/></svg>',
     globe: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="#9C9DA0" stroke-width="1.3"/><path d="M2 8h12M8 2c1.8 2 1.8 10 0 12M8 2C6.2 4 6.2 12 8 14" stroke="#9C9DA0" stroke-width="1.1"/></svg>',
@@ -3478,7 +3479,10 @@
     card: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5.5" width="18" height="13" rx="2" stroke="#727272" stroke-width="1.4"/><path d="M3 9.5h18" stroke="#727272" stroke-width="1.4"/><path d="M6 14.5h4" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
     sim: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 2.5h6.5L16 7v10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5Z" stroke="#727272" stroke-width="1.3"/><rect x="6.5" y="10" width="7" height="5.5" rx="1" stroke="#727272" stroke-width="1.3"/><path d="M10 10v5.5M6.5 12.7h7" stroke="#727272" stroke-width="1.1"/></svg>',
     coinGold: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#FFC128"/><circle cx="8" cy="8" r="5" fill="#FFD766"/><path d="M6 5v6M6 8l3.2-3M6.7 7.6l2.9 3.4" stroke="#B26E00" stroke-width="1.3" stroke-linecap="round"/></svg>',
-    warn: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.6" stroke="#E65F50" stroke-width="1.3"/><path d="M7 4v3.4M7 9.6h.01" stroke="#E65F50" stroke-width="1.3" stroke-linecap="round"/></svg>',
+    warn: '{{ORD_warnCircle14}}',  // ic_warningCircle_line 14 #E65F50
+    infoGrey: '{{ORD_info16}}',  // 啟用日期標題 ic_info_line 16 #9C9DA0
+    infoSb: '{{ORD_infoSemibold16}}',  // 取消政策鈕 ic_info_line_semibold 16 #13A3B6
+    cal16: '{{ORD_calendar16}}',  // 日曆 chip ic_calendar_line 16
     chevDn: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="#9C9DA0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     check: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#13A3B6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     cross: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5 5 15" stroke="#727272" stroke-width="1.4" stroke-linecap="round"/></svg>',
@@ -3624,12 +3628,12 @@
           '<div class="ord-cov-tip"><ul>' + ordCoverageList().map(function (n) { return '<li>' + n + '</li>'; }).join('') + '</ul></div></div>' +
       '</div><div class="ord-hr"></div>' +
       '<div class="ord-price-block"><div class="ord-price"><span class="cur">NT$</span><span class="num">' + ordMoney(p.now) + '</span></div>' +
-      '<button class="ord-cancel" id="ordCancelInfo">' + ordCancelText() + '<span class="ic">' + OI.info + '</span></button></div></div>';
+      '<button class="ord-cancel" id="ordCancelInfo">' + ordCancelText() + '<span class="ic">' + OI.infoSb + '</span></button></div></div>';
     // Figma 3244/3223：商品資訊 + 使用日期 + 購買數量 同一張卡（商品為內層帶邊框子卡）
     var main = '<div class="ord-card ord-prod-wrap">' + w;
     if (req.date) {
-      main += '<div class="ord-datesec"><div class="ord-sec-h"><div class="ord-sec-title"><div class="t">啟用日期</div><span class="ic ic-16 ord-sec-info">' + OI.info + '</span><div class="ord-sec-tip">請選擇 eSIM 的啟用日期。啟用日期為當地時間，實際生效時間依所在時區為準；選定後將於該日開始計算使用效期。</div></div></div>' +
-        '<div class="ord-date-wrap"><div class="ord-date-chips" id="ordDateChips"></div><button class="ord-dmore" id="ordDateMore"><span class="ic">' + OI.cal + '</span><span class="w">更多</span></button></div>' +
+      main += '<div class="ord-datesec"><div class="ord-sec-h"><div class="ord-sec-title"><div class="t">啟用日期</div><span class="ic ic-16 ord-sec-info">' + OI.infoGrey + '</span><div class="ord-sec-tip">請選擇 eSIM 的啟用日期。啟用日期為當地時間，實際生效時間依所在時區為準；選定後將於該日開始計算使用效期。</div></div></div>' +
+        '<div class="ord-date-wrap"><div class="ord-date-chips" id="ordDateChips"></div><button class="ord-dmore" id="ordDateMore" aria-label="更多日期"><span class="ic">' + OI.cal16 + '</span></button></div>' +
         '<div class="ord-date-err" id="ordDateErr" hidden><span class="ic">' + OI.warn + '</span>請選擇日期</div></div>' +
         '<div class="ord-hr2"></div>';
     }
@@ -3715,7 +3719,7 @@
     if (more) more.onclick = function (e) { e.stopPropagation(); openOrdCal(more); };  // 「更多」→ 雙月日曆下拉（Figma 3263-28053）
   }
   // 日期變更後刷新商品摘要卡的取消政策文案（換算絕對日期）
-  function refreshOrdCancel() { var b = document.getElementById('ordCancelInfo'); if (b) b.innerHTML = ordCancelText() + '<span class="ic">' + OI.info + '</span>'; }
+  function refreshOrdCancel() { var b = document.getElementById('ordCancelInfo'); if (b) b.innerHTML = ordCancelText() + '<span class="ic">' + OI.infoSb + '</span>'; }
   function pName(i) { return ORD_PEOPLE[i].cnLast + ORD_PEOPLE[i].cnFirst; }
   function enName(i) { return ORD_PEOPLE[i].enLast + ', ' + ORD_PEOPLE[i].enFirst; }
   // 旅客資料（Figma 3341-25078）：每位旅客一張卡＝下拉選旅客 + 內聯表單 + 新增常用旅客
@@ -4069,7 +4073,7 @@
         (ordSt.useDate ? '<div class="ord-pline"><span class="ic">' + OI.cal + '</span>' + ordSt.useDate.y + '-' + ('0' + ordSt.useDate.m).slice(-2) + '-' + ('0' + ordSt.useDate.d).slice(-2) + '</div>' : '') +
         '<div class="ord-pline"><span class="ic">' + OI.sim + '</span>eSIM ×' + ordSt.qty + '</div>' +
       '</div><div class="ord-hr"></div>' +
-      '<button class="ord-cancel" id="payCancelInfo">' + ordCancelText() + '<span class="ic">' + OI.info + '</span></button></div></div>';
+      '<button class="ord-cancel" id="payCancelInfo">' + ordCancelText() + '<span class="ic">' + OI.infoSb + '</span></button></div></div>';
     // 2. 折扣碼（標題含左側青色 accent bar）
     main += '<div class="pay-card"><div class="pay-h pay-h-bar">使用或輸入折扣碼</div>' +
       '<button class="pay-coupon-btn" id="payCouponBtn"><span class="ic">' + OI.info + '</span>使用或輸入折扣碼</button></div>';

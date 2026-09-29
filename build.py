@@ -422,6 +422,12 @@ pc_subs = {
     "{{DET_language20}}": pc_img("det/language20.svg"),  # 查看翻譯 ic_language_line 20
     "{{DET_arrowDown20}}": pc_img("det/arrowDown20.svg"),  # 展開 ic_arrowDown_line 20
     "{{DET_thumbsUp20}}": pc_img("det/thumbsUp20.svg"),   # 有幫助 ic_thumbsUp_line 20（#727272）
+    "{{ORD_fileCheck20}}": pc_img("ord/fileCheck20.svg"),
+    "{{ORD_location20}}": pc_img("ord/location20.svg"),
+    "{{ORD_warnCircle14}}": pc_img("ord/warnCircle14.svg"),
+    "{{ORD_info16}}": pc_img("ord/info16.svg"),
+    "{{ORD_infoSemibold16}}": pc_img("ord/infoSemibold16.svg"),
+    "{{ORD_calendar16}}": pc_img("ord/calendar16.svg"),
     "{{DET_expandArrow16}}": file_img("assets/pc/det/expandArrow16.svg", recolor=("black", "#212121")),  # 基本資訊「展開」箭頭 16
     "{{EX_crumbArrow14}}":  pc_img("explore/crumbArrow14.svg"),  # 麵包屑箭頭 ic_arrowRight_line 14 #9C9DA0（Figma 3710-148692）
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
