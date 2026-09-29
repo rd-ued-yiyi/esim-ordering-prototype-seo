@@ -201,8 +201,13 @@
   .pc-ftab { position: relative; width: 100%; display: flex; align-items: center; justify-content: flex-end; padding: 12px; white-space: nowrap;
     background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: right; }
   .pc-ftab:hover:not(.sel) { color: var(--kk-primary-dark); }
+  .pc-ftab { transition: color .2s ease, font-weight .2s ease; }
   .pc-ftab.sel { color: var(--kk-primary-dark); font-weight: 600; }
-  .pc-ftab.sel::after { content: ''; position: absolute; top: 0; bottom: 0; right: -1px; width: 2px; background: var(--kk-primary-medium); border-radius: 2px 0 0 2px; }
+  /* 右緣 2px 青豎條為單一指示器，隨選中項平滑滑動（top / height 由 JS 以 --ind-y / --ind-h 設定） */
+  .pc-ftabs { position: relative; }
+  .pc-ftabs::after { content: ''; position: absolute; right: -1px; width: 2px; top: var(--ind-y, 0px); height: var(--ind-h, 44px); background: var(--kk-primary-medium); border-radius: 2px 0 0 2px;
+    transition: top .25s cubic-bezier(.4,0,.2,1), height .25s cubic-bezier(.4,0,.2,1); }
+  .pc-ftabs:not(:has(.pc-ftab.sel))::after { opacity: 0; }
   .pc-plan-flow .pc-scroll-wrap { flex: 1 1 0; min-width: 0; }
   .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; padding-right: 0; }
   .pc-flow-sec { display: flex; flex-direction: column; gap: 8px; }
@@ -2107,6 +2112,11 @@
     sumEl.textContent = sel.days + '天·' + PLANS[sel.tab].lb + '·' + sel.plan;  // Figma 3096-60705：摘要標題（面板上方）
     sumEl.classList.toggle('touched', !!sel.touched);  // 預選＝灰 #9C9DA0（Figma 3636-98060）；手動選後＝深 #212121（Figma 3636-98437）
   }
+  // 豎排分頁指示器：把 2px 青條移到選中項位置（transition 平滑過渡）
+  function flowIndicator(tabsEl) {
+    var t = tabsEl.querySelector('.pc-ftab.sel'); if (!t) return;
+    tabsEl.style.setProperty('--ind-y', t.offsetTop + 'px'); tabsEl.style.setProperty('--ind-h', t.offsetHeight + 'px');
+  }
   // 流量堆疊渲染：分頁錨點 + 三計費段卡片 + 推薦 badge + 選中捲入
   function renderFlowStack(tabsEl, scrollEl, onPick) {
     onPick = onPick || renderPanel;
@@ -2159,6 +2169,7 @@
     scrollEl.scrollTop = keepTop;
     revealTier(scrollEl, selTier);
     tabsEl.querySelectorAll('.pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === sel.tab); });
+    flowIndicator(tabsEl);
   }
   // 選中檔位不在可視範圍時捲入（上下各留 8px），不動頁面本身
   function revealTier(scroll, el) {
@@ -2174,6 +2185,7 @@
     if (!sec) return;
     scrollEl._spyGuard = Date.now() + 600;  // 平滑捲動期間暫停 spy，避免高亮抖動
     tabsEl.querySelectorAll('.pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === k); });
+    flowIndicator(tabsEl);
     scrollEl.scrollTo({ top: Math.max(0, sec.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top + scrollEl.scrollTop), behavior: 'smooth' });
   }
   // 垂直 scroll-spy：捲動時高亮所在計費段的分頁
@@ -2186,6 +2198,7 @@
         if (sec && sec.getBoundingClientRect().top - top <= 44) cur = k;
       });
       tabsEl.querySelectorAll('.pc-ftab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-tab') === cur); });
+      flowIndicator(tabsEl);
     });
   }
   bindFlowSpy(document.getElementById('pcFlowTabs'), document.getElementById('pcFlowScroll'));
