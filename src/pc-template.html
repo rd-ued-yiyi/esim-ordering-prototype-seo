@@ -656,7 +656,7 @@
   /* Plan 卡（Figma 3167:40025）：左內容（規格警示/標題/標籤/竪排政策/評論）+ 豎分隔 + 右價格CTA */
   .pl-list { display: flex; flex-direction: column; gap: 16px; }  /* 與分頁間距由 .pc-ex-main gap 24 提供 */
   .pl-empty { padding: 64px 0; text-align: center; color: var(--kk-text-medium); background: #fff; border-radius: 12px; }
-  .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 16px; cursor: pointer; transition: box-shadow .15s; }
+  .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 20px;  /* Figma 3701-112942：p20 */ cursor: pointer; transition: box-shadow .15s; }
   .pl-card:hover { box-shadow: 0 4px 24px rgba(38,50,56,.12); }  /* 陰影僅 hover 顯示（Figma 12-Fixed） */
   .pl-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
   .pl-hg { display: flex; flex-direction: column; gap: 6px; }  /* 標題 & 規格 gap 6 */
