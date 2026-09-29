@@ -696,7 +696,7 @@
   .pl-social .pl-ratelink { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
   .pl-social .pl-ratelink:hover .score, .pl-social .pl-ratelink:hover .rc { color: var(--kk-primary-dark); }
   .pl-hr { width: 1px; align-self: stretch; background: var(--kk-border-lighter); flex: 0 0 auto; }
-  .pl-buy { flex: 0 0 300px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 8px; }  /* 價格+訂購鈕靠卡片底部對齊 */
+  .pl-buy { flex: 0 0 300px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 16px; }  /* Figma 3701-112140 Price&CTA：價格→訂購鈕 gap 16，靠卡片底部 */
   .pl-priceblk { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
   .pl-priceblk .pl-price + .pl-per { margin-top: -2px; }  /* 價格與每日均價 gap 2 */
   .pl-off { background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; padding: 2px 4px; border-radius: 4px; }
@@ -705,7 +705,7 @@
   .pl-price .now { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 22px; line-height: 22px; font-weight: 700; color: var(--kk-text-darker); }  /* price-bold-xxl 22/22 */
   .pl-price .now .cur { margin-right: 2px; }
   .pl-per { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
-  .pl-cta { height: 40px; padding: 0 20px; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; transition: background .15s; }
+  .pl-cta { height: 48px; padding: 0 24px;  /* KKButton Lg：px24 py12 */ background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; transition: background .15s; }
   .pl-cta:hover { background: var(--kk-primary-dark); }
   /* 全部流量 dialog（Figma 3191-69000：選擇流量，三段 3 欄卡片可捲動） */
   .pc-alldlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
