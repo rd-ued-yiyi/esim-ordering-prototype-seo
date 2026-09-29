@@ -937,6 +937,33 @@
   .det-noticebox .nb-body { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
   .det-noticebox .nb-t { gap: 0; }
   .det-noticebox .det-list { margin-top: 0; gap: 2px; }
+  /* 區塊間 8px 帶＝#F1F4F8（Figma body 實測），產品編號帶同色 */
+  .pl-det-bd { background: var(--kk-surface-light); }
+  /* 簡要資訊 → 基本資訊：1px #E6E9ED 分隔線，上下各 24 */
+  .det-h2 { margin: 24px 0 20px; padding-top: 24px; border-top: 1px solid var(--kk-border-lighter); }
+  /* 基本資訊描述「展開」：Semibold 14 + 16 箭頭 gap 4 */
+  .det-intro .det-intro-more { display: none; align-items: center; gap: 4px; font-weight: 600; }
+  .det-intro.clampable .det-intro-more { display: inline-flex; }
+  .det-intro .det-intro-more .ic, .det-intro .det-intro-more img { width: 16px; height: 16px; display: block; transition: transform .2s; }
+  .det-intro.open .det-intro-more .ic { transform: rotate(180deg); }
+  /* 規格表（Figma 3701:133349）：標籤欄 200、表頭 44（py12）、列 52（py16）、值與 tooltip icon gap 8 */
+  .det-table .th { height: 44px; padding: 0 16px; display: flex; align-items: center; box-sizing: border-box; }
+  .det-table .td-k { flex: 0 0 200px; padding: 16px 16px 15px; }
+  .det-table .td-v { padding: 16px 16px 15px; }
+  .det-table .td-v--tip .td-info { margin-left: 8px; }
+  /* 清單：Figma list-disc 縮排 21；如何使用步驟、購買須知主清單項目間無間距 */
+  .det-list li { padding-left: 21px; }
+  .det-list li::before { left: 6px; }
+  .det-sec[data-sec="howto"] > .det-list:first-of-type, .det-sec[data-sec="notice"] > .det-list { gap: 0; }
+  /* 費用資訊：子標題 → 第一個項目 16（不再疊加項目 margin-top 8） */
+  .det-sub + .det-inc { margin-top: 0; }
+  /* 評論卡右欄：星等→標題 12、標題→內文 8、內文→翻譯列 8、→相簿 16、→有幫助 16 */
+  .det-rcard .rc-r { gap: 0; }
+  .det-rcard .rc-title { margin-top: 12px; }
+  .det-rcard .rc-txt { margin-top: 8px; }
+  .det-rcard .rc-extra { margin-top: 8px; }
+  .det-rcard .rc-gallery { margin-top: 16px; }
+  .det-rcard .rc-help { margin-top: 16px; }
   /* ============ 日期日曆下拉（Figma 3223-83700） ============ */
   .pc-cal { position: fixed; z-index: 60; width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(17,25,40,.14); padding: 16px; }
   .pc-cal[hidden] { display: none; }
@@ -3085,7 +3112,9 @@
     wrap.appendChild(h('<h3 class="det-h2">基本資訊</h3>'));
     var intro = h('<div class="det-intro"><span class="det-intro-t">依據購買天數，可額外享有 3GB~30GB 的熱點分享流量。由連續兩年榮獲 Opensignal 網路可靠性全球大獎的電信網路提供連線，訊號覆蓋率高，市區、離島與山區都能穩定上網；搭配 KKday App 可隨時查詢剩餘流量，客服 24 小時線上協助安裝與連線問題。</span><button class="det-intro-more" type="button">展開</button></div>');
     var moreBtn = intro.querySelector('.det-intro-more');
-    moreBtn.addEventListener('click', function () { var op = intro.classList.toggle('open'); moreBtn.textContent = op ? '收起' : '展開'; });
+    function setMore(op) { moreBtn.innerHTML = (op ? '收起' : '展開') + '<span class="ic">{{DET_expandArrow16}}</span>'; }
+    setMore(false);
+    moreBtn.addEventListener('click', function () { var op = intro.classList.toggle('open'); setMore(op); });
     wrap.appendChild(intro);
     // 夾行後若溢出才顯示「展開」（等插入 DOM 量測）
     requestAnimationFrame(function () { var tEl = intro.querySelector('.det-intro-t'); if (tEl.scrollHeight - tEl.clientHeight > 1) intro.classList.add('clampable'); });
@@ -3269,7 +3298,7 @@
       ['複製 eSIM 啟用碼後，請依序操作手動加入 eSIM 資訊。', '{{IMG_KK_10}}']
     ];
     var body = figs.map(function (f, i) {
-      var cap = '<p class="det-body-md"' + (i ? ' style="margin-top:24px;"' : '') + '>' + f[0] + '</p>';
+      var cap = '<p class="det-body-md"' + (i ? ' style="margin-top:20px;"' : '') + '>' + f[0] + '</p>';  // 圖文段落間距 20（Figma 3701:133368）
       return cap + (f[1] ? '<div class="det-fig"><img alt="" src="' + f[1] + '"></div>' : '');
     }).join('');
     return h('<div class="det-sec" data-sec="imgs"><h2 class="det-h5">圖文說明</h2>' + body + '</div>');

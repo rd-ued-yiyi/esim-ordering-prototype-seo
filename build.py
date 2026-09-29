@@ -416,6 +416,7 @@ pc_subs = {
     "{{DET_warnFill20}}":    pc_img("det/warnFill20.svg"),
     "{{DET_pgLeft24}}":      pc_img("det/pgLeft24.svg"),
     "{{DET_pgRight24}}":     file_img("assets/pc/det/pgRight24.svg", recolor=("black", "#212121")),
+    "{{DET_expandArrow16}}": file_img("assets/pc/det/expandArrow16.svg", recolor=("black", "#212121")),  # 基本資訊「展開」箭頭 16
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
