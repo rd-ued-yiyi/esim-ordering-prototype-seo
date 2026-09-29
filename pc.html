@@ -584,10 +584,10 @@
   body.list-mode #pcHome { display: none; }
   .pc-listpage { display: block; background: var(--kk-surface-light); padding-bottom: 40px; }  /* 淺灰頁底，襯托白色篩選卡 / 商品卡 */
   .pc-listpage[hidden] { display: none; }  /* [hidden] 需覆蓋 display，否則主題頁也會渲染出空的列表頁 */
-  /* 條件列（sticky，Figma 3701-124950 Quick Filter Bar）：單行 py16（80 高）：目的地 200 + gap 16 + 天數 160 ｜ gap 16 ｜ 流量輪播（flex 1）+ gap 8 + 更多 52 */
+  /* 條件列（sticky，Figma 3701-124950 Quick Filter Bar）：單行 py16（80 高）：目的地 200 + gap 8 + 天數 160 ｜ gap 8 ｜ 流量輪播（flex 1）+ gap 8 + 更多 52 */
   .pc-lbar { position: sticky; top: 60px; z-index: 20; background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
-  .pc-lbar-in { display: flex; align-items: center; gap: 16px; padding: 16px 0; }
-  .pc-lconds { display: flex; align-items: center; gap: 16px; flex: 0 0 auto; }
+  .pc-lbar-in { display: flex; align-items: center; gap: 8px; padding: 16px 0; }
+  .pc-lconds { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
   /* KKSelect 下拉框（Figma 3378-48624：白底 1px #D5D6DB、圓角 8、48 高、前圖標＋值 14＋箭頭） */
   .pc-lsel { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; min-width: 0; }
   .pc-lsel > .ic { width: 20px; height: 20px; flex: 0 0 auto; color: var(--kk-text-medium); }
