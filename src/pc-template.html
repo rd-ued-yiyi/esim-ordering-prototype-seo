@@ -794,11 +794,13 @@
   .det-policies .perk { position: relative; display: inline-flex; align-items: center; gap: 8px; }
   .det-policies .perk .ic { width: 20px; height: 20px; flex: 0 0 auto; }
   .det-policies .perk .ic img, .det-cond .ic img { width: 20px; height: 20px; display: block; }
-  .det-policies .perk.cover { display: flex; width: 100%; cursor: pointer; }
-  .det-policies .perk.cover .pt { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: underline; text-underline-offset: 2px; }
-  .det-policies .scope-tip { position: absolute; left: 26px; top: calc(100% + 6px); z-index: 6; width: 340px; background: #fff; border-radius: 8px; box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 14px; display: none; }
-  .det-policies .perk.cover:hover .scope-tip { display: block; }
-  .det-policies .scope-tip ul { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 24px; font-size: 12px; line-height: 22px; color: var(--kk-text-darker); }
+  .det-policies .perk.cover { display: flex; width: 100%; }
+  .det-policies .perk.cover .pt { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+  /* 適用國家 tooltip（Figma 3701-138979）：白卡 p16 r8 陰影 0 4 12 .12，兩欄清單 gap 6、項目 gap 8、14/20 圓點 */
+  .det-policies .scope-tip { position: absolute; left: 28px; top: calc(100% + 6px); z-index: 6; width: 400px; box-sizing: border-box; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; gap: 6px; }
+  .det-policies .perk.cover .pt:hover + .scope-tip, .det-policies .perk.cover .scope-tip:hover { display: flex; }  /* 只在文字上 hover 才顯示 */
+  .det-policies .scope-tip ul { flex: 1 1 0; min-width: 0; list-style: disc; padding: 0 0 0 21px; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .det-policies .scope-tip li { padding: 0; }
   /* 基本資訊 */
   .det-h2 { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); margin: 24px 0 20px; }
   /* 方案描述：預設夾 2 行 + 行尾展開/收起（Figma 1249-109409） */
@@ -3123,9 +3125,10 @@
     var cxlTxt = p.cancelType === 'free' ? '未使用可免費取消' : p.cancelType === 'cond' ? '所選日期 3 天前未使用可免費取消' : p.cancelType === 'fee' ? '可付費取消（依取消政策收手續費）' : '一經訂購不可取消、退款';
     pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_reload20}}</span><span class="pt">' + cxlTxt + '</span></span>'));
     var covList = DET_COUNTRIES.filter(function (n, i, a) { return a.indexOf(n) === i; });
-    var covText = '適用 ' + covList.slice(0, 3).join('、') + ' 等 ' + covList.length + ' 個國家/地區';
-    var cov = h('<span class="perk cover"><span class="ic ic-20">{{DET_location20}}</span><span class="pt">' + covText + '</span><span class="scope-tip"><ul></ul></span></span>');
-    var ul = cov.querySelector('ul'); covList.forEach(function (n) { var li = document.createElement('li'); li.textContent = n; ul.appendChild(li); });
+    var covText = '適用' + covList.slice(0, 3).join('、') + '等' + covList.length + '個國家/地區';
+    var cov = h('<span class="perk cover"><span class="ic ic-20">{{DET_location20}}</span><span class="pt">' + covText + '</span><span class="scope-tip"><ul></ul><ul></ul></span></span>');
+    var uls = cov.querySelectorAll('ul'), half = Math.ceil(covList.length / 2);
+    covList.forEach(function (n, i) { var li = document.createElement('li'); li.textContent = n; uls[i < half ? 0 : 1].appendChild(li); });
     pol.appendChild(cov);
     wrap.appendChild(pol);
     // 基本資訊：標題 + 描述 + 分組表（分組/欄位/ⓘ 完全對齊 Figma 3183-76681）
