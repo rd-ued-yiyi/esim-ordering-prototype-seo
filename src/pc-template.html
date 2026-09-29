@@ -813,6 +813,7 @@
   /* 適用國家 tooltip（Figma 3701-138979）：白卡 p16 r8 陰影 0 4 12 .12，兩欄清單 gap 6、項目 gap 8、14/20 圓點 */
   .det-policies .scope-tip { position: absolute; left: 28px; top: calc(100% + 6px); z-index: 6; width: 400px; box-sizing: border-box; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; gap: 6px; }
   .det-policies .perk.cover .pt:hover + .scope-tip, .det-policies .perk.cover .scope-tip:hover { display: flex; }  /* 只在文字上 hover 才顯示 */
+  .det-policies .scope-tip::before { content: ''; position: absolute; left: 0; right: 0; top: -8px; height: 8px; }  /* 透明橋：蓋住 6px 空隙 */
   .det-policies .scope-tip ul { flex: 1 1 0; min-width: 0; list-style: disc; padding: 0 0 0 21px; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-policies .scope-tip li { padding: 0; }
   /* 基本資訊 */
@@ -842,6 +843,8 @@
   .det-hovtip[hidden] { display: none; }
   .det-hovtip::after { content: ''; position: absolute; left: var(--ax, 20px); top: -7px; width: 14px; height: 8px; background: #fff; clip-path: polygon(50% 0, 0 100%, 100% 100%); }
   .det-hovtip.below::after { top: auto; bottom: -7px; transform: scaleY(-1); }
+  .det-hovtip::before { content: ''; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }  /* 透明橋：蓋住 ⓘ→tooltip 的 12px 空隙，滑鼠可移入 */
+  .det-hovtip.below::before { top: auto; bottom: -14px; }
   /* ---- 其餘 tab 通用 ---- */
   .det-h5 { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); margin: 0 0 20px; }
   .det-sub { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin: 24px 0 8px; }
@@ -1017,6 +1020,7 @@
   .ord-sec-info { color: var(--kk-primary-medium); cursor: default; }
   .ord-sec-tip { position: absolute; left: 0; top: calc(100% + 8px); z-index: 25; width: 320px; max-width: 80vw; display: none; background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 12px; font-size: 12px; line-height: 18px; color: var(--kk-text-dark); }
   .ord-sec-info:hover + .ord-sec-tip, .ord-sec-tip:hover { display: block; }
+  .ord-sec-tip::before { content: ''; position: absolute; left: 0; right: 0; top: -10px; height: 10px; }  /* 透明橋：蓋住 8px 空隙 */
   /* ================= 訂單填寫頁（Figma 3223-87439 / 3244-72510） ================= */
   body.order-mode #pcHome, body.order-mode #pcListPage, body.order-mode .pc-cat,
   body.pay-mode #pcHome, body.pay-mode #pcListPage, body.pay-mode #pcOrderPage, body.pay-mode .pc-cat { display: none; }
