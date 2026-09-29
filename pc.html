@@ -839,7 +839,8 @@
   /* hover 只作用在 ⓘ 圖示，文字不變色（依回饋） */
   .det-table .td-v--tip .td-hit:hover .td-info { color: var(--kk-primary-dark); }
   /* 行內 ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：可將滑鼠移入框內 */
-  .det-hovtip { position: fixed; z-index: 60; width: 327px; max-width: calc(100vw - 24px); background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.16); padding: 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
+  /* 規格 ⓘ tooltip（Figma 3701-135767）：400 寬、px12 py8、文字置中 #212121、陰影 0 4 12 .12、三角 14×8 置中距錨點 4 */
+  .det-hovtip { position: fixed; z-index: 60; width: 400px; max-width: calc(100vw - 24px); box-sizing: border-box; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 8px 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: center; }
   .det-hovtip[hidden] { display: none; }
   .det-hovtip::after { content: ''; position: absolute; left: var(--ax, 20px); top: -7px; width: 14px; height: 8px; background: #fff; clip-path: polygon(50% 0, 0 100%, 100% 100%); }
   .det-hovtip.below::after { top: auto; bottom: -7px; transform: scaleY(-1); }
@@ -3237,9 +3238,9 @@
     var t = detHovTipEl(); t.textContent = text; t.hidden = false; t.classList.remove('below');
     var r = anchor.getBoundingClientRect(), tw = t.offsetWidth, th = t.offsetHeight;
     var ac = r.left + r.width / 2;                                   // ⓘ 圖示中心
-    var left = Math.min(Math.max(12, ac - 24), window.innerWidth - tw - 12);
-    var top = r.bottom + 10;
-    if (top + th > window.innerHeight - 8) { top = r.top - th - 10; t.classList.add('below'); }  // 下方空間不足→翻到上方
+    var left = Math.min(Math.max(12, ac - tw / 2), window.innerWidth - tw - 12);  // 置中於 ⓘ
+    var top = r.bottom + 12;                                                       // 三角 8 + 間距 4
+    if (top + th > window.innerHeight - 8) { top = r.top - th - 12; t.classList.add('below'); }  // 下方空間不足→翻到上方
     t.style.left = left + 'px'; t.style.top = top + 'px';
     t.style.setProperty('--ax', Math.max(10, Math.min(ac - left - 7, tw - 24)) + 'px');
   }
