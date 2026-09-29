@@ -885,8 +885,7 @@
   .det-rcard .rc-dates { display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .det-rcard .rc-r { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
   .det-rcard .rc-stars { display: flex; gap: 2px; }
-  .det-rcard .rc-stars .ic { width: 20px; height: 20px; color: #FFB000; }
-  .det-rcard .rc-stars .ic.off { color: var(--kk-border-light); }
+  .det-rcard .rc-stars .ic { width: 20px; height: 20px; }  /* Figma ic_star_fill 20：亮 #26BEC9、暗 #D5D6DB */
   .det-rcard .rc-title { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .det-rcard .rc-txt { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
   .det-rcard .rc-extra { display: flex; align-items: center; justify-content: space-between; }
@@ -3248,7 +3247,7 @@
     var pool = (typeof DET_SHOTS !== 'undefined' && DET_SHOTS.length) ? DET_SHOTS : [];
     var list = h('<div class="det-rlist"></div>');
     DET_REVIEWS.forEach(function (r, idx) {
-      var stars = ''; for (var i = 0; i < 5; i++) stars += '<span class="ic ic-20' + (i < r.star ? '' : ' off') + '">{{IC_starFill16}}</span>';
+      var stars = ''; for (var i = 0; i < 5; i++) stars += '<span class="ic ic-20">' + (i < r.star ? '{{DET_starOn20}}' : '{{DET_starOff20}}') + '</span>';
       var gallery = '';
       for (var g = 0; g < 6; g++) { var im = pool.length ? '<img alt="" src="' + pool[(idx * 6 + g) % pool.length] + '">' : ''; gallery += '<span class="rc-shot">' + im + '</span>'; }
       var card = h('<div class="det-rcard">' +
@@ -3260,9 +3259,9 @@
           '<div class="rc-stars">' + stars + '</div>' +
           '<div class="rc-title"></div>' +
           '<div class="rc-txt"></div>' +
-          '<div class="rc-extra"><span class="rc-trans">' + GLOBE_SVG + '<u>查看翻譯</u></span><span class="rc-more" data-toast="old"><u>展開</u><span class="ic ic-20">{{IC_arrowDown}}</span></span></div>' +
+          '<div class="rc-extra"><span class="rc-trans"><span class="ic ic-20">{{DET_language20}}</span><u>查看翻譯</u></span><span class="rc-more" data-toast="old"><u>展開</u><span class="ic ic-20">{{DET_arrowDown20}}</span></span></div>' +
           '<div class="rc-gallery">' + gallery + '</div>' +
-          '<div class="rc-help" data-toast="old"><span class="ic ic-20">{{IC_thumbsUp}}</span>有幫助 (1)</div>' +
+          '<div class="rc-help" data-toast="old"><span class="ic ic-20">{{DET_thumbsUp20}}</span>有幫助 (1)</div>' +
         '</div></div>');
       card.querySelector('.rc-av').innerHTML = pool.length ? '<img alt="" src="' + pool[idx % pool.length] + '">' : '';
       card.querySelector('.rc-nm').textContent = r.nm;
