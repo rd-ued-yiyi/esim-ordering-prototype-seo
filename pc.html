@@ -112,8 +112,9 @@
   .pc-hero[data-state="sel"] .pc-search { margin-top: 16px; }
   /* 已選態 hero 上下留白（Figma 3600-58253：目的地 pill 距頂 60、卡片距底 60，hero 高 758） */
   .pc-hero[data-state="sel"] .pc-dest-pill { margin-top: 60px; }
-  .pc-tabs { display: inline-flex; align-items: stretch; background: rgba(255,255,255,.72); border-radius: 16px 16px 0 0; backdrop-filter: blur(4px); }
-  .pc-tab { position: relative; min-width: 128px; display: flex; justify-content: center; padding: 12px 20px; }
+  /* 類目 tab bar（Figma 3636-98060 tab bar）：500×48、底 #F1F4F8、三格等分 min 113、px12 */
+  .pc-tabs { display: flex; width: 500px; max-width: 100%; align-items: stretch; background: var(--kk-surface-light); border-radius: 16px 16px 0 0; }
+  .pc-tab { position: relative; flex: 1 1 0; min-width: 113px; display: flex; justify-content: center; padding: 12px; }
   .pc-tab .tb-in { display: flex; flex-direction: column; align-items: stretch; }
   .pc-tab .lb { font-size: 16px; line-height: 24px; color: var(--kk-text-darker); text-align: center; white-space: nowrap; }
   .pc-tab .ul { display: none; height: 2px; margin-top: 10px; border-radius: 2px 2px 0 0; background: var(--kk-primary-medium); }
