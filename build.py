@@ -396,6 +396,9 @@ pc_subs = {
     "{{ORD_minusOff}}":    pc_img("ord/minus.svg"),
     "{{ORD_plusOn}}":      pc_img("ord/plus.svg"),
     "{{ORD_plusOff}}":     file_img("assets/pc/ord/plus.svg", recolor=("#26BEC9", "#ADE6EB")),
+    # 首頁已選目的地 pill（Figma 3600-59444）：ic_location_fill 20 青 + ic_arrowDown_line_semibold 20
+    "{{EX_locationFill20}}":      pc_img("explore/locationFill20.svg"),
+    "{{EX_arrowDownSemibold20}}": pc_img("explore/arrowDownSemibold20.svg"),
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
