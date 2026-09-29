@@ -214,13 +214,14 @@
     border-top: 5px solid #E65F50; border-right: 4px solid transparent; }
   .pc-panel[hidden] { display: none !important; }
   /* ---------- 面包屑 ---------- */
-  .pc-crumb { padding: 24px 0 8px; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-medium); }
-  .pc-crumb a { color: var(--kk-primary-dark); cursor: pointer; }
+  /* 麵包屑（Figma 3710-148692 breadcrumb）：高 68（py24）、gap 4、可點層級 #068B9F、當前層級 #9C9DA0、箭頭 ic_arrowRight_line 14；全站共用 */
+  .pc-crumb { height: 68px; padding: 0; display: flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-medium); }
+  .pc-crumb a { color: var(--kk-primary-darker); cursor: pointer; }
+  .pc-crumb .ic img { width: 14px; height: 14px; display: block; }
   .pc-crumb a:hover { text-decoration: underline; }
 
   /* 首頁麵包屑（Figma 3467-85809 breadcrumb：高 68 垂直置中、gap 4、首頁 #068B9F、當前 #9C9DA0） */
-  .pc-crumb--home { height: 68px; padding: 0; gap: 4px; }
-  .pc-crumb--home a { color: var(--kk-primary-darker); }
+  .pc-crumb--home { }
 
   /* ---------- 為什麼選擇 KKday（Figma 3467-85809 Benefits Section_pc）：py32、標題 24/30 + gap 32、4 欄等寬 gap 32 ---------- */
   .pc-why { padding: 32px 0; }
@@ -1451,7 +1452,7 @@
   </div>
 
   <!-- 面包屑 -->
-  <div class="col"><div class="pc-crumb pc-crumb--home"><a data-toast="pc">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>eSIM/WIFI</span></div></div>
+  <div class="col"><div class="pc-crumb pc-crumb--home"><a data-toast="pc">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>eSIM/WIFI</span></div></div>
 
   <!-- 為什麼選擇 KKday：4 欄橫排 -->
   <section class="pc-why">
@@ -1590,7 +1591,7 @@
       </div>
     </div>
     <div class="col">
-      <div class="pc-crumb pc-crumb--home"><a id="plCrumbHome">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="plCrumbCat">eSIM/WIFI</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>搜尋結果頁</span></div>
+      <div class="pc-crumb pc-crumb--home"><a id="plCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="plCrumbCat">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>搜尋結果頁</span></div>
       <div class="pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM</span></div>
       <div class="pc-ex-body pc-lbody">
         <aside class="pc-ex-side">
@@ -1665,7 +1666,7 @@
   <!-- ============ 訂單填寫頁（Figma 3223-87439 / 3244-72510；資料邏輯參考 mweb） ============ -->
   <section class="pc-ordpage" id="pcOrderPage" hidden>
     <div class="col">
-      <div class="pc-crumb"><a id="ordCrumbHome">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="ordCrumbList">eSIM/WIFI</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="ordCrumbList2">搜尋結果</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>訂單填寫</span></div>
+      <div class="pc-crumb"><a id="ordCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="ordCrumbList">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="ordCrumbList2">搜尋結果</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>訂單填寫</span></div>
       <div class="pc-ord-grid">
         <div class="pc-ord-main" id="ordMain"></div>
         <aside class="pc-ord-side" id="ordSide"></aside>
@@ -1676,7 +1677,7 @@
   <!-- ============ 付款頁（Figma 3223-94129） ============ -->
   <section class="pc-ordpage" id="pcPayPage" hidden>
     <div class="col">
-      <div class="pc-crumb"><a id="payCrumbHome">首頁</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="payCrumbCat">eSIM/WIFI</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="payCrumbList">搜尋結果</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><a id="payCrumbOrder">訂單填寫</a><span class="ic ic-14 rot90">{{IC_arrowRightGrey}}</span><span>付款</span></div>
+      <div class="pc-crumb"><a id="payCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbCat">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbList">搜尋結果</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbOrder">訂單填寫</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>付款</span></div>
       <div class="pc-ord-grid">
         <div class="pc-ord-main" id="payMain"></div>
         <aside class="pc-ord-side" id="paySide"></aside>
