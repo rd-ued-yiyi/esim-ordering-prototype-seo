@@ -706,10 +706,10 @@
   .pc-allsec .sn { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); margin-top: -8px; }
   .pc-allgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
   /* ============ 篩選組標題 ⓘ + 規格詳情 dialog（Figma 3167-43067 / 3242-45112） ============ */
-  .fh-info { display: flex; align-items: center; gap: 6px; }
+  .fh-info { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }  /* 標題 + ⓘ 整行可點，開規格說明 dialog */
   .fh-info .fh-i { display: inline-flex; padding: 0; line-height: 0; }
   .fh-info .fh-i .ic { width: 16px; height: 16px; color: var(--kk-text-medium); }
-  .fh-info .fh-i:hover .ic { color: var(--kk-primary-dark); }
+  .fh-info:hover .fh-i .ic { color: var(--kk-primary-dark); }
   .pc-specdlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
     width: 640px; max-width: calc(100vw - 32px); max-height: calc(100vh - 96px); background: #fff; border-radius: 16px; flex-direction: column; overflow: hidden; }
   .pc-specdlg.open { display: flex; }
@@ -1606,17 +1606,17 @@
             <button class="pc-cb" data-mock><span class="box"></span>國際漫遊卡</button>
           </div>
           <div class="pc-fbox">
-            <div class="fh fh-info"><span>IP類型</span><button class="fh-i" data-toast="pc" aria-label="說明"><span class="ic ic-16">{{IC_info}}</span></button></div>
+            <div class="fh fh-info" data-spec="ip" role="button" tabindex="0"><span>IP類型</span><span class="fh-i"><span class="ic ic-16">{{IC_info}}</span></span></div>
             <button class="pc-cb" data-mock><span class="box"></span>本地</button>
             <button class="pc-cb" data-mock><span class="box"></span>漫遊</button>
           </div>
           <div class="pc-fbox">
-            <div class="fh fh-info"><span>傳輸規格</span><button class="fh-i" data-toast="pc" aria-label="說明"><span class="ic ic-16">{{IC_info}}</span></button></div>
+            <div class="fh fh-info" data-spec="net" role="button" tabindex="0"><span>傳輸規格</span><span class="fh-i"><span class="ic ic-16">{{IC_info}}</span></span></div>
             <button class="pc-cb" data-mock><span class="box"></span>5G</button>
             <button class="pc-cb" data-mock><span class="box"></span>5G/4G</button>
           </div>
           <div class="pc-fbox">
-            <div class="fh fh-info"><span>流量激活計算方式</span><button class="fh-i" id="plSpecInfo" aria-label="規格詳情"><span class="ic ic-16">{{IC_info}}</span></button></div>
+            <div class="fh fh-info" data-spec="activate" role="button" tabindex="0"><span>流量激活計算方式</span><span class="fh-i"><span class="ic ic-16">{{IC_info}}</span></span></div>
             <button class="pc-cb" data-mock><span class="box"></span>24小時制</button>
             <button class="pc-cb" data-mock><span class="box"></span>自然日制</button>
             <button class="pc-cb" data-mock><span class="box"></span>總量制</button>
@@ -2928,7 +2928,27 @@
   function closeSpec() { if (!document.getElementById('pcSpecDlg').classList.contains('open')) return; document.getElementById('pcSpecMask').classList.remove('open'); document.getElementById('pcSpecDlg').classList.remove('open'); unlockScroll(); }
   // 基本資訊行內 ⓘ：開啟同一 dialog，顯示該規格釋義
   function openSpecTip(term, text) { openSpec(term, '<p class="pc-spec-tip">' + text + '</p>'); }
-  document.getElementById('plSpecInfo').addEventListener('click', function (e) { e.stopPropagation(); openSpec(); });
+  // 篩選標題規格說明：IP類型 / 傳輸規格 / 流量激活計算方式（標題與 ⓘ 皆可點）
+  var SPEC_DLGS = {
+    activate: null,  // 預設內容（流量激活方式）
+    ip: { title: 'IP類型', h: 'IP類型', rows: [
+      ['本地', '以當地電信商 IP 出口連線，使用當地 App、串流、地圖等在地服務相容性最佳，延遲最低。'],
+      ['漫遊', '透過漫遊或第三地出口連線，IP 可能顯示為其他國家；覆蓋範圍廣，但部分在地服務可能受限。']
+    ] },
+    net: { title: '傳輸規格', h: '傳輸規格', rows: [
+      ['5G', '支援當地 5G 網路，需搭配支援 5G 的裝置與頻段；無 5G 訊號時自動降為 4G。'],
+      ['5G/4G', '同時支援 5G 與 4G LTE 網路，依當地訊號與裝置能力自動切換，覆蓋最廣。']
+    ] }
+  };
+  function specDlgHTML(d) {
+    return '<div class="pc-spec-h">' + d.h + '</div><table class="pc-spec-table"><tr><th>選項規格</th><th>含義</th></tr>' +
+      d.rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</table>';
+  }
+  document.querySelectorAll('.fh-info[data-spec]').forEach(function (el) {
+    function go(e) { e.stopPropagation(); var d = SPEC_DLGS[el.getAttribute('data-spec')]; d ? openSpec(d.title, specDlgHTML(d)) : openSpec(); }
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(e); } });
+  });
   document.getElementById('pcSpecClose').addEventListener('click', closeSpec);
   document.getElementById('pcSpecMask').addEventListener('click', closeSpec);
 
