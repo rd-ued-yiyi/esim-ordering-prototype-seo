@@ -568,59 +568,49 @@
   body.list-mode #pcHome { display: none; }
   .pc-listpage { display: block; background: var(--kk-surface-light); padding-bottom: 40px; }  /* 淺灰頁底，襯托白色篩選卡 / 商品卡 */
   .pc-listpage[hidden] { display: none; }  /* [hidden] 需覆蓋 display，否則主題頁也會渲染出空的列表頁 */
-  /* 條件列（sticky）：預設兩行（目的地/天數 KKSelect + 流量 Option Card 行），滑動塌縮成單行小 chip（Figma 3167-39791 ↔ 3190-40589） */
+  /* 條件列（sticky，Figma 3701-124950 Quick Filter Bar）：單行 py16（80 高）：目的地 200 + gap 16 + 天數 160 ｜ gap 16 ｜ 流量輪播（flex 1）+ gap 8 + 更多 52 */
   .pc-lbar { position: sticky; top: 60px; z-index: 20; background: #fff; border-bottom: 1px solid var(--kk-border-lighter); }
-  .pc-lbar-in { display: flex; flex-direction: column; gap: 16px; padding: 16px 0; }
-  .pc-lconds { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 8px; }  /* Figma 3701:124950：兩個 KKSelect 等寬、gap 8（grid 避免 padding 讓 flex:1 不等寬） */
+  .pc-lbar-in { display: flex; align-items: center; gap: 16px; padding: 16px 0; }
+  .pc-lconds { display: flex; align-items: center; gap: 16px; flex: 0 0 auto; }
   /* KKSelect 下拉框（Figma 3378-48624：白底 1px #D5D6DB、圓角 8、48 高、前圖標＋值 14＋箭頭） */
   .pc-lsel { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; min-width: 0; }
   .pc-lsel > .ic { width: 20px; height: 20px; flex: 0 0 auto; color: var(--kk-text-medium); }
   .pc-lsel .chev { margin-left: auto; transition: transform .2s; }
   .pc-lsel-txt { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  /* Figma 3167-39791：目的地 ≈756、天數填滿剩餘 ≈368（約 2:1），非固定 224 */
-  .pc-lsel--dest { flex: 1 1 0; }
-  .pc-lpick { position: relative; flex: 1 1 0; min-width: 0; }
+  .pc-lsel--dest { width: 200px; }
+  .pc-lpick { position: relative; width: 160px; }
   .pc-lpick .pc-lsel--days { width: 100%; }
   .pc-lpick.open .pc-lsel .chev { transform: rotate(180deg); }
   /* 天數下拉（Figma 3190-40586：清單 + 選中打勾） */
-  .pc-ldd { position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: 100%; min-width: 224px; max-height: 320px; overflow-y: auto;
+  .pc-ldd { position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: 100%; min-width: 160px; max-height: 320px; overflow-y: auto;
     background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; box-shadow: var(--el-card); padding: 4px; display: none; }
   .pc-lpick.open .pc-ldd { display: block; }
   .pc-ldd button { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 36px; padding: 0 12px; border-radius: 6px;
     font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-ldd button:hover { background: var(--kk-surface-light); }
   .pc-ldd button.sel { color: var(--kk-primary-dark); }
-  /* 流量 Option Card 行：一行內鋪滿可容納的等寬卡，末張固定為「更多」（開全部流量 dialog）（Figma 3188-78133） */
-  .pc-lflowwrap { display: flex; align-items: center; min-width: 0; }
+  /* 流量輪播：一頁 N 張等寬 Option Card（48 高、p6、名稱 Semibold 14/20 + 價格 12/16）gap 8，兩端疊放箭頭鈕；末尾固定「更多」 */
+  .pc-lflowwrap { flex: 1 1 0; min-width: 0; display: flex; align-items: center; }
   .pc-lflow-vp { flex: 1 1 0; min-width: 0; }
-  .pc-lflow { display: flex; gap: 8px; width: 100%; }
-  .pc-lchip { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; border-radius: 8px;
+  .pc-lflow { display: flex; align-items: stretch; gap: 8px; width: 100%; height: 48px; }
+  .pc-lstrip-vp { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; }
+  .pc-lstrip { display: flex; gap: 8px; height: 100%; will-change: transform; }
+  .pc-lchip { position: relative; flex: 0 0 auto; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 48px; padding: 6px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
-  .pc-lchip b { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
-  .pc-lchip span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
+  .pc-lchip b { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); padding: 0 4px; }
+  .pc-lchip span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); padding: 0 4px; }
   .pc-lchip:hover { background: var(--kk-surface-medium); }
   .pc-lchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
-  /* 推薦 badge（Figma 3188-78104：珊瑚 #EF7A70 小標貼右上角） */
   .pc-lchip .rec { position: absolute; top: -5px; right: -5px; padding: 2px 4px; border-radius: 4px 4px 4px 0; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; }
-  /* 流量條（Figma 3701-124950）：‹ + N 張等寬卡 + › + 固定寬「更多」，全部 gap 8；箭頭＝白底 p8 + 20 icon（寬 36）、與卡同高 */
-  .pc-lflow { align-items: stretch; }
-  .pc-lnav { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 8px; border-radius: 8px; background: #fff; }
-  .pc-lnav img { width: 20px; height: 20px; }
-  .pc-lstrip-vp { flex: 1 1 0; min-width: 0; overflow: hidden; }
-  .pc-lstrip { display: flex; gap: 8px; height: 100%; will-change: transform; }
-  .pc-lstrip .pc-lchip { min-width: 0; }  /* Figma icon button：p8 + ic_arrowRight_line_lg 20 → 36 寬 */
-  .pc-lnav:hover:not(:disabled) { background: var(--kk-surface-light); }
-  .pc-lnav:disabled { opacity: .3; cursor: default; }
-  .pc-lchip--more { flex: 0 0 auto; padding: 16px; }  /* px12 + 文字 px4 */
-  /* 滑動塌縮（Figma 3710-147063）：單行；左半兩個 KKSelect（gap 8）、gap 24、右半 ‹ + 3 chip + › + 更多；chip 高 48、Semibold 14/20、藏價格 */
-  .pc-lbar.compact .pc-lbar-in { flex-direction: row; align-items: stretch; gap: 24px; padding: 16px 0; }
-  .pc-lbar.compact .pc-lconds { flex: 1 1 0; min-width: 0; }
-  .pc-lbar.compact .pc-lflowwrap { flex: 1 1 0; }
-  .pc-lbar.compact .pc-lchip { height: 48px; padding: 8px 12px; flex-direction: row; }
-  .pc-lbar.compact .pc-lchip b { font-size: 14px; line-height: 20px; }
-  .pc-lbar.compact .pc-lchip span { display: none; }
-  .pc-lbar.compact .pc-lchip--more { padding: 8px 12px; }  /* Figma 3710-147063：更多 52 寬 */
+  /* Carousel Arrow Button（Figma 3792:159534）：18×28、rgba(255,255,255,.6)、16 icon，疊在輪播兩端、垂直置中 */
+  .pc-lnav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 18px; height: 28px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.6); }
+  .pc-lnav--prev { left: 0; border-radius: 0 8px 8px 0; padding-right: 2px; }
+  .pc-lnav--next { right: 0; border-radius: 8px 0 0 8px; padding-left: 2px; }
+  .pc-lnav img { width: 16px; height: 16px; display: block; }
+  .pc-lnav:hover:not(:disabled) { background: rgba(255,255,255,.9); }
+  .pc-lnav:disabled { display: none; }
+  .pc-lchip--more { flex: 0 0 auto; padding: 8px; }  /* Chip background：p8 + 文字 px4 → 52 寬 */
   /* 麵包屑 note */
   /* 列表頁裝置提醒：純文字（icon+文字），無藍底橫條（Figma 3167-39923 Inline notification） */
   .pc-lnote { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 24px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3674:108566：icon 20 + 14/20 #212121，距內容 24 */
@@ -2737,7 +2727,7 @@
   }
   // 從「更多」選檔返回時＝true：以選中檔為中心重排一次
   var _plCenterSel = false, _plFlowStart = 0, _plKeepPage = false;  // _plKeepPage：箭頭翻頁時不因選中不在當頁而拉回
-  // 條件列流量（Figma 3701-124950 / 3710-147063）：‹ + 一頁 N 檔 + › + 「更多」；全部檔位鋪在一條 strip 上，翻頁＝平移 strip（0.3s 滑動）
+  // 條件列流量（Figma 3701-124950）：一頁 N 檔鋪在 strip 上，箭頭鈕疊在輪播兩端逐頁平移（0.3s）；末尾「更多」開全部流量 dialog
   function renderListChips() {
     var wrap = document.getElementById('plFlowChips'); wrap.innerHTML = '';
     var vpEl = document.querySelector('.pc-lflow-vp');
@@ -2757,23 +2747,22 @@
       });
       return c;
     }
-    // 一頁檔數：默認 5 張（每張 ≥150）、塌縮 3 顆（每顆 ≥96），依可用寬度自動增減
-    var W = vpEl.clientWidth || 900, gap = 8, navW = 36, moreW = _plCompact ? 52 : 64;
-    var minW = _plCompact ? 96 : 150, cap = _plCompact ? 3 : 5;
-    var n = Math.max(1, Math.min(cap, Math.floor((W - 2 * navW - moreW - 3 * gap + gap) / (minW + gap))));
+    // 一頁檔數：最多 5 張（Figma 688 寬 → 131.2），每張 ≥110，依可用寬度自動增減
+    var W = vpEl.clientWidth || 700, gap = 8, moreW = 52, minW = 110, cap = 5;
+    var n = Math.max(1, Math.min(cap, Math.floor((W - moreW - gap + gap) / (minW + gap))));
     n = Math.min(n, all.length);
     var si = plSelIndex(all), maxStart = Math.max(0, all.length - n);
     if (centerSel) _plFlowStart = si - Math.floor((n - 1) / 2);
     else if (!keepPage && (si < _plFlowStart || si >= _plFlowStart + n)) _plFlowStart = si - Math.floor((n - 1) / 2);  // 選中不在當頁 → 以選中為中心
     _plFlowStart = Math.max(0, Math.min(maxStart, _plFlowStart));
-    var prev = h('<button class="pc-lnav" aria-label="上一頁">{{EX_arrowLeftLg}}</button>');
-    var next = h('<button class="pc-lnav" aria-label="下一頁">{{EX_arrowRightLg}}</button>');
     var track = h('<div class="pc-lstrip-vp"><div class="pc-lstrip"></div></div>'), strip = track.firstChild;
     all.forEach(function (it) { strip.appendChild(mkChip(it)); });
+    var prev = h('<button class="pc-lnav pc-lnav--prev" aria-label="上一頁">{{EX_arrowSemi16L}}</button>');
+    var next = h('<button class="pc-lnav pc-lnav--next" aria-label="下一頁">{{EX_arrowSemi16}}</button>');
+    track.appendChild(prev); track.appendChild(next);
     var more = h('<button class="pc-lchip pc-lchip--more"><b>更多</b></button>');
     more.addEventListener('click', openAllFlow);
-    wrap.appendChild(prev); wrap.appendChild(track); wrap.appendChild(next); wrap.appendChild(more);
-    // 量測 strip 視窗寬 → 每格寬；平移到當前頁（首次不動畫）
+    wrap.appendChild(track); wrap.appendChild(more);
     var chipW = 0;
     function layout(animate) {
       var TW = track.clientWidth; chipW = (TW - (n - 1) * gap) / n;
@@ -3258,11 +3247,7 @@
   window.addEventListener('scroll', function () {
     if (!document.body.classList.contains('list-mode')) return;
     if (_lockCount > 0) return;  // dialog 開啟中 body 被 position:fixed 鎖捲，會誤觸 scrollY=0；此時不重算塌縮，維持原 compact 態
-    var next = window.scrollY > 20;
-    if (next === _plCompact) return;
-    _plCompact = next;
-    document.getElementById('plBar').classList.toggle('compact', next);
-    requestAnimationFrame(function () { applyFlow(false); });  // 卡片尺寸變了：瞬時重排、不做動畫
+    // Figma 3701-124950 改為單一單行版型，不再隨捲動塌縮
   }, { passive: true });
   window.addEventListener('resize', function () {
     if (document.body.classList.contains('list-mode')) applyFlow(false);
