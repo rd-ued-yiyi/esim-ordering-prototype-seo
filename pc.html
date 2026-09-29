@@ -1080,15 +1080,16 @@
   .ord-dchip.sel .d { color: var(--kk-primary-medium); }
   .ord-dmore { flex: 0 0 auto; min-width: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 12px; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); color: var(--kk-text-dark); font-size: 12px; }
   .ord-dmore .ic { width: 20px; height: 20px; }
-  /* 購買數量 */
-  .qty-row { display: flex; align-items: center; justify-content: space-between; }
+  /* 購買數量（Figma 3710-143311）：標題 18/26 + gap 24 + Stepper（32 圓鈕 1px 邊 + 20 icon、數字 40 寬 16/24、gap 4），靠左 */
+  .qty-row { display: flex; align-items: center; justify-content: flex-start; gap: 24px; }
   .qty-row .t { font-size: 18px; line-height: 26px; font-weight: 600; }
-  .qty-ctl { display: inline-flex; align-items: center; gap: 16px; }
-  .qty-btn { width: 32px; height: 32px; border-radius: 999px; border: 1.5px solid var(--kk-primary-medium); color: var(--kk-primary-medium); display: inline-flex; align-items: center; justify-content: center; position: relative; }
-  .qty-btn::before { content: ''; position: absolute; width: 12px; height: 1.5px; background: currentColor; }
-  .qty-btn.qplus::after { content: ''; position: absolute; width: 1.5px; height: 12px; background: currentColor; }
-  .qty-btn:disabled { border-color: var(--kk-border-light); color: var(--kk-border-light); }
-  .qty-n { min-width: 20px; text-align: center; font-size: 16px; font-weight: 600; }
+  .qty-ctl { display: inline-flex; align-items: center; gap: 4px; }
+  .qty-btn { width: 32px; height: 32px; border-radius: 20px; border: 1px solid var(--kk-primary-medium); display: inline-flex; align-items: center; justify-content: center; background: #fff; }
+  .qty-btn img { width: 20px; height: 20px; display: block; }
+  .qty-btn .i-on, .qty-btn:disabled .i-off { display: block; }
+  .qty-btn .i-off, .qty-btn:disabled .i-on { display: none; }
+  .qty-btn:disabled { border-color: #ADE6EB; cursor: default; }  /* $color-border-primary-light */
+  .qty-n { width: 40px; text-align: center; font-size: 16px; line-height: 24px; font-weight: 400; color: var(--kk-text-darker); }
   /* 內聯表單欄位 */
   .ord-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
   .ff { display: flex; flex-direction: column; gap: 6px; }
@@ -3679,8 +3680,8 @@
         '<div class="ord-hr2"></div>';
     }
     main += '<div class="qty-row"><div class="t">購買數量</div><div class="qty-ctl">' +
-      '<button class="qty-btn qminus" id="ordQtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '></button><span class="qty-n">' + st.qty + '</span>' +
-      '<button class="qty-btn qplus" id="ordQtyPlus"></button></div></div>';
+      '<button class="qty-btn" id="ordQtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '><span class="i-on"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX21pbnVzX2xpbmVfc2VtaWJvbGQiPgo8ZyBpZD0iVmVjdG9yIj4KPC9nPgo8cGF0aCBpZD0iVmVjdG9yIChTdHJva2UpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIuMjkxNjcgMTBDMi4yOTE2NyA5LjUzOTc2IDIuNjY0NzYgOS4xNjY2NyAzLjEyNSA5LjE2NjY3SDE2Ljg3NUMxNy4zMzUyIDkuMTY2NjcgMTcuNzA4MyA5LjUzOTc2IDE3LjcwODMgMTBDMTcuNzA4MyAxMC40NjAyIDE3LjMzNTIgMTAuODMzMyAxNi44NzUgMTAuODMzM0gzLjEyNUMyLjY2NDc2IDEwLjgzMzMgMi4yOTE2NyAxMC40NjAyIDIuMjkxNjcgMTBaIiBmaWxsPSIjMjZCRUM5Ii8+CjwvZz4KPC9zdmc+" width="20" height="20"></span><span class="i-off"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX21pbnVzX2xpbmVfc2VtaWJvbGQiPgo8ZyBpZD0iVmVjdG9yIj4KPC9nPgo8cGF0aCBpZD0iVmVjdG9yIChTdHJva2UpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIuMjkxNjcgMTBDMi4yOTE2NyA5LjUzOTc2IDIuNjY0NzYgOS4xNjY2NyAzLjEyNSA5LjE2NjY3SDE2Ljg3NUMxNy4zMzUyIDkuMTY2NjcgMTcuNzA4MyA5LjUzOTc2IDE3LjcwODMgMTBDMTcuNzA4MyAxMC40NjAyIDE3LjMzNTIgMTAuODMzMyAxNi44NzUgMTAuODMzM0gzLjEyNUMyLjY2NDc2IDEwLjgzMzMgMi4yOTE2NyAxMC40NjAyIDIuMjkxNjcgMTBaIiBmaWxsPSIjQURFNkVCIi8+CjwvZz4KPC9zdmc+" width="20" height="20"></span></button><span class="qty-n">' + st.qty + '</span>' +
+      '<button class="qty-btn" id="ordQtyPlus"' + (st.qty >= 5 ? ' disabled' : '') + '><span class="i-on"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX3BsdXNfbGluZV9zZW1pYm9sZCI+CjxnIGlkPSJVbmlvbiI+CjxwYXRoIGQ9Ik0xMC44MzMzIDMuMzMzMzNDMTAuODMzMyAyLjg3MzEgMTAuNDYwMiAyLjUgMTAgMi41QzkuNTM5NzYgMi41IDkuMTY2NjcgMi44NzMxIDkuMTY2NjcgMy4zMzMzM1Y5LjE2NjY3SDIuOTE2NjdDMi40NTY0MyA5LjE2NjY3IDIuMDgzMzMgOS41Mzk3NiAyLjA4MzMzIDEwQzIuMDgzMzMgMTAuNDYwMiAyLjQ1NjQzIDEwLjgzMzMgMi45MTY2NyAxMC44MzMzSDkuMTY2NjdWMTcuMDgzM0M5LjE2NjY3IDE3LjU0MzYgOS41Mzk3NiAxNy45MTY3IDEwIDE3LjkxNjdDMTAuNDYwMiAxNy45MTY3IDEwLjgzMzMgMTcuNTQzNiAxMC44MzMzIDE3LjA4MzNWMTAuODMzM0gxNi42NjY3QzE3LjEyNjkgMTAuODMzMyAxNy41IDEwLjQ2MDIgMTcuNSAxMEMxNy41IDkuNTM5NzYgMTcuMTI2OSA5LjE2NjY3IDE2LjY2NjcgOS4xNjY2N0gxMC44MzMzVjMuMzMzMzNaIiBmaWxsPSIjMjZCRUM5Ii8+CjwvZz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span><span class="i-off"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX3BsdXNfbGluZV9zZW1pYm9sZCI+CjxnIGlkPSJVbmlvbiI+CjxwYXRoIGQ9Ik0xMC44MzMzIDMuMzMzMzNDMTAuODMzMyAyLjg3MzEgMTAuNDYwMiAyLjUgMTAgMi41QzkuNTM5NzYgMi41IDkuMTY2NjcgMi44NzMxIDkuMTY2NjcgMy4zMzMzM1Y5LjE2NjY3SDIuOTE2NjdDMi40NTY0MyA5LjE2NjY3IDIuMDgzMzMgOS41Mzk3NiAyLjA4MzMzIDEwQzIuMDgzMzMgMTAuNDYwMiAyLjQ1NjQzIDEwLjgzMzMgMi45MTY2NyAxMC44MzMzSDkuMTY2NjdWMTcuMDgzM0M5LjE2NjY3IDE3LjU0MzYgOS41Mzk3NiAxNy45MTY3IDEwIDE3LjkxNjdDMTAuNDYwMiAxNy45MTY3IDEwLjgzMzMgMTcuNTQzNiAxMC44MzMzIDE3LjA4MzNWMTAuODMzM0gxNi42NjY3QzE3LjEyNjkgMTAuODMzMyAxNy41IDEwLjQ2MDIgMTcuNSAxMEMxNy41IDkuNTM5NzYgMTcuMTI2OSA5LjE2NjY3IDE2LjY2NjcgOS4xNjY2N0gxMC44MzMzVjMuMzMzMzNaIiBmaWxsPSIjQURFNkVCIi8+CjwvZz4KPC9nPgo8L3N2Zz4=" width="20" height="20"></span></button></div></div>';
     main += '</div>';
     var o = st.orderer;
     // 訂購人資料：移到旅客/聯絡之前——旅客「同訂購人資料」的參照對象需先出現（內聯表單 Figma 3341-26092）

@@ -391,6 +391,11 @@ pc_subs = {
     "{{PL_check}}":        pc_img("plan/check.svg"),
     "{{PL_reload}}":       pc_img("plan/reload.svg"),
     "{{PL_fire}}":         file_img("assets/pc/plan/fire.svg", recolor=("black", "#E65F50")),
+    # 訂單頁購買數量 Stepper（Figma 3710-143311）：ic_minus/plus_line_semibold 20，啟用 #26BEC9 / 停用 #ADE6EB
+    "{{ORD_minusOn}}":     file_img("assets/pc/ord/minus.svg", recolor=("#ADE6EB", "#26BEC9")),
+    "{{ORD_minusOff}}":    pc_img("ord/minus.svg"),
+    "{{ORD_plusOn}}":      pc_img("ord/plus.svg"),
+    "{{ORD_plusOff}}":     file_img("assets/pc/ord/plus.svg", recolor=("#26BEC9", "#ADE6EB")),
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),

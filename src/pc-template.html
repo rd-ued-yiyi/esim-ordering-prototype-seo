@@ -1064,15 +1064,16 @@
   .ord-dchip.sel .d { color: var(--kk-primary-medium); }
   .ord-dmore { flex: 0 0 auto; min-width: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 12px; border-radius: 8px; background: #fff; border: 1px solid var(--kk-border-light); color: var(--kk-text-dark); font-size: 12px; }
   .ord-dmore .ic { width: 20px; height: 20px; }
-  /* 購買數量 */
-  .qty-row { display: flex; align-items: center; justify-content: space-between; }
+  /* 購買數量（Figma 3710-143311）：標題 18/26 + gap 24 + Stepper（32 圓鈕 1px 邊 + 20 icon、數字 40 寬 16/24、gap 4），靠左 */
+  .qty-row { display: flex; align-items: center; justify-content: flex-start; gap: 24px; }
   .qty-row .t { font-size: 18px; line-height: 26px; font-weight: 600; }
-  .qty-ctl { display: inline-flex; align-items: center; gap: 16px; }
-  .qty-btn { width: 32px; height: 32px; border-radius: 999px; border: 1.5px solid var(--kk-primary-medium); color: var(--kk-primary-medium); display: inline-flex; align-items: center; justify-content: center; position: relative; }
-  .qty-btn::before { content: ''; position: absolute; width: 12px; height: 1.5px; background: currentColor; }
-  .qty-btn.qplus::after { content: ''; position: absolute; width: 1.5px; height: 12px; background: currentColor; }
-  .qty-btn:disabled { border-color: var(--kk-border-light); color: var(--kk-border-light); }
-  .qty-n { min-width: 20px; text-align: center; font-size: 16px; font-weight: 600; }
+  .qty-ctl { display: inline-flex; align-items: center; gap: 4px; }
+  .qty-btn { width: 32px; height: 32px; border-radius: 20px; border: 1px solid var(--kk-primary-medium); display: inline-flex; align-items: center; justify-content: center; background: #fff; }
+  .qty-btn img { width: 20px; height: 20px; display: block; }
+  .qty-btn .i-on, .qty-btn:disabled .i-off { display: block; }
+  .qty-btn .i-off, .qty-btn:disabled .i-on { display: none; }
+  .qty-btn:disabled { border-color: #ADE6EB; cursor: default; }  /* $color-border-primary-light */
+  .qty-n { width: 40px; text-align: center; font-size: 16px; line-height: 24px; font-weight: 400; color: var(--kk-text-darker); }
   /* 內聯表單欄位 */
   .ord-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
   .ff { display: flex; flex-direction: column; gap: 6px; }
@@ -3511,8 +3512,8 @@
         '<div class="ord-hr2"></div>';
     }
     main += '<div class="qty-row"><div class="t">購買數量</div><div class="qty-ctl">' +
-      '<button class="qty-btn qminus" id="ordQtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '></button><span class="qty-n">' + st.qty + '</span>' +
-      '<button class="qty-btn qplus" id="ordQtyPlus"></button></div></div>';
+      '<button class="qty-btn" id="ordQtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '><span class="i-on">{{ORD_minusOn}}</span><span class="i-off">{{ORD_minusOff}}</span></button><span class="qty-n">' + st.qty + '</span>' +
+      '<button class="qty-btn" id="ordQtyPlus"' + (st.qty >= 5 ? ' disabled' : '') + '><span class="i-on">{{ORD_plusOn}}</span><span class="i-off">{{ORD_plusOff}}</span></button></div></div>';
     main += '</div>';
     var o = st.orderer;
     // 訂購人資料：移到旅客/聯絡之前——旅客「同訂購人資料」的參照對象需先出現（內聯表單 Figma 3341-26092）
