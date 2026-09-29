@@ -399,6 +399,14 @@ pc_subs = {
     # 首頁已選目的地 pill（Figma 3600-59444）：ic_location_fill 20 青 + ic_arrowDown_line_semibold 20
     "{{EX_locationFill20}}":      pc_img("explore/locationFill20.svg"),
     "{{EX_arrowDownSemibold20}}": pc_img("explore/arrowDownSemibold20.svg"),
+    # 套餐詳情 簡要資訊（Figma 3701-133340）：20px 圖標 + 折扣券 banner 資產
+    "{{DET_fileCheck}}":   pc_img("det/fileCheckFill.svg"),
+    "{{DET_flash20}}":     pc_img("det/flash20.svg"),
+    "{{DET_check20}}":     pc_img("det/check20.svg"),
+    "{{DET_reload20}}":    pc_img("det/reload20.svg"),
+    "{{DET_location20}}":  pc_img("det/location20.svg"),
+    "{{DET_coupon32}}":    pc_img("det/coupon32.svg"),
+    "{{DET_arrow16}}":     pc_img("det/arrow16.svg"),
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),

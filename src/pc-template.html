@@ -744,9 +744,9 @@
   .det-provider { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   /* 折扣券 banner（Figma 936-48931）：#FFF2F2 底 + 32 picto + 票券描邊 + 領取 popover */
   .det-coupon { position: relative; margin-top: 20px; display: flex; align-items: center; gap: 12px; width: 100%;
-    background: #FFF2F2; border: 0; border-radius: 12px; padding: 6px 16px; cursor: pointer; text-align: left; }
+    background: #FFF2F2; border: 0; border-radius: 12px; padding: 6px 8px; cursor: pointer; text-align: left; }  /* Figma Coupon banner：px8 py6 r12 gap 12 */
   .det-coupon .cp-pic { width: 32px; height: 32px; flex: 0 0 auto; display: block; }
-  .det-coupon .cp-pic svg { width: 32px; height: 32px; display: block; }
+  .det-coupon .cp-pic svg, .det-coupon .cp-pic img { width: 32px; height: 32px; display: block; }
   .det-coupon .tks { display: inline-flex; align-items: center; gap: 8px; }
   .det-coupon .tkt { position: relative; height: 24px; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; }
   .det-coupon .tkt1 { width: 55px; } .det-coupon .tkt2 { width: 75px; }
@@ -754,8 +754,8 @@
   .det-coupon .tkt .dash { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; pointer-events: none; }
   .det-coupon .tkt .dash svg { width: 100%; height: auto; display: block; }
   .det-coupon .tkt i { position: relative; font-style: normal; font-size: 12px; line-height: 16px; font-weight: 600; color: #E65F50; white-space: nowrap; }
-  .det-coupon .claim { margin-left: auto; display: inline-flex; align-items: center; gap: 2px; color: #E65F50; font-size: 14px; line-height: 20px; font-weight: 600; flex: 0 0 auto; }
-  .det-coupon .claim .car { width: 16px; height: 16px; }
+  .det-coupon .claim { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: #E65F50; font-size: 14px; line-height: 20px; font-weight: 600; flex: 0 0 auto; }
+  .det-coupon .claim .car, .det-coupon .claim .car img { width: 16px; height: 16px; display: block; }
   /* 領取折扣 popover（Figma 3220-51471）：349 寬、上三角、藍底提示 + 兩張券卡 */
   .pl-cpop { position: absolute; left: 16px; top: calc(100% + 12px); z-index: 8; width: 349px; max-width: calc(100% - 16px); background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(38,50,56,.12); padding: 8px 12px; display: none; flex-direction: column; gap: 8px; cursor: default; }
   .pl-cpop.show { display: flex; }
@@ -776,6 +776,7 @@
   .det-policies { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-policies .perk { position: relative; display: inline-flex; align-items: center; gap: 8px; }
   .det-policies .perk .ic { width: 20px; height: 20px; flex: 0 0 auto; }
+  .det-policies .perk .ic img, .det-cond .ic img { width: 20px; height: 20px; display: block; }
   .det-policies .perk.cover { display: flex; width: 100%; cursor: pointer; }
   .det-policies .perk.cover .pt { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: underline; text-underline-offset: 2px; }
   .det-policies .scope-tip { position: absolute; left: 26px; top: calc(100% + 6px); z-index: 6; width: 340px; background: #fff; border-radius: 8px; box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 14px; display: none; }
@@ -2963,7 +2964,7 @@
     var wrap = h('<div class="det-sec" data-sec="svc"></div>');
     // 首屏摘要卡：條件(青) + 標題(22) + 提醒(橘) + 供應商(灰)
     var hero = h('<div class="det-hero">' +
-      '<div class="det-cond"><span class="ic ic-20">{{IC_file}}</span><span class="ct"></span></div>' +
+      '<div class="det-cond"><span class="ic ic-20">{{DET_fileCheck}}</span><span class="ct"></span></div>' +  // ic_fileCheck_fill 20 #13A3B6（Figma 3701-133340）
       '<div class="det-title"></div>' +
       '<div class="pkg-warns"></div>' +
       '<div class="det-provider"></div></div>');
@@ -2976,12 +2977,12 @@
     wrap.appendChild(hero);
     // 折扣券 banner（真實票券描邊）+ 領券 popover
     var cp = h('<button class="det-coupon">' +
-      '<span class="cp-pic">{{IC_couponPicto}}</span>' +
+      '<span class="cp-pic">{{DET_coupon32}}</span>' +
       '<span class="tks">' +
         '<span class="tkt tkt1">{{IC_ticket1}}<span class="dash">{{IC_ticket1dash}}</span><i>95 折</i></span>' +
         '<span class="tkt tkt2">{{IC_ticket2}}<span class="dash">{{IC_ticket2dash}}</span><i>TWD 100</i></span>' +
       '</span>' +
-      '<span class="claim">折扣券<span class="car">{{IC_arrowSmRight}}</span></span>' +
+      '<span class="claim">折扣券<span class="car">{{DET_arrow16}}</span></span>' +
       '<span class="pl-cpop">' +
         '<span class="cp-note"><span class="ic ic-20">{{IC_infoFill}}</span>領取成功後可以在付款時選擇抵扣使用</span>' +
         '<span class="cp-card">' +
@@ -2999,13 +3000,13 @@
     wrap.appendChild(cp);
     // 政策行：立即確認 → 即買即用 → 取消政策 → 適用範圍（與 mweb 一致）
     var pol = h('<div class="det-policies"></div>');
-    if (has(p, '立即確認')) pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{IC_flash}}</span><span class="pt">立即確認並傳送憑證</span></span>'));
-    if (has(p, '即買即用') || has(p, '立即使用')) pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{IC_checkCircle}}</span><span class="pt">現在訂購，立即使用</span></span>'));
+    if (has(p, '立即確認')) pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_flash20}}</span><span class="pt">立即確認並傳送憑證</span></span>'));
+    if (has(p, '即買即用') || has(p, '立即使用')) pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_check20}}</span><span class="pt">現在訂購，立即使用</span></span>'));
     var cxlTxt = p.cancelType === 'free' ? '未使用可免費取消' : p.cancelType === 'cond' ? '所選日期 3 天前未使用可免費取消' : p.cancelType === 'fee' ? '可付費取消（依取消政策收手續費）' : '一經訂購不可取消、退款';
-    pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{IC_currencyReload}}</span><span class="pt">' + cxlTxt + '</span></span>'));
+    pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_reload20}}</span><span class="pt">' + cxlTxt + '</span></span>'));
     var covList = DET_COUNTRIES.filter(function (n, i, a) { return a.indexOf(n) === i; });
     var covText = '適用 ' + covList.slice(0, 3).join('、') + ' 等 ' + covList.length + ' 個國家/地區';
-    var cov = h('<span class="perk cover"><span class="ic ic-20">{{IC_locationLine}}</span><span class="pt">' + covText + '</span><span class="scope-tip"><ul></ul></span></span>');
+    var cov = h('<span class="perk cover"><span class="ic ic-20">{{DET_location20}}</span><span class="pt">' + covText + '</span><span class="scope-tip"><ul></ul></span></span>');
     var ul = cov.querySelector('ul'); covList.forEach(function (n) { var li = document.createElement('li'); li.textContent = n; ul.appendChild(li); });
     pol.appendChild(cov);
     wrap.appendChild(pol);
