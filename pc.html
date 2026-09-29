@@ -763,12 +763,14 @@
   .pl-det-tab.sel::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--kk-primary-medium); border-radius: 2px 2px 0 0; }
   .pl-det-bd { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0; background: var(--kk-surface-lighter); }
   /* footer：價格 + 訂購（Figma 3183 Footer region） */
-  .pl-det-foot { flex: 0 0 auto; display: flex; align-items: center; gap: 16px; padding: 12px 24px; background: #fff; border-top: 1px solid var(--kk-border-lighter); }
-  .pl-det-price { flex: 1 1 0; min-width: 0; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-  .pl-det-price .off { align-self: center; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; padding: 2px 4px; border-radius: 4px; }
-  .pl-det-price .now { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 20px; line-height: 24px; font-weight: 700; color: var(--kk-text-darker); }
-  .pl-det-price .now .cur { font-weight: 500; margin-right: 2px; }
-  .pl-det-price .was { font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }
+  /* 詳情底欄（Figma 3701-133371）：p24、上緣 1px #D5D6DB；左價格區（折扣標籤 → gap 4 → 售價 22/22 Bold + gap 8 原價 14/14）、gap 8、訂購鈕 px24 py12 */
+  .pl-det-foot { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 24px; background: #fff; border-top: 1px solid var(--kk-border-light); }
+  .pl-det-price { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .pl-det-price .off { background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; padding: 2px 4px; border-radius: 4px; }
+  .pl-det-price .pr { display: flex; align-items: center; gap: 8px; }
+  .pl-det-price .now { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 22px; line-height: 22px; font-weight: 700; color: var(--kk-text-darker); white-space: nowrap; }
+  .pl-det-price .now .cur { margin-right: 2px; }
+  .pl-det-price .was { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; white-space: nowrap; }
   .pl-det-cta { flex: 0 0 auto; background: var(--kk-primary-button); color: #fff; border-radius: 8px; padding: 12px 24px; font-size: 16px; line-height: 24px; font-weight: 600; cursor: pointer; }
   .pl-det-cta:hover { background: var(--kk-primary-dark); }
   .pl-det-bd .det-sec { background: #fff; padding: 24px; }
@@ -3088,8 +3090,8 @@
   function fillDetFooter(p) {
     var sc = plScaled(p), box = document.getElementById('plDetPrice');
     box.innerHTML = (sc.was ? '<span class="off">' + (p.off || '20%OFF') + '</span>' : '') +
-      '<span class="now"><span class="cur">NT$</span>' + sc.now.toLocaleString('en-US') + '</span>' +
-      (sc.was ? '<span class="was">NT$ ' + sc.was.toLocaleString('en-US') + '</span>' : '');
+      '<span class="pr"><span class="now"><span class="cur">NT$</span>' + sc.now.toLocaleString('en-US') + '</span>' +
+      (sc.was ? '<span class="was">NT$ ' + sc.was.toLocaleString('en-US') + '</span>' : '') + '</span>';
   }
   function closePlDetail() { if (!document.getElementById('plDetDlg').classList.contains('open')) return; detHideTipNow(); document.getElementById('plDetMask').classList.remove('open'); document.getElementById('plDetDlg').classList.remove('open'); unlockScroll(); }
   function detSecTop(sec) { var bd = document.getElementById('plDetBd'); return sec.getBoundingClientRect().top - bd.getBoundingClientRect().top + bd.scrollTop; }
