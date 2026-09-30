@@ -189,18 +189,13 @@
   .pc-flow-help { display: inline-flex; align-items: center; gap: 4px; color: var(--kk-text-dark); font-size: 12px; line-height: 16px; white-space: nowrap; }
   .pc-flow-help .ic { width: 16px; height: 16px; }
   .pc-flow-body { display: flex; gap: 20px; height: 300px; }
-  /* 計費分頁（Figma tab bar 3792:154713）：豎排 100 寬、右邊線 #E6E9ED；項目 p12 文字靠右 14/20；選中 Semibold #13A3B6 + 右緣 2px #26BEC9 豎條 */
-  .pc-ftabs { flex: 0 0 100px; align-self: flex-start; display: flex; flex-direction: column; border-right: 1px solid var(--kk-border-lighter); }
-  .pc-ftab { position: relative; width: 100%; display: flex; align-items: center; justify-content: flex-end; padding: 12px; white-space: nowrap;
-    background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: right; }
+  /* 計費分頁（Figma 3636-98060 tab（arrow））：豎排 120 寬、chip 44 高 gap 8 r8；未選 #F1F4F8 #212121；選中 #F0FAFB + 1px #26BEC9 + #13A3B6，右緣小箭頭指向檔位區 */
+  .pc-ftabs { position: relative; flex: 0 0 120px; align-self: flex-start; display: flex; flex-direction: column; gap: 8px; }
+  .pc-ftab { position: relative; width: 100%; height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; padding: 6px 12px; white-space: nowrap; border-radius: 8px; border: 1px solid transparent;
+    background: var(--kk-surface-light); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: center; transition: background .2s ease, color .2s ease, border-color .2s ease; }
   .pc-ftab:hover:not(.sel) { color: var(--kk-primary-dark); }
-  .pc-ftab { transition: color .2s ease, font-weight .2s ease; }
-  .pc-ftab.sel { color: var(--kk-primary-dark); font-weight: 600; }
-  /* 右緣 2px 青豎條為單一指示器，隨選中項平滑滑動（top / height 由 JS 以 --ind-y / --ind-h 設定） */
-  .pc-ftabs { position: relative; }
-  .pc-ftabs::after { content: ''; position: absolute; right: -1px; width: 2px; top: var(--ind-y, 0px); height: var(--ind-h, 44px); background: var(--kk-primary-medium); border-radius: 2px 0 0 2px;
-    transition: top .25s cubic-bezier(.4,0,.2,1), height .25s cubic-bezier(.4,0,.2,1); }
-  .pc-ftabs:not(:has(.pc-ftab.sel))::after { opacity: 0; }
+  .pc-ftab.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
+  .pc-ftab.sel::after { content: ''; position: absolute; right: -6px; top: calc(50% + 1.5px); width: 9.4px; height: 9.4px; box-sizing: border-box; background: var(--kk-primary-lighter); border-top: 1px solid var(--kk-primary-medium); border-right: 1px solid var(--kk-primary-medium); transform: translateY(-50%) rotate(45deg); }
   .pc-plan-flow .pc-scroll-wrap { flex: 1 1 0; min-width: 0; }
   .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 16px; padding-right: 0; }  /* Figma 3636-98813：段落與虛線上下各 16 */
   .pc-flow-sec { display: flex; flex-direction: column; gap: 8px; }
