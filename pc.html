@@ -619,7 +619,7 @@
   .pc-lflow { display: flex; align-items: stretch; gap: 8px; width: 100%; height: 48px; }
   .pc-lstrip-vp { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; }
   .pc-lstrip { display: flex; gap: 8px; height: 100%; will-change: transform; }
-  .pc-lchip { position: relative; flex: 0 0 auto; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 48px; padding: 6px; border-radius: 8px;
+  .pc-lchip { position: relative; flex: 0 0 auto; min-width: 110px; box-sizing: border-box; display: flex;  /* 寬度由文字撐開（多語系不省略），最少 110 */ flex-direction: column; align-items: center; justify-content: center; height: 48px; padding: 6px; border-radius: 8px;
     background: var(--kk-surface-light); border: 1px solid transparent; white-space: nowrap; }
   .pc-lchip b { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); padding: 0 4px; }
   .pc-lchip span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); padding: 0 4px; }
@@ -3007,33 +3007,46 @@
       });
       return c;
     }
-    // 一頁檔數：最多 5 張（Figma 688 寬 → 131.2），每張 ≥110，依可用寬度自動增減
-    var W = vpEl.clientWidth || 700, gap = 8, moreW = 52, minW = 110, cap = 5;
-    var n = Math.max(1, Math.min(cap, Math.floor((W - moreW - gap + gap) / (minW + gap))));
-    n = Math.min(n, all.length);
-    var si = plSelIndex(all), maxStart = Math.max(0, all.length - n);
-    if (centerSel) _plFlowStart = si - Math.floor((n - 1) / 2);
-    else if (!keepPage && (si < _plFlowStart || si >= _plFlowStart + n)) _plFlowStart = si - Math.floor((n - 1) / 2);  // 選中不在當頁 → 以選中為中心
-    _plFlowStart = Math.max(0, Math.min(maxStart, _plFlowStart));
+    // 檔位 chip 寬度由文字撐開（多語系不省略、不換行），一頁張數依實際寬度累加決定，最多 5 張；放不下的翻頁
+    var gap = 8, cap = 5, total = all.length;
     var track = h('<div class="pc-lstrip-vp"><div class="pc-lstrip"></div></div>'), strip = track.firstChild;
-    all.forEach(function (it) { strip.appendChild(mkChip(it)); });
+    var chips = all.map(function (it) { var c = mkChip(it); strip.appendChild(c); return c; });
     var prev = h('<button class="pc-lnav pc-lnav--prev" aria-label="上一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNiAwKSBzY2FsZSgtMSAxKSI+CjxnIGlkPSJpY19hcnJvd1JpZ2h0X2xpbmVfc2VtaWJvbGQiPgo8cGF0aCBpZD0iVmVjdG9yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEwLjQ3MTQgNy41Mjk0MUMxMC43MzE4IDcuNzg5NzYgMTAuNzMxOCA4LjIxMTg3IDEwLjQ3MTQgOC40NzIyMkw2LjQ3MTQgMTIuNDcyMkM2LjIxMTA1IDEyLjczMjYgNS43ODg5NCAxMi43MzI2IDUuNTI4NiAxMi40NzIyQzUuMjY4MjUgMTIuMjExOSA1LjI2ODI1IDExLjc4OTggNS41Mjg2IDExLjUyOTRMOS4wNTcxOSA4LjAwMDgxTDUuNTI4NiA0LjQ3MjIyQzUuMjY4MjUgNC4yMTE4NyA1LjI2ODI1IDMuNzg5NzYgNS41Mjg2IDMuNTI5NDFDNS43ODg5NSAzLjI2OTA2IDYuMjExMDYgMy4yNjkwNiA2LjQ3MTQgMy41Mjk0MUwxMC40NzE0IDcuNTI5NDFaIiBmaWxsPSIjMjEyMTIxIi8+CjwvZz4KPC9nPjwvc3ZnPg==" width="16" height="16"></button>');
     var next = h('<button class="pc-lnav pc-lnav--next" aria-label="下一頁"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZV9zZW1pYm9sZCI+CjxwYXRoIGlkPSJWZWN0b3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTAuNDcxNCA3LjUyOTQxQzEwLjczMTggNy43ODk3NiAxMC43MzE4IDguMjExODcgMTAuNDcxNCA4LjQ3MjIyTDYuNDcxNCAxMi40NzIyQzYuMjExMDUgMTIuNzMyNiA1Ljc4ODk0IDEyLjczMjYgNS41Mjg2IDEyLjQ3MjJDNS4yNjgyNSAxMi4yMTE5IDUuMjY4MjUgMTEuNzg5OCA1LjUyODYgMTEuNTI5NEw5LjA1NzE5IDguMDAwODFMNS41Mjg2IDQuNDcyMjJDNS4yNjgyNSA0LjIxMTg3IDUuMjY4MjUgMy43ODk3NiA1LjUyODYgMy41Mjk0MUM1Ljc4ODk1IDMuMjY5MDYgNi4yMTEwNiAzLjI2OTA2IDYuNDcxNCAzLjUyOTQxTDEwLjQ3MTQgNy41Mjk0MVoiIGZpbGw9IiMyMTIxMjEiLz4KPC9nPgo8L3N2Zz4=" width="16" height="16"></button>');
     track.appendChild(prev); track.appendChild(next);
     var more = h('<button class="pc-lchip pc-lchip--more"><b>更多</b></button>');
     more.addEventListener('click', openAllFlow);
     wrap.appendChild(track); wrap.appendChild(more);
-    var chipW = 0;
+    var TW = track.clientWidth, w = chips.map(function (c) { return c.offsetWidth; });
+    function spanW(a, b) { var t = 0; for (var i = a; i <= b; i++) t += w[i]; return t + (b - a) * gap; }  // [a..b] 含間距總寬
+    function pageCount(start) {  // 從 start 起一頁能放幾張（至少 1）
+      var n = 0; while (start + n < total && n < cap && spanW(start, start + n) <= TW) n++;
+      return Math.max(1, n);
+    }
+    var maxStart = total - 1; while (maxStart > 0 && pageCount(maxStart - 1) >= total - (maxStart - 1)) maxStart--;  // 最後一頁起點：再往前一張就放不下
+    var si = plSelIndex(all);
+    function centerOn(i) {  // 讓選中盡量落在頁中間：起點從 i 往左退，退到選中超過頁面中點為止
+      var st = i;
+      while (st > 0) { var n = pageCount(st - 1); if (st - 1 + n <= i || i - (st - 1) > Math.floor((n - 1) / 2)) break; st--; }
+      return st;
+    }
+    if (centerSel) _plFlowStart = centerOn(si);
+    else if (!keepPage && (si < _plFlowStart || si >= _plFlowStart + pageCount(_plFlowStart))) _plFlowStart = centerOn(si);  // 選中不在當頁 → 以選中為中心
+    _plFlowStart = Math.max(0, Math.min(maxStart, _plFlowStart));
     function layout(animate) {
-      var TW = track.clientWidth; chipW = (TW - (n - 1) * gap) / n;
-      strip.querySelectorAll('.pc-lchip').forEach(function (c) { c.style.flex = '0 0 ' + chipW + 'px'; });
+      var n = pageCount(_plFlowStart), extra = Math.max(0, (TW - spanW(_plFlowStart, _plFlowStart + n - 1)) / n);
+      chips.forEach(function (c, i) { c.style.width = (i >= _plFlowStart && i < _plFlowStart + n) ? (w[i] + extra) + 'px' : ''; });  // 當頁各張平分剩餘寬度鋪滿；其他張維持自然寬
+      var x = _plFlowStart > 0 ? spanW(0, _plFlowStart - 1) + gap : 0;  // 位移＝前面各張自然寬度累加
       strip.style.transition = animate ? 'transform .3s ease' : 'none';
-      strip.style.transform = 'translateX(' + (-_plFlowStart * (chipW + gap)) + 'px)';
+      strip.style.transform = 'translateX(' + (-x) + 'px)';
       prev.disabled = _plFlowStart <= 0; next.disabled = _plFlowStart >= maxStart;
     }
     layout(false);
-    prev.addEventListener('click', function () { _plFlowStart = Math.max(0, _plFlowStart - n); layout(true); });
-    next.addEventListener('click', function () { _plFlowStart = Math.min(maxStart, _plFlowStart + n); layout(true); });
+    prev.addEventListener('click', function () {  // 上一頁：往左退到「再退一張就放不下」為止（整張移動）
+      var st = _plFlowStart; while (st > 0 && spanW(st - 1, _plFlowStart - 1) <= TW && _plFlowStart - (st - 1) <= cap) st--;
+      _plFlowStart = Math.max(0, st); layout(true);
+    });
+    next.addEventListener('click', function () { _plFlowStart = Math.min(maxStart, _plFlowStart + pageCount(_plFlowStart)); layout(true); });
   }
   function applyFlow() { renderListChips(); }  // 尺寸/狀態變化即重排（無翻頁）
   // 天數下拉（1–30 天，選中打勾）
