@@ -372,6 +372,7 @@ pc_subs = {
     "{{DLG_chipCross16}}": pc_img("dlg/chipCross16.svg"),  # 多選已選 chip 叉 16（Figma 3554-49811）
     "{{DLG_globe24}}": file_img("assets/pc/dlg/globeFill24.svg", recolor=("#26BEC9", "#9C9DA0")),  # 多國區域列地球 24（未選）
     "{{DLG_globeSel24}}": pc_img("dlg/globeFill24.svg"),  # 選中 #26BEC9
+    "{{PC_infoFill20}}": pc_img("explore/infoFill20.svg"),  # ic_info_fill 20 全框（#2D84D6），取代 13px 裁邊 glyph
     "{{DLG_cross}}":       pc_img("dlg/cross.svg"),
     "{{DLG_search}}":      pc_img("dlg/search.svg"),
     "{{DLG_location}}":    pc_img("dlg/location.svg"),

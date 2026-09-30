@@ -1465,7 +1465,7 @@
           </div>
           <!-- 已選目的地：相容提示 + 摘要列（摘要 + 搜尋套餐）+ 天數&流量卡（Figma 3600-58253） -->
           <div class="pc-panel" id="pcPanel">
-            <div class="pc-note"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></span></div>
+            <div class="pc-note"><span class="ic ic-20">{{PC_infoFill20}}</span><span>購買前請確認你的裝置是否支援 eSIM<u data-toast="pc">查看全部相容裝置</u></span></div>
             <div class="pc-plan">
               <div class="pc-plan-days">
                 <div class="pc-plan-t">用卡天數</div>
@@ -1699,7 +1699,7 @@
               <button data-sort="3"><span class="ic i-def">{{EX_fireLine}}</span><span class="ic i-sel">{{EX_fireLineSel}}</span>高銷量優先</button>
             </div>
           </div>
-          <div class="pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM</span></div>
+          <div class="pc-lnote"><span class="ic ic-20">{{PC_infoFill20}}</span><span>購買前請確認你的裝置是否支援 eSIM</span></div>
           <div class="pl-list" id="plList"></div>
           <div class="pc-pager" id="plListPager"></div>
         </div>
@@ -2036,7 +2036,7 @@
     sc.innerHTML = ''; sc.appendChild(grid);
     document.getElementById('pcFlowTabs').querySelectorAll('.pc-ftab').forEach(function (t) { t.disabled = true; });
     clearTimeout(_panelSkelTimer);
-    _panelSkelTimer = setTimeout(function () { document.getElementById('pcFlowTabs').querySelectorAll('.pc-ftab').forEach(function (t) { t.disabled = false; }); renderPanel(); }, 500);
+    _panelSkelTimer = setTimeout(function () { document.getElementById('pcFlowTabs').querySelectorAll('.pc-ftab').forEach(function (t) { t.disabled = false; }); _panelCenter = true; renderPanel(); _panelCenter = false; }, 500);
   }
   function renderPanel() {
     var days = document.getElementById('pcDaysList'), daysTop = days.scrollTop; days.innerHTML = '';
@@ -2118,8 +2118,16 @@
     flowIndicator(tabsEl);
   }
   // 選中檔位不在可視範圍時捲入（上下各留 8px），不動頁面本身
+  var _panelCenter = false;  // 由 renderPanelLoading 設定：換目的地 / 天數後重繪時，選中項置中
+  function centerTier(scroll, el) {
+    if (!el) return;
+    var top = el.getBoundingClientRect().top - scroll.getBoundingClientRect().top + scroll.scrollTop;
+    scroll._spyGuard = Date.now() + 500;
+    scroll.scrollTop = Math.max(0, top - (scroll.clientHeight - el.offsetHeight) / 2);
+  }
   function revealTier(scroll, el) {
     if (!el) return;
+    if (_panelCenter) return centerTier(scroll, el);
     var top = el.getBoundingClientRect().top - scroll.getBoundingClientRect().top + scroll.scrollTop, bottom = top + el.offsetHeight;  // 滾動區為 absolute 定位，改用 rect 計算內容座標
     if (top - 8 < scroll.scrollTop) { scroll._spyGuard = Date.now() + 500; scroll.scrollTop = Math.max(0, top - 8); }
     else if (bottom + 8 > scroll.scrollTop + scroll.clientHeight) { scroll._spyGuard = Date.now() + 500; scroll.scrollTop = bottom + 8 - scroll.clientHeight; }
@@ -3026,7 +3034,7 @@
     var pn = document.getElementById('plDestNum'), pm = sel.destType === 'multi' && sel.destCount > 1;
     pn.hidden = !pm; if (pm) pn.textContent = '(' + sel.destCount + ')';
     document.getElementById('plDaysName').textContent = sel.days + '天';
-    renderListChips(true); renderDaysDd(); renderPlCards();
+    _plCenterSel = true; renderListChips(true); renderDaysDd(); renderPlCards();  // 換條件後，條帶以選中檔位為中心
   }
   function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; _plCompact = false; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
   function exitList() { document.body.classList.remove('list-mode'); document.getElementById('pcListPage').hidden = true; window.scrollTo(0, 0); }
@@ -3219,7 +3227,7 @@
       '</span>' +
       '<span class="claim">折扣券<span class="car">{{DET_arrow16}}</span></span>' +
       '<span class="pl-cpop">' +
-        '<span class="cp-note"><span class="ic ic-20">{{IC_infoFill}}</span>領取成功後可以在付款時選擇抵扣使用</span>' +
+        '<span class="cp-note"><span class="ic ic-20">{{PC_infoFill20}}</span>領取成功後可以在付款時選擇抵扣使用</span>' +
         '<span class="cp-cards">' +
         '<span class="cp-card">' +
           '<span class="cp-r1"><span class="cp-amt">TWD 1,000</span><span class="cp-btn get">領取</span></span>' +
