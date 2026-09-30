@@ -373,6 +373,7 @@ pc_subs = {
     "{{DLG_globe24}}": file_img("assets/pc/dlg/globeFill24.svg", recolor=("#26BEC9", "#9C9DA0")),  # 多國區域列地球 24（未選）
     "{{DLG_globeSel24}}": pc_img("dlg/globeFill24.svg"),  # 選中 #26BEC9
     "{{PC_infoFill20}}": pc_img("explore/infoFill20.svg"),  # ic_info_fill 20 全框（#2D84D6），取代 13px 裁邊 glyph
+    "{{DLG_check20}}": pc_img("dlg/checkSemibold20.svg"),  # 方案 C 選中勾 ic_check_line_semibold 20 #13A3B6
     "{{DLG_cross}}":       pc_img("dlg/cross.svg"),
     "{{DLG_search}}":      pc_img("dlg/search.svg"),
     "{{DLG_location}}":    pc_img("dlg/location.svg"),
