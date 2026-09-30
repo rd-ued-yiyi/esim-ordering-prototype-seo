@@ -765,9 +765,9 @@
   .pd-side .det-coupon { margin-top: 20px; padding: 6px 8px; }  /* 獨立頁折扣券為 44 高變體（px8 py6），與 dialog 的 p12 不同 */
   .pd-side .det-policies { margin-top: 20px; }
   .pd-body { flex: 1 1 0; min-width: 0; background: #fff; border-radius: 12px; }  /* 右欄整體一張圓角白卡，段落之間用 8px 淺灰帶分隔 */
-  .pd-tabwrap { position: sticky; top: 165px; z-index: 5; background: #fff; border-radius: 12px 12px 0 0; }  /* 外層貼頂 + 遮罩；內層 tab 可橫向捲動（長語系不溢出卡片） */
+  .pd-tabwrap { position: sticky; top: 165px; z-index: 5; background: var(--kk-surface-light); }  /* 外層用頁面底色，內層白色 tab 的圓角切口才會露出灰底而不是白卡 */  /* 外層貼頂 + 遮罩；內層 tab 可橫向捲動（長語系不溢出卡片） */
   .pd-tabwrap::before { content: ''; position: absolute; left: 0; right: 0; top: -24px; height: 24px; background: var(--kk-surface-light); }  /* 遮住捲到間距裡的內容 */
-  .pd-tabs { border-radius: 12px 12px 0 0; }
+  .pd-tabs { background: #fff; border-radius: 12px 12px 0 0; }
   .pd-bd .det-sec { background: #fff; padding: 24px; }
   .pd-bd .det-sec + .det-sec { border-top: 8px solid var(--kk-surface-light); }
   /* 左欄 395 窄，折扣券下拉與適用國家清單改從卡片右側彈出（距卡片 12） */
