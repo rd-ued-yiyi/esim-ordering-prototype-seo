@@ -2096,6 +2096,7 @@
     days.appendChild(h('<div class="pc-plan-end">已經到底了～</div>'));
     days.scrollTop = daysTop;
     var sd = days.querySelector('.pc-day.sel');
+    if (typeof i18nLang === 'string' && i18nLang !== 'zh-TW') i18nWalk(days);  // 先套用語系再量測，避免翻譯後才重排造成抖動
     if (sd) revealTier(days, sd);  // 只捲動清單內部，不動頁面
     // 流量：左側豎排計費分頁（錨點 + scroll-spy）+ 右側三計費段堆疊滾動區（Figma 3600-58253）
     renderFlowStack(document.getElementById('pcFlowTabs'), document.getElementById('pcFlowScroll'), renderPanel);
@@ -2151,6 +2152,7 @@
     });
     var endEl = h('<div class="pc-plan-end">已經到底了～</div>');
     scrollEl.appendChild(endEl);
+    if (typeof i18nLang === 'string' && i18nLang !== 'zh-TW') { i18nWalk(tabsEl); i18nWalk(scrollEl); }  // 先套用語系再量測（底部留白 / 指示條 / 捲動位置），避免翻譯後重排抖動
     // 底部留足間距：確保最後一段（無限流量）能捲到滾動區頂部，scroll-spy 有機會錨定選中它
     var secs = scrollEl.querySelectorAll('.pc-flow-sec'), lastSec = secs[secs.length - 1];
     if (lastSec) {
@@ -4474,7 +4476,7 @@
     if (out === null) out = s;
     // 複合字串：子字串替換（長鍵優先）+ 行內數字片段
     if (/[\u4e00-\u9fff]/.test(out) && i18nKeyRe) out = out.replace(i18nKeyRe, function (k) { return i18nMerged[k]; });
-    if (/[\u4e00-\u9fff]/.test(out)) out = out.replace(/(\d+)GB\/天/g, function (_, n) { return i18nFmt(N.gbday, n); }).replace(/(\d+) ?天/g, function (_, n) { return i18nFmt(N.day, n); });
+    if (/[\u4e00-\u9fff]/.test(out)) out = out.replace(/(\d+)GB\/天/g, function (_, n) { return i18nFmt(N.gbday, n); }).replace(/共(\d+)GB/g, function (_, n) { return i18nFmt(N.total, n); }).replace(/(\d+) ?天/g, function (_, n) { return i18nFmt(N.day, n); });
     if (!/^(zh|ja)/.test(i18nLang)) out = out.replace(/、/g, ', ');  // 非中日文：頓號改逗號
     out = out.replace(/\s{2,}/g, ' ');
     return (i18nCache[str] = lead + out + trail);
