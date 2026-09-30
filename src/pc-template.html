@@ -674,6 +674,15 @@
   .pl-ftag-clear { font-size: 12px; line-height: 16px; font-weight: 600; color: var(--kk-primary-dark); text-decoration: underline; cursor: pointer; white-space: nowrap; }
   /* Plan 卡（Figma 3167:40025）：左內容（規格警示/標題/標籤/竪排政策/評論）+ 豎分隔 + 右價格CTA */
   .pl-list { display: flex; flex-direction: column; gap: 16px; }  /* 與分頁間距由 .pc-ex-main gap 24 提供 */
+  /* 列表載入 skeleton（參考 kkday.com kk-skeleton：#E6E9ED 塊、r4/r8，加淡淡的流光）：與商品卡同構，換條件 / 翻頁時先顯示 */
+  .pl-skel { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 20px; }
+  .pl-skel .sk { position: relative; overflow: hidden; background: var(--kk-border-lighter); border-radius: 8px; }
+  .pl-skel .sk::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 100%); animation: plShimmer 1.4s ease-in-out infinite; }
+  @keyframes plShimmer { to { transform: translateX(100%); } }
+  .pl-skel-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .pl-skel-row { display: flex; gap: 6px; }
+  .pl-skel-buy { flex: 0 0 300px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 16px; }
+  .pl-skel-hr { flex: 0 0 1px; background: var(--kk-border-lighter); }
   .pl-empty { padding: 64px 0; text-align: center; color: var(--kk-text-medium); background: #fff; border-radius: 12px; }
   .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 20px;  /* Figma 3701-112942：p20 */ cursor: pointer; transition: box-shadow .15s; }
   .pl-card:hover { box-shadow: 0 4px 24px rgba(38,50,56,.12); }  /* 陰影僅 hover 顯示（Figma 12-Fixed） */
@@ -2790,7 +2799,26 @@
       '</div>' +
     '</div>';
   }
+  // 換條件 / 翻頁 → 先顯示 skeleton，再渲染（模擬請求延遲）；連續觸發只保留最後一次
+  var _plSkelTimer = null;
+  function plSkeletonHTML() {
+    return '<div class="pl-skel">' +
+      '<div class="pl-skel-main">' +
+        '<div class="sk" style="width:62%;height:26px"></div>' +
+        '<div class="pl-skel-row"><span class="sk" style="width:54px;height:20px;border-radius:4px"></span><span class="sk" style="width:86px;height:20px;border-radius:4px"></span><span class="sk" style="width:44px;height:20px;border-radius:4px"></span></div>' +
+        '<div class="pl-skel-row" style="flex-direction:column;gap:6px"><span class="sk" style="width:120px;height:20px"></span><span class="sk" style="width:150px;height:20px"></span><span class="sk" style="width:96px;height:20px"></span></div>' +
+        '<div class="sk" style="width:260px;height:16px"></div>' +
+      '</div><div class="pl-skel-hr"></div>' +
+      '<div class="pl-skel-buy"><span class="sk" style="width:56px;height:20px;border-radius:4px"></span><span class="sk" style="width:150px;height:22px"></span><span class="sk" style="width:80px;height:48px"></span></div>' +
+    '</div>';
+  }
   function renderPlCards(keepPage) {
+    var box = document.getElementById('plList');
+    if (!box.querySelector('.pl-skel')) { box.innerHTML = plSkeletonHTML() + plSkeletonHTML() + plSkeletonHTML(); document.getElementById('plListPager').innerHTML = ''; }
+    clearTimeout(_plSkelTimer);
+    _plSkelTimer = setTimeout(function () { renderPlCardsNow(keepPage); }, 500);
+  }
+  function renderPlCardsNow(keepPage) {
     if (!keepPage) plListPg = 1;
     var groups = plActiveGroups();
     var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax');
