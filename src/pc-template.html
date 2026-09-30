@@ -471,7 +471,7 @@
   .dlg-row { position: relative; display: flex; align-items: flex-end; gap: 12px; padding: 12px 16px; min-height: 64px;
     border: 1px solid var(--kk-border-lighter); border-radius: 8px; background: #fff; }
   .dlg-row > .ic-24 { align-self: center; }  /* 地球圖標維持垂直置中 */
-  .dlg-row:hover { border-color: var(--kk-primary-medium); }
+  .dlg-row:hover { background: var(--kk-surface-lighter); }  /* hover 淺灰底（#F7FAFC），邊框不變，避免與選中態混淆 */
   .dlg-row.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); }
   .dlg-row .rt { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left; }
   .dlg-row .rn { font-size: 16px; line-height: 24px; font-weight: 600; }
@@ -483,6 +483,11 @@
     border-top: 6px solid transparent; background-clip: padding-box; }  /* 透明上邊＝視覺留 6px 間隙但 hover 連續，鼠標可移入 */
   /* tip 為 .cnt 子元素：hover tip 時 :hover 冒泡回 .cnt，故停留 tip 上也保持顯示 */
   .dlg-row .cnt:hover .dlg-tip { display: block; }
+  /* Figma 3674-101274 Regional：地球 ic_globe_fill 24、標題 14/20 Semibold、說明 12/16、上下 gap 4 */
+  .dlg-row { box-sizing: border-box; }  /* 含邊框 64 */
+  .dlg-row > .ic-24, .dlg-row > .ic-24 img { width: 24px; height: 24px; }
+  .dlg-row .rt { gap: 4px; }
+  .dlg-row .rn { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .dlg-tip ul { columns: 2; column-gap: 24px; padding-left: 18px; font-size: 12px; line-height: 20px; color: var(--kk-text-darker); }
   .dlg-hint { flex: 0 0 auto; display: flex; align-items: center; gap: 16px; padding: 8px 24px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .dlg-hint b { color: var(--kk-primary-dark); }
@@ -547,8 +552,8 @@
   #pcDlg .pc-dlg-result .ic img { width: 20px; height: 20px; }
   #pcDlg .pc-dlg-result .rc { gap: 4px; }
   #pcDlg .pc-dlg-result .nm mark { color: var(--kk-primary-dark); }
-  .pc-dlg[data-mode="country"] .pc-dlg-ft, .pc-dlg[data-mode="country"] .dlg-hint, .pc-dlg[data-mode="country"] .dlg-selchips,
-  .pc-dlg[data-mode="region"] .pc-dlg-ft, .pc-dlg[data-mode="region"] .dlg-hint, .pc-dlg[data-mode="region"] .dlg-selchips { display: none; }
+  .pc-dlg[data-mode="country"] .pc-dlg-ft, .pc-dlg[data-mode="country"] .dlg-hint, #pcDlg[data-mode="country"] .dlg-selchips,
+  .pc-dlg[data-mode="region"] .pc-dlg-ft, .pc-dlg[data-mode="region"] .dlg-hint, #pcDlg[data-mode="region"] .dlg-selchips { display: none; }
 
   /* 選擇建議 dialog（Figma 3140-37478；表格視覺與 mweb 選擇建議一致） */
   .pc-howto-dlg { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 51; display: none;
@@ -2320,7 +2325,7 @@
       });
     } else if (dlg.mode === 'region') {
       var mk = function (r) {
-        var row = h('<button class="dlg-row' + (sel.dest === r.name ? ' sel' : '') + '"><span class="ic ic-24">' + (sel.dest === r.name ? '{{IC_globeSel}}' : '{{IC_globe}}') + '</span>' +
+        var row = h('<button class="dlg-row' + (sel.dest === r.name ? ' sel' : '') + '"><span class="ic ic-24">' + (sel.dest === r.name ? '{{DLG_globeSel24}}' : '{{DLG_globe24}}') + '</span>' +
           '<span class="rt"><span class="rn"></span><span class="rd"></span></span>' +
           '<span class="cnt"><span></span><span class="ic ic-16">{{IC_info}}</span><span class="dlg-tip"><ul></ul></span></span></button>');
         row.querySelector('.rn').textContent = r.name;
@@ -3465,9 +3470,11 @@
   // 左欄彈層（折扣券下拉 / 適用國家清單）：以整張左欄卡為基準，頂對齊觸發列；若會超出視窗底（扣掉 footer 96）則往上推
   function pdFlyout(pop, trigger) {
     var side = document.getElementById('pdSide'); if (!side || !side.contains(pop) || !detailMode) return;
-    var sr = side.getBoundingClientRect(), tr = trigger.getBoundingClientRect(), ph = pop.offsetHeight;  // 同步量測（offsetHeight 會先套用 hover/show 樣式）
-    var want = tr.top - sr.top - 8, limit = window.innerHeight - 96 - 8 - sr.top - ph;
-    pop.style.top = Math.max(0, Math.min(want, limit)) + 'px';
+    var sr = side.getBoundingClientRect(), tr = trigger.getBoundingClientRect();
+    var top = Math.max(0, tr.top - sr.top);  // 貼齊觸發列頂
+    pop.style.top = top + 'px';
+    pop.style.maxHeight = Math.max(160, window.innerHeight - 96 - 8 - sr.top - top) + 'px';  // 放不下就在彈層內捲動，不往上推
+    pop.style.overflowY = 'auto';
   }
   function renderDetailPage() {
     var p = detP; if (!p) return;

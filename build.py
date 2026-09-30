@@ -370,6 +370,8 @@ pc_subs = {
     "{{EX_crossLine}}":    pc_img("explore/crossLine.svg"),  # 已選 Chip 刪除細線叉 16（Figma 3467-85809）
     # 選擇目的地 dialog（Figma 3554-49785 / 49810 / 49892）
     "{{DLG_chipCross16}}": pc_img("dlg/chipCross16.svg"),  # 多選已選 chip 叉 16（Figma 3554-49811）
+    "{{DLG_globe24}}": file_img("assets/pc/dlg/globeFill24.svg", recolor=("#26BEC9", "#9C9DA0")),  # 多國區域列地球 24（未選）
+    "{{DLG_globeSel24}}": pc_img("dlg/globeFill24.svg"),  # 選中 #26BEC9
     "{{DLG_cross}}":       pc_img("dlg/cross.svg"),
     "{{DLG_search}}":      pc_img("dlg/search.svg"),
     "{{DLG_location}}":    pc_img("dlg/location.svg"),
