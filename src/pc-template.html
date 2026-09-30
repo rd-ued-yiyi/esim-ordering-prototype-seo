@@ -195,7 +195,7 @@
     background: var(--kk-surface-light); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: center; transition: background .2s ease, color .2s ease, border-color .2s ease; }
   .pc-ftab:hover:not(.sel) { color: var(--kk-primary-dark); }
   .pc-ftab.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
-  .pc-ftab.sel::after { content: ''; position: absolute; right: -6px; top: calc(50% + 1.5px); width: 9.4px; height: 9.4px; box-sizing: border-box; background: var(--kk-primary-lighter); border-top: 1px solid var(--kk-primary-medium); border-right: 1px solid var(--kk-primary-medium); transform: translateY(-50%) rotate(45deg); }
+  .pc-ftab.sel::after { content: ''; position: absolute; right: -6px; top: calc(50% + 1.5px); width: 9.4px; height: 9.4px; box-sizing: border-box; background: var(--kk-primary-lighter); border-top: 1px solid var(--kk-primary-medium); border-right: 1px solid var(--kk-primary-medium); border-top-right-radius: 2px; transform: translateY(-50%) rotate(45deg); }  /* 尖端 r2（Figma Rectangle 資產為圓角） */
   .pc-plan-flow .pc-scroll-wrap { flex: 1 1 0; min-width: 0; }
   .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 16px; padding-right: 0; }  /* Figma 3636-98813：段落與虛線上下各 16 */
   .pc-flow-sec { display: flex; flex-direction: column; gap: 8px; }
