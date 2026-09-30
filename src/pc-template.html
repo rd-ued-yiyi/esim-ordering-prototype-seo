@@ -3213,7 +3213,7 @@
         '</span>' +
       '</span></button>');
     var pop = cp.querySelector('.pl-cpop');
-    cp.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
+    cp.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); if (pop.classList.contains('show')) pdFlyout(pop, cp); });
     pop.addEventListener('click', function (e) { e.stopPropagation(); });
     wrap.appendChild(cp);
     // 政策行：立即確認 → 即買即用 → 取消政策 → 適用範圍（與 mweb 一致）
@@ -3227,6 +3227,7 @@
     var cov = h('<span class="perk cover"><span class="ic ic-20">{{DET_location20}}</span><span class="pt">' + covText + '</span><span class="scope-tip"><ul></ul><ul></ul></span></span>');
     var uls = cov.querySelectorAll('ul'), half = Math.ceil(covList.length / 2);
     covList.forEach(function (n, i) { var li = document.createElement('li'); li.textContent = n; uls[i < half ? 0 : 1].appendChild(li); });
+    cov.querySelector('.pt').addEventListener('mouseenter', function () { pdFlyout(cov.querySelector('.scope-tip'), cov); });  // 獨立頁：清單貼齊觸發列
     pol.appendChild(cov);
     wrap.appendChild(pol);
     // 基本資訊：標題 + 描述 + 分組表（分組/欄位/ⓘ 完全對齊 Figma 3183-76681）
@@ -3456,6 +3457,13 @@
     try { history.replaceState(null, '', location.pathname); } catch (e) {}
   }
   function pdSecTop(sec) { return sec.getBoundingClientRect().top + window.scrollY - PD_TOP - 8; }
+  // 左欄彈層（折扣券下拉 / 適用國家清單）：以整張左欄卡為基準，頂對齊觸發列；若會超出視窗底（扣掉 footer 96）則往上推
+  function pdFlyout(pop, trigger) {
+    var side = document.getElementById('pdSide'); if (!side || !side.contains(pop) || !detailMode) return;
+    var sr = side.getBoundingClientRect(), tr = trigger.getBoundingClientRect(), ph = pop.offsetHeight;  // 同步量測（offsetHeight 會先套用 hover/show 樣式）
+    var want = tr.top - sr.top - 8, limit = window.innerHeight - 96 - 8 - sr.top - ph;
+    pop.style.top = Math.max(0, Math.min(want, limit)) + 'px';
+  }
   function renderDetailPage() {
     var p = detP; if (!p) return;
     var tabsEl = document.getElementById('pdTabs'); tabsEl.innerHTML = '';
