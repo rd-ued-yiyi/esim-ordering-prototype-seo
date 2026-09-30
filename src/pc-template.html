@@ -756,12 +756,12 @@
   .pl-det-hd .pl-det-acts { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }  /* KKDialog Header：Icon button 區 gap 12 */
   /* ---------- 獨立詳情頁（Figma 3810-162568）：淺灰底；左 395 sticky 簡要資訊卡；右 721 KKTab（sticky）+ 段落白卡；底部固定 footer 96 ---------- */
   body.detail-mode #pcHome, body.detail-mode .pc-cat, body.detail-mode #pcListPage > .col { display: none; }
-  body.detail-mode #pcListPage { padding-bottom: 0; }
+  body.detail-mode #pcListPage { padding-bottom: 0; position: sticky; top: 60px; z-index: 20; }  /* 獨立頁只剩快捷條：整段 sticky 貼在 header 下，tab 才有得貼 */
   body.order-mode #pcDetailPage, body.pay-mode #pcDetailPage { display: none; }
   .pc-detpage { display: block; background: var(--kk-surface-light); padding-bottom: 120px; }
   .pc-detpage[hidden] { display: none; }
   .pd-grid { display: flex; align-items: flex-start; gap: 24px; }
-  .pd-side { flex: 0 0 395px; min-width: 0; max-width: 395px; position: sticky; top: 164px; background: #fff; border-radius: 12px; padding: 24px; box-sizing: border-box; }
+  .pd-side { flex: 0 0 395px; min-width: 0; max-width: 395px; position: sticky; z-index: 9;  /* sticky 自成堆疊層：抬高到 footer（7）之上，折扣券下拉才不被蓋 */ top: 164px; background: #fff; border-radius: 12px; padding: 24px; box-sizing: border-box; }
   .pd-side .det-coupon { margin-top: 20px; padding: 6px 8px; }  /* 獨立頁折扣券為 44 高變體（px8 py6），與 dialog 的 p12 不同 */
   .pd-side .det-policies { margin-top: 20px; }
   .pd-body { flex: 1 1 0; min-width: 0; }
@@ -770,7 +770,7 @@
   .pd-bd .det-sec + .det-sec { margin-top: 8px; }
   .pd-bd .det-sec[data-sec="svc"] .det-h2 { margin-top: 0; padding-top: 0; border-top: 0; }  /* 簡要資訊已移到左欄，基本資訊直接置頂 */
   .pd-bd .det-pid { background: #fff; border-radius: 0 0 12px 12px; }
-  .pd-foot { position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; background: #fff; border-top: 1px solid var(--kk-border-light); }
+  .pd-foot { position: fixed; left: 0; right: 0; bottom: 0; z-index: 7;  /* 低於折扣券下拉（8），高於 sticky tab（5） */ background: #fff; border-top: 1px solid var(--kk-border-light); }
   .pd-foot-in { display: flex; align-items: center; gap: 8px; padding: 24px 0; }
   .pl-det-tabs { flex: 0 0 auto; display: flex; gap: 24px; padding: 0 24px; border-bottom: 1px solid var(--kk-border-lighter); overflow-x: auto; scrollbar-width: none; }
   .pl-det-tabs::-webkit-scrollbar { display: none; }
