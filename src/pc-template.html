@@ -761,13 +761,18 @@
   .pc-detpage { display: block; background: var(--kk-surface-light); padding-bottom: 120px; }
   .pc-detpage[hidden] { display: none; }
   .pd-grid { display: flex; align-items: flex-start; gap: 24px; }
-  .pd-side { flex: 0 0 395px; min-width: 0; max-width: 395px; position: sticky; z-index: 9;  /* sticky 自成堆疊層：抬高到 footer（7）之上，折扣券下拉才不被蓋 */ top: 164px; background: #fff; border-radius: 12px; padding: 24px; box-sizing: border-box; }
+  .pd-side { flex: 0 0 395px; min-width: 0; max-width: 395px; position: sticky; z-index: 9;  /* sticky 自成堆疊層：抬高到 footer（7）之上，折扣券下拉才不被蓋 */ top: 165px; background: #fff; border-radius: 12px; padding: 24px; box-sizing: border-box; }
   .pd-side .det-coupon { margin-top: 20px; padding: 6px 8px; }  /* 獨立頁折扣券為 44 高變體（px8 py6），與 dialog 的 p12 不同 */
   .pd-side .det-policies { margin-top: 20px; }
-  .pd-body { flex: 1 1 0; min-width: 0; }
-  .pd-tabs { position: sticky; top: 140px; z-index: 5; background: #fff; border-radius: 12px 12px 0 0; }
+  .pd-body { flex: 1 1 0; min-width: 0; background: #fff; border-radius: 12px; }  /* 右欄整體一張圓角白卡，段落之間用 8px 淺灰帶分隔 */
+  .pd-tabs, #pdTabs.pl-det-tabs { position: sticky; top: 165px; z-index: 5; background: #fff; border-radius: 12px 12px 0 0; overflow: visible; overflow-x: visible; }  /* overflow visible 讓 ::before 遮罩能畫到框外 */  /* 貼在快捷條下方 24（快捷條底 141 + 24） */
+  .pd-tabs::before { content: ''; position: absolute; left: 0; right: 0; top: -24px; height: 24px; background: var(--kk-surface-light); }  /* 遮住捲到間距裡的內容 */
   .pd-bd .det-sec { background: #fff; padding: 24px; }
-  .pd-bd .det-sec + .det-sec { margin-top: 8px; }
+  .pd-bd .det-sec + .det-sec { border-top: 8px solid var(--kk-surface-light); }
+  /* 左欄 395 窄，折扣券下拉與適用國家清單改從卡片右側彈出（距卡片 12） */
+  .pd-side .pl-cpop { left: calc(100% + 36px); right: auto; top: -8px; width: 400px; max-width: none; }
+  .pd-side .det-policies .scope-tip { left: calc(100% + 36px); top: -8px; }
+  .pd-side .det-policies .scope-tip::before { top: 0; bottom: 0; left: -14px; right: auto; width: 14px; height: auto; }  /* 透明橋改到左側空隙 */
   .pd-bd .det-sec[data-sec="svc"] .det-h2 { margin-top: 0; padding-top: 0; border-top: 0; }  /* 簡要資訊已移到左欄，基本資訊直接置頂 */
   .pd-bd .det-pid { background: #fff; border-radius: 0 0 12px 12px; }
   .pd-foot { position: fixed; left: 0; right: 0; bottom: 0; z-index: 7;  /* 低於折扣券下拉（8），高於 sticky tab（5） */ background: #fff; border-top: 1px solid var(--kk-border-light); }
