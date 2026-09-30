@@ -2488,7 +2488,7 @@
     var y = box.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
   }
-  var PC_EX_PAGESZ = 6, PL_PAGESZ = 5;
+  var PC_EX_PAGESZ = 6, PL_PAGESZ = 10;  // 列表頁一頁 10 張
   function pcBoughtNum(s) { return parseInt(s, 10) * (/K/i.test(s) ? 1000 : 1); }
   function pcMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
   // 商品卡（Figma 3467-85809 [PC] Product Card (L)）：高 240、左 240 方圖貼邊 + 活動標籤；右 px24 py16：標題/評分 + 收藏、屬性標籤、底部折扣標籤 + 價格
@@ -2678,7 +2678,12 @@
     { title: 'IIJ 原生日本 eSIM・可通話簡訊・輕量型', warns: ['需實名認證'], tags: ['含本地通話', '5G/4G', '原生卡'], perks: ['立即確認', '10天前可免費取消'], rating: 4.4, reviews: 1627, bought: '2K+ 已購', vendor: 'IIJmio', now: 612, was: null, per: 28, off: null, hot: false },
     { title: 'Rakuten 5G eSIM・吃到飽不斷網・支援熱點', warns: ['需航班信息', '需設備信息'], tags: ['支持熱點', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.6, reviews: 2860, bought: '6K+ 已購', vendor: 'Rakuten', now: 1049, was: 1311, per: 49, off: '20%OFF', hot: false },
     { title: '中港澳通用 5G eSIM・免翻牆・全面支援 AI', warns: ['需指定啟用日'], tags: ['5G', '國際漫遊卡'], perks: ['立即確認', '即買即用'], rating: 4.3, reviews: 180, bought: '1K+ 已購', vendor: 'Joytel', now: 445, was: 556, per: 21, off: '20%OFF', hot: false },
-    { title: '亞洲多國 eSIM・一卡多國・24小時制計費', warns: [], tags: ['5G/4G', '可加值', '國際漫遊卡'], perks: ['立即確認', '不可取消'], rating: 4.2, reviews: 89, bought: '900 已購', vendor: 'GlobalSIM', now: 399, was: null, per: 18, off: null, hot: false }
+    { title: '亞洲多國 eSIM・一卡多國・24小時制計費', warns: [], tags: ['5G/4G', '可加值', '國際漫遊卡'], perks: ['立即確認', '不可取消'], rating: 4.2, reviews: 89, bought: '900 已購', vendor: 'GlobalSIM', now: 399, was: null, per: 18, off: null, hot: false },
+    { title: 'au 原生日本 eSIM・每日高速・自然日制計費', warns: ['需指定啟用日'], tags: ['支持熱點', '5G', '原生卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.7, reviews: 1980, bought: '7K+ 已購', vendor: 'KDDI', now: 1120, was: 1400, per: 52, off: '20%OFF', hot: false },
+    { title: '日本 eSIM・總流量方案・可加值・支援熱點', warns: [], tags: ['支持熱點', '5G/4G', '可加值', '本地預付卡'], perks: ['立即確認', '即買即用', '3天前可免費取消'], rating: 4.5, reviews: 734, bought: '4K+ 已購', vendor: 'Joytel', now: 680, was: 850, per: 32, off: '20%OFF', hot: false },
+    { title: 'Docomo 5G 日本 eSIM・可通話簡訊・商務首選', warns: ['需實名認證', '需設備信息'], tags: ['含本地通話', '5G', '原生卡'], perks: ['立即確認', '10天前可免費取消'], rating: 4.6, reviews: 512, bought: '2K+ 已購', vendor: 'Docomo', now: 1290, was: null, per: 60, off: null, hot: false },
+    { title: '日韓雙國 eSIM・跨國自動切換・不降速', warns: ['需指定啟用日'], tags: ['支持熱點', '5G/4G', '國際漫遊卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.4, reviews: 366, bought: '1K+ 已購', vendor: 'GlobalSIM', now: 920, was: 1150, per: 43, off: '20%OFF', hot: false },
+    { title: '日本 eSIM 輕量型・訊息導航夠用・超值價', warns: [], tags: ['4G', '本地預付卡'], perks: ['立即確認', '即買即用', '不可取消'], rating: 4.1, reviews: 143, bought: '900 已購', vendor: 'IIJmio', now: 320, was: 400, per: 15, off: '20%OFF', hot: false }
   ];
   var plSort = 0, plRangeSync = null, plListPg = 1;
   // 為每張卡建立可篩選屬性（對應側欄各組）+ 記錄基準價（3GB/天·5天 為基準 1.0）
