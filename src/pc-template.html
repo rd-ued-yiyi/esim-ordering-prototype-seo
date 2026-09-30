@@ -629,7 +629,7 @@
   .pc-lchip--more { flex: 0 0 auto; padding: 8px; }  /* Chip background：p8 + 文字 px4 → 52 寬 */
   /* 麵包屑 note */
   /* 列表頁裝置提醒：純文字（icon+文字），無藍底橫條（Figma 3167-39923 Inline notification） */
-  .pc-lnote { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 24px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3674:108566：icon 20 + 14/20 #212121，距內容 24 */
+  .pc-lnote { display: flex; align-items: flex-start; gap: 8px; margin: 0;  /* Figma 3598-3806：提示移到結果欄下方、列表上方，間距由 .pc-ex-main gap 24 提供 */ font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3674:108566：icon 20 + 14/20 #212121，距內容 24 */
   .pc-lbody { align-items: flex-start; }
   /* 篩選欄：每組獨立白卡片（Figma filter card：radius 12、padding 20、卡間距 16） */
   .pc-lbody .pc-ex-side { gap: 16px; }
@@ -1636,7 +1636,6 @@
     </div>
     <div class="col">
       <div class="pc-crumb pc-crumb--home"><a id="plCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="plCrumbCat">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>搜尋結果頁</span></div>
-      <div class="pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM</span></div>
       <div class="pc-ex-body pc-lbody">
         <aside class="pc-ex-side">
           <div class="pc-fbox">
@@ -1700,6 +1699,7 @@
               <button data-sort="3"><span class="ic i-def">{{EX_fireLine}}</span><span class="ic i-sel">{{EX_fireLineSel}}</span>高銷量優先</button>
             </div>
           </div>
+          <div class="pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM</span></div>
           <div class="pl-list" id="plList"></div>
           <div class="pc-pager" id="plListPager"></div>
         </div>
