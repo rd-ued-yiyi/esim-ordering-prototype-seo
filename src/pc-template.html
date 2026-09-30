@@ -726,6 +726,8 @@
   .pc-allsec .sh { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-allsec .sn { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); margin-top: -8px; }
   .pc-allgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .pc-allgrid .pc-tier { height: auto; min-height: 74px; }  /* 選擇流量 dialog：欄寬固定，文字過長換行 */
+  .pc-allgrid .pc-tier b { white-space: normal; text-align: center; overflow-wrap: anywhere; }
   /* ============ 篩選組標題 ⓘ + 規格詳情 dialog（Figma 3167-43067 / 3242-45112） ============ */
   .fh-info { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }  /* 標題 + ⓘ 整行可點，開規格說明 dialog */
   .fh-info .fh-i { display: inline-flex; padding: 0; line-height: 0; }
