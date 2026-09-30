@@ -762,7 +762,7 @@
   .pc-detpage[hidden] { display: none; }
   .pd-grid { display: flex; align-items: flex-start; gap: 24px; }
   .pd-side { flex: 0 0 395px; min-width: 0; max-width: 395px; position: sticky; top: 164px; background: #fff; border-radius: 12px; padding: 24px; box-sizing: border-box; }
-  .pd-side .det-coupon { margin-top: 20px; }
+  .pd-side .det-coupon { margin-top: 20px; padding: 6px 8px; }  /* 獨立頁折扣券為 44 高變體（px8 py6），與 dialog 的 p12 不同 */
   .pd-side .det-policies { margin-top: 20px; }
   .pd-body { flex: 1 1 0; min-width: 0; }
   .pd-tabs { position: sticky; top: 140px; z-index: 5; background: #fff; border-radius: 12px 12px 0 0; }
@@ -1716,7 +1716,7 @@
   <!-- ============ 獨立商品詳情頁（Figma 3810-162568 / 3810-164717）：共用列表頁快捷條；左 395 簡要資訊、右 721 KKTab + 七段內容；底部固定價格 footer ============ -->
   <section class="pc-detpage" id="pcDetailPage" hidden>
     <div class="col">
-      <div class="pc-crumb"><a id="pdCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="pdCrumbCat">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="pdCrumbList">搜尋結果</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>商品詳情</span></div>
+      <div class="pc-crumb"><a id="pdCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="pdCrumbCat">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="pdCrumbList">搜尋結果頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>商品詳情</span></div>
       <div class="pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM</span></div>
       <div class="pd-grid">
         <aside class="pd-side" id="pdSide"></aside>
