@@ -2861,7 +2861,7 @@
     more.addEventListener('click', openAllFlow);
     wrap.appendChild(track); wrap.appendChild(more);
     if (typeof i18nLang === 'string' && i18nLang !== 'zh-TW') i18nWalk(wrap);  // 先套用語系再量各張自然寬
-    var TW = track.clientWidth, w = chips.map(function (c) { return c.offsetWidth; });
+    var TW = track.clientWidth, w = chips.map(function (c) { return c.getBoundingClientRect().width; });  // 取小數寬，避免整數累積誤差裁到最後一張
     function spanW(a, b) { var t = 0; for (var i = a; i <= b; i++) t += w[i]; return t + (b - a) * gap; }  // [a..b] 含間距總寬
     function pageCount(start) {  // 從 start 起一頁能放幾張（至少 1）
       var n = 0; while (start + n < total && n < cap && spanW(start, start + n) <= TW) n++;
@@ -2878,7 +2878,7 @@
     else if (!keepPage && (si < _plFlowStart || si >= _plFlowStart + pageCount(_plFlowStart))) _plFlowStart = centerOn(si);  // 選中不在當頁 → 以選中為中心
     _plFlowStart = Math.max(0, Math.min(maxStart, _plFlowStart));
     function layout(animate) {
-      var n = pageCount(_plFlowStart), extra = Math.max(0, (TW - spanW(_plFlowStart, _plFlowStart + n - 1)) / n);
+      var n = pageCount(_plFlowStart), extra = Math.max(0, Math.floor((TW - spanW(_plFlowStart, _plFlowStart + n - 1)) / n * 2) / 2);  // 平分剩餘寬（取 0.5 步進，總寬不超過視窗）
       chips.forEach(function (c, i) { c.style.width = (i >= _plFlowStart && i < _plFlowStart + n) ? (w[i] + extra) + 'px' : ''; });  // 當頁各張平分剩餘寬度鋪滿；其他張維持自然寬
       var x = _plFlowStart > 0 ? spanW(0, _plFlowStart - 1) + gap : 0;  // 位移＝前面各張自然寬度累加
       strip.style.transition = animate ? 'transform .3s ease' : 'none';
