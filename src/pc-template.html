@@ -208,7 +208,9 @@
   .pc-flow-sec + .pc-flow-sec { border-top: 1px dashed #ADE6EB; padding-top: 16px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   /* 依可用寬度自動增減列數：1440 下 4 列（Figma），變窄自動降列，每格 ≥150px 文字不硬折 */
-  .pc-flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }  /* Figma 784 寬 5 列（150.4）；含 8px 滾動條後仍維持 5 列 */
+  .pc-flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }  /* Figma 784 寬 5 列（150.4）；欄最小寬依最長檔位文字動態放大（pcFlowRelayout），長語系自動減欄 */
+  .pc-flow-grid.wrap .pc-tier { height: auto; min-height: 74px; }  /* 單欄都放不下時才允許標題換行 */
+  .pc-flow-grid.wrap .pc-tier b { white-space: normal; text-align: center; }
   .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 74px; padding: 16px 12px; border-radius: 8px; border: 1px solid transparent;  /* Option Card：74px 高、px12 py16、gap2 */
     background: var(--kk-surface-light); }
   .pc-tier:hover { background: var(--kk-surface-medium); }
@@ -2077,6 +2079,8 @@
       });
       scrollEl.appendChild(secEl);
     });
+    if (typeof i18nLang === 'string' && i18nLang !== 'zh-TW') i18nWalk(scrollEl);  // 先套用語系再量寬
+    pcFlowRelayout(scrollEl);
     var endEl = h('<div class="pc-plan-end">已經到底了～</div>');
     scrollEl.appendChild(endEl);
     // 底部留足間距：確保最後一段（無限流量）能捲到滾動區頂部，scroll-spy 有機會錨定選中它
@@ -2860,6 +2864,7 @@
     var more = h('<button class="pc-lchip pc-lchip--more"><b>更多</b></button>');
     more.addEventListener('click', openAllFlow);
     wrap.appendChild(track); wrap.appendChild(more);
+    if (typeof i18nLang === 'string' && i18nLang !== 'zh-TW') i18nWalk(wrap);  // 先套用語系再量各張自然寬
     var TW = track.clientWidth, w = chips.map(function (c) { return c.offsetWidth; });
     function spanW(a, b) { var t = 0; for (var i = a; i <= b; i++) t += w[i]; return t + (b - a) * gap; }  // [a..b] 含間距總寬
     function pageCount(start) {  // 從 start 起一頁能放幾張（至少 1）
@@ -2892,6 +2897,16 @@
     next.addEventListener('click', function () { _plFlowStart = Math.min(maxStart, _plFlowStart + pageCount(_plFlowStart)); layout(true); });
   }
   function applyFlow() { renderListChips(); }  // 尺寸/狀態變化即重排（無翻頁）
+  // 首頁流量檔位格：欄最小寬 = max(140, 最長檔位標題寬 + 內距)，一列放幾欄由 auto-fill 依此決定；超過整列寬才允許換行
+  function pcFlowRelayout(root) {
+    (root || document).querySelectorAll('.pc-flow-grid').forEach(function (grid) {
+      var W = grid.clientWidth || 784, max = 140;
+      grid.classList.remove('wrap');
+      grid.querySelectorAll('.pc-tier b').forEach(function (b) { max = Math.max(max, b.scrollWidth + 26); });
+      if (max > W) { grid.classList.add('wrap'); max = W; }
+      grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(' + Math.ceil(max) + 'px, 1fr))';
+    });
+  }
   // 天數下拉（1–30 天，選中打勾）
   function renderDaysDd() {
     var dd = document.getElementById('plDaysDd'); dd.innerHTML = '';
@@ -3392,6 +3407,7 @@
   }, { passive: true });
   window.addEventListener('resize', function () {
     if (document.body.classList.contains('list-mode')) applyFlow(false);
+    pcFlowRelayout();
   });
   (function () {  // 列表頁價格區間雙滑塊
     var rmin = document.getElementById('plRmin'), rmax = document.getElementById('plRmax'), fill = document.getElementById('plFill'), pv = document.getElementById('plPv');
@@ -4323,6 +4339,7 @@
     document.querySelectorAll('#pcLangMenu button').forEach(function (b) { b.classList.toggle('sel', b.getAttribute('data-lang') === lang); });
     i18nObs.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: I18N_ATTRS });
     if (typeof applyFlow === 'function') try { applyFlow(); } catch (e) {}  // 列表檔位 chip 依新語系文字重量寬
+    try { pcFlowRelayout(); } catch (e) {}  // 首頁檔位格依新語系文字重算欄寬
   }
   (function initLang() {
     var menu = document.getElementById('pcLangMenu'), wrap = document.getElementById('pcLang');
