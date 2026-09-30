@@ -765,8 +765,9 @@
   .pd-side .det-coupon { margin-top: 20px; padding: 6px 8px; }  /* 獨立頁折扣券為 44 高變體（px8 py6），與 dialog 的 p12 不同 */
   .pd-side .det-policies { margin-top: 20px; }
   .pd-body { flex: 1 1 0; min-width: 0; background: #fff; border-radius: 12px; }  /* 右欄整體一張圓角白卡，段落之間用 8px 淺灰帶分隔 */
-  .pd-tabs, #pdTabs.pl-det-tabs { position: sticky; top: 165px; z-index: 5; background: #fff; border-radius: 12px 12px 0 0; overflow: visible; overflow-x: visible; }  /* overflow visible 讓 ::before 遮罩能畫到框外 */  /* 貼在快捷條下方 24（快捷條底 141 + 24） */
-  .pd-tabs::before { content: ''; position: absolute; left: 0; right: 0; top: -24px; height: 24px; background: var(--kk-surface-light); }  /* 遮住捲到間距裡的內容 */
+  .pd-tabwrap { position: sticky; top: 165px; z-index: 5; background: #fff; border-radius: 12px 12px 0 0; }  /* 外層貼頂 + 遮罩；內層 tab 可橫向捲動（長語系不溢出卡片） */
+  .pd-tabwrap::before { content: ''; position: absolute; left: 0; right: 0; top: -24px; height: 24px; background: var(--kk-surface-light); }  /* 遮住捲到間距裡的內容 */
+  .pd-tabs { border-radius: 12px 12px 0 0; }
   .pd-bd .det-sec { background: #fff; padding: 24px; }
   .pd-bd .det-sec + .det-sec { border-top: 8px solid var(--kk-surface-light); }
   /* 左欄 395 窄，折扣券下拉與適用國家清單改從卡片右側彈出（距卡片 12） */
@@ -1726,7 +1727,7 @@
       <div class="pd-grid">
         <aside class="pd-side" id="pdSide"></aside>
         <div class="pd-body">
-          <div class="pl-det-tabs pd-tabs" id="pdTabs"></div>
+          <div class="pd-tabwrap"><div class="pl-det-tabs pd-tabs" id="pdTabs"></div></div>
           <div class="pd-bd" id="pdBd"></div>
         </div>
       </div>
@@ -3463,6 +3464,8 @@
         var sec = document.querySelector('#pdBd .det-sec[data-sec="' + b.getAttribute('data-sec') + '"]'); if (!sec) return;
         pdGuard = Date.now() + 700; pdActive = b.getAttribute('data-sec');
         tabsEl.querySelectorAll('.pl-det-tab').forEach(function (x) { x.classList.toggle('sel', x === b); });
+        var tr = b.getBoundingClientRect(), br = tabsEl.getBoundingClientRect();  // 長語系 tab 可捲動：選中置中
+        tabsEl.scrollTo({ left: Math.max(0, tabsEl.scrollLeft + (tr.left + tr.width / 2) - (br.left + br.width / 2)), behavior: 'smooth' });
         window.scrollTo({ top: pdSecTop(sec), behavior: 'smooth' });
       });
       tabsEl.appendChild(b);
