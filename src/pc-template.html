@@ -537,6 +537,7 @@
   #pcDlg[data-variant="B"] .dlg-chip { justify-content: flex-start; }
   /* 方案 C（Figma 3829-214968）：KKList item 三欄 gap 2、px12 py10 無邊框；hover #F1F4F8 r8；選中文字 #13A3B6 + 勾 20 */
   #pcDlg[data-variant="C"] .dlg-chips { gap: 2px; }
+  #pcDlg[data-variant="C"] .dlg-group + .dlg-group::before { content: ''; display: block; height: 1px; background: var(--kk-border-lighter); margin-bottom: 32px; }  /* 分組之間分隔線（Line 34：592 寬，上下 32；洲別 tab 前後不加） */
   #pcDlg[data-variant="C"] .dlg-chip { justify-content: flex-start; padding: 9px 12px;  /* 含 1px 透明邊框 → 40 高 */ border-color: transparent; background: #fff; border-radius: 8px; }
   #pcDlg[data-variant="C"] .dlg-chip .tx { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: left; }
   #pcDlg[data-variant="C"] .dlg-chip:hover { background: var(--kk-surface-light); border-color: transparent; }
