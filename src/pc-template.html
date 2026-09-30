@@ -707,7 +707,7 @@
   .pl-social .pl-ratelink { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
   .pl-social .pl-ratelink:hover .score, .pl-social .pl-ratelink:hover .rc { color: var(--kk-primary-dark); }
   .pl-hr { width: 1px; align-self: stretch; background: var(--kk-border-lighter); flex: 0 0 auto; }
-  .pl-buy { flex: 0 0 300px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 16px; }  /* Figma 3701-112140 Price&CTA：價格→訂購鈕 gap 16，靠卡片底部 */
+  .pl-buy { flex: 0 0 260px;  /* Figma 3701-112318：Price&CTA 260 */ display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 16px; }  /* Figma 3701-112140 Price&CTA：價格→訂購鈕 gap 16，靠卡片底部 */
   .pl-priceblk { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
   .pl-priceblk .pl-price + .pl-per { margin-top: -2px; }  /* 價格與每日均價 gap 2 */
   .pl-off { background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; padding: 2px 4px; border-radius: 4px; }
@@ -2643,11 +2643,13 @@
     flash: '{{PL_flash}}',
     check: '{{PL_check}}',
     reload: '{{PL_reload}}',
+    calendar: '{{PL_calendar16}}',  // 最早可使用日 ic_calendar_line 16 #727272
     cross: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="#727272" stroke-width="1.3"/><path d="M5.8 5.8l4.4 4.4M10.2 5.8l-4.4 4.4" stroke="#727272" stroke-width="1.3" stroke-linecap="round"/></svg>'
   };
   var PL_FIRE = '{{PL_fire}}';  // HOT 標籤 ic_fire_fill（#E65F50）
   // 政策文案 → 圖標：立即確認→閃電；即買即用/可用→打勾；免費/可免費取消→退款循環；不可取消→叉
   function plPerkIcon(pk) {
+    if (pk.indexOf('最早可使用日') >= 0) return PL_IC.calendar;
     if (pk.indexOf('確認') >= 0) return PL_IC.flash;
     if (pk.indexOf('不可') >= 0) return PL_IC.cross;
     if (pk.indexOf('取消') >= 0) return PL_IC.reload;
@@ -2673,6 +2675,8 @@
   var plSort = 0, plRangeSync = null, plListPg = 1;
   // 為每張卡建立可篩選屬性（對應側欄各組）+ 記錄基準價（3GB/天·5天 為基準 1.0）
   PL_DATA.forEach(function (p, i) {
+    // 非即買即用的商品：政策列補「最早可使用日: YYYY-MM-DD」（對齊 mweb calendarD；Figma 3701-112318）
+    if (!/即買即用|立即使用/.test(p.perks.join())) { var ed = new Date(); ed.setDate(ed.getDate() + 2); p.perks.push('最早可使用日: ' + ed.getFullYear() + '-' + ('0' + (ed.getMonth() + 1)).slice(-2) + '-' + ('0' + ed.getDate()).slice(-2)); }
     var s = p.tags.join(' ') + ' ' + p.perks.join(' ') + ' ' + p.title;
     var a = [];
     if (/熱點/.test(s)) a.push('支持熱點');
@@ -4307,7 +4311,8 @@
     [/^(\d+) 歲以上（含）$/, 'Age $1 and above'], [/^最多可選擇(\d+)個$/, 'Select up to $1'], [/^最多購買 (\d+) 張$/, 'Max. $1 per order'],
     [/^手續費 (\d+)%$/, '$1% fee'], [/^(\d+)–(\d+)天$/, '$1–$2 days'], [/^(\d+)天以上$/, '$1+ days'],
     [/^沒有搜到「(.+)」，換個關鍵詞試試$/, 'No results for "$1". Try another keyword'],
-    [/^(\S+) 之前$/, 'before $1'], [/^(\S+) 之後$/, 'after $1']
+    [/^(\S+) 之前$/, 'before $1'], [/^(\S+) 之後$/, 'after $1'],
+    [/^最早可使用日: (.+)$/, 'Earliest use date: $1']
   ];
   var i18nLang = 'zh-TW', i18nMerged = null, i18nKeyRe = null, i18nCache = {};
   function i18nFmt(t, n) { return typeof t === 'function' ? t(n) : t.replace('$1', n); }

@@ -390,6 +390,7 @@ pc_subs = {
     "{{EX_arrowLeftLg}}":  pc_img("explore/arrowLeftLg.svg"),   # 列表頁流量條翻頁 ‹ ›（Figma 3701-124950）
     "{{EX_arrowRightLg}}": pc_img("explore/arrowRightLg.svg"),
     # 列表頁方案卡政策 / HOT 圖標（Figma 3701-112318）
+    "{{PL_calendar16}}":   pc_img("plan/calendar16.svg"),  # 最早可使用日 ic_calendar_line 16
     "{{PL_flash}}":        pc_img("plan/flash.svg"),
     "{{PL_check}}":        pc_img("plan/check.svg"),
     "{{PL_reload}}":       pc_img("plan/reload.svg"),
