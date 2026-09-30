@@ -771,8 +771,9 @@
   .pd-bd .det-sec { background: #fff; padding: 24px; }
   .pd-bd .det-sec + .det-sec { border-top: 8px solid var(--kk-surface-light); }
   /* 左欄 395 窄，折扣券下拉與適用國家清單改從卡片右側彈出（距卡片 12） */
-  .pd-side .pl-cpop { left: calc(100% + 36px); right: auto; top: -8px; width: 400px; max-width: none; }
-  .pd-side .det-policies .scope-tip { left: calc(100% + 36px); top: -8px; }
+  .pd-side .det-coupon, .pd-side .det-policies .perk.cover { position: static; }  /* 彈層改以整張左欄卡為定位基準：與卡片頂對齊，不會超出視窗底部 */
+  .pd-side .pl-cpop { left: calc(100% + 12px); right: auto; top: 0; width: 400px; max-width: none; }
+  .pd-side .det-policies .scope-tip { left: calc(100% + 12px); top: 0; }
   .pd-side .det-policies .scope-tip::before { top: 0; bottom: 0; left: -14px; right: auto; width: 14px; height: auto; }  /* 透明橋改到左側空隙 */
   .pd-bd .det-sec[data-sec="svc"] .det-h2 { margin-top: 0; padding-top: 0; border-top: 0; }  /* 簡要資訊已移到左欄，基本資訊直接置頂 */
   .pd-bd .det-pid { background: #fff; border-radius: 0 0 12px 12px; }
