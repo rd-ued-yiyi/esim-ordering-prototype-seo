@@ -620,11 +620,11 @@
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
   .pc-lchip .rec { position: absolute; top: -5px; right: -5px; padding: 2px 4px; border-radius: 4px 4px 4px 0; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; }
   /* Carousel Arrow Button（Figma 3792:159534）：18×28、rgba(255,255,255,.6)、16 icon，疊在輪播兩端、垂直置中 */
-  .pc-lnav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 18px; height: 28px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.6); }
+  .pc-lnav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 18px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff; }  /* Figma 3701-124950 Carousel Arrow Button：18×32 白底、py8、內側 r8、16 semibold 箭頭 */
   .pc-lnav--prev { left: 0; border-radius: 0 8px 8px 0; padding-right: 2px; }
   .pc-lnav--next { right: 0; border-radius: 8px 0 0 8px; padding-left: 2px; }
   .pc-lnav img { width: 16px; height: 16px; display: block; }
-  .pc-lnav:hover:not(:disabled) { background: rgba(255,255,255,.9); }
+  .pc-lnav:hover:not(:disabled) { background: var(--kk-surface-lighter); }
   .pc-lnav:disabled { display: none; }
   .pc-lchip--more { flex: 0 0 auto; padding: 8px; }  /* Chip background：p8 + 文字 px4 → 52 寬 */
   /* 麵包屑 note */
