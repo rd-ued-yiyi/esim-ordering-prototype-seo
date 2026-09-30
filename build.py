@@ -445,6 +445,32 @@ pc_subs = {
     "{{PC_heartGrey}}":     inline_svg_to_img('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9C9DA0" stroke-width="1.6" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.6 3.5 4.5 6.7 4.5c2 0 3.6 1.1 4.4 2.7l.9 1.7.9-1.7c.8-1.6 2.4-2.7 4.4-2.7 3.2 0 5.3 3.1 4 6.3C19.5 15.4 12 20 12 20z"/></svg>'),
     "{{PC_medal}}":         inline_svg_to_img('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 1.5h2.4L6 6H3.4L5 1.5Z" fill="#2D84D6"/><path d="M11 1.5H8.6L10 6h2.6L11 1.5Z" fill="#61A9EA"/><circle cx="8" cy="10" r="4.4" fill="#FFC128"/><circle cx="8" cy="10" r="2.9" fill="#FFDF8E"/><path d="M8 8.3l.6 1.2 1.3.2-.95.9.2 1.3L8 11.3l-1.15.6.2-1.3-.95-.9 1.3-.2L8 8.3Z" fill="#E8A200"/></svg>'),
 }
+# ---- 多語系字典（assets/i18n）：en 全量、core.tsv 十語系核心詞、zh-CN 由 zhconv 自動轉換 ----
+def build_i18n():
+    import json as _json
+    en = _json.loads((ROOT / "assets/i18n/en.json").read_text(encoding="utf-8"))
+    langs = {"en": en}
+    rows = [l.split("\t") for l in (ROOT / "assets/i18n/core.tsv").read_text(encoding="utf-8").splitlines() if l.strip()]
+    head = rows[0]
+    for code in head[1:]:
+        langs[code] = {}
+    for r in rows[1:]:
+        for i, code in enumerate(head[1:], 1):
+            if i < len(r) and r[i].strip():
+                langs[code][r[0]] = r[i].strip()
+    # zh-CN：對所有 zh-TW 鍵（含模板中出現的中文片段）做繁→簡
+    try:
+        import zhconv
+        keys = set(en.keys())
+        for m in re.finditer(r"[\u4e00-\u9fff][^<>{}'\"\n]*", PC_TPL):
+            t = m.group(0).strip()
+            if t and "Figma" not in t: keys.add(t)
+        langs["zh-CN"] = {k: zhconv.convert(k, "zh-cn") for k in keys if zhconv.convert(k, "zh-cn") != k}
+        langs["zh-CN"]["__auto"] = "zhconv"
+    except ImportError:
+        langs["zh-CN"] = {}
+    return _json.dumps(langs, ensure_ascii=False, separators=(",", ":"))
+pc_subs["{{I18N_JSON}}"] = build_i18n()
 pc_out = PC_TPL
 for k, v in {**subs, **pc_subs}.items():
     pc_out = pc_out.replace(k, v)

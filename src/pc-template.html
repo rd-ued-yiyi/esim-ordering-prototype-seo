@@ -39,6 +39,14 @@
   .pc-right { display: flex; align-items: center; margin-left: auto; }
   .pc-right .it { display: flex; align-items: center; gap: 4px; padding: 0 12px; height: 60px; color: var(--kk-text-dark); white-space: nowrap; }
   .pc-right .it:hover { color: var(--kk-text-darker); }
+  /* 語系切換下拉（參考 kkday.com header）：白卡 r12 陰影、兩欄、項目 16/24 p12 16、hover #F1F4F8、選中主色粗體 */
+  .pc-lang { position: relative; }
+  .pc-lang.open .it .ic { transform: rotate(180deg); }
+  .pc-lang-menu { position: absolute; right: 0; top: 60px; z-index: 40; display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; grid-auto-flow: column; grid-template-rows: repeat(7, auto); width: 480px; padding: 12px; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(38,50,56,.16); }
+  .pc-lang-menu[hidden] { display: none; }
+  .pc-lang-menu button { display: block; width: 100%; text-align: left; padding: 12px 16px; border-radius: 8px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); white-space: nowrap; }
+  .pc-lang-menu button:hover { background: var(--kk-surface-light); }
+  .pc-lang-menu button.sel { color: var(--kk-primary-medium); font-weight: 600; }
   .pc-right .it.app { color: var(--kk-primary-darker); }
   .pc-right .coin { display: flex; align-items: center; gap: 6px; padding: 0 12px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-right .avatar { padding: 9px 0 9px 6px; }
@@ -666,7 +674,7 @@
   .pl-card:hover { box-shadow: 0 4px 24px rgba(38,50,56,.12); }  /* 陰影僅 hover 顯示（Figma 12-Fixed） */
   .pl-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
   .pl-hg { display: flex; flex-direction: column; gap: 6px; }  /* 標題 & 規格 gap 6 */
-  .pl-warns { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 16px; color: #E78F37; overflow: hidden; white-space: nowrap; }
+  .pl-warns { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; line-height: 16px; color: #E78F37; white-space: nowrap; }  /* 長語系允許換行 */
   .pl-warns .wdiv { width: 1px; height: 10px; background: var(--kk-border-lighter); flex: 0 0 auto; }  /* Figma Line 28 #E6E9ED */
   .pl-warns span:not(.wdiv) { flex: 0 0 auto; }
   .pl-title { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); }
@@ -1386,7 +1394,10 @@
       <button class="pc-hsearch" data-toast="pc"><span class="ic ic-16">{{IC_searchGrey}}</span>搜尋景點、地區或城市</button>
       <div class="pc-right">
         <button class="it app" data-toast="pc"><span class="ic ic-18">{{PC_mobile}}</span>下載 App 享優惠</button>
-        <button class="it" data-toast="pc">繁體中文<span class="ic ic-18">{{PC_arrowDown18}}</span></button>
+        <div class="pc-lang" id="pcLang" data-i18n-skip>
+          <button class="it" id="pcLangBtn" aria-haspopup="true"><span id="pcLangName">繁體中文</span><span class="ic ic-18">{{PC_arrowDown18}}</span></button>
+          <div class="pc-lang-menu" id="pcLangMenu" hidden></div>
+        </div>
         <button class="it" data-toast="pc">TWD<span class="ic ic-18">{{PC_arrowDown18}}</span></button>
         <button class="it" data-toast="pc" aria-label="購物車"><span class="ic ic-24">{{PC_cart}}</span></button>
         <button class="coin" data-toast="pc"><span class="ic ic-20">{{PC_coin}}</span>999</button>
@@ -4187,4 +4198,142 @@
   document.getElementById('ordCrumbList2').addEventListener('click', function () { exitOrder(); });
 
   renderFind(); renderPanel(); renderPcExplore();
+
+  // ================= 多語系切換（原型檢視用）=================
+  // 機制：以繁中字串為鍵的字典 + 數字/日期規則，直接改寫 DOM 文字節點與 placeholder/aria-label/title；
+  // MutationObserver 追蹤動態渲染。字典：en 全量、zh-CN 自動繁→簡、其他語系核心 UI 詞（其餘退回英文）。
+  var I18N = {{I18N_JSON}};
+  var LANGS = [['zh-TW', '繁體中文'], ['zh-CN', '简体中文'], ['en', 'English'], ['ja', '日本語'], ['ko', '한국어'], ['th', 'ภาษาไทย'], ['vi', 'Tiếng Việt'],
+               ['id', 'Bahasa Indonesia'], ['ms', 'Bahasa Malaysia'], ['fil', 'Filipino'], ['es', 'Español'], ['fr', 'Français'], ['hi', 'हिन्दी']];
+  var EN_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // 各語系數字片段模板（$1 = 數字）；未定義者退回英文
+  var NUM = {
+    en:  { day: function (n) { return n + (n === '1' ? ' day' : ' days'); }, gbday: '$1GB/day', mb: '500MB/day', total: '$1GB total', from: 'From NT$ $1', per: '≈NT$$1/day', rev: 'Reviews ($1)', ctry: '$1 countries', month: function (y, m) { return EN_MONTHS[m - 1] + ' ' + y; } },
+    ja:  { day: function (n) { return n + '日間'; }, gbday: '$1GB/日', mb: '500MB/日', total: '合計$1GB', from: 'NT$ $1〜', per: '≈NT$$1/日', rev: 'レビュー（$1）', ctry: '$1か国', month: function (y, m) { return y + '年' + m + '月'; } },
+    ko:  { day: function (n) { return n + '일'; }, gbday: '$1GB/일', mb: '500MB/일', total: '총 $1GB', from: 'NT$ $1부터', per: '≈NT$$1/일', rev: '리뷰 ($1)', ctry: '$1개국', month: function (y, m) { return y + '년 ' + m + '월'; } },
+    th:  { day: function (n) { return n + ' วัน'; }, gbday: '$1GB/วัน', mb: '500MB/วัน', total: 'รวม $1GB', from: 'เริ่ม NT$ $1', per: '≈NT$$1/วัน', rev: 'รีวิว ($1)', ctry: '$1 ประเทศ' },
+    vi:  { day: function (n) { return n + ' ngày'; }, gbday: '$1GB/ngày', mb: '500MB/ngày', total: 'Tổng $1GB', from: 'Từ NT$ $1', per: '≈NT$$1/ngày', rev: 'Đánh giá ($1)', ctry: '$1 quốc gia' },
+    id:  { day: function (n) { return n + ' hari'; }, gbday: '$1GB/hari', mb: '500MB/hari', total: 'Total $1GB', from: 'Mulai NT$ $1', per: '≈NT$$1/hari', rev: 'Ulasan ($1)', ctry: '$1 negara' },
+    ms:  { day: function (n) { return n + ' hari'; }, gbday: '$1GB/hari', mb: '500MB/hari', total: 'Jumlah $1GB', from: 'Dari NT$ $1', per: '≈NT$$1/hari', rev: 'Ulasan ($1)', ctry: '$1 negara' },
+    fil: { day: function (n) { return n + (n === '1' ? ' araw' : ' araw'); }, gbday: '$1GB/araw', mb: '500MB/araw', total: '$1GB kabuuan', from: 'Mula NT$ $1', per: '≈NT$$1/araw', rev: 'Mga review ($1)', ctry: '$1 bansa' },
+    es:  { day: function (n) { return n + (n === '1' ? ' día' : ' días'); }, gbday: '$1GB/día', mb: '500MB/día', total: '$1GB en total', from: 'Desde NT$ $1', per: '≈NT$$1/día', rev: 'Reseñas ($1)', ctry: '$1 países' },
+    fr:  { day: function (n) { return n + (n === '1' ? ' jour' : ' jours'); }, gbday: '$1 Go/jour', mb: '500 Mo/jour', total: '$1 Go au total', from: 'Dès NT$ $1', per: '≈NT$$1/jour', rev: 'Avis ($1)', ctry: '$1 pays' },
+    hi:  { day: function (n) { return n + ' दिन'; }, gbday: '$1GB/दिन', mb: '500MB/दिन', total: 'कुल $1GB', from: 'NT$ $1 से', per: '≈NT$$1/दिन', rev: 'समीक्षाएँ ($1)', ctry: '$1 देश' },
+    'zh-CN': { day: function (n) { return n + '天'; }, gbday: '$1GB/天', mb: '500MB/天', total: '共$1GB', from: 'NT$ $1 起', per: '≈NT$$1/天', rev: '评论（$1）', ctry: '$1个国家', month: function (y, m) { return y + '年' + m + '月'; } }
+  };
+  // 英文專用整句規則（其他語系未命中時亦套用，作為退路）
+  var EN_RULES = [
+    [/^\(([\d,]+)\)・(\S+) 個已訂購$/, '($1)・$2 booked'],
+    [/^· (\S+) 已購 · (.+?) 提供服務$/, '· $1 sold · by $2'],
+    [/^出發日 (.+)$/, 'Departed $1'], [/^評論於 (.+)$/, 'Reviewed $1'],
+    [/^啟用後連續 (\d+) 天$/, '$1 consecutive days after activation'],
+    [/^旅客(\d+)$/, 'Traveler $1'], [/^請選擇旅客(\d+)$/, 'Select traveler $1'],
+    [/^訂單金額 X(\d+)$/, 'Order amount ×$1'],
+    [/^所選日期 (\d+) 天前$/, '$1 days before the selected date'],
+    [/^所選日期 (\d+)～(\d+) 天前$/, '$1–$2 days before the selected date'],
+    [/^所選日期 (\d+) 天內 ～ 使用日$/, 'Within $1 days of the selected date'],
+    [/^(\d+)天前可免費取消$/, 'Free cancellation up to $1 days before'],
+    [/^(.+) 前可免費取消$/, 'Free cancellation before $1'],
+    [/^適用(.+)等(\d+)個國家\/地區$/, 'Available in $1 and more ($2 countries/regions)'],
+    [/^(\d+) 天方案：\$(\d+) × 天數（僅限延長 1–5 日者）$/, '$1-day plan: $$2 × days (extensions of 1–5 days only)'],
+    [/^依據 ([\d,]+) 則評論$/, 'Based on $1 reviews'],
+    [/^訂單總金額（(\d+) 件商品）$/, 'Order total ($1 items)'],
+    [/^可將此 eSIM 命名為「(.+)」以利辨識$/, 'You can name this eSIM "$1" for easy identification'],
+    [/^限以下國籍可使用：(.+)$/, 'Available to the following nationalities only: $1'],
+    [/^產品編號：(\d+)$/, 'Product ID: $1'], [/^有效期限：(.+)$/, 'Valid until $1'], [/^(\S+) 前有效$/, 'Valid until $1'],
+    [/^需於卡片有效期（(.+)）前完成啟用$/, 'Must be activated before the card expiry ($1)'],
+    [/^(\d+) 歲以上（含）$/, 'Age $1 and above'], [/^最多可選擇(\d+)個$/, 'Select up to $1'], [/^最多購買 (\d+) 張$/, 'Max. $1 per order'],
+    [/^手續費 (\d+)%$/, '$1% fee'], [/^(\d+)–(\d+)天$/, '$1–$2 days'], [/^(\d+)天以上$/, '$1+ days'],
+    [/^沒有搜到「(.+)」，換個關鍵詞試試$/, 'No results for "$1". Try another keyword'],
+    [/^(\S+) 之前$/, 'before $1'], [/^(\S+) 之後$/, 'after $1']
+  ];
+  var i18nLang = 'zh-TW', i18nMerged = null, i18nKeyRe = null, i18nCache = {};
+  function i18nFmt(t, n) { return typeof t === 'function' ? t(n) : t.replace('$1', n); }
+  function i18nBuild(lang) {
+    var m = {}; var en = I18N.en || {}; var d = I18N[lang] || {};
+    if (lang !== 'zh-CN') for (var k in en) m[k] = en[k];
+    for (var k2 in d) if (k2 !== '__auto') m[k2] = d[k2];
+    i18nMerged = m;
+    var keys = Object.keys(m).filter(function (k) { return k.length >= 2; }).sort(function (a, b) { return b.length - a.length; });
+    i18nKeyRe = keys.length ? new RegExp(keys.map(function (k) { return k.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&'); }).join('|'), 'g') : null;
+    i18nCache = {};
+  }
+  function i18nTr(str) {
+    if (i18nLang === 'zh-TW' || !/[\u4e00-\u9fff]/.test(str)) return str;
+    if (i18nCache[str] !== undefined) return i18nCache[str];
+    var lead = str.match(/^\s*/)[0], trail = str.match(/\s*$/)[0], s = str.trim(), out = null, N = NUM[i18nLang] || NUM.en, m;
+    if (i18nMerged[s] !== undefined) out = i18nMerged[s];
+    else if ((m = s.match(/^(\d+) ?天$/))) out = i18nFmt(N.day, m[1]);
+    else if ((m = s.match(/^(\d+)GB\/天$/))) out = i18nFmt(N.gbday, m[1]);
+    else if (s === '500MB/天') out = N.mb;
+    else if ((m = s.match(/^共(\d+)GB$/))) out = i18nFmt(N.total, m[1]);
+    else if ((m = s.match(/^NT\$ ([\d,]+) 起$/))) out = i18nFmt(N.from, m[1]);
+    else if ((m = s.match(/^≈NT\$([\d,]+)\/天$/))) out = i18nFmt(N.per, m[1]);
+    else if ((m = s.match(/^評論（([\d,]+)）$/))) out = i18nFmt(N.rev, m[1]);
+    else if ((m = s.match(/^共(\d+)個國家$/))) out = i18nFmt(N.ctry, m[1]);
+    else if ((m = s.match(/^(\d{4})年(\d{1,2})月$/)) && N.month) out = N.month(m[1], m[2]);
+    else if (i18nLang !== 'zh-CN') { for (var i = 0; i < EN_RULES.length; i++) { if (EN_RULES[i][0].test(s)) { out = s.replace(EN_RULES[i][0], EN_RULES[i][1]); break; } } }
+    if (out === null) out = s;
+    // 複合字串：子字串替換（長鍵優先）+ 行內數字片段
+    if (/[\u4e00-\u9fff]/.test(out) && i18nKeyRe) out = out.replace(i18nKeyRe, function (k) { return i18nMerged[k]; });
+    if (/[\u4e00-\u9fff]/.test(out)) out = out.replace(/(\d+)GB\/天/g, function (_, n) { return i18nFmt(N.gbday, n); }).replace(/(\d+) ?天/g, function (_, n) { return i18nFmt(N.day, n); });
+    if (!/^(zh|ja)/.test(i18nLang)) out = out.replace(/、/g, ', ');  // 非中日文：頓號改逗號
+    out = out.replace(/\s{2,}/g, ' ');
+    return (i18nCache[str] = lead + out + trail);
+  }
+  var I18N_ATTRS = ['placeholder', 'aria-label', 'title'];
+  function i18nSkip(el) { for (var e = el; e && e.nodeType === 1; e = e.parentNode) { if (e.hasAttribute('data-i18n-skip') || e.tagName === 'SCRIPT' || e.tagName === 'STYLE') return true; } return false; }
+  function i18nNode(n) {  // 文字節點：記住原文（繁中），寫入譯文
+    if (n.__o === undefined || (n.data !== n.__t && n.data !== n.__o)) n.__o = n.data;  // 程式改寫了文字 → 視為新原文
+    var t = i18nTr(n.__o); if (n.data !== t) n.data = t; n.__t = t;
+  }
+  function i18nAttr(el, a) {
+    var key = '__a_' + a, tkey = '__at_' + a, v = el.getAttribute(a); if (v === null) return;
+    if (el[key] === undefined || (v !== el[tkey] && v !== el[key])) el[key] = v;
+    var t = i18nTr(el[key]); if (v !== t) el.setAttribute(a, t); el[tkey] = t;
+  }
+  function i18nWalk(root) {
+    if (root.nodeType === 3) { if (!i18nSkip(root.parentNode)) i18nNode(root); return; }
+    if (root.nodeType !== 1 || i18nSkip(root)) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT), n;
+    while ((n = w.nextNode())) {
+      if (n.nodeType === 1) { if (i18nSkip(n)) continue; I18N_ATTRS.forEach(function (a) { if (n.hasAttribute(a)) i18nAttr(n, a); }); }
+      else if (!i18nSkip(n.parentNode)) i18nNode(n);
+    }
+  }
+  var i18nObs = new MutationObserver(function (muts) {
+    if (i18nLang === 'zh-TW') return;
+    muts.forEach(function (mu) {
+      if (mu.type === 'childList') mu.addedNodes.forEach(function (n) { i18nWalk(n); });
+      else if (mu.type === 'characterData') { if (!i18nSkip(mu.target.parentNode)) i18nNode(mu.target); }
+      else if (mu.type === 'attributes') i18nAttr(mu.target, mu.attributeName);
+    });
+  });
+  function setLang(lang) {
+    i18nLang = lang; i18nBuild(lang);
+    try { localStorage.setItem('pcLang', lang); } catch (e) {}
+    document.documentElement.lang = lang === 'zh-TW' ? 'zh-Hant' : lang === 'zh-CN' ? 'zh-Hans' : lang;
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT), n;
+    while ((n = w.nextNode())) {
+      if (i18nSkip(n.nodeType === 1 ? n : n.parentNode)) continue;
+      if (n.nodeType === 1) I18N_ATTRS.forEach(function (a) { if (n.hasAttribute(a)) { var k = '__a_' + a; if (n[k] === undefined) n[k] = n.getAttribute(a); var t = lang === 'zh-TW' ? n[k] : i18nTr(n[k]); n.setAttribute(a, t); n['__at_' + a] = t; } });
+      else { if (n.__o === undefined || (n.data !== n.__t && n.data !== n.__o)) n.__o = n.data; var t2 = lang === 'zh-TW' ? n.__o : i18nTr(n.__o); if (n.data !== t2) n.data = t2; n.__t = t2; }
+    }
+    document.getElementById('pcLangName').textContent = LANGS.filter(function (l) { return l[0] === lang; })[0][1];
+    document.querySelectorAll('#pcLangMenu button').forEach(function (b) { b.classList.toggle('sel', b.getAttribute('data-lang') === lang); });
+    i18nObs.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: I18N_ATTRS });
+    if (typeof applyFlow === 'function') try { applyFlow(); } catch (e) {}  // 列表檔位 chip 依新語系文字重量寬
+  }
+  (function initLang() {
+    var menu = document.getElementById('pcLangMenu'), wrap = document.getElementById('pcLang');
+    LANGS.forEach(function (l) {
+      var b = h('<button type="button" data-lang="' + l[0] + '">' + l[1] + '</button>');
+      b.addEventListener('click', function () { setLang(l[0]); menu.hidden = true; wrap.classList.remove('open'); });
+      menu.appendChild(b);
+    });
+    document.getElementById('pcLangBtn').addEventListener('click', function (e) { e.stopPropagation(); menu.hidden = !menu.hidden; wrap.classList.toggle('open', !menu.hidden); });
+    document.addEventListener('click', function (e) { if (!wrap.contains(e.target)) { menu.hidden = true; wrap.classList.remove('open'); } });
+    var saved = null; try { saved = localStorage.getItem('pcLang'); } catch (e) {}
+    setLang(saved && LANGS.some(function (l) { return l[0] === saved; }) ? saved : 'zh-TW');
+  })();
 </script>
