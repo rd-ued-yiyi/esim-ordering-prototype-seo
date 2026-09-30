@@ -676,13 +676,17 @@
   .pl-list { display: flex; flex-direction: column; gap: 16px; }  /* 與分頁間距由 .pc-ex-main gap 24 提供 */
   /* 列表載入 skeleton（參考 kkday.com kk-skeleton：#E6E9ED 塊、r4/r8，加淡淡的流光）：與商品卡同構，換條件 / 翻頁時先顯示 */
   .pl-skel { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 20px; }
-  .pl-skel .sk { position: relative; overflow: hidden; background: var(--kk-border-lighter); border-radius: 8px; }
-  .pl-skel .sk::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 100%); animation: plShimmer 1.4s ease-in-out infinite; }
+  .sk { position: relative; overflow: hidden; background: var(--kk-border-lighter); border-radius: 8px; }
+  .sk::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 100%); animation: plShimmer 1.4s ease-in-out infinite; }
   @keyframes plShimmer { to { transform: translateX(100%); } }
   .pl-skel-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
   .pl-skel-row { display: flex; gap: 6px; }
   .pl-skel-buy { flex: 0 0 300px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 16px; }
   .pl-skel-hr { flex: 0 0 1px; background: var(--kk-border-lighter); }
+  .pc-days-list .sk { flex: 0 0 auto; height: 36px; }  /* 首頁天數清單 skeleton */
+  .pc-flow-grid .sk { height: 74px; }  /* 首頁流量檔位 skeleton */
+  .pc-lflow .sk { height: 48px; flex: 1 1 0; }  /* 列表頁流量條帶 skeleton */
+  .pc-lflow.loading { display: flex; gap: 8px; }
   .pl-empty { padding: 64px 0; text-align: center; color: var(--kk-text-medium); background: #fff; border-radius: 12px; }
   .pl-card { display: flex; gap: 16px; background: #fff; border-radius: 12px; padding: 20px;  /* Figma 3701-112942：p20 */ cursor: pointer; transition: box-shadow .15s; }
   .pl-card:hover { box-shadow: 0 4px 24px rgba(38,50,56,.12); }  /* 陰影僅 hover 顯示（Figma 12-Fixed） */
@@ -2055,7 +2059,7 @@
     updateDestPill('pcDestName', 'pcDestNum');
     document.getElementById('pcHero').setAttribute('data-state', 'sel');
     closeDlg();
-    renderFind(); renderPanel();
+    renderFind(); renderPanelLoading('all');  // 換目的地：天數與流量都重新載入（skeleton）
     syncExploreDest(name);  // 選好即同步「探索更多」目的地（對齊 mweb finishSelect → exMapDest）
     if (document.body.classList.contains('list-mode')) renderList();  // 列表頁改目的地：同步刷新條件列與結果
     else {  // 主題頁：選好目的地後捲到 hero 頂貼齊置頂 header（分類導航捲出視窗），天數流量面板完整入畫
@@ -2069,12 +2073,24 @@
   document.getElementById('pcDestPill').addEventListener('click', function () { openDlg(); });
 
   // 天數 / 流量面板
+  // 面板載入態：which='all' 天數 + 流量都出 skeleton；'flow' 只流量。0.5s 後渲染，連續觸發只保留最後一次
+  var _panelSkelTimer = null;
+  function renderPanelLoading(which) {
+    var days = document.getElementById('pcDaysList'), sc = document.getElementById('pcFlowScroll');
+    if (which === 'all') { days.innerHTML = ''; for (var i = 0; i < 8; i++) days.appendChild(h('<div class="sk"></div>')); }
+    var grid = h('<div class="pc-flow-sec"><div class="pc-flow-note sk" style="width:220px;height:16px"></div><div class="pc-flow-grid"></div></div>');
+    for (var j = 0; j < 10; j++) grid.querySelector('.pc-flow-grid').appendChild(h('<div class="sk"></div>'));
+    sc.innerHTML = ''; sc.appendChild(grid);
+    document.getElementById('pcFlowTabs').querySelectorAll('.pc-ftab').forEach(function (t) { t.disabled = true; });
+    clearTimeout(_panelSkelTimer);
+    _panelSkelTimer = setTimeout(function () { document.getElementById('pcFlowTabs').querySelectorAll('.pc-ftab').forEach(function (t) { t.disabled = false; }); renderPanel(); }, 500);
+  }
   function renderPanel() {
     var days = document.getElementById('pcDaysList'), daysTop = days.scrollTop; days.innerHTML = '';
     for (var d = 1; d <= 30; d++) (function (d) {
       var b = h('<button class="pc-day"></button>'); b.textContent = d + ' 天';
       b.classList.toggle('sel', sel.days === d);
-      b.addEventListener('click', function () { sel.days = d; sel.touched = true; renderPanel(); });
+      b.addEventListener('click', function () { sel.days = d; sel.touched = true; days.querySelectorAll('.pc-day.sel').forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); renderPanelLoading('flow'); });  // 換天數：流量檔位重新載入（skeleton）
       days.appendChild(b);
     })(d);
     days.appendChild(h('<div class="pc-plan-end">已經到底了～</div>'));
@@ -2913,8 +2929,17 @@
   // 從「更多」選檔返回時＝true：以選中檔為中心重排一次
   var _plCenterSel = false, _plFlowStart = 0, _plKeepPage = false;  // _plKeepPage：箭頭翻頁時不因選中不在當頁而拉回
   // 條件列流量（Figma 3701-124950）：一頁 N 檔鋪在 strip 上，箭頭鈕疊在輪播兩端逐頁平移（0.3s）；末尾「更多」開全部流量 dialog
-  function renderListChips() {
+  var _lchipSkelTimer = null;
+  function renderListChips(loading) {
     var wrap = document.getElementById('plFlowChips'); wrap.innerHTML = '';
+    if (loading) {  // 換目的地 / 天數：條帶先出 skeleton，0.5s 後渲染
+      wrap.classList.add('loading');
+      for (var i = 0; i < 5; i++) wrap.appendChild(h('<div class="sk"></div>'));
+      clearTimeout(_lchipSkelTimer);
+      _lchipSkelTimer = setTimeout(function () { wrap.classList.remove('loading'); renderListChips(); }, 500);
+      return;
+    }
+    wrap.classList.remove('loading');
     var vpEl = document.querySelector('.pc-lflow-vp');
     var all = plAllTiers(), d = sel.days;
     var centerSel = _plCenterSel; _plCenterSel = false;
@@ -3044,7 +3069,7 @@
     var pn = document.getElementById('plDestNum'), pm = sel.destType === 'multi' && sel.destCount > 1;
     pn.hidden = !pm; if (pm) pn.textContent = '(' + sel.destCount + ')';
     document.getElementById('plDaysName').textContent = sel.days + '天';
-    renderListChips(); renderDaysDd(); renderPlCards();
+    renderListChips(true); renderDaysDd(); renderPlCards();
     if (detailMode) renderDetailPage();  // 獨立詳情頁：天數/流量變動即重算價格與規格
   }
   function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; _plCompact = false; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
