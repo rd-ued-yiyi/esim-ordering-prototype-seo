@@ -771,32 +771,6 @@
   .pl-det-hd button { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--kk-text-darker); }
   .pl-det-hd button:hover { background: var(--kk-surface-light); }
   .pl-det-hd button .ic { width: 20px; height: 20px; }
-  .pl-det-hd .pl-det-acts { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }  /* KKDialog Header：Icon button 區 gap 12 */
-  /* ---------- 獨立詳情頁（Figma 3810-162568）：淺灰底；左 395 sticky 簡要資訊卡；右 721 KKTab（sticky）+ 段落白卡；底部固定 footer 96 ---------- */
-  body.detail-mode #pcHome, body.detail-mode .pc-cat, body.detail-mode #pcListPage > .col { display: none; }
-  body.detail-mode #pcListPage { padding-bottom: 0; position: sticky; top: 60px; z-index: 20; }  /* 獨立頁只剩快捷條：整段 sticky 貼在 header 下，tab 才有得貼 */
-  body.order-mode #pcDetailPage, body.pay-mode #pcDetailPage { display: none; }
-  .pc-detpage { display: block; background: var(--kk-surface-light); padding-bottom: 120px; }
-  .pc-detpage[hidden] { display: none; }
-  .pd-grid { display: flex; align-items: flex-start; gap: 24px; }
-  .pd-side { flex: 0 0 395px; min-width: 0; max-width: 395px; position: sticky; z-index: 9;  /* sticky 自成堆疊層：抬高到 footer（7）之上，折扣券下拉才不被蓋 */ top: 165px; background: #fff; border-radius: 12px; padding: 24px; box-sizing: border-box; }
-  .pd-side .det-coupon { margin-top: 20px; padding: 6px 8px; }  /* 獨立頁折扣券為 44 高變體（px8 py6），與 dialog 的 p12 不同 */
-  .pd-side .det-policies { margin-top: 20px; }
-  .pd-body { flex: 1 1 0; min-width: 0; background: #fff; border-radius: 12px; }  /* 右欄整體一張圓角白卡，段落之間用 8px 淺灰帶分隔 */
-  .pd-tabwrap { position: sticky; top: 165px; z-index: 5; background: var(--kk-surface-light); }  /* 外層用頁面底色，內層白色 tab 的圓角切口才會露出灰底而不是白卡 */  /* 外層貼頂 + 遮罩；內層 tab 可橫向捲動（長語系不溢出卡片） */
-  .pd-tabwrap::before { content: ''; position: absolute; left: 0; right: 0; top: -24px; height: 24px; background: var(--kk-surface-light); }  /* 遮住捲到間距裡的內容 */
-  .pd-tabs { background: #fff; border-radius: 12px 12px 0 0; }
-  .pd-bd .det-sec { background: #fff; padding: 24px; }
-  .pd-bd .det-sec + .det-sec { border-top: 8px solid var(--kk-surface-light); }
-  /* 左欄 395 窄，折扣券下拉與適用國家清單改從卡片右側彈出（距卡片 12） */
-  .pd-side .det-coupon, .pd-side .det-policies .perk.cover { position: static; }  /* 彈層改以整張左欄卡為定位基準：與卡片頂對齊，不會超出視窗底部 */
-  .pd-side .pl-cpop { left: calc(100% - 16px); right: auto; top: 0; width: 400px; max-width: none; }  /* 距觸發列（券 banner）右緣 8：卡片內距 24 − 16 */
-  .pd-side .det-policies .scope-tip { left: calc(100% - 16px); top: 0; }
-  .pd-side .det-policies .scope-tip::before { top: 0; bottom: 0; left: -14px; right: auto; width: 14px; height: auto; }  /* 透明橋改到左側空隙 */
-  .pd-bd .det-sec[data-sec="svc"] .det-h2 { margin-top: 0; padding-top: 0; border-top: 0; }  /* 簡要資訊已移到左欄，基本資訊直接置頂 */
-  .pd-bd .det-pid { background: #fff; border-radius: 0 0 12px 12px; }
-  .pd-foot { position: fixed; left: 0; right: 0; bottom: 0; z-index: 7;  /* 低於折扣券下拉（8），高於 sticky tab（5） */ background: #fff; border-top: 1px solid var(--kk-border-light); }
-  .pd-foot-in { display: flex; align-items: center; gap: 8px; padding: 24px 0; }
   .pl-det-tabs { flex: 0 0 auto; display: flex; gap: 24px; padding: 0 24px; border-bottom: 1px solid var(--kk-border-lighter); overflow-x: auto; scrollbar-width: none; }
   .pl-det-tabs::-webkit-scrollbar { display: none; }
   .pl-det-tab { position: relative; flex: 0 0 auto; padding: 8px 0 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); white-space: nowrap; cursor: pointer; }
@@ -1738,22 +1712,6 @@
     </div>
   </section>
 
-  <!-- ============ 獨立商品詳情頁（Figma 3810-162568 / 3810-164717）：共用列表頁快捷條；左 395 簡要資訊、右 721 KKTab + 七段內容；底部固定價格 footer ============ -->
-  <section class="pc-detpage" id="pcDetailPage" hidden>
-    <div class="col">
-      <div class="pc-crumb"><a id="pdCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="pdCrumbCat">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="pdCrumbList">搜尋結果頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>商品詳情</span></div>
-      <div class="pc-lnote"><span class="ic ic-20">{{IC_infoFill}}</span><span>購買前請確認你的裝置是否支援 eSIM</span></div>
-      <div class="pd-grid">
-        <aside class="pd-side" id="pdSide"></aside>
-        <div class="pd-body">
-          <div class="pd-tabwrap"><div class="pl-det-tabs pd-tabs" id="pdTabs"></div></div>
-          <div class="pd-bd" id="pdBd"></div>
-        </div>
-      </div>
-    </div>
-    <div class="pd-foot"><div class="col pd-foot-in"><div class="pl-det-price" id="pdPrice"></div><button class="pl-det-cta" id="pdCta">訂購</button></div></div>
-  </section>
-
   <!-- ============ 訂單填寫頁（Figma 3223-87439 / 3244-72510；資料邏輯參考 mweb） ============ -->
   <section class="pc-ordpage" id="pcOrderPage" hidden>
     <div class="col">
@@ -1879,7 +1837,7 @@
 <!-- ============ 商品詳情 dialog（Figma 3183-43487 / 3190-39080 / 3220-50734，資訊邏輯參考 mweb） ============ -->
 <div class="pc-mask" id="plDetMask"></div>
 <div class="pl-detdlg" id="plDetDlg" role="dialog" aria-modal="true">
-  <div class="pl-det-hd"><span class="t">詳情</span><span class="pl-det-acts"><button id="plDetOpen" aria-label="在新分頁開啟完整頁面" title="在新分頁開啟完整頁面"><span class="ic ic-20"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M11.25 3.75h5v5M16.25 3.75 9.5 10.5M8.5 4.75H5.25c-.83 0-1.5.67-1.5 1.5v8.5c0 .83.67 1.5 1.5 1.5h8.5c.83 0 1.5-.67 1.5-1.5V11.5" stroke="#212121" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><button id="plDetClose" aria-label="關閉"><span class="ic ic-20">{{DLG_cross}}</span></button></span></div>
+  <div class="pl-det-hd"><span class="t">詳情</span><button id="plDetClose" aria-label="關閉"><span class="ic ic-20">{{DLG_cross}}</span></button></div>
   <div class="pl-det-tabs" id="plDetTabs"></div>
   <div class="pl-det-bd" id="plDetBd"></div>
   <div class="pl-det-foot">
@@ -2853,10 +2811,8 @@
     } else {
       list.slice((plListPg - 1) * PL_PAGESZ, plListPg * PL_PAGESZ).forEach(function (p) {
         var c = h(plCardHTML(p));
-        c.addEventListener('auxclick', function (e) { if (e.button === 1 && !e.target.closest('.pl-cta')) { e.preventDefault(); openDetailPage(p, true); } });  // 中鍵：新分頁開獨立詳情頁
         c.addEventListener('click', function (e) {
           if (e.target.closest('.pl-cta')) { e.stopPropagation(); confirmOrder(p); return; }  // 訂購鈕：先彈貼心提醒，確認後進入訂單填寫頁
-          if (e.metaKey || e.ctrlKey) { openDetailPage(p, true); return; }  // ⌘/Ctrl + 點擊：新分頁開獨立詳情頁（同真實商品卡連結行為）
           openPlDetail(p, e.target.closest('.pl-ratelink') ? 'review' : null);  // 點評分資訊→直接定位到評論 tab（對齊 mweb）
         });
         box.appendChild(c);
@@ -3072,7 +3028,6 @@
     pn.hidden = !pm; if (pm) pn.textContent = '(' + sel.destCount + ')';
     document.getElementById('plDaysName').textContent = sel.days + '天';
     renderListChips(true); renderDaysDd(); renderPlCards();
-    if (detailMode) renderDetailPage();  // 獨立詳情頁：天數/流量變動即重算價格與規格
   }
   function enterList() { document.body.classList.add('list-mode'); document.getElementById('pcListPage').hidden = false; _plCompact = false; document.getElementById('plBar').classList.remove('compact'); renderList(); window.scrollTo(0, 0); }
   function exitList() { document.body.classList.remove('list-mode'); document.getElementById('pcListPage').hidden = true; window.scrollTo(0, 0); }
@@ -3278,7 +3233,7 @@
         '</span>' +
       '</span></button>');
     var pop = cp.querySelector('.pl-cpop');
-    cp.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); if (pop.classList.contains('show')) pdFlyout(pop, cp); });
+    cp.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.toggle('show'); });
     pop.addEventListener('click', function (e) { e.stopPropagation(); });
     wrap.appendChild(cp);
     document.addEventListener('click', function (e) { if (pop.classList.contains('show') && !pop.contains(e.target)) pop.classList.remove('show'); });  // 點外部收起
@@ -3293,7 +3248,6 @@
     var cov = h('<span class="perk cover"><span class="ic ic-20">{{DET_location20}}</span><span class="pt">' + covText + '</span><span class="scope-tip"><ul></ul><ul></ul></span></span>');
     var uls = cov.querySelectorAll('ul'), half = Math.ceil(covList.length / 2);
     covList.forEach(function (n, i) { var li = document.createElement('li'); li.textContent = n; uls[i < half ? 0 : 1].appendChild(li); });
-    cov.querySelector('.pt').addEventListener('mouseenter', function () { pdFlyout(cov.querySelector('.scope-tip'), cov); });  // 獨立頁：清單貼齊觸發列
     pol.appendChild(cov);
     wrap.appendChild(pol);
     // 基本資訊：標題 + 描述 + 分組表（分組/欄位/ⓘ 完全對齊 Figma 3183-76681）
@@ -3492,93 +3446,6 @@
     return h('<div class="det-sec" data-sec="imgs"><h2 class="det-h5">圖文說明</h2>' + body + '</div>');
   }
   document.getElementById('plDetClose').addEventListener('click', closePlDetail);
-  document.getElementById('plDetOpen').addEventListener('click', function () { openDetailPage(detP, true); });
-  // ================= 獨立商品詳情頁（Figma 3810-162568 / 3810-164717；演示入口：dialog 標題列 icon、卡片 ⌘/Ctrl 點擊、中鍵、URL ?detail=）=================
-  var detailMode = false, pdActive = null, pdGuard = 0;
-  var PD_TOP = 140 + 49;  // header 60 + 快捷條 80 + tab 49：段落錨定與 scroll-spy 的基準線
-  function detailURL(p) {
-    var u = new URL(location.href); u.search = '';
-    u.searchParams.set('detail', PL_DATA.indexOf(p));
-    if (sel.dest) { u.searchParams.set('dest', sel.dest); u.searchParams.set('destType', sel.destType || 'country'); if (sel.destCount) u.searchParams.set('destCount', sel.destCount); }
-    u.searchParams.set('days', sel.days); u.searchParams.set('tab', sel.tab); if (sel.plan) u.searchParams.set('plan', sel.plan);
-    return u.toString();
-  }
-  function openDetailPage(p, newTab) {
-    if (!p) return;
-    if (newTab) { window.open(detailURL(p), '_blank'); return; }
-    enterDetailPage(p); try { history.replaceState(null, '', detailURL(p)); } catch (e) {}
-  }
-  function enterDetailPage(p) {
-    detP = p; closePlDetail(); detHideTipNow();
-    if (!document.body.classList.contains('list-mode')) enterList();
-    detailMode = true;
-    document.body.classList.add('detail-mode');
-    document.getElementById('pcDetailPage').hidden = false;
-    renderDetailPage();
-    window.scrollTo(0, 0); pdActive = null; pdSpy();
-  }
-  function exitDetailPage() {
-    detailMode = false; document.body.classList.remove('detail-mode');
-    document.getElementById('pcDetailPage').hidden = true;
-    try { history.replaceState(null, '', location.pathname); } catch (e) {}
-  }
-  function pdSecTop(sec) { return sec.getBoundingClientRect().top + window.scrollY - PD_TOP - 8; }
-  // 左欄彈層（折扣券下拉 / 適用國家清單）：以整張左欄卡為基準，頂對齊觸發列；若會超出視窗底（扣掉 footer 96）則往上推
-  function pdFlyout(pop, trigger) {
-    var side = document.getElementById('pdSide'); if (!side || !side.contains(pop) || !detailMode) return;
-    var sr = side.getBoundingClientRect(), tr = trigger.getBoundingClientRect();
-    var top = Math.max(0, tr.top - sr.top);  // 貼齊觸發列頂
-    pop.style.top = top + 'px';
-    pop.style.maxHeight = Math.max(160, window.innerHeight - 96 - 8 - sr.top - top) + 'px';  // 放不下就在彈層內捲動，不往上推
-    pop.style.overflowY = 'auto';
-  }
-  function renderDetailPage() {
-    var p = detP; if (!p) return;
-    var tabsEl = document.getElementById('pdTabs'); tabsEl.innerHTML = '';
-    DET_TABS.forEach(function (t, i) {
-      var b = h('<button class="pl-det-tab' + (i === 0 ? ' sel' : '') + '" data-sec="' + DET_SECS[i] + '">' + (t === '評論' ? '評論（' + p.reviews.toLocaleString('en-US') + '）' : t) + '</button>');
-      b.addEventListener('click', function () {
-        var sec = document.querySelector('#pdBd .det-sec[data-sec="' + b.getAttribute('data-sec') + '"]'); if (!sec) return;
-        pdGuard = Date.now() + 700; pdActive = b.getAttribute('data-sec');
-        tabsEl.querySelectorAll('.pl-det-tab').forEach(function (x) { x.classList.toggle('sel', x === b); });
-        var tr = b.getBoundingClientRect(), br = tabsEl.getBoundingClientRect();  // 長語系 tab 可捲動：選中置中
-        tabsEl.scrollTo({ left: Math.max(0, tabsEl.scrollLeft + (tr.left + tr.width / 2) - (br.left + br.width / 2)), behavior: 'smooth' });
-        window.scrollTo({ top: pdSecTop(sec), behavior: 'smooth' });
-      });
-      tabsEl.appendChild(b);
-    });
-    // 左欄：簡要資訊（摘要卡 / 折扣券 / 政策標籤）從服務說明段拆出；右欄：基本資訊起的七段
-    var svc = detSvc(p), side = document.getElementById('pdSide'); side.innerHTML = '';
-    ['.det-hero', '.det-coupon', '.det-policies'].forEach(function (q) { var el = svc.querySelector(q); if (el) side.appendChild(el); });
-    var bd = document.getElementById('pdBd'); bd.innerHTML = '';
-    bd.appendChild(svc); bd.appendChild(detHowto(p)); bd.appendChild(detCancel(p)); bd.appendChild(detReview(p)); bd.appendChild(detFee(p)); bd.appendChild(detNotice(p)); bd.appendChild(detImgs(p));
-    bd.appendChild(h('<div class="det-pid">產品編號：123456</div>'));
-    var sc = plScaled(p), box = document.getElementById('pdPrice');
-    box.innerHTML = (sc.was ? '<span class="off">' + (p.off || '20%OFF') + '</span>' : '') +
-      '<span class="pr"><span class="now"><span class="cur">NT$</span>' + sc.now.toLocaleString('en-US') + '</span>' + (sc.was ? '<span class="was">NT$ ' + sc.was.toLocaleString('en-US') + '</span>' : '') + '</span>';
-  }
-  function pdSpy() {
-    if (!detailMode || Date.now() < pdGuard) return;
-    var act = 'svc', line = PD_TOP + 9;
-    document.querySelectorAll('#pdBd .det-sec').forEach(function (s) { if (s.getBoundingClientRect().top <= line) act = s.getAttribute('data-sec'); });
-    if (act === pdActive) return; pdActive = act;
-    document.querySelectorAll('#pdTabs .pl-det-tab').forEach(function (t) { t.classList.toggle('sel', t.getAttribute('data-sec') === act); });
-  }
-  window.addEventListener('scroll', pdSpy, { passive: true });
-  document.getElementById('pdCta').addEventListener('click', function () { confirmOrder(detP); });
-  document.getElementById('pdCrumbHome').addEventListener('click', function () { exitDetailPage(); exitList(); });
-  document.getElementById('pdCrumbCat').addEventListener('click', function () { exitDetailPage(); exitList(); });
-  document.getElementById('pdCrumbList').addEventListener('click', function () { exitDetailPage(); window.scrollTo(0, 0); });
-  // URL 直達：pc.html?detail=<PL_DATA 索引>&dest=日本&days=5&tab=daily&plan=3GB/天
-  (function initDetailFromURL() {
-    var q = new URLSearchParams(location.search); if (!q.has('detail')) return;
-    var p = PL_DATA[+q.get('detail')]; if (!p) return;
-    if (q.get('dest')) pickDest(q.get('dest'), q.get('destType') || 'country', +(q.get('destCount') || 0));
-    if (q.get('days')) sel.days = Math.max(1, Math.min(30, +q.get('days') || 5));
-    if (q.get('tab')) sel.tab = q.get('tab');
-    if (q.get('plan')) { sel.plan = q.get('plan'); sel.planTouched = true; }
-    enterDetailPage(p);
-  })();
   document.getElementById('plDetMask').addEventListener('click', closePlDetail);
   document.getElementById('plCrumbHome').addEventListener('click', exitList);
   document.getElementById('plCrumbCat').addEventListener('click', exitList);  // eSIM/WIFI → 回主題頁
