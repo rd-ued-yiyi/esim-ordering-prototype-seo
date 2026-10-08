@@ -2716,7 +2716,7 @@
   }
   // 卡片假數據：復刻 mweb .pkg-card 結構；warns（黃色提醒）依 mweb REQ_PATTERN 分布——並非每張都有，部分商品無需求提示
   var PL_DATA = [
-    { title: '日本 eSIM・實名制・需指定啟用日・需航班與設備資訊（最完整填寫範例）', warns: ['需指定啟用日', '需設備信息', '需航班信息', '需實名認證'], tags: ['支持熱點・通話', '5G', '原生卡'], perks: ['立即確認', '需指定啟用日', '3天前可免費取消'], rating: 4.9, reviews: 5120, bought: '12K+ 已購', vendor: 'KKday Select', now: 1299, was: 1699, per: 60, off: '23%OFF', hot: true },
+    { title: '日本 eSIM・實名制・需指定啟用日・需航班與設備資訊（最完整填寫範例）', warns: ['需指定啟用日', '需設備信息', '需航班信息', '需實名認證'], tags: ['支持熱點・通話', '5G', '原生卡'], perks: ['立即確認', '3天前可免費取消'], rating: 4.9, reviews: 5120, bought: '12K+ 已購', vendor: 'KKday Select', now: 1299, was: 1699, per: 60, off: '23%OFF', hot: true },
     { title: '5G・漫遊・原生網絡・支援熱點', warns: [], tags: ['支持熱點・通話', '5G', '本地預付卡'], perks: ['立即確認', '即買即用', '免費取消'], rating: 4.8, reviews: 3479, bought: '10k+ 已購', vendor: 'Joytel', now: 988, was: 1234, per: 46, off: '20%OFF', hot: true },
     { title: 'KDDI 5G 高速原生日本 eSIM・不限速', warns: ['需指定啟用日'], tags: ['支持熱點', '5G', '原生卡'], perks: ['立即確認', '即買即用'], rating: 4.7, reviews: 2318, bought: '8K+ 已購', vendor: 'KDDI', now: 1180, was: 1475, per: 55, off: '20%OFF', hot: true },
     { title: 'Docomo 每日流量 eSIM・可加值・支援 ChatGPT', warns: ['需航班信息', '需設備信息'], tags: ['5G/4G', '可加值', '本地預付卡'], perks: ['立即確認', '3天前可免費取消'], rating: 4.6, reviews: 1151, bought: '5K+ 已購', vendor: 'Docomo', now: 893, was: null, per: 41, off: null, hot: true },
@@ -2735,7 +2735,7 @@
   // 為每張卡建立可篩選屬性（對應側欄各組）+ 記錄基準價（3GB/天·5天 為基準 1.0）
   PL_DATA.forEach(function (p, i) {
     // 非即買即用的商品：政策列補「最早可使用日: YYYY-MM-DD」（對齊 mweb calendarD；Figma 3701-112318）
-    if (!/即買即用|立即使用/.test(p.perks.join())) { var ed = new Date(); ed.setDate(ed.getDate() + 2); p.perks.push('最早可使用日: ' + ed.getFullYear() + '-' + ('0' + (ed.getMonth() + 1)).slice(-2) + '-' + ('0' + ed.getDate()).slice(-2)); }
+    if (!/即買即用|立即使用/.test(p.perks.join())) { var ed = new Date(); ed.setDate(ed.getDate() + 2); p.perks.splice(1, 0, '最早可使用日: ' + ed.getFullYear() + '-' + ('0' + (ed.getMonth() + 1)).slice(-2) + '-' + ('0' + ed.getDate()).slice(-2));  /* 插在立即確認之後、取消政策之前（Figma 3701-112318 順序） */ }
     var s = p.tags.join(' ') + ' ' + p.perks.join(' ') + ' ' + p.title;
     var a = [];
     if (/熱點/.test(s)) a.push('支持熱點');
