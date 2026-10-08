@@ -539,24 +539,6 @@
   #pcDlg .dlg-tab { padding: 12px 12px 12px; }
   #pcDlg .dlg-tab.sel::after { border-radius: 2px 2px 0 0; }
   #pcDlg .dlg-tabs + .dlg-group { margin-top: 32px; }
-  /* 方案切換（demo 用，不起眼）：標題列右側 A/B/C 小字 */
-  .pc-dlg-var { display: inline-flex; align-items: center; gap: 2px; align-self: center; margin-right: 4px; }
-  .pc-dlg-var button { width: 24px; height: 24px; border-radius: 4px; font-size: 11px; line-height: 20px; color: var(--kk-border-light); text-align: center; }
-  .pc-dlg-var button:hover { color: var(--kk-text-medium); }
-  .pc-dlg-var button.sel { color: var(--kk-text-medium); background: var(--kk-surface-light); }
-  .dlg-chip .chk { display: none; }
-  /* 方案 B（Figma 3829-213885）：chip 文字靠左、1px #D5D6DB */
-  #pcDlg[data-variant="B"] .dlg-chip { justify-content: flex-start; }
-  /* 方案 C（Figma 3829-214968）：KKList item 三欄 gap 2、px12 py10 無邊框；hover #F1F4F8 r8；選中文字 #13A3B6 + 勾 20 */
-  #pcDlg[data-variant="C"] .dlg-chips { gap: 2px; }
-  #pcDlg[data-variant="C"] .dlg-group + .dlg-group::before { content: ''; display: block; height: 1px; background: var(--kk-border-lighter); margin-bottom: 32px; }  /* 分組之間分隔線（Line 34：592 寬，上下 32；洲別 tab 前後不加） */
-  #pcDlg[data-variant="C"] .dlg-chip { justify-content: flex-start; padding: 9px 12px;  /* 含 1px 透明邊框 → 40 高 */ border-color: transparent; background: #fff; border-radius: 8px; }
-  #pcDlg[data-variant="C"] .dlg-chip .tx { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: left; }
-  #pcDlg[data-variant="C"] .dlg-chip:hover { background: var(--kk-surface-light); border-color: transparent; }
-  #pcDlg[data-variant="C"] .dlg-chip.sel { background: #fff; color: var(--kk-primary-dark); border-color: transparent; }
-  #pcDlg[data-variant="C"] .dlg-chip.sel:hover { background: var(--kk-surface-light); }
-  #pcDlg[data-variant="C"] .dlg-chip.sel .chk { display: inline-flex; margin-left: 8px; flex: 0 0 auto; }
-  #pcDlg[data-variant="C"] .dlg-chip .chk img { width: 20px; height: 20px; }
   #pcDlg .dlg-rows { gap: 8px; }
   /* 多選提示 + 底部按鈕：提示 12/16 上邊線 pt12 px24 gap8、已選數 Medium #26BEC9；按鈕 p24 gap16、清除 1px #727272 */
   #pcDlg .dlg-hint { gap: 8px; padding: 12px 24px 0; border-top: 1px solid var(--kk-border-lighter); }
@@ -1812,7 +1794,7 @@
 <!-- ============ 目的地選擇彈窗（三模式） ============ -->
 <div class="pc-mask" id="pcDlgMask"></div>
 <div class="pc-dlg" id="pcDlg" data-mode="country" role="dialog" aria-modal="true">
-  <div class="pc-dlg-hd"><span class="t">請選擇目的地</span><span class="pc-dlg-var" id="pcDlgVar" data-i18n-skip title="方案切換（demo）"><button data-v="A" class="sel">A</button><button data-v="B">B</button><button data-v="C">C</button></span><button id="pcDlgClose" aria-label="關閉"><span class="ic">{{DLG_cross}}</span></button></div>
+  <div class="pc-dlg-hd"><span class="t">請選擇目的地</span><button id="pcDlgClose" aria-label="關閉"><span class="ic">{{DLG_cross}}</span></button></div>
   <div class="pc-dlg-search"><span class="ic">{{DLG_search}}</span><input id="pcDlgQ" placeholder="輸入國家或地區名稱搜尋" autocomplete="off"><button class="pc-dlg-clear" id="pcDlgClearKw" aria-label="清除" hidden><span class="ic">{{DLG_clear}}</span></button></div>
   <div class="pc-dlg-results" id="pcDlgResults"></div>
   <div class="pc-dlg-empty" id="pcDlgEmpty"></div>
@@ -2297,16 +2279,8 @@
   function dlgGroup(title, fire, action) {
     return h('<div class="dlg-group"><div class="gh">' + (fire ? '<span class="ic ic-24">{{DLG_fire}}</span>' : '') + '<span>' + title + '</span>' + (action || '') + '</div></div>');
   }
-  // 目的地 dialog 方案 A/B/C（demo）：記在 localStorage，切換即套用樣式
-  (function () {
-    var box = document.getElementById('pcDlgVar'), dlgEl = document.getElementById('pcDlg');
-    function setVar(v) { dlgEl.setAttribute('data-variant', v); box.querySelectorAll('button').forEach(function (b) { b.classList.toggle('sel', b.getAttribute('data-v') === v); }); try { localStorage.setItem('pcDlgVariant', v); } catch (e) {} }
-    box.querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); setVar(b.getAttribute('data-v')); }); });
-    var saved = null; try { saved = localStorage.getItem('pcDlgVariant'); } catch (e) {}
-    setVar(/^[ABC]$/.test(saved || '') ? saved : 'A');
-  })();
   function dlgChip(name, onTap, selected) {
-    var c = h('<button class="dlg-chip' + (selected ? ' sel' : '') + '"><span class="tx"></span><span class="chk ic ic-20">{{DLG_check20}}</span></button>'); c.querySelector('.tx').textContent = name;
+    var c = h('<button class="dlg-chip' + (selected ? ' sel' : '') + '"><span class="tx"></span></button>'); c.querySelector('.tx').textContent = name;
     c.addEventListener('click', function () { onTap(name); });
     return c;
   }
