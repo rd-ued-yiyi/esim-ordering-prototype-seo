@@ -484,7 +484,7 @@
   .dlg-row .cnt { position: relative; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   /* ⓘ 包含國家 tooltip（Figma 3096-58630：白卡雙欄列表）：緊貼觸發點（.cnt）下方，無斷層 */
   .dlg-tip { position: absolute; right: 0; top: 100%; z-index: 5; width: 349px; background: #fff; border-radius: 8px;
-    box-shadow: 0 12px 32px rgba(38,50,56,.2); padding: 16px; display: none; cursor: default;
+    box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 8px 12px; display: none; cursor: default;  /* Figma 3096-58630：px12 py8、陰影 0 4 12 12% */
     border-top: 6px solid transparent; background-clip: padding-box; }  /* 透明上邊＝視覺留 6px 間隙但 hover 連續，鼠標可移入 */
   /* tip 為 .cnt 子元素：hover tip 時 :hover 冒泡回 .cnt，故停留 tip 上也保持顯示 */
   .dlg-row .cnt:hover .dlg-tip { display: block; }
@@ -493,7 +493,9 @@
   .dlg-row > .ic-24, .dlg-row > .ic-24 img { width: 24px; height: 24px; }
   .dlg-row .rt { gap: 4px; }
   .dlg-row .rn { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
-  .dlg-tip ul { columns: 2; column-gap: 24px; padding-left: 18px; font-size: 12px; line-height: 20px; color: var(--kk-text-darker); }
+  .dlg-tip ul { columns: 2; column-gap: 6px; padding: 0; margin: 0; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3096-58630：兩欄 159.5 gap 6、Body-md 14/20（原誤寫 12/20）、項目 gap 8、bullet 縮排 21 */
+  .dlg-tip li { margin-left: 21px; margin-bottom: 8px; break-inside: avoid; }
+  .dlg-tip li:last-child { margin-bottom: 0; }
   .dlg-hint { flex: 0 0 auto; display: flex; align-items: center; gap: 16px; padding: 8px 24px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .dlg-hint b { color: var(--kk-primary-dark); }
   .pc-dlg-ft { flex: 0 0 auto; display: flex; gap: 16px; padding: 24px; border-top: 1px solid var(--kk-border-lighter); }
