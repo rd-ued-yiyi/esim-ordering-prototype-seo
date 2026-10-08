@@ -680,8 +680,8 @@
   .pc-lbody .pc-pv { font-size: 14px; line-height: 20px; color: var(--kk-text-medium); margin-top: -16px; }
   /* 使用日期 chips（Figma 3674:101840）：1px #D5D6DB、r8、p8（文字 px4）14/20、gap 8；選擇日期帶 16 箭頭；選中淺青 */
   .pl-dchips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pl-dchip { display: inline-flex; align-items: center; padding: 8px 12px; border: 1px solid var(--kk-border-light); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .pl-dchip[data-d="pick"] { padding-right: 8px; }
+  .pl-dchip { display: inline-flex; align-items: center; padding: 7px 11px; border: 1px solid var(--kk-border-light);  /* 含 1px 邊框 → 36 高（Figma 邊框內縮，卡片 116） */ border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pl-dchip[data-d="pick"] { padding-right: 7px; }
   .pl-dchip[data-d="pick"] .lb { margin-right: 4px; }
   .pl-dchip .ic, .pl-dchip .ic img { width: 16px; height: 16px; }
   .pl-dchip:hover { border-color: var(--kk-primary-medium); }
@@ -1694,6 +1694,12 @@
           </div>
           <div class="pc-fbox">
             <div class="fh fh-info" data-spec="ip" role="button" tabindex="0"><span>IP類型</span><span class="fh-i"><span class="ic ic-16">{{IC_info}}</span></span></div>
+            <button class="pc-cb" data-mock><span class="box"></span>本地IP</button>
+            <button class="pc-cb" data-mock><span class="box"></span>漫遊IP</button>
+          </div>
+          <!-- 網路資源（Figma 3882-63279）：本地 / 漫遊，標題 ⓘ 開規格說明 -->
+          <div class="pc-fbox">
+            <div class="fh fh-info" data-spec="netsrc" role="button" tabindex="0"><span>網路資源</span><span class="fh-i"><span class="ic ic-16">{{IC_info}}</span></span></div>
             <button class="pc-cb" data-mock><span class="box"></span>本地</button>
             <button class="pc-cb" data-mock><span class="box"></span>漫遊</button>
           </div>
@@ -1708,6 +1714,12 @@
             <button class="pc-cb" data-mock><span class="box"></span>自然日制</button>
             <button class="pc-cb" data-mock><span class="box"></span>總量制</button>
           </div>
+          <div class="pc-fbox">
+            <div class="fh">服務保障</div>
+            <button class="pc-cb" data-mock><span class="box"></span>立即確認</button>
+            <button class="pc-cb" data-mock><span class="box"></span>即買即用</button>
+            <button class="pc-cb" data-mock><span class="box"></span>免費取消</button>
+          </div>
           <!-- 使用日期：今天 / 明天 / 選擇日期（開日曆）chips（Figma 3674:101840） -->
           <div class="pc-fbox" id="plDateBox">
             <div class="fh">使用日期</div>
@@ -1716,12 +1728,6 @@
               <button class="pl-dchip" data-d="1">明天</button>
               <button class="pl-dchip pc-caltrigger" data-d="pick"><span class="lb">選擇日期</span><span class="ic">{{EX_arrowRight16}}</span></button>
             </div>
-          </div>
-          <div class="pc-fbox">
-            <div class="fh">服務保障</div>
-            <button class="pc-cb" data-mock><span class="box"></span>立即確認</button>
-            <button class="pc-cb" data-mock><span class="box"></span>即買即用</button>
-            <button class="pc-cb" data-mock><span class="box"></span>免費取消</button>
           </div>
           <div class="pc-fbox">
             <div class="fh">價格區間 (NT$)</div>
@@ -3119,6 +3125,10 @@
     ip: { title: 'IP類型', h: 'IP類型', rows: [
       ['本地', '以當地電信商 IP 出口連線，使用當地 App、串流、地圖等在地服務相容性最佳，延遲最低。'],
       ['漫遊', '透過漫遊或第三地出口連線，IP 可能顯示為其他國家；覆蓋範圍廣，但部分在地服務可能受限。']
+    ] },
+    netsrc: { title: '網路資源', h: '網路資源', rows: [
+      ['本地', '直接接入當地電信商的原生網路，與當地用戶共用同一網路資源，訊號與速度最穩定。'],
+      ['漫遊', '透過合作電信商以漫遊方式取得網路資源，覆蓋國家多，但速度與延遲可能受漫遊線路影響。']
     ] },
     net: { title: '傳輸規格', h: '傳輸規格', rows: [
       ['5G', '支援當地 5G 網路，需搭配支援 5G 的裝置與頻段；無 5G 訊號時自動降為 4G。'],

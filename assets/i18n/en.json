@@ -750,5 +750,9 @@
  "跳到主要內容": "Skip to main content",
  "eSIM/WIFI 搜尋結果": "eSIM/WIFI search results",
  "會員中心": "Account",
- "會員頭像": "Profile photo"
+ "會員頭像": "Profile photo",
+ "本地IP": "Local IP",
+ "漫遊IP": "Roaming IP",
+ "直接接入當地電信商的原生網路，與當地用戶共用同一網路資源，訊號與速度最穩定。": "Connects directly to the local carrier's native network, sharing the same resources as local users for the most stable signal and speed.",
+ "透過合作電信商以漫遊方式取得網路資源，覆蓋國家多，但速度與延遲可能受漫遊線路影響。": "Gets network access via partner carriers through roaming; wide country coverage, but speed and latency may be affected by the roaming route."
 }
