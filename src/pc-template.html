@@ -10,6 +10,8 @@
     --kk-text-darker: #212121; --kk-text-dark: #727272; --kk-text-medium: #9C9DA0; --kk-text-light: #BABBBE;
     --kk-border-lighter: #E6E9ED; --kk-border-light: #D5D6DB;
     --kk-text-critical: #EF7A70; --kk-critical-dark: #E65F50; --kk-warning-dark: #E78F37;
+    --kk-bg-info-lighter: #F2FAFF; --kk-text-info-dark: #2D84D6; --kk-border-primary-light: #ADE6EB;  /* $color-background-info-lighter / $color-text-info-dark / $color-border-primary-light */
+    --kk-bg-critical-lighter: #FFF2F2; --kk-bg-highlight-lighter: #FFF8E1; --kk-text-highlight-dark: #FFA000; --kk-bg-highlight-medium: #FFB400;  /* $color-background-critical-lighter / $color-background-highlight-lighter / $color-text-highlight-dark / $color-background-highlight-medium */
     --el-card: 0 1px 2px rgba(38,50,56,.12); --el-hover: 0 8px 24px rgba(38,50,56,.12); --el-hero-card: 0 8px 24px rgba(38,190,201,.2);
     --font-tc: "PingFang TC","PingFang SC",-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;
   }
@@ -154,7 +156,7 @@
   .pc-hero[data-state="sel"] .pc-panel { display: flex; }
   .pc-hero[data-state="sel"] .pc-find { display: none; }
   /* Inline notification：#F2FAFF、p12、r8、icon 20 + gap 8、14/20，連結 Medium 底線 */
-  .pc-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: #F2FAFF; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pc-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: var(--kk-bg-info-lighter); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pc-note .ic { flex: 0 0 auto; }
   .pc-note u { margin-left: 12px; font-weight: 500; text-underline-offset: 2px; cursor: pointer; }
   /* 卡片底欄（Figma 3792:155411）：上邊線 #E6E9ED、p24、摘要（靠右）與按鈕 gap 48；向外撐到卡片邊緣、續接卡片下圓角 */
@@ -208,7 +210,7 @@
   .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 16px; padding-right: 0; }  /* Figma 3636-98813：段落與虛線上下各 16 */
   .pc-flow-sec { display: flex; flex-direction: column; gap: 8px; }
   /* 計費段之間：1px 虛線 #ADE6EB（dash 2 2，Figma Line 27） */
-  .pc-flow-sec + .pc-flow-sec { border-top: 1px dashed #ADE6EB; padding-top: 16px; }
+  .pc-flow-sec + .pc-flow-sec { border-top: 1px dashed var(--kk-border-primary-light); padding-top: 16px; }
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   /* 依可用寬度自動增減列數：1440 下 4 列（Figma），變窄自動降列，每格 ≥150px 文字不硬折 */
   .pc-flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }  /* Figma 784 寬 5 列（150.4）；欄寬固定，長語系標題在卡內換行 */
@@ -726,7 +728,7 @@
   .pl-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
   .pl-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px; border-radius: 4px; background: var(--kk-surface-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
   .pl-tag .ic { width: 16px; height: 16px; }
-  .pl-tag.hot { background: #FFF2F2; }
+  .pl-tag.hot { background: var(--kk-bg-critical-lighter); }
   .pl-perks { display: flex; flex-direction: column; gap: 6px; }              /* 政策竪排（Figma 政策规格） */
   .pl-perk { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-dark); }
   .pl-perk .ic { width: 16px; height: 16px; flex: 0 0 auto; }
@@ -827,7 +829,7 @@
   .det-provider { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   /* 折扣券 banner（Figma 936-48931）：#FFF2F2 底 + 32 picto + 票券描邊 + 領取 popover */
   .det-coupon { position: relative; margin-top: 24px;  /* Figma 3701-133338：摘要卡→券 24 */ display: flex; align-items: center; gap: 12px; width: 100%;
-    background: #FFF2F2; border: 0; border-radius: 12px; padding: 12px; cursor: pointer; text-align: left; }  /* Figma 3701-133342 Coupon banner PC：p12 r12、icon→券 12、券間 8 */
+    background: var(--kk-bg-critical-lighter); border: 0; border-radius: 12px; padding: 12px; cursor: pointer; text-align: left; }  /* Figma 3701-133342 Coupon banner PC：p12 r12、icon→券 12、券間 8 */
   .det-coupon .cp-pic { width: 32px; height: 32px; flex: 0 0 auto; display: block; }
   .det-coupon .cp-pic svg, .det-coupon .cp-pic img { width: 32px; height: 32px; display: block; }
   .det-coupon .tks { display: inline-flex; align-items: center; gap: 8px; }
@@ -843,8 +845,8 @@
   /* 領取折扣 tooltip（Figma 3701:138942 Tooltip coupon）：400 寬、貼 banner 下緣靠右、白底 r8 陰影 0 4 12、p16 gap 16、無尖角 */
   .pl-cpop { position: absolute; right: 0; top: 100%; z-index: 8; width: 400px; max-width: 100%; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; flex-direction: column; gap: 16px; text-align: left; cursor: default; }
   .pl-cpop.show { display: flex; }
-  .pl-cpop .cp-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: #F2FAFF; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
-  .pl-cpop .cp-note .ic { width: 20px; height: 20px; color: #2D84D6; flex: 0 0 auto; }
+  .pl-cpop .cp-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: var(--kk-bg-info-lighter); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
+  .pl-cpop .cp-note .ic { width: 20px; height: 20px; color: var(--kk-text-info-dark); flex: 0 0 auto; }
   .pl-cpop .cp-cards { display: flex; flex-direction: column; gap: 12px; }
   .pl-cpop .cp-card { border: 1px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
   .pl-cpop .cp-r1 { display: flex; align-items: center; justify-content: space-between; }
@@ -936,7 +938,7 @@
   .det-ai .ai-b { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-rev-sort { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
   .det-sortchip { display: inline-flex; align-items: center; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--kk-border-lighter); background: #fff; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); cursor: pointer; white-space: nowrap; }
-  .det-sortchip.sel { background: var(--kk-primary-lighter); border-color: #ADE6EB; color: var(--kk-primary-medium); }
+  .det-sortchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-border-primary-light); color: var(--kk-primary-medium); }
   .det-kws { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
   .det-kw { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 1px solid var(--kk-border-lighter); border-radius: 8px; padding: 8px 12px 8px 10px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-kw .ic { width: 16px; height: 16px; flex: 0 0 auto; }
@@ -970,9 +972,9 @@
   .det-rev-pager button { min-width: 32px; height: 32px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--kk-border-lighter); background: #fff; font-size: 14px; color: var(--kk-text-darker); cursor: pointer; }
   .det-rev-pager button.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-medium); font-weight: 600; }
   /* 購買須知：注意事項 box */
-  .det-noticebox { margin-top: 24px; background: #FFF8E1; border-radius: 8px; padding: 16px; }
+  .det-noticebox { margin-top: 24px; background: var(--kk-bg-highlight-lighter); border-radius: 8px; padding: 16px; }
   .det-noticebox .nb-t { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: #212121; }
-  .det-noticebox .nb-i { display: inline-flex; width: 16px; height: 16px; border-radius: 50%; background: #F5A623; color: #fff; font-size: 12px; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .det-noticebox .nb-i { display: inline-flex; width: 16px; height: 16px; border-radius: 50%; background: var(--kk-text-highlight-dark); color: #fff; font-size: 12px; align-items: center; justify-content: center; flex: 0 0 auto; }
   .det-noticebox .det-list { margin-top: 8px; }
   /* 圖文說明 */
   .det-fig { margin-top: 8px; }
@@ -1101,7 +1103,7 @@
   .pay-pts-cb.on::after { content: ''; position: absolute; left: 5px; top: 1px; width: 5px; height: 9px; border: 2px solid #fff; border-top: 0; border-left: 0; transform: rotate(45deg); }
   .pay-pts-lb { flex: 1 1 0; display: flex; align-items: center; gap: 12px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
   .pay-pts-lb .ic { width: 16px; height: 16px; color: var(--kk-primary-medium); }
-  .pay-pts-coin { display: inline-flex; align-items: center; gap: 4px; color: #FFB400; font-size: 16px; font-weight: 700; }
+  .pay-pts-coin { display: inline-flex; align-items: center; gap: 4px; color: var(--kk-bg-highlight-medium); font-size: 16px; font-weight: 700; }
   .pay-pts-coin.sm { font-size: 14px; margin-left: 4px; }
   .pay-pts-coin .ic { width: 16px; height: 16px; }
   .pay-pts-val { color: var(--kk-primary-medium); font-size: 16px; }
@@ -1145,7 +1147,7 @@
   .pay-detail-total .val { font-size: 22px; line-height: 22px; font-weight: 700; }
   .pay-detail-note { margin-top: 8px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); text-align: right; }
   .pay-detail-reward .lb { font-size: 16px; font-weight: 700; color: #333; }
-  .pay-coin { display: inline-flex; align-items: center; gap: 4px; color: #FFB400; font-size: 16px; font-weight: 700; }
+  .pay-coin { display: inline-flex; align-items: center; gap: 4px; color: var(--kk-bg-highlight-medium); font-size: 16px; font-weight: 700; }
   .pay-coin .ic { width: 20px; height: 20px; }
   /* 右欄 ConfirmBoard */
   .pay-sum { background: #fff; border-radius: 6px; box-shadow: 0 1px 4px rgba(38,50,56,.12); padding: 20px; }
@@ -1200,7 +1202,7 @@
   .ord-subhint { margin-top: 8px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   .ord-subhint b { color: var(--kk-primary-dark); }
   /* 設備資訊提示（Figma Inline notification）：淺藍底 + 藍色 info fill + 深色 12 字 */
-  .ord-tip { margin-top: 16px; display: flex; align-items: flex-start; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-darker); background: #F2FAFF; border-radius: 8px; padding: 12px; }
+  .ord-tip { margin-top: 16px; display: flex; align-items: flex-start; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-darker); background: var(--kk-bg-info-lighter); border-radius: 8px; padding: 12px; }
   .ord-tip .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 0; }
   /* 使用日期 chips */
   .ord-date-err { margin-top: 8px; display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; color: var(--kk-text-critical); }
@@ -1224,7 +1226,7 @@
   .qty-btn img { width: 20px; height: 20px; display: block; }
   .qty-btn .i-on, .qty-btn:disabled .i-off { display: block; }
   .qty-btn .i-off, .qty-btn:disabled .i-on { display: none; }
-  .qty-btn:disabled { border-color: #ADE6EB; cursor: default; }  /* $color-border-primary-light */
+  .qty-btn:disabled { border-color: var(--kk-border-primary-light); cursor: default; }  /* $color-border-primary-light */
   .qty-n { width: 40px; text-align: center; font-size: 16px; line-height: 24px; font-weight: 400; color: var(--kk-text-darker); }
   /* 內聯表單欄位 */
   .ord-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
