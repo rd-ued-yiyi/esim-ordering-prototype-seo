@@ -395,8 +395,8 @@
   .pc-off { padding: 2px 4px; border-radius: 4px; background: var(--kk-text-critical); color: #fff; font-size: 12px; line-height: 16px; }
   /* 價格：原價 16/16 #9C9DA0 刪除線 + gap 4 + 售價 Bold 20/20（NT$ 與數字 gap 2） */
   .pc-pprice { display: flex; align-items: baseline; gap: 4px; white-space: nowrap; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
-  .pc-pprice .was { font-size: 16px; line-height: 16px; color: var(--kk-text-medium); text-decoration: line-through; }
-  .pc-pprice .now { display: inline-flex; align-items: baseline; gap: 2px; font-size: 20px; line-height: 20px; font-weight: 700; color: var(--kk-text-darker); }
+  .pc-pprice .was { font-size: 14px; line-height: 14px; color: var(--kk-text-medium); text-decoration: line-through; }  /* DS web price-regular-md 14/14（Figma 綁 iOS price-regular-lg 16/16） */
+  .pc-pprice .now { display: inline-flex; align-items: baseline; gap: 2px; font-size: 22px; line-height: 22px; font-weight: 700; color: var(--kk-text-darker); }  /* DS web price-bold-xxl 22/22（Figma 3467-85809 綁 iOS price-bold-xl 20/20，依檢核改用 web 字級） */
   .pc-pager { display: flex; justify-content: center; gap: 12px; padding: 16px 0 0; }
   #pcPager { padding: 0; }
   #plListPager { padding: 0; }
@@ -1353,7 +1353,7 @@
   .ord-sum-row .amt { color: var(--kk-text-darker); }
   .ord-sum-total { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--kk-border-light); }
   .ord-sum-total .lb { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
-  .ord-sum-total .val { font-size: 20px; line-height: 20px; font-weight: 700; color: var(--kk-text-darker); font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .ord-sum-total .val { font-size: 22px; line-height: 22px; font-weight: 700; color: var(--kk-text-darker); font-family: 'Helvetica Neue', Arial, sans-serif; }  /* DS web price-bold-xxl 22/22（Figma 3710-143573 為 20/20 裸值） */
   .ord-next { width: 100%; height: 48px; margin-top: 16px; display: flex; align-items: center; justify-content: center; background: var(--kk-primary-button); color: #fff; border-radius: 8px; font-size: 16px; line-height: 24px; font-weight: 600; }
   .ord-next:hover { background: var(--kk-primary-dark); }
   /* 取消政策 dialog */
