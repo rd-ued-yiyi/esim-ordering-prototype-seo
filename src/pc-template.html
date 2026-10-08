@@ -48,7 +48,15 @@
   .pc-lang-menu button:hover { background: var(--kk-surface-light); }
   .pc-lang-menu button.sel { color: var(--kk-primary-medium); font-weight: 600; }
   .pc-right .it.app { color: var(--kk-primary-darker); }
-  .pc-right .coin { display: flex; align-items: center; gap: 6px; padding: 0 12px; font-weight: 600; color: var(--kk-text-darker); }
+  .pc-right .coin { display: flex; align-items: center; gap: 6px; padding: 0 12px; min-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
+  /* 無障礙：跳到主要內容（聚焦才顯示）、視覺隱藏標題 */
+  .skip-link { position: absolute; left: 16px; top: -48px; z-index: 100; padding: 8px 12px; border-radius: 8px; background: var(--kk-primary-button); color: #fff; font-size: 14px; line-height: 20px; font-weight: 600; }
+  .skip-link:focus { top: 8px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  #pcMain:focus { outline: none; }
+  /* 可點區域 ≥ 24×24（WCAG 2.2 AA）：透明 padding + 負 margin，視覺不變 */
+  .pc-crumb a, .pc-foot-col a, .pc-ex-sorts button, .pc-cb, .pc-flow-help, #pcExplore .pc-ftag-clear { padding-top: 2px; padding-bottom: 2px; margin-top: -2px; margin-bottom: -2px; box-sizing: content-box; }
+  .pc-flow-help, #pcExplore .pc-ftag-clear { padding-top: 4px; padding-bottom: 4px; margin-top: -4px; margin-bottom: -4px; }
   .pc-right .avatar { padding: 9px 0 9px 6px; }
   .pc-right .avatar img { width: 42px; height: 42px; border-radius: 999px; }
   /* 分類導航 60：eSIM/WIFI 選中 + 4px 底條（Figma） */
@@ -326,7 +334,7 @@
   .pc-ex-cnt i { font-style: normal; font-weight: 600; color: var(--kk-primary-dark); margin-right: 4px; }
   .pc-ftag { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px;
     border: 1px solid var(--kk-border-light); font-size: 12px; line-height: 16px; color: var(--kk-text-darker); }
-  .pc-ftag .x { display: inline-flex; width: 14px; height: 14px; }
+  .pc-ftag .x { display: inline-flex; width: 14px; height: 14px; box-sizing: content-box; padding: 5px; margin: -5px; }  /* 可點區 24 */
   .pc-ftag-clear { height: 28px; padding: 0 12px; border-radius: 999px; background: var(--kk-surface-light); color: var(--kk-text-dark); font-size: 12px; }
   /* 結果數 / 分隔線 / 排序項（Figma 3467-85809 Filter Summary Bar）：白底 p20 r12 gap 20 */
   .pc-ex-topbar { background: #fff; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
@@ -529,7 +537,7 @@
   #pcDlg .dlg-tabs + .dlg-group { margin-top: 32px; }
   /* 方案切換（demo 用，不起眼）：標題列右側 A/B/C 小字 */
   .pc-dlg-var { display: inline-flex; align-items: center; gap: 2px; align-self: center; margin-right: 4px; }
-  .pc-dlg-var button { width: 20px; height: 20px; border-radius: 4px; font-size: 11px; line-height: 20px; color: var(--kk-border-light); text-align: center; }
+  .pc-dlg-var button { width: 24px; height: 24px; border-radius: 4px; font-size: 11px; line-height: 20px; color: var(--kk-border-light); text-align: center; }
   .pc-dlg-var button:hover { color: var(--kk-text-medium); }
   .pc-dlg-var button.sel { color: var(--kk-text-medium); background: var(--kk-surface-light); }
   .dlg-chip .chk { display: none; }
@@ -638,11 +646,16 @@
   .pc-lchip.sel b { color: var(--kk-primary-dark); }
   .pc-lchip .rec { position: absolute; top: -5px; right: -5px; padding: 2px 4px; border-radius: 4px 4px 4px 0; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; }
   /* Carousel Arrow Button（Figma 3792:159534）：18×28、rgba(255,255,255,.6)、16 icon，疊在輪播兩端、垂直置中 */
-  .pc-lnav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 18px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fff; }  /* Figma 3701-124950 Carousel Arrow Button：18×32 白底、py8、內側 r8、16 semibold 箭頭 */
-  .pc-lnav--prev { left: 0; border-radius: 0 8px 8px 0; padding-right: 2px; }
-  .pc-lnav--next { right: 0; border-radius: 8px 0 0 8px; padding-left: 2px; }
-  .pc-lnav img { width: 16px; height: 16px; display: block; }
-  .pc-lnav:hover:not(:disabled) { background: var(--kk-surface-lighter); }
+  .pc-lnav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 24px; height: 40px; padding: 0; border: 0; background: transparent; cursor: pointer; }  /* 按鈕本體 24×40（無障礙命中區，往內側延伸）；視覺 18×32 白底由 ::before 繪製。Figma 3701-124950 Carousel Arrow Button：18×32 白底、py8、內側 r8、16 semibold 箭頭 */
+  .pc-lnav::before { content: ''; position: absolute; top: 4px; width: 18px; height: 32px; background: #fff; }
+  .pc-lnav--prev { left: 0; }
+  .pc-lnav--next { right: 0; }
+  .pc-lnav--prev::before { left: 0; border-radius: 0 8px 8px 0; }
+  .pc-lnav--next::before { right: 0; border-radius: 8px 0 0 8px; }
+  .pc-lnav img { position: absolute; top: 12px; width: 16px; height: 16px; display: block; }
+  .pc-lnav--prev img { left: 0; }   /* 視覺框 0–18，圖 0–16（原 padding-right 2） */
+  .pc-lnav--next img { right: 0; }  /* 視覺框 6–24，圖 8–24（原 padding-left 2） */
+  .pc-lnav:hover:not(:disabled)::before { background: var(--kk-surface-lighter); }
   .pc-lnav:disabled { display: none; }
   .pc-lchip--more { flex: 0 0 auto; padding: 8px; }  /* Chip background：p8 + 文字 px4 → 52 寬 */
   /* 麵包屑 note */
@@ -683,6 +696,7 @@
   .pl-ftag { display: inline-flex; align-items: center; gap: 4px; padding: 8px 12px; border: 1px solid var(--kk-border-light); border-radius: 999px; background: #fff; cursor: pointer; }
   .pl-ftag .tx { font-size: 14px; line-height: 20px; color: var(--kk-text-darker); white-space: nowrap; }
   .pl-ftag .x, .pl-ftag .x img { width: 16px; height: 16px; flex: 0 0 auto; }
+  .pl-ftag .x { box-sizing: content-box; padding: 4px; margin: -4px; }  /* 可點區 24 */
   .pl-ftag:hover { border-color: var(--kk-primary-medium); }
   .pl-ftag-clear { font-size: 12px; line-height: 16px; font-weight: 600; color: var(--kk-primary-dark); text-decoration: underline; cursor: pointer; white-space: nowrap; }
   /* Plan 卡（Figma 3167:40025）：左內容（規格警示/標題/標籤/竪排政策/評論）+ 豎分隔 + 右價格CTA */
@@ -861,7 +875,7 @@
   .det-intro { display: flex; align-items: flex-end; gap: 16px; margin: 0 0 20px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* Figma 3701-135615：文字 + 展開鈕 gap16 底對齊 */
   .det-intro .det-intro-t { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }  /* 收合：單行尾部省略 */
   .det-intro.open .det-intro-t { white-space: normal; }
-  .det-intro .det-intro-more { display: none; flex: 0 0 auto; border: 0; padding: 0; cursor: pointer; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); background: none; }
+  .det-intro .det-intro-more { display: none; flex: 0 0 auto; border: 0; padding: 2px 0; margin: -2px 0; cursor: pointer; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); background: none; }
   .det-intro.clampable .det-intro-more { display: inline-flex; }
   .det-table { border: 1px solid var(--kk-border-lighter); border-radius: 8px; overflow: hidden; }
   .det-table .th { background: var(--kk-surface-lighter); padding: 12px 16px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); border-bottom: 1px solid var(--kk-border-lighter); }
@@ -1418,6 +1432,7 @@
 </style>
 
 <!-- ============ eSIM 主題頁（PC） ============ -->
+<a class="skip-link" href="#pcMain">跳到主要內容</a>
 <section class="pc-page">
   <header class="pc-header">
     <div class="col">
@@ -1456,6 +1471,7 @@
       <button class="pc-cat-more ic ic-24" data-toast="pc" aria-label="更多分類">{{PC_arrowRight24}}</button>
     </div>
   </nav>
+  <main id="pcMain" tabindex="-1">
 
   <div id="pcHome">
   <!-- hero：未選（標題+搜尋卡）/ 已選（目的地 pill + 天數流量面板） -->
@@ -1706,6 +1722,7 @@
           </div>
         </aside>
         <div class="pc-ex-main">
+          <h1 class="sr-only">eSIM/WIFI 搜尋結果</h1>
           <!-- 結果數 + 已選條件 / 分隔線 / 排序項（Figma 3598-3806 Filter Summary Bar，與首頁探索更多同款） -->
           <div class="pc-ex-topbar">
             <div class="pc-ex-cntrow"><span class="pc-ex-cnt"><i id="plCnt">162</i>搜尋結果</span><div class="pc-ex-ftags pl-ftags" id="plFtags"></div></div>
@@ -1730,6 +1747,7 @@
     <div class="col">
       <div class="pc-crumb"><a id="ordCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="ordCrumbList">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="ordCrumbList2">搜尋結果</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>訂單填寫</span></div>
       <div class="pc-ord-grid">
+        <h1 class="sr-only">訂單填寫</h1>
         <div class="pc-ord-main" id="ordMain"></div>
         <aside class="pc-ord-side" id="ordSide"></aside>
       </div>
@@ -1741,12 +1759,14 @@
     <div class="col">
       <div class="pc-crumb"><a id="payCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbCat">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbList">搜尋結果</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbOrder">訂單填寫</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>付款</span></div>
       <div class="pc-ord-grid">
+        <h1 class="sr-only">付款</h1>
         <div class="pc-ord-main" id="payMain"></div>
         <aside class="pc-ord-side" id="paySide"></aside>
       </div>
     </div>
   </section>
 
+  </main>
   <footer>
     <div class="pc-foot">
       <div class="pc-foot-top">
