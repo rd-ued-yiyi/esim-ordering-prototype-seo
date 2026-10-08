@@ -656,7 +656,7 @@
   .pc-lchip .rec { position: absolute; top: -5px; right: -5px; padding: 2px 4px; border-radius: 4px 4px 4px 0; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; }
   /* Carousel Arrow Button（Figma 3792:159534）：18×28、rgba(255,255,255,.6)、16 icon，疊在輪播兩端、垂直置中 */
   .pc-lnav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 24px; height: 40px; padding: 0; border: 0; background: transparent; cursor: pointer; }  /* 按鈕本體 24×40（無障礙命中區，往內側延伸）；視覺 18×32 白底由 ::before 繪製。Figma 3701-124950 Carousel Arrow Button：18×32 白底、py8、內側 r8、16 semibold 箭頭 */
-  .pc-lnav::before { content: ''; position: absolute; top: 4px; width: 18px; height: 32px; background: #fff; }
+  .pc-lnav::before { content: ''; position: absolute; top: 4px; width: 18px; height: 32px; background: rgba(0,0,0,.3); }  /* Figma 3792-159492 Carousel Arrow Button（On Image）：黑 30%、hover 40%、白箭頭 */
   .pc-lnav--prev { left: 0; }
   .pc-lnav--next { right: 0; }
   .pc-lnav--prev::before { left: 0; border-radius: 0 8px 8px 0; }
@@ -664,7 +664,7 @@
   .pc-lnav img { position: absolute; top: 12px; width: 16px; height: 16px; display: block; }
   .pc-lnav--prev img { left: 0; }   /* 視覺框 0–18，圖 0–16（原 padding-right 2） */
   .pc-lnav--next img { right: 0; }  /* 視覺框 6–24，圖 8–24（原 padding-left 2） */
-  .pc-lnav:hover:not(:disabled)::before { background: var(--kk-surface-lighter); }
+  .pc-lnav:hover:not(:disabled)::before { background: rgba(0,0,0,.4); }
   .pc-lnav:disabled { display: none; }
   .pc-lchip--more { flex: 0 0 auto; padding: 8px; }  /* Chip background：p8 + 文字 px4 → 52 寬 */
   /* 麵包屑 note */
@@ -2990,8 +2990,8 @@
     var gap = 8, cap = 5, total = all.length;
     var track = h('<div class="pc-lstrip-vp"><div class="pc-lstrip"></div></div>'), strip = track.firstChild;
     var chips = all.map(function (it) { var c = mkChip(it); strip.appendChild(c); return c; });
-    var prev = h('<button class="pc-lnav pc-lnav--prev" aria-label="上一頁">{{EX_arrowSemi16L}}</button>');
-    var next = h('<button class="pc-lnav pc-lnav--next" aria-label="下一頁">{{EX_arrowSemi16}}</button>');
+    var prev = h('<button class="pc-lnav pc-lnav--prev" aria-label="上一頁">{{EX_arrowSemi16LW}}</button>');
+    var next = h('<button class="pc-lnav pc-lnav--next" aria-label="下一頁">{{EX_arrowSemi16W}}</button>');  // 白色 16 semibold 箭頭（Figma 3792-159492 On Image）
     track.appendChild(prev); track.appendChild(next);
     var more = h('<button class="pc-lchip pc-lchip--more"><b>更多</b></button>');
     more.addEventListener('click', openAllFlow);
