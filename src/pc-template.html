@@ -3125,7 +3125,7 @@
       d.rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</table>';
   }
   document.querySelectorAll('.fh-info[data-spec]').forEach(function (el) {
-    function go(e) { e.stopPropagation(); var d = SPEC_DLGS[el.getAttribute('data-spec')]; d ? openSpec(d.title, specDlgHTML(d)) : openSpec(); }
+    function go(e) { e.stopPropagation(); var d = SPEC_DLGS[el.getAttribute('data-spec')]; d ? openSpec('規格詳情', specDlgHTML(d)) : openSpec(); }  // 標題列固定「規格詳情」（Figma 3701-130833），篩選名稱放內文標題 .pc-spec-h
     el.addEventListener('click', go);
     el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(e); } });
   });
