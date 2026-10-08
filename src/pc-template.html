@@ -346,7 +346,7 @@
   /* 已選條件 Chip：pill、1px #D5D6DB、px12 py8、14/20 + 16 叉；清除所有＝12/16 Semibold 青字底線 */
   #pcExplore .pc-ftag { height: auto; padding: 8px 12px; gap: 4px; font-size: 14px; line-height: 20px; }
   #pcExplore .pc-ftag .x { width: 16px; height: 16px; }
-  #pcExplore .pc-ftag-clear { height: auto; padding: 0; background: none; border-radius: 0; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--kk-primary-dark); text-decoration: underline; }
+  #pcExplore .pc-ftag-clear { height: auto; padding: 4px 0; margin: -4px 0; box-sizing: content-box; background: none; border-radius: 0; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--kk-primary-dark); text-decoration: underline; }
   .pc-ex-div { height: 1px; background: var(--kk-border-lighter); }
   .pc-ex-sorts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
   .pc-ex-sorts button { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); white-space: nowrap; }
@@ -1188,7 +1188,7 @@
   .ord-price { color: var(--kk-text-darker); font-weight: 700; line-height: 16px; }
   .ord-price .cur { font-size: 16px; font-weight: 500; margin-right: 2px; font-family: 'Helvetica Neue', Arial, sans-serif; }
   .ord-price .num { font-size: 16px; font-family: 'Helvetica Neue', Arial, sans-serif; }
-  .ord-cancel { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-primary-dark); }
+  .ord-cancel { display: inline-flex; align-items: center; gap: 4px; padding: 2px 0; margin: -2px 0; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-primary-dark); }
   .ord-cancel .ic { width: 16px; height: 16px; }
   /* 通用卡 + section 標題 */
   .ord-card { background: #fff; border-radius: 12px; padding: 20px; }
@@ -1447,7 +1447,7 @@
         <button class="it" data-toast="pc">TWD<span class="ic ic-18">{{PC_arrowDown18}}</span></button>
         <button class="it" data-toast="pc" aria-label="購物車"><span class="ic ic-24">{{PC_cart}}</span></button>
         <button class="coin" data-toast="pc"><span class="ic ic-20">{{PC_coin}}</span>999</button>
-        <button class="avatar" data-toast="pc"><img alt="" src="{{PC_avatar}}"></button>
+        <button class="avatar" data-toast="pc" aria-label="會員中心"><img alt="會員頭像" src="{{PC_avatar}}"></button>
       </div>
     </div>
   </header>
@@ -2534,7 +2534,7 @@
   function pcCardHTML(p) {
     var off = p.was ? '折扣標籤' : '';
     return '<button class="pc-pcard" data-toast="old">' +
-      '<span class="ph"><img alt="" src="' + p.img + '"></span>' +  // 圖片上不疊活動標籤
+      '<span class="ph"><img alt="" src="' + p.img + '"></span>' +  // 圖片上不疊活動標籤；alt 於下方以 p.title 填入
       '<span class="bd"><span class="top">' +
         '<span class="hd"><span class="hw"><span class="tt"></span>' +
           '<span class="pc-prate"><span class="ic">' + PC_ICONS.exStar + '</span><b>' + p.rating.toFixed(1) + '</b><span class="m">(' + p.reviews.toLocaleString('en-US') + ')・' + p.bought + ' 個已訂購</span></span></span>' +
@@ -2557,6 +2557,7 @@
     list.slice((pcEx.page - 1) * PC_EX_PAGESZ, pcEx.page * PC_EX_PAGESZ).forEach(function (p) {
       var c = h(pcCardHTML(p));
       c.querySelector('.tt').textContent = p.title;
+      c.querySelector('.ph img').alt = p.title;  // 內容圖：alt = 商品名（無障礙檢測第 18 項）
       box.appendChild(c);
     });
     buildPager(document.getElementById('pcPager'), pages, pcEx.page, function (n) { pcEx.page = n; renderPcExplore(true); pagerScroll('pcExList'); });
@@ -3420,7 +3421,7 @@
     DET_REVIEWS.forEach(function (r, idx) {
       var stars = ''; for (var i = 0; i < 5; i++) stars += '<span class="ic ic-20">' + (i < r.star ? '{{DET_starOn20}}' : '{{DET_starOff20}}') + '</span>';
       var gallery = '';
-      for (var g = 0; g < 6; g++) { var im = pool.length ? '<img alt="" src="' + pool[(idx * 6 + g) % pool.length] + '">' : ''; gallery += '<span class="rc-shot">' + im + '</span>'; }
+      for (var g = 0; g < 6; g++) { var im = pool.length ? '<img alt="評論照片 ' + (g + 1) + '" src="' + pool[(idx * 6 + g) % pool.length] + '">' : ''; gallery += '<span class="rc-shot">' + im + '</span>'; }
       var card = h('<div class="det-rcard">' +
         '<div class="rc-l">' +
           '<div class="rc-usr"><span class="rc-av"></span><span class="rc-uinfo"><span class="rc-nm"></span><span class="rc-role"></span></span></div>' +
@@ -3434,7 +3435,7 @@
           '<div class="rc-gallery">' + gallery + '</div>' +
           '<div class="rc-help" data-toast="old"><span class="ic ic-20">{{DET_thumbsUp20}}</span>有幫助 (1)</div>' +
         '</div></div>');
-      card.querySelector('.rc-av').innerHTML = pool.length ? '<img alt="" src="' + pool[idx % pool.length] + '">' : '';
+      card.querySelector('.rc-av').innerHTML = pool.length ? '<img alt="' + r.nm + ' 的頭像" src="' + pool[idx % pool.length] + '">' : '';
       card.querySelector('.rc-nm').textContent = r.nm;
       card.querySelector('.rc-role').textContent = r.role;
       card.querySelector('.rc-go').textContent = r.go;
@@ -3494,7 +3495,7 @@
     ];
     var body = figs.map(function (f, i) {
       var cap = '<p class="det-body-md"' + (i ? ' style="margin-top:20px;"' : '') + '>' + f[0] + '</p>';  // 圖文段落間距 20（Figma 3701:133368）
-      return cap + (f[1] ? '<div class="det-fig"><img alt="" src="' + f[1] + '"></div>' : '');
+      return cap + (f[1] ? '<div class="det-fig"><img alt="步驟 ' + (i + 1) + ' 示意圖" src="' + f[1] + '"></div>' : '');
     }).join('');
     return h('<div class="det-sec" data-sec="imgs"><h2 class="det-h5">圖文說明</h2>' + body + '</div>');
   }
@@ -4346,6 +4347,7 @@
     [/^\(([\d,]+)\)・(\S+) 個已訂購$/, '($1)・$2 booked'],
     [/^· (\S+) 已購 · (.+?) 提供服務$/, '· $1 sold · by $2'],
     [/^出發日 (.+)$/, 'Departed $1'], [/^評論於 (.+)$/, 'Reviewed $1'],
+    [/^評論照片 (\d+)$/, 'Review photo $1'], [/^(.+) 的頭像$/, "$1's avatar"], [/^步驟 (\d+) 示意圖$/, 'Step $1 illustration'],
     [/^啟用後連續 (\d+) 天$/, '$1 consecutive days after activation'],
     [/^旅客(\d+)$/, 'Traveler $1'], [/^請選擇旅客(\d+)$/, 'Select traveler $1'],
     [/^訂單金額 X(\d+)$/, 'Order amount ×$1'],
@@ -4402,7 +4404,7 @@
     out = out.replace(/\s{2,}/g, ' ');
     return (i18nCache[str] = lead + out + trail);
   }
-  var I18N_ATTRS = ['placeholder', 'aria-label', 'title'];
+  var I18N_ATTRS = ['placeholder', 'aria-label', 'title', 'alt'];
   function i18nSkip(el) { for (var e = el; e && e.nodeType === 1; e = e.parentNode) { if (e.hasAttribute('data-i18n-skip') || e.tagName === 'SCRIPT' || e.tagName === 'STYLE') return true; } return false; }
   function i18nNode(n) {  // 文字節點：記住原文（繁中），寫入譯文
     if (n.__o === undefined || (n.data !== n.__t && n.data !== n.__o)) n.__o = n.data;  // 程式改寫了文字 → 視為新原文
