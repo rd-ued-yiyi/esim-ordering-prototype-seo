@@ -1415,7 +1415,7 @@
   .pc-sub .go { position: absolute; right: 0; top: 0; width: 111px; height: 42px; background: var(--kk-primary-medium); color: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 500; }
   .pc-foot-line { height: 1px; background: #5A5A5A; margin: 38px 0 28px; }
   .pc-foot-cols { display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; column-gap: 40px; }  /* 自適應：4 欄依內容寬、剩餘空間平均分配（不再固定總寬 1280） */
-  .pc-foot-col h4 { font-size: 16px; line-height: 24px; font-weight: 400; color: rgba(255,255,255,.4); margin-bottom: 16px; }
+  .pc-foot-col h2 { font-size: 16px; line-height: 24px; font-weight: 400; color: rgba(255,255,255,.4); margin-bottom: 16px; }
   .pc-foot-col a { display: block; color: #E6E6E6; line-height: 20px; margin-bottom: 4px; }
   .pc-pay { display: flex; flex-wrap: wrap; gap: 8px; width: 242px; }
   .pc-pay .ic { width: 42px; height: 26px; }
@@ -1722,7 +1722,7 @@
           </div>
         </aside>
         <div class="pc-ex-main">
-          <h1 class="sr-only">eSIM/WIFI 搜尋結果</h1>
+          <h2 class="sr-only">eSIM/WIFI 搜尋結果</h2>
           <!-- 結果數 + 已選條件 / 分隔線 / 排序項（Figma 3598-3806 Filter Summary Bar，與首頁探索更多同款） -->
           <div class="pc-ex-topbar">
             <div class="pc-ex-cntrow"><span class="pc-ex-cnt"><i id="plCnt">162</i>搜尋結果</span><div class="pc-ex-ftags pl-ftags" id="plFtags"></div></div>
@@ -1747,7 +1747,7 @@
     <div class="col">
       <div class="pc-crumb"><a id="ordCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="ordCrumbList">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="ordCrumbList2">搜尋結果</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>訂單填寫</span></div>
       <div class="pc-ord-grid">
-        <h1 class="sr-only">訂單填寫</h1>
+        <h2 class="sr-only">訂單填寫</h2>
         <div class="pc-ord-main" id="ordMain"></div>
         <aside class="pc-ord-side" id="ordSide"></aside>
       </div>
@@ -1759,7 +1759,7 @@
     <div class="col">
       <div class="pc-crumb"><a id="payCrumbHome">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbCat">eSIM/WIFI</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbList">搜尋結果</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="payCrumbOrder">訂單填寫</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>付款</span></div>
       <div class="pc-ord-grid">
-        <h1 class="sr-only">付款</h1>
+        <h2 class="sr-only">付款</h2>
         <div class="pc-ord-main" id="payMain"></div>
         <aside class="pc-ord-side" id="paySide"></aside>
       </div>
@@ -1778,10 +1778,10 @@
       </div>
       <div class="pc-foot-line"></div>
       <div class="pc-foot-cols">
-        <div class="pc-foot-col"><h4>認識KKday</h4><a>關於KKday</a><a>使用者條款</a><a>隱私權保護政策</a><a>常見問題及協助</a><a>媒體報導</a></div>
-        <div class="pc-foot-col"><h4>給各位旅遊家</h4><a>三大保證</a><a>官方 Blog</a><a>KKday Points 介紹</a><a>兌換贈品</a><a>點數卡兌換</a></div>
-        <div class="pc-foot-col"><h4>KKday 合作夥伴</h4><a>成為供應商</a><a>供應商登入</a><a>同業合作</a><a>大聯盟夥伴</a><a>人才招募</a></div>
-        <div class="pc-foot-col"><h4>付款方式</h4>
+        <div class="pc-foot-col"><h2>認識KKday</h2><a>關於KKday</a><a>使用者條款</a><a>隱私權保護政策</a><a>常見問題及協助</a><a>媒體報導</a></div>
+        <div class="pc-foot-col"><h2>給各位旅遊家</h2><a>三大保證</a><a>官方 Blog</a><a>KKday Points 介紹</a><a>兌換贈品</a><a>點數卡兌換</a></div>
+        <div class="pc-foot-col"><h2>KKday 合作夥伴</h2><a>成為供應商</a><a>供應商登入</a><a>同業合作</a><a>大聯盟夥伴</a><a>人才招募</a></div>
+        <div class="pc-foot-col"><h2>付款方式</h2>
           <div class="pc-pay"><span class="ic">{{PC_pay1}}</span><span class="ic">{{PC_pay2}}</span><span class="ic">{{PC_pay3}}</span><span class="ic">{{PC_pay4}}</span><span class="ic">{{PC_pay5}}</span><span class="ic">{{PC_pay6}}</span><span class="ic">{{PC_pay7}}</span><span class="ic">{{PC_pay8}}</span></div>
         </div>
       </div>
@@ -3305,7 +3305,7 @@
     pol.appendChild(cov);
     wrap.appendChild(pol);
     // 基本資訊：標題 + 描述 + 分組表（分組/欄位/ⓘ 完全對齊 Figma 3183-76681）
-    wrap.appendChild(h('<h3 class="det-h2">基本資訊</h3>'));
+    wrap.appendChild(h('<h2 class="det-h2">基本資訊</h2>'));
     var intro = h('<div class="det-intro"><span class="det-intro-t">依據購買天數，可額外享有 3GB~30GB 的熱點分享流量。由連續兩年榮獲 Opensignal 網路可靠性全球大獎的電信網路提供連線，訊號覆蓋率高，市區、離島與山區都能穩定上網；搭配 KKday App 可隨時查詢剩餘流量，客服 24 小時線上協助安裝與連線問題。</span><button class="det-intro-more" type="button">展開</button></div>');
     var moreBtn = intro.querySelector('.det-intro-more');
     function setMore(op) { moreBtn.innerHTML = (op ? '收起' : '展開') + '<span class="ic">{{DET_expandArrow16}}</span>'; }
