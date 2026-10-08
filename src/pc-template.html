@@ -2764,7 +2764,9 @@
       sms: /通話/.test(s)
     };
     p.carrier = p.vendor;
-    p.cancelType = /免費取消/.test(p.perks.join()) ? 'free' : (/前可免費取消/.test(p.perks.join()) ? 'cond' : (/不可取消/.test(p.perks.join()) ? 'none' : 'fee'));
+    var pj = p.perks.join(), cm = /(\d+)\s*天前可免費取消/.exec(pj);
+    p.cancelDays = cm ? +cm[1] : 0;
+    p.cancelType = cm ? 'cond' : (/免費取消/.test(pj) ? 'free' : (/不可取消/.test(pj) ? 'none' : 'fee'));  // 與卡片政策列一致：N天前可免費取消 → cond(N)
   });
   function plBoughtNum(s) { var m = parseInt(s, 10) || 0; return m * (/[kK]/.test(s) ? 1000 : 1); }
   function plMoney(n) { return 'NT$ ' + n.toLocaleString('en-US'); }
@@ -3298,8 +3300,10 @@
     // 政策行：立即確認 → 即買即用 → 取消政策 → 適用範圍（與 mweb 一致）
     var pol = h('<div class="det-policies"></div>');
     if (has(p, '立即確認')) pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_flash20}}</span><span class="pt">立即確認並傳送憑證</span></span>'));
+    var edPerk = p.perks.filter(function (x) { return /^最早可使用日/.test(x); })[0];
+    if (edPerk) { var edEl = h('<span class="perk"><span class="ic ic-20">{{IC_calendarLine20}}</span><span class="pt"></span></span>'); edEl.querySelector('.pt').textContent = edPerk; pol.appendChild(edEl); }  // 與卡片政策列同序：立即確認 → 最早可使用日 → 取消
     if (has(p, '即買即用') || has(p, '立即使用')) pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_check20}}</span><span class="pt">現在訂購，立即使用</span></span>'));
-    var cxlTxt = p.cancelType === 'free' ? '未使用可免費取消' : p.cancelType === 'cond' ? '所選日期 3 天前未使用可免費取消' : p.cancelType === 'fee' ? '可付費取消（依取消政策收手續費）' : '一經訂購不可取消、退款';
+    var cxlTxt = p.cancelType === 'free' ? '未使用可免費取消' : p.cancelType === 'cond' ? '所選日期 ' + p.cancelDays + ' 天前未使用可免費取消' : p.cancelType === 'fee' ? '可付費取消（依取消政策收手續費）' : '一經訂購不可取消、退款';
     pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_reload20}}</span><span class="pt">' + cxlTxt + '</span></span>'));
     var covList = DET_COUNTRIES.filter(function (n, i, a) { return a.indexOf(n) === i; });
     var covText = '適用' + covList.slice(0, 3).join('、') + '等' + covList.length + '個國家/地區';
@@ -3391,7 +3395,7 @@
   function detCancel(p) {
     var body;
     if (p.cancelType === 'free') body = '<p class="det-body-md">未使用可免費取消</p>';
-    else if (p.cancelType === 'cond') body = cxlTable([['所選日期 3 天前', '未使用可免費取消'], ['所選日期 0～2 天前', '不可取消、更改訂單、也不可請求退款']]);
+    else if (p.cancelType === 'cond') body = cxlTable([['所選日期 ' + p.cancelDays + ' 天前', '未使用可免費取消'], ['所選日期 ' + p.cancelDays + ' 天內 ～ 使用日', '手續費 50%'], ['使用日之後', '手續費 100%']]);  // 與訂單頁取消政策 dialog 同階梯
     else if (p.cancelType === 'fee') body = cxlTable([['所選日期 10 天前', '未使用可免費取消'], ['所選日期 3～5 天前', '手續費 50%'], ['所選日期 0～2 天前', '手續費 100%'], ['所選日期 0 天前', '不可取消、更改訂單、也不可請求退款']]);
     else body = '<p class="det-body-md">商品一經訂購完成後，即不可取消、更改訂單，亦不得請求退款</p>';
     return h('<div class="det-sec" data-sec="cancel"><h2 class="det-h5">取消政策</h2>' +
@@ -4356,6 +4360,7 @@
     [/^旅客(\d+)$/, 'Traveler $1'], [/^請選擇旅客(\d+)$/, 'Select traveler $1'],
     [/^訂單金額 X(\d+)$/, 'Order amount ×$1'],
     [/^所選日期 (\d+) 天前$/, '$1 days before the selected date'],
+    [/^所選日期 (\d+) 天前未使用可免費取消$/, 'Free cancellation if unused $1 days before the selected date'],
     [/^所選日期 (\d+)～(\d+) 天前$/, '$1–$2 days before the selected date'],
     [/^所選日期 (\d+) 天內 ～ 使用日$/, 'Within $1 days of the selected date'],
     [/^(\d+)天前可免費取消$/, 'Free cancellation up to $1 days before'],
