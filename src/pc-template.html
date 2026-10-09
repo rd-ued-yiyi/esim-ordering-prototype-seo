@@ -133,7 +133,8 @@
   .pc-find { display: flex; flex-direction: column; gap: 16px; }
   .pc-find-input { width: 100%; display: flex; align-items: center; gap: 8px; padding: 12px;
     border: 1.5px solid var(--kk-primary-medium); border-radius: 12px; background: #fff; transition: box-shadow .15s; }
-  .pc-find-input:hover { box-shadow: 0 0 0 3px rgba(38,190,201,.15); }
+  .pc-find-input { transition: background-color .15s; }
+  .pc-find-input:hover { background: var(--kk-primary-lighter); }  /* Figma 3966-162688 select bar Hover/Pressed：底 #F0FAFB、描邊維持 #26BEC9 */
   .pc-find-input .ph { flex: 1 1 0; text-align: left; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-hotchips { display: flex; flex-wrap: wrap; gap: 10px; }
   .pc-chip { display: inline-flex; align-items: center; gap: 2px; height: 36px; padding: 0 12px; border-radius: 8px;
