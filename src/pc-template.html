@@ -102,7 +102,8 @@
     background: rgba(255,255,255,.88); border: 1.5px solid #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(17,25,40,.06);
     font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-dest-pill .chev { transition: transform .2s; }
-  .pc-dest-pill:hover .chev { transform: translateY(1px); }
+  .pc-dest-pill { transition: background-color .15s; }
+  .pc-dest-pill:hover { background: rgba(255,255,255,.9); }  /* Figma 3966-162649 Destination Select Bar hover：白 88% → 90% */
   /* 多國態：名稱列表超出省略、數量 (N) 常駐可見（對齊 mweb destName + destNum） */
   .pc-dest-pill #pcDestName { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dest-num { flex: 0 0 auto; color: var(--kk-text-darker); font-weight: 600; }
