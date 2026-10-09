@@ -5,7 +5,7 @@
 <style>
   :root {
     --kk-primary-medium: #26BEC9; --kk-primary-button: #1AB6C1; --kk-primary-dark: #13A3B6; --kk-primary-darker: #068B9F;
-    --kk-primary-lighter: #F0FAFB; --kk-primary-light: #D4F2F4;
+    --kk-primary-lighter: #F0FAFB; --kk-primary-light: #CEF0F3;  /* $color-background-primary-light（原誤寫 #D4F2F4） */
     --kk-surface-lighter: #F7FAFC; --kk-surface-light: #F1F4F8; --kk-surface-medium: #E6E9ED; --kk-surface-darker: #9C9DA0;
     --kk-text-darker: #212121; --kk-text-dark: #727272; --kk-text-medium: #9C9DA0; --kk-text-light: #BABBBE;
     --kk-border-lighter: #E6E9ED; --kk-border-light: #D5D6DB;
@@ -466,7 +466,7 @@
   /* 目的地 chip：與 mweb .dest-modal .chip 一致——白底 8px 圓角矩形 + inset 1px 淺邊、選中淺青底青邊青字 */
   .dlg-chip { display: inline-flex; align-items: center; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--kk-border-lighter);
     background: #fff; color: var(--kk-text-darker); font-size: 14px; line-height: 20px; white-space: nowrap; }
-  .dlg-chip:hover { border-color: var(--kk-primary-medium); }
+  .dlg-chip:hover { background: var(--kk-surface-lighter); }  /* DS Chip Rectangle Hovered：底 #F7FAFC、邊框不變 */
   .dlg-chip.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); color: var(--kk-primary-dark); }
   .dlg-tabs { position: sticky; top: 0; z-index: 2; background: #fff; display: flex; gap: 0; margin-top: 0; padding-top: 4px; border-bottom: 1px solid var(--kk-border-lighter); }  /* 間距改用白底 padding，貼頂時不透出下方內容 */
   .dlg-tab { position: relative; padding: 12px; font-size: 16px; line-height: 24px; color: var(--kk-text-darker); }
@@ -532,8 +532,10 @@
   /* 目的地 Chip：3 欄等寬 grid gap 8、1px #D5D6DB、r8、p8（文字 px4）置中 14/20；選中＝#F0FAFB + #26BEC9 邊字 */
   #pcDlg .dlg-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   #pcDlg .dlg-chip { justify-content: center; padding: 8px 12px; border-color: var(--kk-border-light); overflow: hidden; text-overflow: ellipsis; }
-  #pcDlg .dlg-chip:hover { border-color: var(--kk-primary-medium); }
-  #pcDlg .dlg-chip.sel { color: var(--kk-primary-medium); }
+  /* DS Chip（Component-Setting 5724-3403，Rectangle）：Hovered 底 #F7FAFC 邊 #D5D6DB；Selected 底 #F0FAFB 邊 #26BEC9 字 #26BEC9；Selected+Hovered 底 #CEF0F3 字 #068B9F */
+  #pcDlg .dlg-chip:hover { background: var(--kk-surface-lighter); border-color: var(--kk-border-light); }
+  #pcDlg .dlg-chip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-medium); }
+  #pcDlg .dlg-chip.sel:hover { background: var(--kk-primary-light); border-color: var(--kk-primary-medium); color: var(--kk-primary-darker); }
   /* 洲別分頁（KKTab）：滿寬、px12、底線 #E6E9ED；項目 pt12 px12、選中 Semibold #13A3B6 + 2px 底條（距文字 10） */
   #pcDlg .dlg-tabs { margin-top: 32px; padding: 0 12px; }
   #pcDlg .dlg-tabs:first-child { margin-top: 8px; }
