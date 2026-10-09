@@ -602,7 +602,7 @@
 
   /* ---------- footer（沿用） ---------- */
   /* ================= 搜尋結果列表頁（Figma 3140-37910 / 3190-40586 / 3191-69000） ================= */
-  body.list-mode #pcHome { display: none; }
+  body.list-mode #pcHome, body.list-mode .pc-cat { display: none; }  /* 列表頁不顯示分類列（Figma 3598-3806 header bar_pc：Category Bar hidden） */
   .pc-listpage { display: block; background: var(--kk-surface-light); padding-bottom: 40px; }  /* 淺灰頁底，襯托白色篩選卡 / 商品卡 */
   .pc-listpage[hidden] { display: none; }  /* [hidden] 需覆蓋 display，否則主題頁也會渲染出空的列表頁 */
   /* 條件列（sticky，Figma 3701-124950 Quick Filter Bar）：單行 py16（80 高）：目的地 200 + gap 8 + 天數 160 ｜ gap 8 ｜ 流量輪播（flex 1）+ gap 8 + 更多 52 */
