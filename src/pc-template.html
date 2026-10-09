@@ -642,7 +642,7 @@
   .pc-lchip .rec { position: absolute; top: -5px; right: -5px; padding: 2px 4px; border-radius: 4px 4px 4px 0; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; }
   /* Carousel Arrow Button（Figma 3792:159534）：18×28、rgba(255,255,255,.6)、16 icon，疊在輪播兩端、垂直置中 */
   .pc-lnav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 24px; height: 40px; padding: 0; border: 0; background: transparent; cursor: pointer; }  /* 按鈕本體 24×40（無障礙命中區，往內側延伸）；視覺 18×32 白底由 ::before 繪製。Figma 3701-124950 Carousel Arrow Button：18×32 白底、py8、內側 r8、16 semibold 箭頭 */
-  .pc-lnav::before { content: ''; position: absolute; top: 4px; width: 18px; height: 32px; background: rgba(0,0,0,.3); }  /* Figma 3792-159492 Carousel Arrow Button（On Image）：黑 30%、hover 40%、白箭頭 */
+  .pc-lnav::before { content: ''; position: absolute; top: 4px; width: 18px; height: 32px; background: rgba(0,0,0,.2); }  /* Figma 3792-159492 Carousel Arrow Button（On Image，更新版）：黑 20%、hover 40%、白箭頭 */
   .pc-lnav--prev { left: 0; }
   .pc-lnav--next { right: 0; }
   .pc-lnav--prev::before { left: 0; border-radius: 0 8px 8px 0; }
