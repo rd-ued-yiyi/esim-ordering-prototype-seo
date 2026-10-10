@@ -1315,7 +1315,7 @@
   .tvs-ck { width: 20px; height: 20px; margin-left: auto; flex: 0 0 auto; }
   .tvs-div { height: 1px; background: var(--kk-border-lighter); }
   .tvs-save { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; padding: 12px 24px 12px 16px; border: 1px solid var(--kk-primary-dark); border-radius: 8px; color: var(--kk-primary-dark); font-size: 16px; line-height: 24px; font-weight: 600; }
-  .tvs-save .ic { width: 20px; height: 20px; }
+  .tvs-save .ic, .tvs-save .ic img { width: 20px; height: 20px; display: block; }
   /* 旅遊期間聯絡方式 內聯表單（Figma 3341-25303） */
   .ct-inline { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
   .ct-inline .ord-form { margin-top: 0; }
@@ -3995,7 +3995,7 @@
           '<div class="tvs-menu" hidden></div></div></div>' +
         '<div class="tvs-div"></div>' +
         '<div class="ord-form tv-edit" data-tvslot="' + idx + '">' + tvSlotFields(slot.data, idx) + '</div>' +
-        '<button class="tvs-save" type="button"><span class="ic">' + OI.check + '</span>新增常用旅客</button>' +
+        '<button class="tvs-save" type="button"><span class="ic">{{ORD_plusSemibold20}}</span>新增常用旅客</button>' +  // Primary subtle Lg：ic_plus_line_semibold 20（Figma 4026-63148）
       '</div></div>');
     card.querySelector('.tvs-clear').onclick = function () { ordSt.tvSlots[idx] = { pick: null, data: tvBlankData() }; renderOrdTravelers(); };
     var selBtn = card.querySelector('.tvs-sel'), menu = card.querySelector('.tvs-menu');

@@ -435,6 +435,7 @@ pc_subs = {
     "{{ORD_info16}}": pc_img("ord/info16.svg"),
     "{{ORD_infoSemibold16}}": pc_img("ord/infoSemibold16.svg"),
     "{{ORD_calendar16}}": pc_img("ord/calendar16.svg"),
+    "{{ORD_plusSemibold20}}": file_img("assets/pc/ord/plusSemibold20.svg", recolor=("#13A3B6", "#13A3B6")),  # 新增常用旅客 ic_plus_line_semibold 20 #13A3B6（Figma 4026-63148）
     "{{DET_expandArrow16}}": file_img("assets/pc/det/expandArrow16.svg", recolor=("black", "#212121")),  # 基本資訊「展開」箭頭 16
     "{{EX_crumbArrow14}}":  pc_img("explore/crumbArrow14.svg"),  # 麵包屑箭頭 ic_arrowRight_line 14 #9C9DA0（Figma 3710-148692）
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
