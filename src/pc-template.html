@@ -837,7 +837,7 @@
   /* 領取折扣 popover（Figma 3220-51471）：349 寬、上三角、藍底提示 + 兩張券卡 */
   /* 領取折扣 tooltip（Figma 3701:138942 Tooltip coupon）：400 寬、貼 banner 下緣靠右、白底 r8 陰影 0 4 12、p16 gap 16、無尖角 */
   .pl-cpop { position: absolute; right: 0; top: 100%; z-index: 8; width: 400px; max-width: 100%; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; flex-direction: column; gap: 16px; text-align: left; cursor: default; }
-  .pl-cpop.show { display: flex; }
+  .pl-cpop.show, .det-coupon:hover .pl-cpop { display: flex; }  /* 折扣券 popover：hover banner 顯示（popover 為 banner 子元素、緊貼下緣，游標移入 popover 仍維持 hover） */
   .pl-cpop .cp-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: var(--kk-bg-info-lighter); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pl-cpop .cp-note .ic { width: 20px; height: 20px; color: var(--kk-text-info-dark); flex: 0 0 auto; }
   .pl-cpop .cp-cards { display: flex; flex-direction: column; gap: 12px; }
@@ -3292,11 +3292,9 @@
         '</span>' +
       '</span></button>');
     var pop = cp.querySelector('.pl-cpop');
-    cp.addEventListener('click', function (e) { e.stopPropagation(); if (!pop.classList.contains('show')) pcPopOpen('cpop'); pop.classList.toggle('show'); });
-    pcPopOthers('cpop', function () { pop.classList.remove('show'); });
+    cp.addEventListener('click', function (e) { e.stopPropagation(); });  // 改為 hover 顯示，點擊 banner 不再切換
     pop.addEventListener('click', function (e) { e.stopPropagation(); });
     wrap.appendChild(cp);
-    document.addEventListener('click', function (e) { if (pop.classList.contains('show') && !pop.contains(e.target)) pop.classList.remove('show'); });  // 點外部收起
     // 政策行：立即確認 → 即買即用 → 取消政策 → 適用範圍（與 mweb 一致）
     var pol = h('<div class="det-policies"></div>');
     if (has(p, '立即確認')) pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_flash20}}</span><span class="pt">立即確認並傳送憑證</span></span>'));
