@@ -836,7 +836,7 @@
   .det-coupon .claim .car, .det-coupon .claim .car img { width: 16px; height: 16px; display: block; }
   /* 領取折扣 popover（Figma 3220-51471）：349 寬、上三角、藍底提示 + 兩張券卡 */
   /* 領取折扣 tooltip（Figma 3701:138942 Tooltip coupon）：400 寬、貼 banner 下緣靠右、白底 r8 陰影 0 4 12、p16 gap 16、無尖角 */
-  .pl-cpop { position: absolute; right: 0; top: 100%; z-index: 8; width: 400px; max-width: 100%; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; flex-direction: column; gap: 16px; text-align: left; cursor: default; }
+  .pl-cpop { position: fixed; right: auto; top: auto; z-index: 60; width: 400px; max-width: 100%; overflow-y: auto;  /* fixed：以 dialog（有 transform）為基準，由 JS 定位；不被內文捲動區裁切、蓋過底部價格列 */ background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; flex-direction: column; gap: 16px; text-align: left; cursor: default; }
   .pl-cpop.show, .det-coupon:hover .pl-cpop { display: flex; }  /* 折扣券 popover：hover banner 顯示（popover 為 banner 子元素、緊貼下緣，游標移入 popover 仍維持 hover） */
   .pl-cpop .cp-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 8px; background: var(--kk-bg-info-lighter); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .pl-cpop .cp-note .ic { width: 20px; height: 20px; color: var(--kk-text-info-dark); flex: 0 0 auto; }
@@ -859,9 +859,10 @@
   .det-policies .perk.cover { display: flex; width: 100%; }
   .det-policies .perk.cover .pt { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
   /* 適用國家 tooltip（Figma 3701-138979）：白卡 p16 r8 陰影 0 4 12 .12，兩欄清單 gap 6、項目 gap 8、14/20 圓點 */
-  .det-policies .scope-tip { position: absolute; left: 28px; top: calc(100% + 6px); z-index: 6; width: 400px; box-sizing: border-box; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; gap: 6px; }
+  .det-policies .scope-tip { position: fixed; left: auto; top: auto; z-index: 60; width: 400px;  /* fixed：由 JS 依觸發文字定位，空間不足翻到上方 */ box-sizing: border-box; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 16px; display: none; gap: 6px; }
   .det-policies .perk.cover .pt:hover + .scope-tip, .det-policies .perk.cover .scope-tip:hover { display: flex; }  /* 只在文字上 hover 才顯示 */
   .det-policies .scope-tip::before { content: ''; position: absolute; left: 0; right: 0; top: -8px; height: 8px; }  /* 透明橋：蓋住 6px 空隙 */
+  .det-policies .scope-tip.above::before { top: auto; bottom: -8px; }
   .det-policies .scope-tip ul { flex: 1 1 0; min-width: 0; list-style: disc; padding: 0 0 0 21px; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }
   .det-policies .scope-tip li { padding: 0; }
   /* 基本資訊 */
@@ -3295,6 +3296,18 @@
     cp.addEventListener('click', function (e) { e.stopPropagation(); });  // 改為 hover 顯示，點擊 banner 不再切換
     pop.addEventListener('click', function (e) { e.stopPropagation(); });
     wrap.appendChild(cp);
+    // popover 定位（fixed，以 dialog 為基準）：預設貼 banner 下緣、右對齊；下方不足 240 且上方較大 → 翻到上方；高度限制在 dialog 內可捲
+    var dlgEl = document.getElementById('plDetDlg');
+    function placeCpop() {
+      var d = dlgEl.getBoundingClientRect(), r = cp.getBoundingClientRect();
+      var right = d.right - r.right, below = d.bottom - r.bottom - 8, above = r.top - d.top - 8;
+      pop.style.right = right + 'px';
+      if (below < 240 && above > below) { pop.style.top = 'auto'; pop.style.bottom = (d.bottom - r.top) + 'px'; pop.style.maxHeight = above + 'px'; }
+      else { pop.style.bottom = 'auto'; pop.style.top = (r.bottom - d.top) + 'px'; pop.style.maxHeight = below + 'px'; }
+    }
+    cp.addEventListener('mouseenter', placeCpop);
+    var detBd = document.querySelector('.pl-det-bd');
+    if (detBd) detBd.addEventListener('scroll', function () { if (getComputedStyle(pop).display !== 'none') placeCpop(); }, { passive: true });
     // 政策行：立即確認 → 即買即用 → 取消政策 → 適用範圍（與 mweb 一致）
     var pol = h('<div class="det-policies"></div>');
     if (has(p, '立即確認')) pol.appendChild(h('<span class="perk"><span class="ic ic-20">{{DET_flash20}}</span><span class="pt">立即確認並傳送憑證</span></span>'));
@@ -3309,6 +3322,20 @@
     var uls = cov.querySelectorAll('ul'), half = Math.ceil(covList.length / 2);
     covList.forEach(function (n, i) { var li = document.createElement('li'); li.textContent = n; uls[i < half ? 0 : 1].appendChild(li); });
     pol.appendChild(cov);
+    // 適用國家 tooltip 定位（fixed，以 dialog 為基準）：貼文字下緣 +6；下方放不下 → 翻到上方（透明橋改到下緣）
+    (function () {
+      var pt = cov.querySelector('.pt'), tip = cov.querySelector('.scope-tip'), dlg = document.getElementById('plDetDlg');
+      function place() {
+        var d = dlg.getBoundingClientRect(), r = pt.getBoundingClientRect();
+        var th = tip.offsetHeight || 0, left = Math.min(r.left - d.left, d.width - 400 - 12);
+        tip.style.left = Math.max(12, left) + 'px';
+        if (r.bottom + 6 + th > d.bottom - 8 && r.top - 6 - th > d.top + 8) { tip.classList.add('above'); tip.style.top = (r.top - d.top - 6 - th) + 'px'; }
+        else { tip.classList.remove('above'); tip.style.top = (r.bottom - d.top + 6) + 'px'; }
+      }
+      pt.addEventListener('mouseenter', function () { place(); requestAnimationFrame(place); });  // 第二幀：display 由 :hover 生效後再量高度
+      var bd = document.querySelector('.pl-det-bd');
+      if (bd) bd.addEventListener('scroll', function () { if (getComputedStyle(tip).display !== 'none') place(); }, { passive: true });
+    })();
     wrap.appendChild(pol);
     // 基本資訊：標題 + 描述 + 分組表（分組/欄位/ⓘ 完全對齊 Figma 3183-76681）
     wrap.appendChild(h('<h2 class="det-h2">基本資訊</h2>'));
