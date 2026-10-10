@@ -1782,6 +1782,10 @@
   .exf-sec .fs-price-val { margin: 0; }
   .exf-sec .exp-opts { gap: 8px; margin: 0; }
   .exf-sec .fs-range { margin: 0; }
+
+  /* 橫向 chip 條遮罩：內容不溢位或已滾到底時隱藏（列表篩選列 / 條件列 / 訂單頁日期 chips），淡入淡出 150ms */
+  .pl-filters::after, .pl-cond-more::before, .ord-dmore::before { transition: opacity .15s; }
+  .pl-filters.mask-off::after, .pl-conds.mask-off .pl-cond-more::before, .ord-date-wrap.mask-off .ord-dmore::before { opacity: 0; }
 </style>
 
 <div class="esim-root">
@@ -6338,4 +6342,30 @@
     }
   } catch (e) {}
 })();
+
+  // 橫向 chip 條遮罩：可滾且未到底才顯示（scroll / resize / 內容變動時更新；訂單頁日期 chips 為動態產生，由 body 觀察器補綁）
+  (function () {
+    var SPECS = [['plFilterScroll', '.pl-filters'], ['plCondScroll', '.pl-conds'], ['ordDateChips', '.ord-date-wrap']];
+    function bind(el, host) {
+      if (!el || !host || el._maskUpd) return;
+      var upd = function () {
+        var can = el.scrollWidth > el.clientWidth + 1;
+        host.classList.toggle('mask-off', !can || el.scrollLeft + el.clientWidth >= el.scrollWidth - 1);
+      };
+      el._maskUpd = upd;
+      el.addEventListener('scroll', upd, { passive: true });
+      el.addEventListener('scrollend', upd);  // 慣性滾動結束再校正一次
+      window.addEventListener('resize', upd);
+      new MutationObserver(function () { requestAnimationFrame(upd); }).observe(el, { childList: true, subtree: true, characterData: true });
+      requestAnimationFrame(upd); setTimeout(upd, 300);
+    }
+    function scan() {
+      SPECS.forEach(function (s) {
+        var el = document.getElementById(s[0]); if (!el) return;
+        if (el._maskUpd) requestAnimationFrame(el._maskUpd); else bind(el, el.closest(s[1]) || el.parentElement);
+      });
+    }
+    scan();
+    new MutationObserver(scan).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
+  })();
 </script>
