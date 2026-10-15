@@ -1809,6 +1809,11 @@
   .benefit-list .benefit-row + .benefit-row { border-top: 1px solid var(--kk-border-lighter); padding-top: 20px; }
   .ic-40 { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
   .ic-40 img { max-width: 40px; max-height: 40px; display: block; }
+
+  /* 天數 ↔ 流量 區塊分隔線（Figma 4265-67039：1px #E6E9ED，上下各 24 由 .group-24 gap 提供） */
+  .sec-line { width: 100%; height: 1px; background: var(--kk-border-lighter); flex: 0 0 auto; }
+  /* 流量檔位帶尾端「已經到底了～」（Figma 4265-64928：200 寬 px16、12/16 #727272、垂直置中；計費方式 ≥ 2 組時顯示） */
+  .opts-end { flex: 0 0 auto; width: 200px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; align-self: stretch; margin-left: -12px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); white-space: nowrap; }
 </style>
 
 <div class="esim-root">
@@ -2112,6 +2117,7 @@
                 </button>
                 <div class="chips-row" id="dayChips"><!-- 由 JS 從 DAYS_ALL 前 30 項(1–30天)生成，與滾輪同源 --></div>
               </div>
+              <div class="sec-line"></div>
 
               <!-- 流量 -->
               <div class="group-8">
@@ -3084,6 +3090,7 @@
       });
       rowEl.appendChild(grid);
     });
+    if (rowEl.querySelectorAll('.opts-grid').length >= 2) rowEl.appendChild(el('<div class="opts-end">已經到底了～</div>'));  // 計費方式 ≥ 2 組：尾端提示（Figma 4265-67039）
   }
   // 點選流量檔後把選中項平滑滾到可視區中央（邊界自動夾取；spy 加保護窗不搶 tab）
   function centerOpt(scrollEl, selEl) {
