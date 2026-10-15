@@ -1786,6 +1786,13 @@
   /* 橫向 chip 條遮罩：內容不溢位或已滾到底時隱藏（列表篩選列 / 條件列 / 訂單頁日期 chips），淡入淡出 150ms */
   .pl-filters::after, .pl-cond-more::before, .ord-dmore::before { transition: opacity .15s; }
   .pl-filters.mask-off::after, .pl-conds.mask-off .pl-cond-more::before, .ord-date-wrap.mask-off .ord-dmore::before { opacity: 0; }
+
+  /* 主題頁（已選目的地）底部懸浮「搜尋套餐」：卡片上的按鈕不在可視區時固定在底部；按鈕捲入可視區時平移合體到卡片按鈕位置 */
+  .float-cta-bg { position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; width: 100%; max-width: 430px; height: calc(72px + env(safe-area-inset-bottom, 0px)); background: #fff; box-shadow: 0 -4px 12px rgba(38,50,56,.12); z-index: 30; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .float-cta-bg.on { opacity: 1; }
+  .float-cta { position: fixed; z-index: 31; margin: 0; display: none; transition: top .2s ease, left .2s ease, width .2s ease; }
+  .float-cta.on { display: block; }
+  #searchCta.ghost { visibility: hidden; }
 </style>
 
 <div class="esim-root">
@@ -1986,6 +1993,7 @@
               <span class="ic ic-16">{{IC_infoFill}}</span>
               <div class="txt">
                 <span>購買前請確認你的裝置是否支援 eSIM</span>
+                <span>eSIM 僅支援未鎖網且具備 eSIM 功能的裝置，例如 iPhone XS／XR 以上、Google Pixel 3 以上、Samsung Galaxy S20 以上機型。部分國家或電信商販售的機型可能不支援 eSIM，安裝前請先至裝置設定確認；一支裝置同時只能啟用一組 eSIM 行動資料。</span>
                 <button class="lnk" data-action="compat">查看全部相容裝置</button>
               </div>
             </div>
@@ -6367,5 +6375,45 @@
     }
     scan();
     new MutationObserver(scan).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
+  })();
+
+  // 底部懸浮「搜尋套餐」與卡片按鈕合體／分離（主題頁已選目的地狀態）
+  (function () {
+    var card = document.getElementById('searchCta'); if (!card) return;
+    var bg = document.createElement('div'); bg.className = 'float-cta-bg';
+    var fb = document.createElement('button'); fb.type = 'button'; fb.className = 'cta enabled float-cta'; fb.textContent = card.textContent;
+    document.body.appendChild(bg); document.body.appendChild(fb);
+    fb.addEventListener('click', function () { card.click(); });
+    var BAR = 72, PAD = 12, DUR = 220, docked = true, shown = false, animating = false;
+    function app() { return document.querySelector('.app'); }
+    function barPose() { var a = app().getBoundingClientRect(); return { left: a.left + 16, width: a.width - 32, top: innerHeight - BAR + PAD }; }
+    function cardPose() { var r = card.getBoundingClientRect(); return { left: r.left, width: r.width, top: r.top }; }
+    function apply(p) { fb.style.left = p.left + 'px'; fb.style.width = p.width + 'px'; fb.style.top = p.top + 'px'; }
+    function snap(p) { fb.style.transition = 'none'; apply(p); void fb.offsetHeight; fb.style.transition = ''; }
+    function active() { var s = document.querySelector('.screen[data-screen="destination"]'); return !!(s && s.classList.contains('is-active') && card.offsetParent); }
+    function hideAll() { shown = false; docked = true; animating = false; fb.classList.remove('on'); bg.classList.remove('on'); card.classList.remove('ghost'); }
+    function update() {
+      if (!active()) { hideAll(); return; }
+      var r = card.getBoundingClientRect();
+      // 遲滯：合體要按鈕完整露出在懸浮條之上；分離要按鈕底緣超出視窗
+      var wantFloat = docked ? (r.bottom > innerHeight - 8) : (r.bottom > innerHeight - BAR);
+      if (!shown) { shown = true; docked = !wantFloat; if (wantFloat) { fb.classList.add('on'); snap(barPose()); bg.classList.add('on'); } return; }
+      if (wantFloat === !docked) { if (!docked && !animating) { snap(barPose()); bg.classList.add('on'); } return; }
+      if (animating) return;
+      animating = true;
+      if (wantFloat) {  // 分離：從卡片按鈕位置滑到底部
+        docked = false; card.classList.add('ghost'); fb.classList.add('on'); snap(cardPose());
+        bg.classList.add('on');
+        requestAnimationFrame(function () { apply(barPose()); });
+        setTimeout(function () { card.classList.remove('ghost'); animating = false; update(); }, DUR);
+      } else {  // 合體：從底部滑到卡片按鈕位置，到位後只留卡片按鈕
+        docked = true; bg.classList.remove('on'); card.classList.add('ghost'); apply(cardPose());
+        setTimeout(function () { fb.classList.remove('on'); card.classList.remove('ghost'); animating = false; update(); }, DUR);
+      }
+    }
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    new MutationObserver(function () { requestAnimationFrame(update); }).observe(app(), { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'style'] });
+    update();
   })();
 </script>
