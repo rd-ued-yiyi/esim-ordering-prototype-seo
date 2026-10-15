@@ -1548,15 +1548,16 @@
   /* 費用明細：在 footer 上方原地展開的面板 */
   /* 費用明細：footer 上方展開的 bottom sheet 樣式面板（把手＋✕＋標題，Figma 1074-82877） */
   .ord-price-panel { position: absolute; left: 0; right: 0; bottom: 100%; background: #fff;
-    border-radius: 16px 16px 0 0; box-shadow: 0 -8px 24px rgba(38, 50, 56, .16); display: none; }
+    border-radius: 16px 16px 0 0; display: none; }  /* Figma 1074-82877：白底 r16，無陰影（浮在暗底遮罩上） */
   .ord-price-panel.open { display: block; }
   /* 費用明細展開時的暗底遮罩（bottom sheet 樣式；footer+面板 浮在遮罩之上，Figma 1074-82877） */
-  .pp-mask { position: absolute; inset: 0; background: rgba(17, 25, 40, .5); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease; z-index: 40; }
+  .pp-mask { position: absolute; inset: 0; background: rgba(0, 0, 0, .5); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease; z-index: 40; }
   .pp-mask.open { opacity: 1; visibility: visible; }
   .ord-modal .ord-foot { z-index: 42; }
   .ord-modal .pay-foot-note { position: relative; z-index: 41; }
-  .ord-price-panel .pp-body { padding: 4px 16px 20px; }
-  .ord-price-panel .price-line { display: flex; align-items: center; justify-content: space-between; font-size: 14px; line-height: 20px; color: #212121; padding: 4px 0; }
+  .ord-price-panel .pp-body { padding: 20px 16px; display: flex; flex-direction: column; gap: 8px; }  /* Figma 1074-82877：px16 py20、明細行間 8 */
+  .ord-price-panel .price-line { display: flex; align-items: center; justify-content: space-between; font-size: 14px; line-height: 20px; color: #212121; padding: 0; }
+  .ord-foot:has(.ord-price-panel.open) { border-top-color: transparent; }  /* 明細展開時 footer 與面板相連，不顯示上邊線 */
   .ord-price-panel .price-line .k { color: #212121; }  /* 明細行左側同深色（Figma 1074-82877） */
   .ord-price-toggle.open .caret { transform: rotate(0); }
   .ord-price-toggle { display: flex; align-items: center; gap: 2px; flex: 1 1 auto; }
