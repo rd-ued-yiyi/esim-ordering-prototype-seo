@@ -1788,9 +1788,9 @@
   .pl-filters.mask-off::after, .pl-conds.mask-off .pl-cond-more::before, .ord-date-wrap.mask-off .ord-dmore::before { opacity: 0; }
 
   /* 主題頁（已選目的地）底部懸浮「搜尋套餐」：卡片上的按鈕不在可視區時固定在底部；按鈕捲入可視區時平移合體到卡片按鈕位置 */
-  .float-cta-bg { position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; width: 100%; max-width: 430px; height: calc(72px + env(safe-area-inset-bottom, 0px)); background: #fff; box-shadow: 0 -4px 12px rgba(38,50,56,.12); z-index: 30; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .float-cta-bg { position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; width: 100%; max-width: 430px; height: calc(72px + env(safe-area-inset-bottom, 0px)); background: #fff; box-shadow: 0 -4px 12px rgba(38,50,56,.12); z-index: 30; opacity: 0; pointer-events: none; }
   .float-cta-bg.on { opacity: 1; }
-  .float-cta { position: fixed; z-index: 31; margin: 0; display: none; transition: top .2s ease, left .2s ease, width .2s ease; }
+  .float-cta { position: fixed; z-index: 31; margin: 0; display: none; }  /* 位置每幀由 JS 計算，不加 transition（避免卡頓） */
   .float-cta.on { display: block; }
   #searchCta.ghost { visibility: hidden; }
 
@@ -6376,43 +6376,33 @@
     new MutationObserver(scan).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
   })();
 
-  // 底部懸浮「搜尋套餐」與卡片按鈕合體／分離（主題頁已選目的地狀態）
+  // 底部懸浮「搜尋套餐」（主題頁已選目的地狀態）：每幀依卡片按鈕位置計算，不做兩態動畫
+  // 規則：卡片按鈕頂緣還在懸浮按鈕之下 → 懸浮；進入最後 40px 時寬度／位置漸變成卡片按鈕的尺寸、白條淡出；
+  //       卡片按鈕頂緣到達（或高於）懸浮按鈕頂緣 → 懸浮按鈕消失、只剩卡片按鈕（懸浮按鈕永遠不會比卡片按鈕更低）
   (function () {
     var card = document.getElementById('searchCta'); if (!card) return;
     var bg = document.createElement('div'); bg.className = 'float-cta-bg';
     var fb = document.createElement('button'); fb.type = 'button'; fb.className = 'cta enabled float-cta'; fb.textContent = card.textContent;
     document.body.appendChild(bg); document.body.appendChild(fb);
     fb.addEventListener('click', function () { card.click(); });
-    var BAR = 72, PAD = 12, DUR = 220, docked = true, shown = false, animating = false;
-    function app() { return document.querySelector('.app'); }
-    function barPose() { var a = app().getBoundingClientRect(); return { left: a.left + 16, width: a.width - 32, top: innerHeight - BAR + PAD }; }
-    function cardPose() { var r = card.getBoundingClientRect(); return { left: r.left, width: r.width, top: r.top }; }
-    function apply(p) { fb.style.left = p.left + 'px'; fb.style.width = p.width + 'px'; fb.style.top = p.top + 'px'; }
-    function snap(p) { fb.style.transition = 'none'; apply(p); void fb.offsetHeight; fb.style.transition = ''; }
+    var BAR = 72, PAD = 12, ZONE = 40, raf = 0;
     function active() { var s = document.querySelector('.screen[data-screen="destination"]'); return !!(s && s.classList.contains('is-active') && card.offsetParent); }
-    function hideAll() { shown = false; docked = true; animating = false; fb.classList.remove('on'); bg.classList.remove('on'); card.classList.remove('ghost'); }
-    function update() {
-      if (!active()) { hideAll(); return; }
-      var r = card.getBoundingClientRect();
-      // 遲滯：合體要按鈕完整露出在懸浮條之上；分離要按鈕底緣超出視窗
-      var wantFloat = docked ? (r.bottom > innerHeight - 8) : (r.bottom > innerHeight - BAR);
-      if (!shown) { shown = true; docked = !wantFloat; if (wantFloat) { fb.classList.add('on'); snap(barPose()); bg.classList.add('on'); } return; }
-      if (wantFloat === !docked) { if (!docked && !animating) { snap(barPose()); bg.classList.add('on'); } return; }
-      if (animating) return;
-      animating = true;
-      if (wantFloat) {  // 分離：從卡片按鈕位置滑到底部
-        docked = false; card.classList.add('ghost'); fb.classList.add('on'); snap(cardPose());
-        bg.classList.add('on');
-        requestAnimationFrame(function () { apply(barPose()); });
-        setTimeout(function () { card.classList.remove('ghost'); animating = false; update(); }, DUR);
-      } else {  // 合體：從底部滑到卡片按鈕位置，到位後只留卡片按鈕
-        docked = true; bg.classList.remove('on'); card.classList.add('ghost'); apply(cardPose());
-        setTimeout(function () { fb.classList.remove('on'); card.classList.remove('ghost'); animating = false; update(); }, DUR);
-      }
+    function hide() { fb.classList.remove('on'); bg.classList.remove('on'); bg.style.opacity = ''; }
+    function layout() {
+      raf = 0;
+      if (!active()) { hide(); return; }
+      var a = document.querySelector('.app').getBoundingClientRect(), r = card.getBoundingClientRect();
+      var barTop = innerHeight - BAR + PAD;
+      if (r.top <= barTop) { hide(); return; }  // 卡片按鈕已到懸浮位置或更高 → 合體（只留卡片按鈕）
+      var p = Math.max(0, Math.min(1, (barTop + ZONE - r.top) / ZONE));  // 0=一般懸浮，1=即將合體
+      var left = (a.left + 16) + (r.left - (a.left + 16)) * p, width = (a.width - 32) + (r.width - (a.width - 32)) * p;
+      fb.style.left = left + 'px'; fb.style.width = width + 'px'; fb.style.top = barTop + 'px';
+      fb.classList.add('on'); bg.classList.add('on'); bg.style.opacity = String(1 - p);
     }
-    addEventListener('scroll', update, { passive: true });
+    function update() { if (!raf) raf = requestAnimationFrame(layout); }
+    addEventListener('scroll', function () { if (raf) { cancelAnimationFrame(raf); raf = 0; } layout(); }, { passive: true });  // scroll 事件本身已與畫面同步，直接算，不再延一幀
     addEventListener('resize', update);
-    new MutationObserver(function () { requestAnimationFrame(update); }).observe(app(), { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'style'] });
+    new MutationObserver(update).observe(document.querySelector('.app'), { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'style'] });
     update();
   })();
 </script>
