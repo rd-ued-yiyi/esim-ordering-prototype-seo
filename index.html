@@ -6571,6 +6571,24 @@
     new MutationObserver(update).observe(document.querySelector('.app'), { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'style'] });
     update();
   })();
+
+  // 手動切換條件（天數 chip／計費方式 tab／流量檔位）後，自動把卡片上的「搜尋套餐」平滑捲進可視區（懸浮按鈕隨之合體）
+  (function () {
+    var card = document.getElementById('searchCta'); if (!card) return;
+    var pending = 0;
+    function reveal() {
+      pending = 0;
+      var r = card.getBoundingClientRect(), margin = 16;
+      if (r.top >= 0 && r.bottom <= innerHeight - margin) return;  // 已完整可見就不動
+      window.scrollTo({ top: Math.max(0, scrollY + (r.bottom - (innerHeight - margin))), behavior: 'smooth' });
+    }
+    document.addEventListener('click', function (e) {
+      if (!e.isTrusted) return;  // 只對使用者操作生效；程式化的預設值設定不觸發
+      if (!e.target.closest('#dayChips .chip, #dataTabs .ftab, #dataOpts .opt')) return;
+      var s = document.querySelector('.screen[data-screen="destination"]'); if (!s || !s.classList.contains('is-active')) return;
+      clearTimeout(pending); pending = setTimeout(reveal, 80);  // 等重繪完成（切天數會重建檔位帶、高度可能改變）
+    });
+  })();
 </script>
 
 </body>
