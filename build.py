@@ -274,6 +274,10 @@ subs = {
     "{{IMG_GUIDE3}}":      png_datauri("detail/guide3.png"),
     # KKday 商品 243815 商品说明图文全图（10 张，内联自包含）
     **{("{{IMG_KK_%d}}" % i): img_datauri("intro/g%02d.webp" % i) for i in range(1, 11)},
+    "{{PICTO_mobileCheck}}": svg("picto_mobileCheck", "why"),  # Figma 662-29622
+    "{{PICTO_calendarSim}}": svg("picto_calendarSim", "why"),  # Figma 662-29622
+    "{{PICTO_globalConnect}}": svg("picto_globalConnect", "why"),  # Figma 662-29622
+    "{{PICTO_customerService}}": svg("picto_customerService", "why"),  # Figma 662-29622
     "{{PICTO_tours}}":     svg("picto_tours", "picto"),
     # SIM卡/WIFI 頁（Figma 2033-108656 舊主題頁截圖還原）：hero 為同一張 KKday 活動主圖；商品圖自截圖裁切
     "{{IMG_SW_HERO}}":     img_datauri("simwifi/hero.webp"),

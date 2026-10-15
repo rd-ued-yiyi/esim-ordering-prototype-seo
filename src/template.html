@@ -1793,6 +1793,13 @@
   .float-cta { position: fixed; z-index: 31; margin: 0; display: none; transition: top .2s ease, left .2s ease, width .2s ease; }
   .float-cta.on { display: block; }
   #searchCta.ghost { visibility: hidden; }
+
+  /* 為什麼選擇 KKday（Figma 662-29622）：單欄 4 列、picto 40 頂對齊、列間 20、列與列之間 1px #E6E9ED 分隔線 */
+  .benefit-list { display: flex; flex-direction: column; gap: 20px; }
+  .benefit-list .benefit-row { align-items: flex-start; }
+  .benefit-list .benefit-row + .benefit-row { border-top: 1px solid var(--kk-border-lighter); padding-top: 20px; }
+  .ic-40 { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .ic-40 img { max-width: 40px; max-height: 40px; display: block; }
 </style>
 
 <div class="esim-root">
@@ -1862,28 +1869,24 @@
           <div class="card card--pad-v">
             <div class="stack-20">
               <div class="t-h6 card-title">為什麼選擇KKday？</div>
-              <div class="benefit-scroll">
-                <div class="benefit-col">
+              <div class="benefit-list"><!-- Figma 662-29622 Benefits Card：4 列、picto 40、列間 20 + 1px #E6E9ED 分隔線 -->
                   <div class="benefit-row">
-                    <span class="ic ic-32">{{PICTO_tours}}</span>
-                    <div class="txt"><div class="t-subtitle-lg">簡單易用</div><div class="desc t-body-md">透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</div></div>
+                    <span class="ic ic-40">{{PICTO_mobileCheck}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">一站搞定行程與上網方案</div><div class="desc t-body-md">機票、住宿、景點、交通、海外 eSIM 方案，在 KKday 一次備齊，輕鬆出發。</div></div>
                   </div>
                   <div class="benefit-row">
-                    <span class="ic ic-32">{{PICTO_cruise}}</span>
-                    <div class="txt"><div class="t-subtitle-lg">靈活彈性</div><div class="desc t-body-md">天數與流量自由組合，行程有變也能隨時加購延長。</div></div>
-                  </div>
-                </div>
-                <div class="benefit-col">
-                  <div class="benefit-row">
-                    <span class="ic ic-32">{{PICTO_travel}}</span>
-                    <div class="txt"><div class="t-subtitle-lg">80+ 國家覆蓋</div><div class="desc t-body-md">一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</div></div>
+                    <span class="ic ic-40">{{PICTO_calendarSim}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">怎麼旅行，就怎麼選</div><div class="desc t-body-md">一個人自由行、全家出遊或跨國旅行，依行程與用量，選擇適合的 eSIM 方案。</div></div>
                   </div>
                   <div class="benefit-row">
-                    <span class="ic ic-32">{{PICTO_tours}}</span>
-                    <div class="txt"><div class="t-subtitle-lg">客服支援</div><div class="desc t-body-md">24 小時中文客服線上，安裝與連線問題隨時協助。</div></div>
+                    <span class="ic ic-40">{{PICTO_globalConnect}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">全球 130+ 目的地，輕鬆連線</div><div class="desc t-body-md">從熱門目的地到跨國行程，出發前準備好 eSIM，免取卡、免換卡，輕鬆出遊。</div></div>
+                  </div>
+                  <div class="benefit-row">
+                    <span class="ic ic-40">{{PICTO_customerService}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">旅途中，也有人幫你</div><div class="desc t-body-md">從安裝、啟用到旅途中使用，遇到問題都有客服協助，讓你安心享受旅程。</div></div>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
 
@@ -2045,28 +2048,24 @@
           <div class="card card--pad-v">
             <div class="stack-20">
               <div class="t-h6 card-title">為什麼選擇KKday？</div>
-              <div class="benefit-scroll">
-                <div class="benefit-col">
+              <div class="benefit-list"><!-- Figma 662-29622 Benefits Card：4 列、picto 40、列間 20 + 1px #E6E9ED 分隔線 -->
                   <div class="benefit-row">
-                    <span class="ic ic-32">{{PICTO_tours}}</span>
-                    <div class="txt"><div class="t-subtitle-lg">簡單易用</div><div class="desc t-body-md">透過 KKday APP 安裝和管理 eSIM 卡，掃碼即裝，輕鬆上手。</div></div>
+                    <span class="ic ic-40">{{PICTO_mobileCheck}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">一站搞定行程與上網方案</div><div class="desc t-body-md">機票、住宿、景點、交通、海外 eSIM 方案，在 KKday 一次備齊，輕鬆出發。</div></div>
                   </div>
                   <div class="benefit-row">
-                    <span class="ic ic-32">{{PICTO_cruise}}</span>
-                    <div class="txt"><div class="t-subtitle-lg">靈活彈性</div><div class="desc t-body-md">天數與流量自由組合，行程有變也能隨時加購延長。</div></div>
-                  </div>
-                </div>
-                <div class="benefit-col">
-                  <div class="benefit-row">
-                    <span class="ic ic-32">{{PICTO_travel}}</span>
-                    <div class="txt"><div class="t-subtitle-lg">80+ 國家覆蓋</div><div class="desc t-body-md">一張 eSIM 暢遊全球熱門目的地，跨國行程無縫切換。</div></div>
+                    <span class="ic ic-40">{{PICTO_calendarSim}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">怎麼旅行，就怎麼選</div><div class="desc t-body-md">一個人自由行、全家出遊或跨國旅行，依行程與用量，選擇適合的 eSIM 方案。</div></div>
                   </div>
                   <div class="benefit-row">
-                    <span class="ic ic-32">{{PICTO_tours}}</span>
-                    <div class="txt"><div class="t-subtitle-lg">客服支援</div><div class="desc t-body-md">24 小時中文客服線上，安裝與連線問題隨時協助。</div></div>
+                    <span class="ic ic-40">{{PICTO_globalConnect}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">全球 130+ 目的地，輕鬆連線</div><div class="desc t-body-md">從熱門目的地到跨國行程，出發前準備好 eSIM，免取卡、免換卡，輕鬆出遊。</div></div>
+                  </div>
+                  <div class="benefit-row">
+                    <span class="ic ic-40">{{PICTO_customerService}}</span>
+                    <div class="txt"><div class="t-subtitle-lg">旅途中，也有人幫你</div><div class="desc t-body-md">從安裝、啟用到旅途中使用，遇到問題都有客服協助，讓你安心享受旅程。</div></div>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
 
