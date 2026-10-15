@@ -1790,8 +1790,8 @@
   /* 主題頁（已選目的地）底部懸浮「搜尋套餐」：卡片上的按鈕不在可視區時固定在底部；按鈕捲入可視區時平移合體到卡片按鈕位置 */
   .float-cta-bg { position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; width: 100%; max-width: 430px; height: calc(72px + env(safe-area-inset-bottom, 0px)); background: #fff; box-shadow: 0 -4px 12px rgba(38,50,56,.12); z-index: 30; opacity: 0; pointer-events: none; }
   .float-cta-bg.on { opacity: 1; }
-  .float-cta { position: fixed; z-index: 31; margin: 0; display: none; }  /* 位置每幀由 JS 計算，不加 transition（避免卡頓） */
-  .float-cta.on { display: block; }
+  .float-cta { position: fixed; z-index: 31; margin: 0; display: block; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); visibility: hidden; pointer-events: none; }  /* 垂直用 bottom 錨定：iOS 工具列收合／展開時由瀏覽器同步位移，不會晚一幀往上跳；左右寬度每幀由 JS 計算 */
+  .float-cta.on { visibility: visible; pointer-events: auto; }
   #searchCta.ghost { visibility: hidden; }
 
   /* 為什麼選擇 KKday（Figma 662-29622）：單欄 4 列、picto 40 頂對齊、列間 20、列與列之間 1px #E6E9ED 分隔線 */
@@ -6399,11 +6399,11 @@
       raf = 0;
       if (!active()) { hide(); return; }
       var a = document.querySelector('.app').getBoundingClientRect(), r = card.getBoundingClientRect();
-      var barTop = innerHeight - BAR + PAD;
+      var barTop = fb.getBoundingClientRect().top;  // 懸浮按鈕實際頂緣（bottom 錨定，含 safe-area）
       if (r.top <= barTop) { hide(); return; }  // 卡片按鈕已到懸浮位置或更高 → 合體（只留卡片按鈕）
       var p = Math.max(0, Math.min(1, (barTop + ZONE - r.top) / ZONE));  // 0=一般懸浮，1=即將合體
       var left = (a.left + 16) + (r.left - (a.left + 16)) * p, width = (a.width - 32) + (r.width - (a.width - 32)) * p;
-      fb.style.left = left + 'px'; fb.style.width = width + 'px'; fb.style.top = barTop + 'px';
+      fb.style.left = left + 'px'; fb.style.width = width + 'px';
       fb.classList.add('on'); bg.classList.add('on'); bg.style.opacity = String(1 - p);
     }
     function update() { if (!raf) raf = requestAnimationFrame(layout); }
