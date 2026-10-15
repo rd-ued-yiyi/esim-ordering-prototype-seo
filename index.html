@@ -4247,6 +4247,7 @@
             sc.scrollLeft = prev;                          // 還原原位置：待 sheet 收合後再平滑滾過去，外層才有可見的滾動動效
           }
           closeSheets(); renderPlans('smooth');
+          if (window.__revealSearchCta) window.__revealSearchCta();  // 流量內頁切換後回主題頁 → 把搜尋套餐捲進可視區
           if (sc && current === 'destination') setTimeout(function () { revealOpt(sc, true, '.opt.sel'); }, 340);
         });
         grid.appendChild(b);
@@ -4374,6 +4375,7 @@
     withLoading(this, function () {
       setDays(pickerVal, true);
       closeSheets();
+      if (window.__revealSearchCta) window.__revealSearchCta();  // 天數內頁切換後回主題頁 → 把搜尋套餐捲進可視區
     });
   });
 
@@ -6588,6 +6590,7 @@
       var s = document.querySelector('.screen[data-screen="destination"]'); if (!s || !s.classList.contains('is-active')) return;
       clearTimeout(pending); pending = setTimeout(reveal, 80);  // 等重繪完成（切天數會重建檔位帶、高度可能改變）
     });
+    window.__revealSearchCta = function () { clearTimeout(pending); pending = setTimeout(reveal, 350); };  // 內頁（天數 sheet／流量 sheet）切換條件後呼叫：等 sheet 收合再捲
   })();
 </script>
 
