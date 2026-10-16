@@ -820,12 +820,14 @@
   .pl-det-bd .det-sec { background: #fff; padding: 24px; }
   .pl-det-bd .det-sec + .det-sec { margin-top: 8px; }
   /* ---- 服務說明 ---- */
-  .det-hero { display: flex; flex-direction: column; gap: 8px; border: 2px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; }
+  .det-hero { display: flex; flex-direction: column; gap: 12px; border: 2px solid var(--kk-border-lighter); border-radius: 12px; padding: 16px; }  /* 商品摘要（Figma 1713-172921）：規格／標題／分隔線／底部群組間 12 */
+  .det-hero-hr { height: 1px; background: var(--kk-border-lighter); }
+  .det-hero-foot { display: flex; flex-direction: column; gap: 4px; }  /* 提醒標籤 + 供應商 同組 gap 4 */
   .det-cond { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: #13A3B6; }
   .det-cond .ic { width: 20px; height: 20px; flex: 0 0 auto; }
   .det-title { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); word-break: break-word; }
-  .det-hero .pkg-warns { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; row-gap: 4px; font-size: 12px; line-height: 16px; color: #E78F37; }
-  .det-hero .pkg-warns .wdiv { width: 1px; height: 10px; background: var(--kk-border-light); flex: 0 0 auto; }
+  .det-hero .pkg-warns { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; row-gap: 2px; font-size: 12px; line-height: 16px; color: #E78F37; }  /* 標籤換行 row-gap 2（Figma spec warning） */
+  .det-hero .pkg-warns .wdiv { width: 1px; height: 10px; background: var(--kk-border-lighter); flex: 0 0 auto; }  /* 豎線 10 高 #E6E9ED（Figma Line 27） */
   .det-provider { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
   /* 折扣券 banner（Figma 936-48931）：#FFF2F2 底 + 32 picto + 票券描邊 + 領取 popover */
   .det-coupon { position: relative; margin-top: 24px;  /* Figma 3701-133338：摘要卡→券 24 */ display: flex; align-items: center; gap: 12px; width: 100%;
@@ -3286,8 +3288,8 @@
     var hero = h('<div class="det-hero">' +
       '<div class="det-cond"><span class="ic ic-20">{{DET_fileCheck}}</span><span class="ct"></span></div>' +  // ic_fileCheck_fill 20 #13A3B6（Figma 3701-133340）
       '<div class="det-title"></div>' +
-      '<div class="pkg-warns"></div>' +
-      '<div class="det-provider"></div></div>');
+      '<div class="det-hero-hr"></div>' +
+      '<div class="det-hero-foot"><div class="pkg-warns"></div><div class="det-provider"></div></div></div>');
     hero.querySelector('.ct').textContent = detFlowLabel();
     hero.querySelector('.det-title').textContent = p.title;
     var wbox = hero.querySelector('.pkg-warns');
