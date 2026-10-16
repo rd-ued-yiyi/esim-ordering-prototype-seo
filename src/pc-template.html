@@ -895,8 +895,10 @@
   .det-table .td-v--tip .td-hit:hover .td-info { color: var(--kk-primary-dark); }
   /* 行內 ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：可將滑鼠移入框內 */
   /* 規格 ⓘ tooltip（Figma 3701-135767）：400 寬、px12 py8、文字置中 #212121、陰影 0 4 12 .12、三角 14×8 置中距錨點 4 */
-  .det-hovtip { position: fixed; z-index: 60; width: 400px; max-width: calc(100vw - 24px); box-sizing: border-box; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 8px 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: center; }
+  .det-hovtip { position: fixed; z-index: 60; width: 400px; max-width: calc(100vw - 24px); box-sizing: border-box; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(38,50,56,.12); padding: 8px 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: left; }  /* Figma 3701-135767 單項：Body-md 靠左 */
   .det-hovtip[hidden] { display: none; }
+  .det-hovtip ul { list-style: disc; margin: 0; padding: 0 0 0 21px; }  /* Figma 4480-76098 多項：圓點清單、縮排 21 */
+  .det-hovtip li { margin: 0; padding: 0; }
   .det-hovtip::after { content: ''; position: absolute; left: var(--ax, 20px); top: -7px; width: 14px; height: 8px; background: #fff; clip-path: polygon(50% 0, 0 100%, 100% 100%); }
   .det-hovtip.below::after { top: auto; bottom: -7px; transform: scaleY(-1); }
   .det-hovtip::before { content: ''; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }  /* 透明橋：蓋住 ⓘ→tooltip 的 12px 空隙，滑鼠可移入 */
@@ -3238,15 +3240,15 @@
   }
   // 基本資訊 ⓘ 懸浮提示文案（Figma 3242-45084）
   var SPEC_TIPS = {
-    simType: '原生卡直接接入當地電信商的本地網路，與當地用戶共用相同網路資源，訊號穩定、延遲低；國際漫遊卡則透過漫遊接入，覆蓋範圍更廣但速度可能略降。',
+    simType: ['原生卡：直接接入當地電信商的本地網路，與當地用戶共用相同網路資源，訊號穩定、延遲低', '國際漫遊卡：透過漫遊方式接入，覆蓋範圍更廣但速度可能略降'],
     validCard: '卡片有效期指此 eSIM 需在該日期前完成啟用，逾期未啟用即失效。啟用後的可用天數另依「套餐有效期」計算。',
     call: '「含」代表方案已包含當地通話功能，可直接撥打當地號碼；通話費用是否另計請見「其他」欄位。',
     sms: '「含」代表方案已包含當地簡訊收發功能。',
     hotspot: '支援個人熱點分享，可將此 eSIM 的網路分享給筆電、平板等其他裝置使用。',
     other: '「含通話費用」代表通話所產生的費用已包含在方案內，無需另外付費。',
     topup: '支援加值＝流量用完後可於 KKday App 加購延續使用；不支援＝流量用完即止，無法加購。',
-    net: '本地＝直接接入當地電信商網路，速度與延遲最佳；漫遊＝以漫遊方式接入，覆蓋範圍更廣但速度可能略降。',
-    ip: '本地 IP＝由當地出口連線，適合使用當地服務；動態／漫遊 IP＝共享或 VPN 出口，跨區相容性較好。'
+    net: ['本地：直接接入當地電信商網路，速度與延遲最佳', '漫遊：以漫遊方式接入，覆蓋範圍更廣但速度可能略降'],
+    ip: ['本地 IP：由當地出口連線，適合使用當地服務', '動態／漫遊 IP：共享或 VPN 出口，跨區相容性較好']
   };
   // ⓘ 懸浮提示（Figma 3242-45084：白卡 + 三角）：對準 ⓘ 圖示、可將滑鼠移入框內
   var _tipHideTimer = null;
@@ -3261,7 +3263,9 @@
   }
   function detShowTip(anchor, text) {
     clearTimeout(_tipHideTimer);
-    var t = detHovTipEl(); t.textContent = text; t.hidden = false; t.classList.remove('below');
+    var t = detHovTipEl(); t.hidden = false; t.classList.remove('below');
+    if (Array.isArray(text)) { var ul = document.createElement('ul'); text.forEach(function (x) { var li = document.createElement('li'); li.textContent = x; ul.appendChild(li); }); t.textContent = ''; t.appendChild(ul); }  // 多項規格：圓點清單（Figma 4480-76098）
+    else t.textContent = text;  // 單項規格：段落（Figma 3701-135767）
     var r = anchor.getBoundingClientRect(), tw = t.offsetWidth, th = t.offsetHeight;
     var ac = r.left + r.width / 2;                                   // ⓘ 圖示中心
     var left = Math.min(Math.max(12, ac - tw / 2), window.innerWidth - tw - 12);  // 置中於 ⓘ
