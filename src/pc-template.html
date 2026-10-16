@@ -80,7 +80,7 @@
 
   /* ---------- hero：未選=標題+搜尋卡；已選=目的地 pill+套餐面板（Figma 2968-67063 / 3096-60605） ---------- */
   /* hero 背景：PC 專用素材整張還原（Figma 3467-85807：純青底 #26BEC9 + 波浪線 + 右上手機/地球/星光），整體依寬度等比縮放 */
-  .pc-hero { position: relative; overflow: hidden; padding-bottom: 60px; background-color: #26BEC9; }
+  .pc-hero { position: relative; overflow: clip; padding-bottom: 60px; background-color: #26BEC9; }  /* clip 而非 hidden：hidden 會成為捲動容器，讓卡片底欄的 sticky 失效 */
   .pc-hero .col { position: relative; z-index: 1; }
   /* 整張主視覺：1440×800 精確構圖，寬度 100% 等比縮放（波浪自然到邊、插畫按原比例在右上、隨縮放始終可見） */
   .pc-hero-art { position: absolute; z-index: 0; pointer-events: none; top: 0; left: 0; width: 100%; }
@@ -161,7 +161,9 @@
   .pc-note .ic { flex: 0 0 auto; }
   .pc-note u { margin-left: 12px; font-weight: 500; text-underline-offset: 2px; cursor: pointer; }
   /* 卡片底欄（Figma 3792:155411）：上邊線 #E6E9ED、p24、摘要（靠右）與按鈕 gap 48；向外撐到卡片邊緣、續接卡片下圓角 */
-  .pc-panel-foot2 { display: flex; align-items: center; gap: 48px; margin: 4px -24px 0; padding: 24px; border-top: 1px solid var(--kk-border-lighter); background: #fff; border-radius: 0 0 16px 16px; }
+  .pc-panel-foot2 { display: flex; align-items: center; gap: 48px; margin: 4px -24px 0; padding: 24px; border-top: 1px solid var(--kk-border-lighter); background: #fff; border-radius: 0 0 16px 16px;
+    position: sticky; bottom: 0; z-index: 3; transition: box-shadow .15s, border-radius .15s; }  /* 卡片底欄在卡片範圍內吸底：卡片還在視窗內時貼著視窗底邊，卡片捲完就隨卡片走（移動端懸浮鈕的 PC 版） */
+  .pc-panel-foot2.stuck { border-radius: 0; box-shadow: 0 -4px 12px rgba(38,50,56,.12); }  /* 吸底中：直角 + 向上陰影，卡片捲到底才回到圓角無陰影 */
   .pc-panel-sum { flex: 1 1 0; min-width: 0; text-align: right; font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-medium); }  /* 預選＝$color-text-medium #9C9DA0（Figma 3636-98060） */
   .pc-panel-sum.touched { color: var(--kk-text-darker); }  /* 手動選擇後＝$color-text-darker #212121（Figma 3636-98437） */
   .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
@@ -1950,6 +1952,15 @@
   function h(html) { var w = document.createElement('div'); w.innerHTML = html.trim(); return w.firstElementChild; }
   // 浮層互斥：開啟任一下拉／popover 時廣播 id，其他已開的浮層收起（同時間只留一個）
   function pcPopOpen(id) { document.dispatchEvent(new CustomEvent('pcpop', { detail: id })); }
+  // 首頁卡片底欄吸底狀態：底欄被 sticky 擋在視窗底時加 .stuck（直角＋陰影），隨卡片捲到底時移除
+  (function () {
+    var ft = document.querySelector('.pc-panel-foot2'); if (!ft) return;
+    var card = ft.closest('.pc-card');
+    function upd() { var f = ft.getBoundingClientRect(), c = card.getBoundingClientRect(); ft.classList.toggle('stuck', ft.offsetParent !== null && f.bottom < c.bottom - 1); }
+    addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd);
+    new MutationObserver(function () { requestAnimationFrame(upd); }).observe(card, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'style', 'data-state'] });
+    upd();
+  })();
   function pcPopOthers(id, closeFn) { document.addEventListener('pcpop', function (e) { if (e.detail !== id) closeFn(); }); }
 
   // 彈窗開啟時鎖定背景捲動（對齊 mweb lockBody/unlockBody，引用計數 + 記錄捲動位置）
