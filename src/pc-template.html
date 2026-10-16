@@ -162,8 +162,8 @@
   .pc-note u { margin-left: 12px; font-weight: 500; text-underline-offset: 2px; cursor: pointer; }
   /* 卡片底欄（Figma 3792:155411）：上邊線 #E6E9ED、p24、摘要（靠右）與按鈕 gap 48；向外撐到卡片邊緣、續接卡片下圓角 */
   .pc-panel-foot2 { display: flex; align-items: center; gap: 48px; margin: 4px -24px 0; padding: 24px; border-top: 1px solid var(--kk-border-lighter); background: #fff; border-radius: 0 0 16px 16px;
-    position: sticky; bottom: 0; z-index: 3; transition: box-shadow .15s, border-radius .15s; }  /* 卡片底欄在卡片範圍內吸底：卡片還在視窗內時貼著視窗底邊，卡片捲完就隨卡片走（移動端懸浮鈕的 PC 版） */
-  .pc-panel-foot2.stuck { border-radius: 0; box-shadow: 0 -4px 12px rgba(38,50,56,.12); }  /* 吸底中：直角 + 向上陰影，卡片捲到底才回到圓角無陰影 */
+    position: sticky; bottom: 16px; z-index: 3; transition: box-shadow .15s, border-radius .15s, margin .15s, border-color .15s; }  /* 卡片底欄在卡片範圍內吸底：卡片還在視窗內時浮在視窗底上方 16，卡片捲完就隨卡片走（移動端懸浮鈕的 PC 版） */
+  .pc-panel-foot2.stuck { margin-left: 0; margin-right: 0; border-radius: 16px; border-top-color: transparent; box-shadow: 0 8px 24px rgba(38,50,56,.16); }  /* 吸底中：獨立圓角卡片（縮進卡片內距、r16、投影），回到卡片底才恢復成底欄 */
   .pc-panel-sum { flex: 1 1 0; min-width: 0; text-align: right; font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-medium); }  /* 預選＝$color-text-medium #9C9DA0（Figma 3636-98060） */
   .pc-panel-sum.touched { color: var(--kk-text-darker); }  /* 手動選擇後＝$color-text-darker #212121（Figma 3636-98437） */
   .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
