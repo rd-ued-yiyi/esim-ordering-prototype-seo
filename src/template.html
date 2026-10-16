@@ -1036,7 +1036,7 @@
   .det-provider { margin-top: 0; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }  /* 「XXX 提供服務」：text-medium #9C9DA0、首屏卡 8px gap（Figma 1713:172920） */
   .det-sec .pkg-warns { margin-top: 20px; flex-wrap: wrap; row-gap: 4px; }  /* 提醒標籤距政策行 20；多項換行（Figma 1249-109400） */
   /* 首屏卡（Figma 1713-172921）：標題下 1px 分隔線；提醒標籤與供應商同組 gap 4；標籤換行 row-gap 2、分隔豎線 10 */
-  .det-hero-hr { height: 1px; background: var(--kk-border-lighter); }
+  .det-hero-hr { height: 0; border-top: 1px dashed var(--kk-border-lighter); }  /* 標題下分隔線：1px 虛線 #E6E9ED（Figma 1713-172921 更新） */
   .det-hero-foot { display: flex; flex-direction: column; gap: 4px; }
   .det-sec .det-hero .pkg-warns { row-gap: 2px; }
   .det-sec .det-hero .pkg-warns:empty { display: none; }
