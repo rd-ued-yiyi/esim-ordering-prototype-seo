@@ -234,6 +234,12 @@ subs = {
     "{{IC_simCard20}}":      file_img("assets/ord/simCard20.svg"),    # ic_simCard_line
     "{{IC_editLine}}":     file_img("assets/ord/edit.svg"),         # 编辑按钮 ic_edit_line（intrinsic 15.6×15.6）
     "{{IC_infoCyan}}":     svg("info", recolor=("#727272", "#13A3B6")),  # 免费取消行 info（cyan）
+    "{{IC_infoDark}}":     svg("info", recolor=("#727272", "#212121")),  # 不可取消 Text secondary 鈕 info（深色）
+    "{{IC_minusOn}}":      svg("minusLineSemibold", recolor=("#ADE6EB", "#26BEC9")),  # Stepper 減（可用）
+    "{{IC_minusOff}}":     svg("minusLineSemibold"),  # Stepper 減（停用 #ADE6EB）
+    "{{IC_plusOn}}":       svg("plusLineSemibold"),  # Stepper 加（可用 #26BEC9）
+    "{{IC_plusOff}}":      svg("plusLineSemibold", recolor=("#26BEC9", "#ADE6EB")),
+    "{{IC_arrowUpLg}}":    svg("arrowUpLineLg"),  # 付款頁商品摘要收合箭頭 ic_arrowUp_line_lg 20
     "{{IC_infoFill}}":     svg("infoFill"),  # 设备信息提示：实心 info 图标（Figma 1116-91131 ic_info_fill，#2D84D6）
     # 目的地及领取地 sheet 空状态提示：实心 warning 图标（Figma 2551-115281 ic_warningCircle_fill，#FFA000）
     "{{IC_warningCircle}}": svg("warningCircleFill"),
@@ -439,6 +445,7 @@ pc_subs = {
     "{{ORD_warnCircle14}}": pc_img("ord/warnCircle14.svg"),
     "{{ORD_info16}}": pc_img("ord/info16.svg"),
     "{{ORD_infoSemibold16}}": pc_img("ord/infoSemibold16.svg"),
+    "{{ORD_infoSemibold16Dark}}": file_img("assets/pc/ord/infoSemibold16.svg", recolor=("#13A3B6", "#212121")),  # 不可取消 Text secondary 鈕
     "{{ORD_calendar16}}": pc_img("ord/calendar16.svg"),
     "{{ORD_plusSemibold20}}": file_img("assets/pc/ord/plusSemibold20.svg", recolor=("#13A3B6", "#13A3B6")),  # 新增常用旅客 ic_plus_line_semibold 20 #13A3B6（Figma 4026-63148）
     "{{DET_expandArrow16}}": file_img("assets/pc/det/expandArrow16.svg", recolor=("black", "#212121")),  # 基本資訊「展開」箭頭 16

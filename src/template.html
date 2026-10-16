@@ -997,7 +997,7 @@
   .det-sec[data-sec="svc"] { padding-left: 16px; padding-right: 16px; }
   .det-sec[data-sec="imgs"] { padding: 24px; }
   /* 首屏方案卡（Figma 1249-109383 新版）：去描邊卡，改為扁平堆疊，標籤行下加分割線 */
-  .det-hero { display: flex; flex-direction: column; gap: 8px; }
+  .det-hero { display: flex; flex-direction: column; gap: 12px; }  /* Figma 1713-172921：規格／標題／分隔線／底部群組間 12 */
   .det-hero .det-cond { margin-bottom: 0; }
   .det-hero .det-title { margin: 0; }
   .det-hero .pkg-tags { margin-top: 0; }
@@ -1010,7 +1010,7 @@
   .det-top-hr { display: none; }
   /* 標籤 → 政策 之間的分割線（Figma 1249-109981 Line 19），上下各 20px */
   .det-top-hr { border: 0; border-top: 1px solid var(--kk-border-lighter); margin: 20px 0 0; }
-  .det-cond { display: flex; align-items: center; gap: 6px;
+  .det-cond { display: flex; align-items: center; gap: 8px;  /* spec icon+text gap 8（Figma 1713-172921） */
     font-size: 14px; line-height: 20px; font-weight: 600; color: #13A3B6; }
   .det-cond .ic { width: 20px; height: 20px; }
   .det-title { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); word-break: break-word; }  /* 標題完整顯示、可換行（不再夾 1 行） */
@@ -1035,6 +1035,12 @@
   .desc-sheet-text { margin: 0; padding: 16px 24px 24px; font-size: 14px; line-height: 22px; color: var(--kk-text-darker); white-space: pre-wrap; }  /* 方案描述 sheet 全文（Figma 1515-135291） */
   .det-provider { margin-top: 0; font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }  /* 「XXX 提供服務」：text-medium #9C9DA0、首屏卡 8px gap（Figma 1713:172920） */
   .det-sec .pkg-warns { margin-top: 20px; flex-wrap: wrap; row-gap: 4px; }  /* 提醒標籤距政策行 20；多項換行（Figma 1249-109400） */
+  /* 首屏卡（Figma 1713-172921）：標題下 1px 分隔線；提醒標籤與供應商同組 gap 4；標籤換行 row-gap 2、分隔豎線 10 */
+  .det-hero-hr { height: 1px; background: var(--kk-border-lighter); }
+  .det-hero-foot { display: flex; flex-direction: column; gap: 4px; }
+  .det-sec .det-hero .pkg-warns { row-gap: 2px; }
+  .det-sec .det-hero .pkg-warns:empty { display: none; }
+  .det-hero .pkg-warns .wdiv { height: 10px; }
   .det-h2 { font-size: 18px; line-height: 26px; font-weight: 600; color: var(--kk-text-darker); margin: 0 0 20px; }
   .det-h5 { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--kk-text-darker); margin: 0 0 20px; }  /* 標題下距 20（Figma 1009-43085） */
   .det-sub { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); margin: 24px 0 8px; }
@@ -1420,16 +1426,24 @@
   .ord-dq { display: flex; flex-direction: column; gap: 24px; padding: 0 16px; }
   /* 付款頁頂部商品摘要：整塊白底、全寬、無圓角（非圓角卡） */
   .pay-summary { background: #fff; padding: 16px; }
+  /* 付款頁商品摘要標題列（Figma 1574-147649）：標題 + 26 方框內 20 箭頭，gap 12；點箭頭收合規格列 */
+  .pay-sum-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .pay-sum-head .ord-ptitle { flex: 1 1 0; min-width: 0; }
+  .pay-sum-tg { flex: 0 0 auto; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; background: none; border: 0; padding: 0; }
+  .pay-sum-tg .ic, .pay-sum-tg img { width: 20px; height: 20px; display: block; transition: transform .2s; }
+  .pay-summary.collapsed .ord-pspecs, .pay-summary.collapsed .ord-hr { display: none; }
+  .pay-summary.collapsed .pay-sum-tg .ic { transform: rotate(180deg); }
   /* 可點選的規格行（地區）：按鈕歸一化 */
   button.ord-pline { padding: 0; background: none; border: 0; text-align: left; width: auto; }
   /* 其餘獨立圓角卡（w-351 居中＝左右各 12px，卡間 gap16） */
   .ord-cards { display: flex; flex-direction: column; gap: 16px; padding: 16px 12px 0; }
   .ord-card { background: #fff; border-radius: 12px; padding: 16px; }
   /* 商品資訊 card：2px #E6E9ED 描邊 + 內部分隔線（Figma 1074-84572） */
-  .ord-prod { border: 2px solid #E6E9ED; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .ord-prod { border: 2px solid #E6E9ED; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 16px; }  /* Figma 1074-84572：卡內 gap 16 */
+  .ord-phead { display: flex; flex-direction: column; gap: 12px; }  /* 標題 → 規格列 12 */
   .ord-ptitle { font-size: 18px; line-height: 26px; font-weight: 600; color: #212121; }
-  .ord-pspecs { display: flex; flex-direction: column; gap: 8px; }
-  .ord-pline { display: flex; align-items: center; gap: 8px; color: #212121; font-size: 14px; line-height: 20px; }
+  .ord-pspecs { display: flex; flex-direction: column; gap: 6px; }  /* 規格列間 6（Figma 政策&提醒規格） */
+  .ord-pline { display: flex; align-items: flex-start; gap: 8px; color: #212121; font-size: 14px; line-height: 20px; }
   .ord-pline .ic { flex: 0 0 auto; width: 20px; height: 20px; }
   .ord-pline .u { text-decoration: underline; }  /* 目的地行「支援 N 個國家/地區」下劃線可點 */
   .ord-hr { height: 1px; background: var(--kk-border-lighter); width: 100%; }
@@ -1439,6 +1453,7 @@
   .ord-price .num { font-weight: 700; }
   .ord-cancel { color: #13A3B6; font-size: 14px; line-height: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
   .ord-cancel .ic { width: 16px; height: 16px; }
+  .ord-cancel--sec { color: #212121; }  /* 不可取消：KKButton Text secondary（Figma 1574-147649） */
   /* 區塊標題（H6 semibold 18）+ 編輯 */
   .ord-sec-h { display: flex; align-items: center; justify-content: space-between; }
   .ord-card .ord-sec-h + * { margin-top: 16px; }
@@ -1481,11 +1496,11 @@
   .qty-row { display: flex; align-items: center; }
   .qty-row .t { flex: 1 1 auto; font-size: 18px; line-height: 26px; font-weight: 600; color: #212121; }
   .qty-ctl { display: flex; align-items: center; gap: 4px; }
-  .qty-btn { width: 32px; height: 32px; border-radius: 20px; border: 1px solid #26BEC9; position: relative; background: #fff; flex: 0 0 auto; }
-  .qty-btn::before { content: ''; position: absolute; left: 50%; top: 50%; width: 11px; height: 1.8px; background: #26BEC9; transform: translate(-50%, -50%); border-radius: 1px; }
-  .qty-btn.qplus::after { content: ''; position: absolute; left: 50%; top: 50%; width: 1.8px; height: 11px; background: #26BEC9; transform: translate(-50%, -50%); border-radius: 1px; }
+  .qty-btn { width: 32px; height: 32px; border-radius: 20px; border: 1px solid #26BEC9; background: #fff; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; padding: 0; }  /* Stepper（Figma 1074-82770）：32 圓鈕 1px 邊 + 20 線性 icon */
+  .qty-btn img { width: 20px; height: 20px; display: block; }
+  .qty-btn .i-on, .qty-btn:disabled .i-off { display: block; }
+  .qty-btn .i-off, .qty-btn:disabled .i-on { display: none; }
   .qty-btn:disabled { border-color: #ADE6EB; }
-  .qty-btn:disabled::before, .qty-btn:disabled::after { background: #ADE6EB; }
   .qty-n { width: 40px; text-align: center; font-size: 16px; line-height: 24px; color: #212121; }
   /* 已填資料網格（航班/裝置）：k=12 #9C9DA0 / v=14 #212121 */
   .ord-kv { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
@@ -2376,8 +2391,11 @@
         <div class="det-hero">
           <div class="det-cond"><span class="ic ic-20">{{IC_file}}</span><span id="detCond"></span></div>
           <h2 class="det-title" id="detTitle"></h2>
-          <div class="pkg-warns" id="detWarns"></div>
-          <div class="det-provider" id="detProvider"></div>
+          <div class="det-hero-hr"></div>
+          <div class="det-hero-foot">
+            <div class="pkg-warns" id="detWarns"></div>
+            <div class="det-provider" id="detProvider"></div>
+          </div>
         </div>
         <!-- 優惠券 banner：首屏卡下、政策標籤上（Figma 1249-109383 简要资讯）；CTA=折扣券 -->
         <button class="det-coupon det-coupon--inline" id="detCoupon">
@@ -3270,7 +3288,7 @@
     file: '{{IC_file}}', locGrey: '{{IC_locationGrey}}', plus: '{{IC_plus}}', plusBold: '{{IC_plusSemibold}}', plusCyan: '{{IC_plusSemiCyan}}', cross: '{{IC_cross}}',
     // 訂單頁行內小圖示（描邊 svg，直接內聯，無需 build token；顏色對齊設計稿 #212121）
     fileDark: '{{IC_fileDark}}', locDark: '{{IC_locationDark}}',
-    fileCheckLine: '{{IC_fileCheckLine}}', editLine: '{{IC_editLine}}', infoCyan: '{{IC_infoCyan}}',
+    fileCheckLine: '{{IC_fileCheckLine}}', editLine: '{{IC_editLine}}', infoCyan: '{{IC_infoCyan}}', infoDark: '{{IC_infoDark}}',
     // 商品摘要行官方 20px 資產（Figma 1074-81598 / 1074-84069）
     locLine20: '{{IC_locationLine20}}', calLine20: '{{IC_calendarLine20}}', simCard20: '{{IC_simCard20}}',
     user: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#212121" stroke-width="1.6"/><path d="M5.5 19c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5" stroke="#212121" stroke-width="1.6" stroke-linecap="round"/></svg>',
@@ -5657,6 +5675,8 @@
     var n = cancelFreeN(p);
     return ud ? fmtYmd(new Date(ud.y, ud.m - 1, ud.d - n)) + ' 前可免費取消' : n + '天前可免費取消';
   }
+  // 取消政策入口鈕：可免費取消＝Text primary（青）；不可取消＝Text secondary（深色，Figma 1574-147649）
+  function cancelBtnHTML(id) { var none = (orderP && orderP.cancelType) === 'none'; return '<button class="ord-cancel' + (none ? ' ord-cancel--sec' : '') + '" id="' + id + '">' + cancelInlineText(orderP, orderState.useDate) + ' <span class="ic">' + (none ? ICONS.infoDark : ICONS.infoCyan) + '</span></button>'; }
   // 取消政策 sheet：未选日期 / free / none → 相对政策表（复用详情页 renderCancelPolicy，Figma 1074-82931）；
   //                cond/fee 已选日期 → 换算绝对日期表（Figma 1144-93448）
   function renderCancelSheet() {
@@ -5764,16 +5784,16 @@
   function renderOrder() {
     var p = orderP, st = orderState, req = orderReq(p);
     // ── 頂部整塊白底：商品卡 + [使用日期] + 購買數量 ──
-    var w = '<div class="ord-prod">' +
+    var w = '<div class="ord-prod"><div class="ord-phead">' +
       '<div class="ord-ptitle">' + p.title + '</div>' +
       '<div class="ord-pspecs">' +
         '<div class="ord-pline"><span class="ic">' + ICONS.fileCheckLine + '</span>' + ordProdSpec(p) + '</div>' +
         '<button class="ord-pline" id="ordDestLine"><span class="ic">' + ICONS.locLine20 + '</span><span class="u">' + ordDestLine() + '</span></button>' +
-      '</div>' +
+      '</div></div>' +
       '<div class="ord-hr"></div>' +
       '<div class="ord-price-block">' +
         '<div class="ord-price"><span class="cur">NT$</span><span class="num">' + p.now.toLocaleString() + '</span></div>' +
-        '<button class="ord-cancel" id="ordCancelInfo">' + cancelInlineText(orderP, orderState.useDate) + ' <span class="ic">' + ICONS.infoCyan + '</span></button>' +
+        cancelBtnHTML('ordCancelInfo') +
       '</div></div>';
     // 使用日期 + 購買數量 收進內層容器（額外 px-16，兩側邊距比商品卡更大，Figma 1074-82674）
     var dq = '';
@@ -5784,9 +5804,9 @@
         '<div class="ord-hr"></div>';
     }
     dq += '<div class="qty-row"><div class="t">購買數量</div><div class="qty-ctl">' +
-      '<button class="qty-btn qminus" id="qtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '></button>' +
+      '<button class="qty-btn qminus" id="qtyMinus"' + (st.qty <= 1 ? ' disabled' : '') + '><span class="i-on">{{IC_minusOn}}</span><span class="i-off">{{IC_minusOff}}</span></button>' +
       '<span class="qty-n" id="qtyN">' + st.qty + '</span>' +
-      '<button class="qty-btn qplus" id="qtyPlus"' + (st.qty >= 5 ? ' disabled' : '') + '></button></div></div>';
+      '<button class="qty-btn qplus" id="qtyPlus"' + (st.qty >= 5 ? ' disabled' : '') + '><span class="i-on">{{IC_plusOn}}</span><span class="i-off">{{IC_plusOff}}</span></button></div></div>';
     w += '<div class="ord-dq">' + dq + '</div>';
 
     // ── 獨立圓角卡區：[裝置][航班][旅客][聯絡人] 訂購人 備註（優惠券 banner 已移除）──
@@ -6281,7 +6301,7 @@
     var useD = st.useDate ? (st.useDate.y + '-' + ('0' + st.useDate.m).slice(-2) + '-' + ('0' + st.useDate.d).slice(-2)) : null;
     // 商品摘要（頂部整塊白底，非圓角卡；規格 + 分隔線 + 免費取消）
     var summary = '<div class="pay-summary">' +
-      '<div class="ord-ptitle" style="margin-bottom:12px">' + p.title + '</div>' +
+      '<div class="pay-sum-head"><div class="ord-ptitle">' + p.title + '</div><button class="pay-sum-tg" id="paySumTg" aria-label="收合商品摘要"><span class="ic">{{IC_arrowUpLg}}</span></button></div>' +
       '<div class="ord-pspecs">' +
         '<div class="ord-pline"><span class="ic">' + ICONS.fileCheckLine + '</span>' + ordProdSpec(p) + '</div>' +
         '<button class="ord-pline" id="payDestLine"><span class="ic">' + ICONS.locLine20 + '</span><span class="u">' + ordDestLine() + '</span></button>' +
@@ -6289,7 +6309,7 @@
         '<div class="ord-pline"><span class="ic">' + ICONS.simCard20 + '</span>eSIM X' + st.qty + '</div>' +
       '</div>' +
       '<div class="ord-hr" style="margin:12px 0"></div>' +
-      '<button class="ord-cancel" id="payCancelInfo">' + cancelInlineText(orderP, orderState.useDate) + ' <span class="ic">' + ICONS.infoCyan + '</span></button>' +
+      cancelBtnHTML('payCancelInfo') +
       '</div>';
     // 折扣與點數
     h += '<div class="ord-card"><div class="ord-sec-h"><div class="t">折扣與點數</div></div>' +
@@ -6331,6 +6351,7 @@
     if (footNote) footNote.style.display = (orderP.cancelType === 'none') ? 'none' : '';
     var byId = function (id) { return document.getElementById(id); };
     byId('payCancelInfo').onclick = function () { renderCancelSheet(); openSheet(byId('cancelSheet')); };
+    byId('paySumTg').onclick = function () { byId('paySumTg').closest('.pay-summary').classList.toggle('collapsed'); };
     if (byId('payDestLine')) byId('payDestLine').onclick = openOrdScope;
     byId('payPromo').onclick = function () { toast('demo 未開發'); };
     byId('payPoints').onclick = function () { ps.usePoints = !ps.usePoints; renderPay(); };
