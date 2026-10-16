@@ -644,7 +644,8 @@
   .pc-lchip span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); padding: 0 4px; }
   .pc-lchip:hover { background: var(--kk-surface-medium); }
   .pc-lchip.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
-  .pc-lchip.sel b { color: var(--kk-primary-dark); }
+  .pc-lchip.sel b, .pc-lchip.sel span { color: var(--kk-primary-dark); }  /* Option Card S 選中：標題與說明皆 #13A3B6（Figma 3817-165671） */
+  .pc-lchip.sel:hover { background: var(--kk-primary-light); }  /* 選中 + hover：#CEF0F3（Figma 4480-75780） */
   .pc-lchip .rec { position: absolute; top: -5px; right: -5px; padding: 2px 4px; border-radius: 4px 4px 4px 0; background: #EF7A70; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; }
   /* Carousel Arrow Button（Figma 3792:159534）：18×28、rgba(255,255,255,.6)、16 icon，疊在輪播兩端、垂直置中 */
   .pc-lnav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 24px; height: 40px; padding: 0; border: 0; background: transparent; cursor: pointer; }  /* 按鈕本體 24×40（無障礙命中區，往內側延伸）；視覺 18×32 白底由 ::before 繪製。Figma 3701-124950 Carousel Arrow Button：18×32 白底、py8、內側 r8、16 semibold 箭頭 */
