@@ -162,8 +162,8 @@
   .pc-note u { margin-left: 12px; font-weight: 500; text-underline-offset: 2px; cursor: pointer; }
   /* 卡片底欄（Figma 3792:155411）：上邊線 #E6E9ED、p24、摘要（靠右）與按鈕 gap 48；向外撐到卡片邊緣、續接卡片下圓角 */
   .pc-panel-foot2 { display: flex; align-items: center; gap: 48px; margin: 4px -24px 0; padding: 24px; border-top: 1px solid var(--kk-border-lighter); background: #fff; border-radius: 0 0 16px 16px;
-    position: sticky; bottom: 0; z-index: 3; transition: box-shadow .15s; }  /* 卡片底欄在卡片範圍內吸底：卡片還在視窗內時貼著視窗底邊（不留縫、不露出背景），卡片捲完就隨卡片走 */
-  .pc-panel-foot2.stuck { box-shadow: 0 -4px 12px rgba(38,50,56,.12); }  /* 吸底中：滿寬底欄 + 向上投影；下方兩角維持 r16（貼底時與卡片白底相接，圓角不會露出背景） */
+    position: sticky; bottom: 0; z-index: 3; transition: box-shadow .15s, padding .15s, bottom .15s; }  /* 卡片底欄在卡片範圍內吸底：卡片還在視窗內時貼著視窗底邊（不留縫、不露出背景），卡片捲完就隨卡片走 */
+  .pc-panel-foot2.stuck { padding: 12px 24px 36px; bottom: -24px; box-shadow: 0 -4px 12px rgba(38,50,56,.12); }  /* 吸底時上下內距 24→12（Figma 4477-74779：px24 py12）：底欄高度不變，多出的 24 下沉到視窗外（bottom -24），避免高度變動造成切換抖動 */  /* 吸底中：滿寬底欄 + 向上投影；下方兩角維持 r16（貼底時與卡片白底相接，圓角不會露出背景） */
   .pc-panel-sum { flex: 1 1 0; min-width: 0; text-align: right; font-size: 24px; line-height: 30px; font-weight: 600; color: var(--kk-text-medium); }  /* 預選＝$color-text-medium #9C9DA0（Figma 3636-98060） */
   .pc-panel-sum.touched { color: var(--kk-text-darker); }  /* 手動選擇後＝$color-text-darker #212121（Figma 3636-98437） */
   .pc-btn { height: 48px; padding: 0 48px; background: var(--kk-primary-button); color: #fff; border-radius: 8px;
@@ -1956,7 +1956,8 @@
   (function () {
     var ft = document.querySelector('.pc-panel-foot2'); if (!ft) return;
     var card = ft.closest('.pc-card');
-    function upd() { var f = ft.getBoundingClientRect(), c = card.getBoundingClientRect(); ft.classList.toggle('stuck', ft.offsetParent !== null && f.bottom < c.bottom - 1); }
+    // 判斷只看卡片底邊是否還在視窗底下方 24 以上（底欄高度固定，卡片幾何不隨狀態變），吸底/非吸底兩態的釘住門檻不同，若用底欄位置判斷會在臨界帶來回切換
+    function upd() { var c = card.getBoundingClientRect(); ft.classList.toggle('stuck', ft.offsetParent !== null && c.bottom > document.documentElement.clientHeight + 25); }
     addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd);
     new MutationObserver(function () { requestAnimationFrame(upd); }).observe(card, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'style', 'data-state'] });
     upd();
