@@ -198,6 +198,7 @@ subs = {
     "{{IC_globe}}":        svg("globe"),
     "{{IC_globeSel}}":     svg("globeSel"),
     "{{IC_info}}":         svg("info"),
+    "{{IC_infoSel}}":      svg("info", recolor=("#727272", "#13A3B6")),  # 多國區域卡選中態 ⓘ（Figma 709-40892）
     "{{IC_flash}}":        svg("flash"),
     "{{IC_currencyReload}}": svg("currencyReload"),
     "{{IC_currencyReloadDark}}": svg("currencyReloadDark"),

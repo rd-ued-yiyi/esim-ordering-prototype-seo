@@ -308,8 +308,7 @@
     display: flex; align-items: center; gap: 8px;
     box-sizing: border-box; height: 44px; max-width: 240px;  /* Figma 2538-30569：總高 44（p12 + 內容 20） */
     background: rgba(255,255,255,.88);
-    border: 1.5px solid #fff; border-radius: var(--r-lg);
-    box-shadow: 0 2px 8px rgba(17,25,40,.06);
+    border: 1.5px solid #fff; border-radius: var(--r-lg);  /* Figma 871-75706 destination select bar：白 88%、1.5px 白邊、r12、無陰影 */
     padding: 0 12px; cursor: pointer;
     color: var(--kk-text-darker);  /* 不繼承 .title-block 的白色 */
   }
@@ -365,7 +364,7 @@
   .ftab {
     position: relative;
     background: var(--kk-surface-light); border-radius: var(--r-md);
-    padding: 6px 12px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker);
+    padding: 6px 8px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker);  /* tab（arrow）Mobile：px8 py6（Figma 709-78583） */
     white-space: nowrap;
   }
   .ftab.sel {
@@ -374,8 +373,8 @@
     color: #13A3B6;
   }
   .ftab.sel::after {
-    content: ''; position: absolute; left: 50%; bottom: -4.5px;
-    width: 9px; height: 9px; background: var(--kk-primary-lighter);
+    content: ''; position: absolute; left: 50%; bottom: -4.4px;  /* Figma 709-78591：9.42 方塊轉 45°，尖端露出 6.32 */
+    width: 9.4px; height: 9.4px; background: var(--kk-primary-lighter);
     border-right: 1px solid var(--kk-primary-medium);
     border-bottom: 1px solid var(--kk-primary-medium);
     border-bottom-right-radius: 2.5px;  /* Figma：圓角方塊旋轉 45°，露出的尖是圓的 */
@@ -573,6 +572,7 @@
     background: var(--kk-primary-lighter);
     box-shadow: inset 0 0 0 1px var(--kk-primary-medium);
   }
+  .dm-row.sel .rn, .dm-row.sel .rd { color: #13A3B6; }  /* 選中：標題／國家列／數量皆 $color-text-primary-dark（Figma 709-40919） */
   .dm-row .rt { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
   .dm-row .rn { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .dm-row .rd { display: flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
@@ -3249,7 +3249,7 @@
   // ---------- 渲染helpers ----------
   var ICONS = {
     fire: '{{IC_fire}}', trash: '{{IC_trash}}', globe: '{{IC_globe}}',
-    info: '{{IC_info}}', globeSel: '{{IC_globeSel}}', checkCircle: '{{IC_checkCircle}}',
+    info: '{{IC_info}}', infoSel: '{{IC_infoSel}}', globeSel: '{{IC_globeSel}}', checkCircle: '{{IC_checkCircle}}',
     thumbsUp: '{{IC_thumbsUp}}',  // 列表卡「連續N則好評」標籤（雙色點讚，Figma 795-35558）
     flash: '{{IC_flash}}', reload: '{{IC_currencyReload}}', reloadDark: '{{IC_currencyReloadDark}}',
     checkLine: '{{IC_checkCircleLine}}', calendar: '{{IC_calendar}}', crossLine: '{{IC_crossCircleLine}}',
@@ -3312,7 +3312,7 @@
     var row = el('<button class="dm-row' + (selected ? ' sel' : '') + '"><span class="ic ic-24">' + (selected ? ICONS.globeSel : ICONS.globe) + '</span>' +
       '<span class="rt"><span class="rn"></span>' +
       '<span class="rd"><span class="desc"></span><span class="cnt"><span></span>' +
-      '<span class="ic ic-16">' + ICONS.info + '</span></span></span></span></button>');
+      '<span class="ic ic-16">' + (selected ? ICONS.infoSel : ICONS.info) + '</span></span></span></span></button>');
     row.querySelector('.rn').textContent = r.name;
     // 國家串用完整 list 拼出，統一交給 CSS 尾部省略（手寫 desc 有的只列了部分，短了不觸發省略號會像“顯示完了”）
     row.querySelector('.desc').textContent = (r.list && r.list.length) ? r.list.join('、') : r.desc;

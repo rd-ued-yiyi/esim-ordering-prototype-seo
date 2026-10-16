@@ -99,11 +99,11 @@
   /* 已選目的地 pill（Figma 3096-60605：白底 44、青定位 + 名稱 + ⌄） */
   /* 已選目的地 pill：對齊 mweb .dest-bar（半透明白底 .88 + 白 1.5 邊 + 圓角 12 + 柔和陰影 + 名稱 14/20 Semibold） */
   .pc-dest-pill { margin-top: 28px; height: 44px; max-width: 320px; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px;
-    background: rgba(255,255,255,.88); border: 1.5px solid #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(17,25,40,.06);
+    background: rgba(255,255,255,.88); border: 1.5px solid #fff; border-radius: 12px;  /* Figma 3966-162649 Destination Select Bar：白 88%、1.5px 白邊、r12、無陰影 */
     font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); }
   .pc-dest-pill .chev { transition: transform .2s; }
   .pc-dest-pill { transition: background-color .15s; }
-  .pc-dest-pill:hover { background: rgba(255,255,255,.9); }  /* Figma 3966-162649 Destination Select Bar hover：白 88% → 90% */
+  .pc-dest-pill:hover { background: var(--kk-surface-light); }  /* hover：$color-background-surface-light #F1F4F8（Figma 3966-162650） */
   /* 多國態：名稱列表超出省略、數量 (N) 常駐可見（對齊 mweb destName + destNum） */
   .pc-dest-pill #pcDestName { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dest-num { flex: 0 0 auto; color: var(--kk-text-darker); font-weight: 600; }
@@ -206,9 +206,10 @@
   .pc-ftabs { position: relative; flex: 0 0 120px; align-self: flex-start; display: flex; flex-direction: column; gap: 8px; }
   .pc-ftab { position: relative; width: 100%; height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; padding: 6px 12px; white-space: nowrap; border-radius: 8px; border: 1px solid transparent;
     background: var(--kk-surface-light); font-size: 14px; line-height: 20px; color: var(--kk-text-darker); text-align: center; transition: background .2s ease, color .2s ease, border-color .2s ease; }
-  .pc-ftab:hover:not(.sel) { color: var(--kk-primary-dark); }
+  .pc-ftab:hover { background: var(--kk-surface-medium); }  /* hover：#E6E9ED，文字不變（Figma 3966-164652） */
   .pc-ftab.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); color: var(--kk-primary-dark); }
-  .pc-ftab.sel::after { content: ''; position: absolute; right: -6px; top: calc(50% + 1.5px); width: 9.4px; height: 9.4px; box-sizing: border-box; background: var(--kk-primary-lighter); border-top: 1px solid var(--kk-primary-medium); border-right: 1px solid var(--kk-primary-medium); border-top-right-radius: 2px; transform: translateY(-50%) rotate(45deg); }  /* 尖端 r2（Figma Rectangle 資產為圓角） */
+  .pc-ftab.sel:hover, .pc-ftab.sel:hover::after { background: var(--kk-primary-light); }  /* 選中 + hover：#CEF0F3（Figma 4480-75429） */
+  .pc-ftab.sel::after { content: ''; position: absolute; right: -4.7px; top: calc(50% + 1.5px); width: 9.4px; height: 9.4px; box-sizing: border-box; background: var(--kk-primary-lighter); border-top: 1px solid var(--kk-primary-medium); border-right: 1px solid var(--kk-primary-medium); border-top-right-radius: 2px; transform: translateY(-50%) rotate(45deg); }  /* 尖端 r2（Figma Rectangle 資產為圓角） */
   .pc-plan-flow .pc-scroll-wrap { flex: 1 1 0; min-width: 0; }
   .pc-flow-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 16px; padding-right: 0; }  /* Figma 3636-98813：段落與虛線上下各 16 */
   .pc-flow-sec { display: flex; flex-direction: column; gap: 8px; }
@@ -482,8 +483,9 @@
     border: 1px solid var(--kk-border-lighter); border-radius: 8px; background: #fff; }
   .dlg-row > .ic-24 { align-self: center; }  /* 地球圖標維持垂直置中 */
   .dlg-row:hover { background: var(--kk-surface-lighter); border-color: var(--kk-border-lighter); }  /* Figma 3674-101274 regional hover（更新版）：底 #F7FAFC、1px #E6E9ED */
-  .dlg-row.sel:hover { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }  /* 選中態 hover 維持選中樣式 */
+  .dlg-row.sel:hover { background: var(--kk-primary-light); border-color: var(--kk-primary-medium); }  /* 選中 + hover：#CEF0F3（Figma 4480-75358） */
   .dlg-row.sel { border-color: var(--kk-primary-medium); background: var(--kk-primary-lighter); }
+  .dlg-row.sel .rn, .dlg-row.sel .rd, .dlg-row.sel .cnt { color: var(--kk-primary-dark); }  /* 選中：標題／國家列／數量皆 #13A3B6（Figma 709-40919） */
   .dlg-row .rt { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left; }
   .dlg-row .rn { font-size: 16px; line-height: 24px; font-weight: 600; }
   .dlg-row .rd { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -2372,7 +2374,7 @@
       var mk = function (r) {
         var row = h('<button class="dlg-row' + (sel.dest === r.name ? ' sel' : '') + '"><span class="ic ic-24">' + (sel.dest === r.name ? '{{DLG_globeSel24}}' : '{{DLG_globe24}}') + '</span>' +
           '<span class="rt"><span class="rn"></span><span class="rd"></span></span>' +
-          '<span class="cnt"><span></span><span class="ic ic-16">{{IC_info}}</span><span class="dlg-tip"><ul></ul></span></span></button>');
+          '<span class="cnt"><span></span><span class="ic ic-16">' + (sel.dest === r.name ? '{{IC_infoSel}}' : '{{IC_info}}') + '</span><span class="dlg-tip"><ul></ul></span></span></button>');
         row.querySelector('.rn').textContent = r.name;
         row.querySelector('.rd').textContent = (r.list && r.list.length ? r.list.join('、') : r.desc);
         row.querySelector('.cnt span').textContent = '共' + r.count + '個國家';
