@@ -217,18 +217,20 @@
   .pc-flow-note { font-size: 12px; line-height: 16px; color: var(--kk-text-dark); }
   /* 依可用寬度自動增減列數：1440 下 4 列（Figma），變窄自動降列，每格 ≥150px 文字不硬折 */
   .pc-flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }  /* Figma 784 寬 5 列（150.4）；欄寬固定，長語系標題在卡內換行 */
-  .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 74px; box-sizing: border-box; padding: 16px 12px; border-radius: 8px; border: 1px solid transparent;  /* Option Card：74px 高、px12 py16、gap2 */
+  .pc-tier { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 74px; box-sizing: border-box; padding: 16px 12px; border-radius: 8px;  /* Option Card Lg（Figma 764-80819）：74 高、px12 py16、gap2；選中邊框用 inset 陰影畫在內側，高度不變 */
     background: var(--kk-surface-light); }
   .pc-tier:hover { background: var(--kk-surface-medium); }
   .pc-tier b { font-size: 16px; line-height: 24px; font-weight: 600; text-align: center; overflow-wrap: anywhere; }  /* 文字過長換行，不撐寬欄位 */
   .pc-tier span { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); white-space: nowrap; }
-  .pc-tier.sel { background: var(--kk-primary-lighter); border-color: var(--kk-primary-medium); }
-  .pc-tier.sel b { color: var(--kk-primary-dark); }
-  /* 推薦標籤（KKTag Solid #EF7A70）：right/top -5px，右下 4×5 折角 */
-  .pc-tier .badge { position: absolute; top: -5px; right: -5px; z-index: 3; background: var(--kk-text-critical); color: #fff;
+  .pc-tier.sel { background: var(--kk-primary-lighter); box-shadow: inset 0 0 0 1px var(--kk-primary-medium); }
+  .pc-tier.sel b, .pc-tier.sel span { color: var(--kk-primary-dark); }  /* 選中：標題與說明皆 $color-text-primary-dark（Figma 764-80818） */
+  .pc-tier.sel:hover { background: var(--kk-primary-light); }  /* 選中 + hover：$color-background-primary-light #CEF0F3（Figma 4480-75774） */
+  /* 推薦標籤（KKTag Solid #EF7A70，px4 py2，右下 4×5 折角 #E65F50）：預設態貼卡片外緣 -4（Figma 758-80451）、選中態 -5（Figma 764-80816） */
+  .pc-tier .badge { position: absolute; top: -4px; right: -4px; z-index: 3; background: var(--kk-text-critical); color: #fff;
     font-size: 12px; line-height: 16px; font-weight: 400; font-style: normal; padding: 2px 4px; white-space: nowrap; border-radius: 4px 4px 0 4px; }
   .pc-tier .badge::after { content: ''; position: absolute; right: 0; bottom: -5px; width: 0; height: 0;
     border-top: 5px solid #E65F50; border-right: 4px solid transparent; }
+  .pc-tier.sel .badge { top: -5px; right: -5px; }
   .pc-panel[hidden] { display: none !important; }
   /* ---------- 面包屑 ---------- */
   /* 麵包屑（Figma 3710-148692 breadcrumb）：高 68（py24）、gap 4、可點層級 #068B9F、當前層級 #9C9DA0、箭頭 ic_arrowRight_line 14；全站共用 */

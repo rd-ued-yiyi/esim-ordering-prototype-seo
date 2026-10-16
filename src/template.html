@@ -419,24 +419,25 @@
     position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
     background: var(--kk-surface-light); border-radius: var(--r-md);
-    padding: 16px; white-space: nowrap;
+    padding: 16px 12px; white-space: nowrap;  /* Option Card Lg（Figma 764-80819）：px12 py16、gap 2 */
   }
   .opt .t { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--kk-text-darker); }
-  .opt.sel .t { color: #13A3B6; }
+  .opt.sel .t, .opt.sel .p { color: #13A3B6; }  /* 選中：標題與說明皆 $color-text-primary-dark（Figma 764-80818） */
   .opt .p { font-size: 12px; line-height: 16px; color: var(--kk-text-medium); }
-  /* 推薦 標籤（原 80%選擇）（Figma 871-75700 實測）：珊瑚紅小圓角(4px)，貼卡片右上、露出卡片上緣 4px；整體右移 4px 使下方尖角左緣正好貼齊卡片右緣 → 折紙尖角 */
+  /* 推薦標籤（KKTag Solid #EF7A70，px4 py2，右下 4×5 折角 #E65F50）：預設態貼卡片外緣 -4（Figma 758-80451）、選中態 -5（Figma 764-80816） */
   .opt .badge {
     position: absolute; top: -4px; right: -4px; z-index: 3;
     background: var(--kk-text-critical); color: #fff;
-    font-size: 12px; line-height: 16px; font-weight: 400;  /* 80%標籤文字不加粗 */
-    padding: 2px 6px; white-space: nowrap;
-    border-radius: 4px 4px 1px 4px;  /* 實測圓角 ~3-4px；右下(BR)為尖角側 */
+    font-size: 12px; line-height: 16px; font-weight: 400;
+    padding: 2px 4px; white-space: nowrap;
+    border-radius: 4px 4px 0 4px;
   }
-  /* 右下向下小尖角：尖角寬 4px＝badge 右移量，left 緣落在卡片右緣、tip 朝下，形成折紙效果 */
+  .opt.sel .badge { top: -5px; right: -5px; }
+  /* 右下向下小折角 4×5：左緣貼齊卡片右緣、tip 朝下（Figma Vector 1，#E65F50） */
   .opt .badge::after {
-    content: ''; position: absolute; right: 0; bottom: -4px;
+    content: ''; position: absolute; right: 0; bottom: -5px;
     width: 0; height: 0;
-    border-top: 4px solid var(--kk-text-critical);
+    border-top: 5px solid #E65F50;
     border-right: 4px solid transparent;
   }
 
