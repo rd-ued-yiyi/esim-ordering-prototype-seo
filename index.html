@@ -3537,6 +3537,7 @@
   function renderCountryPane() {
     var pane = document.getElementById('paneCountry');
     pane.innerHTML = '';
+    var curC = (function () { var c = currentSel(); return c.type === 'country' ? c.name : null; })();  // 已選國家：熱門／各洲 chips 顯示選中態；最近選擇不標示
 
     var hist = histGet(HK_C, HIST_C_DEF).slice(0, 5);  // modal 最多顯示 5 個
     if (hist.length) {
@@ -3555,7 +3556,7 @@
     (function renderHot() {  // 超過 11 個：預設只顯示前 11 + 「展開」chip；展開後全部 + 「收起」
       hotChips.innerHTML = '';
       var over = GEO.hot.length > HOT_C_MAX, list = (over && !_hotCExp) ? GEO.hot.slice(0, HOT_C_MAX) : GEO.hot;
-      list.forEach(function (n) { hotChips.appendChild(chipEl(n, pickCountry)); });
+      list.forEach(function (n) { hotChips.appendChild(chipEl(n, pickCountry, curC === n)); });
       if (over) {
         var tg = chipEl(_hotCExp ? '收起' : '展開', function () { _hotCExp = !_hotCExp; renderHot(); });
         tg.classList.add('chip-toggle'); tg.appendChild(el('<span class="ic ic-16">' + (_hotCExp ? ICONS.arrowUpLine16 : ICONS.arrowDownLine16) + '</span>'));
@@ -3570,7 +3571,7 @@
       var g = groupEl(c.name);
       g.setAttribute('data-sec', 'c' + i);
       var chips = el('<div class="dm-chips"></div>');
-      c.countries.forEach(function (n) { chips.appendChild(chipEl(n, pickCountry)); });
+      c.countries.forEach(function (n) { chips.appendChild(chipEl(n, pickCountry, curC === n)); });
       g.appendChild(chips);
       pane.appendChild(g);
     });
@@ -3592,7 +3593,7 @@
       var rows = el('<div class="dm-rows"></div>');
       hist.forEach(function (n) {
         var r = GEO.regions.concat(GEO.hotRegions).filter(function (x) { return x.name === n; })[0];
-        if (r) rows.appendChild(regionRowEl(r, pickRegion, curR === r.name));
+        if (r) rows.appendChild(regionRowEl(r, pickRegion, false));  // 最近選擇不標示選中態
       });
       g.appendChild(rows);
       g.querySelector('[data-hclear]').addEventListener('click', function () {

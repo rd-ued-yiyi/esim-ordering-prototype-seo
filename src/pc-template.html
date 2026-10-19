@@ -2377,7 +2377,7 @@
         var hg = dlgGroup('熱門', true);
         var hchips = h('<div class="dlg-chips"></div>');
         var overC = hots.length > HOT_C_MAX;
-        ((overC && !_pcHotCExp) ? hots.slice(0, HOT_C_MAX) : hots).forEach(function (n) { hchips.appendChild(dlgChip(n, pickDest)); });
+        ((overC && !_pcHotCExp) ? hots.slice(0, HOT_C_MAX) : hots).forEach(function (n) { hchips.appendChild(dlgChip(n, pickDest, sel.destType === 'country' && sel.dest === n)); });  // 已選國家顯示選中態（最近選擇不標示）
         if (overC) {  // 超過 11 個：前 11 + 「展開」chip；展開後全部 + 「收起」
           var tg = dlgChip(_pcHotCExp ? '收起' : '展開', function () { _pcHotCExp = !_pcHotCExp; renderDlg(); });
           tg.classList.add('dlg-chip--toggle'); tg.appendChild(h('<span class="ic ic-16">' + (_pcHotCExp ? '{{IC_arrowUpLine16}}' : '{{IC_arrowDownLine16}}') + '</span>'));
