@@ -2917,16 +2917,9 @@
     // 重新進入目的地頁（如從列表返回）時把選中流量檔、選中天數 chip 滾回可視區，避免選中項落在螢幕外
     if (name === 'destination') {
       renderOpts();  // 依當前方案(A/B)重建流量區塊（落地頁選過方案後才進目的地頁，需按新方案渲染）
-      revealOpt(document.getElementById('dataOptsScroll'), false);
-      // 天數 chips：手動選過 → 選中天數捲到可視區中央；預設(未手動選過) → 回到最初位置（scrollLeft 0）、靠左；
-      // 但預設天數本身不在第一屏（scrollLeft 0 時被裁到可視區外）時，仍把它捲到中央
-      if (state.daysTouched) revealOpt(document.getElementById('dayChips'), false, '.chip.sel');
-      else {
-        var dc = document.getElementById('dayChips'); dc.scrollLeft = 0;
-        var selChip = dc.querySelector('.chip.sel');
-        if (selChip) { var dr = dc.getBoundingClientRect(), cr = selChip.getBoundingClientRect(), pr = parseFloat(getComputedStyle(dc).paddingRight) || 0;
-          if (cr.right > dr.right - pr + 1) revealOpt(dc, false, '.chip.sel'); }
-      }
+      // 流量檔位／天數 chips：手動選過 → 選中項捲到可視區中央；預設(未手動選過) → 回到最初位置靠左，選中項本身在第一屏外時才居中
+      if (state.planTouched) revealOpt(document.getElementById('dataOptsScroll'), false); else revealDefault(document.getElementById('dataOptsScroll'), '.opt.sel');
+      if (state.daysTouched) revealOpt(document.getElementById('dayChips'), false, '.chip.sel'); else revealDefault(document.getElementById('dayChips'), '.chip.sel');
     }
     // 列表頁可見後才能量寬度：裁切各卡標籤到單行（進頁時 renderPlans 先於 go、量測為 0）
     if (name === 'plans') requestAnimationFrame(fitAllCardTags);
@@ -3041,6 +3034,16 @@
   // 單次 scrollTo（哪怕加 rAF）會失敗，選中項停在重建後的 scrollLeft=0（被擠到邊緣）。
   // 用 token 讓新呼叫作廢舊迴圈；每 70ms 校驗 scrollLeft 是否到位，沒到就再試，最多約 1s，
   // 慣性一停就會成功落位並自動停止。瞬時定位（smooth=false）時才做重試校驗。
+  // 預設（未手動選過）定位：回到最初位置（scrollLeft 0、靠左）；選中項本身不在第一屏（被裁到可視區右側外）時才把它捲到中央。
+  // 手動選過的一律用 revealOpt 居中（鉗制在 [0, max]）。天數 chips 與流量檔位共用。
+  function revealDefault(scrollEl, sel) {
+    if (!scrollEl) return;
+    scrollEl._revealToken = (scrollEl._revealToken || 0) + 1;  // 作廢進行中的 reveal 重試
+    scrollEl.scrollLeft = 0;
+    var s = scrollEl.querySelector(sel || '.opt.sel'); if (!s) return;
+    var r = scrollEl.getBoundingClientRect(), c = s.getBoundingClientRect(), pr = parseFloat(getComputedStyle(scrollEl).paddingRight) || 0;
+    if (c.right > r.right - pr + 1) revealOpt(scrollEl, false, sel);
+  }
   function revealOpt(scrollEl, smooth, sel) {
     if (!scrollEl) return;
     sel = sel || '.opt.sel';
@@ -3138,7 +3141,7 @@
     });
     if (state.variant === 'B') updateFlowValue();
     else setTabsActive(document.getElementById('dataTabs'), document.getElementById('dataNote'), state.tab);
-    revealOpt(scrollEl, false);  // 重建後把選中檔位滾入可視區（切天數/換目的地都杜絕空白）
+    if (state.planTouched) revealOpt(scrollEl, false); else revealDefault(scrollEl, '.opt.sel');  // 重建後：手動選過 → 選中檔位居中；預設 → 靠左，選中檔位在第一屏外才居中
   }
 
   function updateCta() {
