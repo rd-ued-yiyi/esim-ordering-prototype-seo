@@ -3019,9 +3019,15 @@
     if (name === 'destination') {
       renderOpts();  // 依當前方案(A/B)重建流量區塊（落地頁選過方案後才進目的地頁，需按新方案渲染）
       revealOpt(document.getElementById('dataOptsScroll'), false);
-      // 天數 chips：預設(未手動選過)不捲動、從 1 天起顯示；只有手動選過才把選中天數捲回可視區
+      // 天數 chips：手動選過 → 選中天數捲到可視區中央；預設(未手動選過) → 回到最初位置（scrollLeft 0）、靠左；
+      // 但預設天數本身不在第一屏（scrollLeft 0 時被裁到可視區外）時，仍把它捲到中央
       if (state.daysTouched) revealOpt(document.getElementById('dayChips'), false, '.chip.sel');
-      else document.getElementById('dayChips').scrollLeft = 0;
+      else {
+        var dc = document.getElementById('dayChips'); dc.scrollLeft = 0;
+        var selChip = dc.querySelector('.chip.sel');
+        if (selChip) { var dr = dc.getBoundingClientRect(), cr = selChip.getBoundingClientRect(), pr = parseFloat(getComputedStyle(dc).paddingRight) || 0;
+          if (cr.right > dr.right - pr + 1) revealOpt(dc, false, '.chip.sel'); }
+      }
     }
     // 列表頁可見後才能量寬度：裁切各卡標籤到單行（進頁時 renderPlans 先於 go、量測為 0）
     if (name === 'plans') requestAnimationFrame(fitAllCardTags);
