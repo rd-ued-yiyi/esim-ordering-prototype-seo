@@ -240,6 +240,9 @@ subs = {
     "{{IC_plusOn}}":       svg("plusLineSemibold"),  # Stepper 加（可用 #26BEC9）
     "{{IC_plusOff}}":      svg("plusLineSemibold", recolor=("#26BEC9", "#ADE6EB")),
     "{{IC_arrowUpLg}}":    svg("arrowUpLineLg"),  # 付款頁商品摘要收合箭頭 ic_arrowUp_line_lg 20
+    "{{IC_arrowDownLine16}}": svg("arrowDownLine16"),  # 熱門 chips「展開」ic_arrowDown_line 16（Figma 4592-66123）
+    "{{IC_arrowUpLine16}}":   svg("arrowUpLine16"),  # 熱門 chips「收起」ic_arrowUp_line 16
+    "{{IC_arrowDownSb16}}":   svg("arrowDownSb16"),  # 熱門區域 展開/收起 KKButton ic_arrowDown_line_semibold 16（Figma 4592-67764）
     "{{IC_infoFill}}":     svg("infoFill"),  # 设备信息提示：实心 info 图标（Figma 1116-91131 ic_info_fill，#2D84D6）
     # 目的地及领取地 sheet 空状态提示：实心 warning 图标（Figma 2551-115281 ic_warningCircle_fill，#FFA000）
     "{{IC_warningCircle}}": svg("warningCircleFill"),

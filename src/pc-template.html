@@ -550,6 +550,13 @@
   #pcDlg .dlg-tab.sel::after { border-radius: 2px 2px 0 0; }
   #pcDlg .dlg-tabs + .dlg-group { margin-top: 32px; }
   #pcDlg .dlg-rows { gap: 8px; }
+  /* 熱門區塊展開/收起（Figma 4592-67890 / 4592-70591）：國家 chips 超過 11 個、多國區域超過 3 個時出現；預設收起 */
+  #pcDlg .dlg-chip--toggle .ic, #pcDlg .dlg-chip--toggle .ic img { width: 16px; height: 16px; display: block; }
+  .dlg-more { width: 100%; box-sizing: border-box; height: 32px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 6px 8px 6px 12px; border: 1px solid var(--kk-border-lighter); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); cursor: pointer; }  /* KKButton White Sm + trailing icon（Figma 4592-70611） */
+  .dlg-more:hover { background: var(--kk-surface-lighter); }
+  .dlg-more .ic, .dlg-more .ic img { width: 16px; height: 16px; display: block; }
+  .dlg-more .ic img { transition: transform .2s; }
+  .dlg-more.open .ic img { transform: rotate(180deg); }
   /* 多選提示 + 底部按鈕：提示 12/16 上邊線 pt12 px24 gap8、已選數 Medium #26BEC9；按鈕 p24 gap16、清除 1px #727272 */
   #pcDlg .dlg-hint { gap: 8px; padding: 12px 24px 0; border-top: 1px solid var(--kk-border-lighter); }
   #pcDlg .dlg-hint b { font-weight: 500; color: var(--kk-primary-medium); }
@@ -2308,6 +2315,8 @@
     });
   }
 
+  // 熱門區塊展開/收起狀態（Figma 4592-67890 / 4592-70591）：國家 chips 超過 11 個、多國區域超過 3 個才出現；預設收起
+  var HOT_C_MAX = 11, HOT_R_MAX = 3, _pcHotCExp = false, _pcHotRExp = false;
   function dlgGroup(title, fire, action) {
     return h('<div class="dlg-group"><div class="gh">' + (fire ? '<span class="ic ic-24">{{DLG_fire}}</span>' : '') + '<span>' + title + '</span>' + (action || '') + '</div></div>');
   }
@@ -2367,7 +2376,13 @@
       if (hots.length) {
         var hg = dlgGroup('熱門', true);
         var hchips = h('<div class="dlg-chips"></div>');
-        hots.forEach(function (n) { hchips.appendChild(dlgChip(n, pickDest)); });
+        var overC = hots.length > HOT_C_MAX;
+        ((overC && !_pcHotCExp) ? hots.slice(0, HOT_C_MAX) : hots).forEach(function (n) { hchips.appendChild(dlgChip(n, pickDest)); });
+        if (overC) {  // 超過 11 個：前 11 + 「展開」chip；展開後全部 + 「收起」
+          var tg = dlgChip(_pcHotCExp ? '收起' : '展開', function () { _pcHotCExp = !_pcHotCExp; renderDlg(); });
+          tg.classList.add('dlg-chip--toggle'); tg.appendChild(h('<span class="ic ic-16">' + (_pcHotCExp ? '{{IC_arrowUpLine16}}' : '{{IC_arrowDownLine16}}') + '</span>'));
+          hchips.appendChild(tg);
+        }
         hg.appendChild(hchips); bd.appendChild(hg);
       }
       if (!dlg.q) bd.appendChild(contTabs(bd, 'c'));
@@ -2397,7 +2412,13 @@
       if (hotr.length) {
         var hg2 = dlgGroup('熱門', true);
         var rows = h('<div class="dlg-rows"></div>');
-        hotr.forEach(function (r) { rows.appendChild(mk(r)); });
+        var overR = hotr.length > HOT_R_MAX;
+        ((overR && !_pcHotRExp) ? hotr.slice(0, HOT_R_MAX) : hotr).forEach(function (r) { rows.appendChild(mk(r)); });
+        if (overR) {  // 超過 3 個：前 3 + 「展開」鈕；展開後全部 + 「收起」
+          var mb = h('<button class="dlg-more' + (_pcHotRExp ? ' open' : '') + '"><span class="tx">' + (_pcHotRExp ? '收起' : '展開') + '</span><span class="ic ic-16">{{IC_arrowDownSb16}}</span></button>');
+          mb.addEventListener('click', function () { _pcHotRExp = !_pcHotRExp; renderDlg(); });
+          rows.appendChild(mb);
+        }
         hg2.appendChild(rows); bd.appendChild(hg2);
       }
       var alls = GEO.regions.filter(function (r) { return match(r.name); });

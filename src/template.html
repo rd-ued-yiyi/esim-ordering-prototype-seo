@@ -540,6 +540,13 @@
   }
   .dm-group-head .gact { display: flex; align-items: center; padding: 2px; }
   .dm-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* 熱門區塊展開/收起（Figma 4592-66122 / 4592-67421）：國家 chips 超過 11 個、多國區域超過 3 個時出現；預設收起 */
+  .chip.chip-toggle { gap: 0; }  /* 展開/收起 chip：文字 px4 + 16 箭頭 */
+  .chip.chip-toggle .ic, .chip.chip-toggle .ic img { width: 16px; height: 16px; display: block; }
+  .dm-more { width: 100%; box-sizing: border-box; height: 32px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 6px 8px 6px 12px; border: 1px solid var(--kk-border-lighter); border-radius: 8px; background: #fff; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--kk-text-darker); cursor: pointer; }  /* KKButton White Sm + trailing icon（Figma 4592-67764） */
+  .dm-more .ic, .dm-more .ic img { width: 16px; height: 16px; display: block; }
+  .dm-more .ic img { transition: transform .2s; }
+  .dm-more.open .ic img { transform: rotate(180deg); }
 
   /* 洲際錨點 tab */
   .dm-conts {
@@ -3288,7 +3295,7 @@
     file: '{{IC_file}}', locGrey: '{{IC_locationGrey}}', plus: '{{IC_plus}}', plusBold: '{{IC_plusSemibold}}', plusCyan: '{{IC_plusSemiCyan}}', cross: '{{IC_cross}}',
     // 訂單頁行內小圖示（描邊 svg，直接內聯，無需 build token；顏色對齊設計稿 #212121）
     fileDark: '{{IC_fileDark}}', locDark: '{{IC_locationDark}}',
-    fileCheckLine: '{{IC_fileCheckLine}}', editLine: '{{IC_editLine}}', infoCyan: '{{IC_infoCyan}}', infoDark: '{{IC_infoDark}}',
+    fileCheckLine: '{{IC_fileCheckLine}}', editLine: '{{IC_editLine}}', infoCyan: '{{IC_infoCyan}}', infoDark: '{{IC_infoDark}}', arrowDownLine16: '{{IC_arrowDownLine16}}', arrowUpLine16: '{{IC_arrowUpLine16}}', arrowDownSb16: '{{IC_arrowDownSb16}}',
     // 商品摘要行官方 20px 資產（Figma 1074-81598 / 1074-84069）
     locLine20: '{{IC_locationLine20}}', calLine20: '{{IC_calendarLine20}}', simCard20: '{{IC_simCard20}}',
     user: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#212121" stroke-width="1.6"/><path d="M5.5 19c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5" stroke="#212121" stroke-width="1.6" stroke-linecap="round"/></svg>',
@@ -3315,6 +3322,8 @@
     t.innerHTML = html.trim();
     return t.content.firstChild;
   }
+  // 熱門區塊展開/收起狀態（Figma 4592-66122 / 4592-67421）：國家 chips 超過 11 個、多國區域超過 3 個才出現；每次重繪沿用當前狀態
+  var HOT_C_MAX = 11, HOT_R_MAX = 3, _hotCExp = false, _hotRExp = false;
   function groupEl(titleHTML, actionHTML) {
     return el('<div class="dm-group"><div class="dm-group-head"><span class="gt">' + titleHTML + '</span>' +
       (actionHTML || '') + '</div></div>');
@@ -3380,7 +3389,16 @@
     }
     var hot = groupEl('<span class="ic ic-20 ic-stretch">' + ICONS.fire + '</span>熱門');
     var hotChips = el('<div class="dm-chips"></div>');
-    GEO.hot.forEach(function (n) { hotChips.appendChild(chipEl(n, pickCountry)); });
+    (function renderHot() {  // 超過 11 個：預設只顯示前 11 + 「展開」chip；展開後全部 + 「收起」
+      hotChips.innerHTML = '';
+      var over = GEO.hot.length > HOT_C_MAX, list = (over && !_hotCExp) ? GEO.hot.slice(0, HOT_C_MAX) : GEO.hot;
+      list.forEach(function (n) { hotChips.appendChild(chipEl(n, pickCountry)); });
+      if (over) {
+        var tg = chipEl(_hotCExp ? '收起' : '展開', function () { _hotCExp = !_hotCExp; renderHot(); });
+        tg.classList.add('chip-toggle'); tg.appendChild(el('<span class="ic ic-16">' + (_hotCExp ? ICONS.arrowUpLine16 : ICONS.arrowDownLine16) + '</span>'));
+        hotChips.appendChild(tg);
+      }
+    })();
     hot.appendChild(hotChips);
     pane.appendChild(hot);
 
@@ -3422,7 +3440,16 @@
     }
     var hot = groupEl('<span class="ic ic-20 ic-stretch">' + ICONS.fire + '</span>熱門');
     var hotRows = el('<div class="dm-rows"></div>');
-    GEO.hotRegions.forEach(function (r) { hotRows.appendChild(regionRowEl(r, pickRegion, curR === r.name)); });
+    (function renderHotR() {  // 超過 3 個：預設只顯示前 3 + 「展開」鈕；展開後全部 + 「收起」
+      hotRows.innerHTML = '';
+      var over = GEO.hotRegions.length > HOT_R_MAX, list = (over && !_hotRExp) ? GEO.hotRegions.slice(0, HOT_R_MAX) : GEO.hotRegions;
+      list.forEach(function (r) { hotRows.appendChild(regionRowEl(r, pickRegion, curR === r.name)); });
+      if (over) {
+        var b = el('<button class="dm-more' + (_hotRExp ? ' open' : '') + '"><span class="tx">' + (_hotRExp ? '收起' : '展開') + '</span><span class="ic ic-16">' + ICONS.arrowDownSb16 + '</span></button>');
+        b.addEventListener('click', function () { _hotRExp = !_hotRExp; renderHotR(); });
+        hotRows.appendChild(b);
+      }
+    })();
     hot.appendChild(hotRows);
     pane.appendChild(hot);
 
