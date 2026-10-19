@@ -3087,7 +3087,8 @@
         var tab = t.getAttribute('data-tab');
         guardUntil = Date.now() + 600;
         setTabsActive(tabsEl, noteEl, tab);
-        scrollEl.scrollTo({ left: groupStart(scrollEl, tab), behavior: 'smooth' });
+        var pl = parseFloat(getComputedStyle(scrollEl).paddingLeft) || 0;  // 扣掉容器左內距：第一組回到最初位置（scrollLeft 0），其他組靠在內距邊而不是貼齊容器邊
+        scrollEl.scrollTo({ left: Math.max(0, groupStart(scrollEl, tab) - pl), behavior: 'smooth' });
       });
     });
   }
