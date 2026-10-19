@@ -3187,6 +3187,7 @@
     dv.textContent = state.days + ' 天';
     dv.classList.toggle('has-value', state.daysTouched);  // 預設(未手動點選)＝淺灰；手動點選後＝深色(與標題同色 #212121)
     renderOpts();  // 天數變化聯動流量檔：起價重算、檔位過濾、推薦 badge 調整；內部 revealOpt 已把選中檔位滾回可視區
+    if (touched && current === 'destination') revealOpt(document.getElementById('dayChips'), true, '.chip.sel');  // 手動選天數（chip／滾輪／列表 chip）後把選中天數 chip 平滑捲到可視區中央
     updateCta();
     if (current === 'plans') renderPlans('smooth');  // 列表頁改天數：重繪條件區(天數 chip 標籤)+卡片列表，否則點了沒反應
   }
