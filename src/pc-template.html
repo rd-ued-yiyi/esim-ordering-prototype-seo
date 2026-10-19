@@ -3023,7 +3023,12 @@
     _plFlowStart = Math.max(0, Math.min(maxStart, _plFlowStart));
     function layout(animate) {
       var n = pageCount(_plFlowStart), extra = Math.max(0, Math.floor((TW - spanW(_plFlowStart, _plFlowStart + n - 1)) / n * 2) / 2);  // 平分剩餘寬（取 0.5 步進，總寬不超過視窗）
-      chips.forEach(function (c, i) { c.style.width = (i >= _plFlowStart && i < _plFlowStart + n) ? (w[i] + extra) + 'px' : ''; });  // 當頁各張平分剩餘寬度鋪滿；其他張維持自然寬
+      var used = 0, lastI = _plFlowStart + n - 1;
+      chips.forEach(function (c, i) {  // 當頁各張平分剩餘寬度鋪滿；最後一張吃掉 0.5 步進留下的零頭，右緣精確貼齊視窗（否則翻頁鈕旁會露出 1px 縫）；其他張維持自然寬
+        if (i < _plFlowStart || i > lastI) { c.style.width = ''; return; }
+        var cw = (i === lastI) ? Math.max(w[i], TW - used - (n - 1) * gap) : w[i] + extra;
+        c.style.width = cw + 'px'; used += cw;
+      });
       var x = _plFlowStart > 0 ? spanW(0, _plFlowStart - 1) + gap : 0;  // 位移＝前面各張自然寬度累加
       strip.style.transition = animate ? 'transform .3s ease' : 'none';
       strip.style.transform = 'translateX(' + (-x) + 'px)';
