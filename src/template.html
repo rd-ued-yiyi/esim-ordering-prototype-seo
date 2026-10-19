@@ -3424,7 +3424,7 @@
     pane.innerHTML = '';
     var cur = currentSel();
     var curR = cur.type === 'region' ? cur.name : null;
-    var hist = histGet(HK_R, HIST_R_DEF).slice(0, 5);  // modal 最多顯示 5 個
+    var hist = histGet(HK_R, HIST_R_DEF).slice(0, 3);  // 區域最近選擇最多顯示 3 個
     if (hist.length) {
       var g = groupEl('最近選擇', '<button class="gact" data-hclear="r"><span class="ic ic-20">' + ICONS.trash + '</span></button>');
       var rows = el('<div class="dm-rows"></div>');
