@@ -1819,7 +1819,7 @@
   .ic-40 img { max-width: 40px; max-height: 40px; display: block; }
 
   /* 天數 ↔ 流量 區塊分隔線（Figma 4265-67039：1px #E6E9ED，上下各 24 由 .group-24 gap 提供） */
-  .sec-line { width: 100%; height: 1px; background: var(--kk-border-lighter); flex: 0 0 auto; }
+  .sec-line { width: 100%; height: 1px; background: var(--kk-border-lighter); flex: 0 0 auto; margin: -4px 0; }  /* 天數↔分隔線↔流量各 20（Figma 871-76703：天數底 74 → 線 94 → 流量 114）；父層 gap 24，故各收 4 */
   /* 流量檔位帶尾端「已經到底了～」（Figma 4265-64928：200 寬 px16、12/16 #727272、垂直置中；計費方式 ≥ 2 組時顯示） */
   .opts-end { flex: 0 0 auto; width: 200px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; align-self: stretch; margin-left: -12px; font-size: 12px; line-height: 16px; color: var(--kk-text-dark); white-space: nowrap; }
 </style>
