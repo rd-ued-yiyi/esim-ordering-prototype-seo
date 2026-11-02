@@ -221,6 +221,11 @@
   .title-block .sub { margin-top: 8px; }
 
   .page { display: flex; flex-direction: column; gap: 16px; padding: 20px 16px 0; }
+  /* 麵包屑（Figma 2538-30531 / 5183-65220）：Body-md 14/20、gap 4、可點層級 #068B9F、當前層級 #9C9DA0、箭頭 ic_arrowRight_line 14；a 以上下 12 內距擴大命中區，不影響排版 */
+  .mcrumb { display: flex; align-items: center; gap: 4px; font-size: 14px; line-height: 20px; color: var(--kk-text-medium); }
+  .mcrumb .mcrumb-link { color: #068B9F; cursor: pointer; padding: 12px 0; margin: -12px 0; }
+  .mcrumb .ic, .mcrumb .ic img { width: 14px; height: 14px; display: block; }
+  .mcrumb--list { margin-bottom: 12px; }  /* 列表頁：麵包屑 → 第一張卡 12 */
 
   .card {
     background: #fff; border-radius: var(--r-xl);
@@ -1895,6 +1900,8 @@
           </div><!-- /tabcard -->
 
           <!-- 為什麼選擇 KKday（Figma 2326：兩列橫向滑動，每列 2 項） -->
+          <!-- 麵包屑（Figma 2538-30531 / 5183-65220）：首頁 › eSIM/WIFI，14/20，gap 4，位於卡片與「為什麼選擇KKday」之間 -->
+          <nav class="mcrumb" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><span class="mcrumb-cur">eSIM/WIFI</span></nav>
           <div class="card card--pad-v">
             <div class="stack-20">
               <div class="t-h6 card-title">為什麼選擇KKday？</div>
@@ -2075,6 +2082,8 @@
           </div><!-- /tabcard -->
 
           <!-- 為什麼選擇 KKday（Figma 2326：兩列橫向滑動，每列 2 項） -->
+          <!-- 麵包屑（Figma 2538-30531 / 5183-65220）：首頁 › eSIM/WIFI，14/20，gap 4，位於卡片與「為什麼選擇KKday」之間 -->
+          <nav class="mcrumb" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><span class="mcrumb-cur">eSIM/WIFI</span></nav>
           <div class="card card--pad-v">
             <div class="stack-20">
               <div class="t-h6 card-title">為什麼選擇KKday？</div>
@@ -2194,6 +2203,8 @@
       <div class="pl-body">
         <!-- 列表頁裝置提示：沿用原行內樣式，改為資訊態 info icon + 提醒文案（不帶連結） -->
         <div class="pl-note"><span class="ic ic-16">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM</div>
+        <!-- 麵包屑（與主題頁同樣式；層級對齊 PC 列表頁）：首頁 › eSIM/WIFI › 搜尋結果頁 -->
+        <nav class="mcrumb mcrumb--list" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><a class="mcrumb-link" data-action="back-plans">eSIM/WIFI</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><span class="mcrumb-cur">搜尋結果頁</span></nav>
         <div id="plList"></div>
       </div>
     </section>
@@ -3750,6 +3761,7 @@
       else if (a === 'faq-more') toast('demo 未開發');
       else if (a === 'back') { if (current === 'destination') go('home'); else if (current === 'plans') go('destination'); else toast('demo 未開發'); }
       else if (a === 'back-plans') go('destination');
+      else if (a === 'crumb-home') toast('示意：返回 KKday 首頁');
       else if (a === 'enter-esim') go('home');            // 首頁 eSIM 入口 → eSIM 主頁
       else if (a === 'kkh-demo') toast('demo 未開發');
       else if (a === 'menu') toast('demo 未開發');
