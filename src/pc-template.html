@@ -278,6 +278,22 @@
   .pc-faq-a { display: none; padding: 8px 0 16px; font-size: 14px; line-height: 20px; color: var(--kk-text-darker); }  /* 展開答案（Figma 3600-58208）：#212121 14/20、距問題 8、底 16 */
   .pc-faq-item.open .pc-faq-a { display: block; }
 
+  /* ---------- 過渡版主題頁（Figma 4085-75322 主题页-过渡版；pc.html?v=transition）：無 hero／為什麼選擇 KKday，
+     灰底麵包屑（首頁 › eSIM/WIFI › 搜尋結果頁，bread crumbs 5202-67311：py24、14/20、可點 #13A3B6、當前 #727272、箭頭 16）
+     → 探索更多區塊改為「標題 24/30 + 說明 16/24」（gap 16、距列表 32、區塊無上內距）→ 常見問題 ---------- */
+  .pc-tr-crumb, .pc-ex-head--tr { display: none; }
+  html[data-ver="transition"] #pcHero, html[data-ver="transition"] .pc-crumb-wrap--home, html[data-ver="transition"] .pc-why, html[data-ver="transition"] .pc-ex-title { display: none; }
+  html[data-ver="transition"] #pcHome { display: flex; flex-direction: column; }
+  html[data-ver="transition"] .pc-tr-crumb { display: block; order: 1; background: var(--kk-surface-light); }
+  html[data-ver="transition"] .pc-tr-crumb .pc-crumb a { color: var(--kk-primary-dark); }
+  html[data-ver="transition"] .pc-tr-crumb .pc-crumb .cur { color: var(--kk-text-dark); }
+  html[data-ver="transition"] .pc-tr-crumb .pc-crumb .ic img { width: 16px; height: 16px; }
+  html[data-ver="transition"] #pcExplore { order: 2; padding-top: 0; }
+  html[data-ver="transition"] .pc-faq { order: 3; }
+  html[data-ver="transition"] .pc-ex-head--tr { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; color: var(--kk-text-darker); }
+  .pc-ex-head--tr .t { font-size: 24px; line-height: 30px; font-weight: 600; }
+  .pc-ex-head--tr .d { font-size: 16px; line-height: 24px; }
+
   /* ---------- 探索更多（Figma 2968-67063：版心 1170、左篩選欄 281 + 主列表） ---------- */
   /* Figma 3467-85809 Explore More Section_pc：py48、內容 1140、標題 24/30 + gap 32、左 280 篩選 + gap 24 + 主列表 */
   .pc-explore { background: var(--kk-surface-light); padding: 48px 0; }
@@ -1447,6 +1463,10 @@
     padding: 10px 16px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; z-index: 99; }
   .pc-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
+<script>
+  // 版本切換：pc.html?v=transition → 過渡版主題頁（Figma 4085-75322）；內容渲染前就設好，避免閃一下完整版
+  (function () { var v = new URLSearchParams(location.search).get('v'); if (v === 'transition') document.documentElement.setAttribute('data-ver', 'transition'); })();
+</script>
 
 <!-- ============ eSIM 主題頁（PC） ============ -->
 <a class="skip-link" href="#pcMain">跳到主要內容</a>
@@ -1547,7 +1567,9 @@
   </div>
 
   <!-- 面包屑 -->
-  <div class="col"><div class="pc-crumb pc-crumb--home"><a data-toast="pc">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>eSIM/WIFI</span></div></div>
+  <div class="col pc-crumb-wrap--home"><div class="pc-crumb pc-crumb--home"><a data-toast="pc">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>eSIM/WIFI</span></div></div>
+  <!-- 過渡版麵包屑（Figma 5202-65258 breadcrumb）：灰底通欄、三層 -->
+  <div class="pc-tr-crumb"><div class="col"><div class="pc-crumb"><a data-toast="pc">首頁</a><span class="ic">{{EX_crumbArrow16}}</span><a data-toast="pc">eSIM/WIFI</a><span class="ic">{{EX_crumbArrow16}}</span><span class="cur">搜尋結果頁</span></div></div></div>
 
   <!-- 為什麼選擇 KKday：4 欄橫排 -->
   <section class="pc-why">
@@ -1600,6 +1622,8 @@
   <section class="pc-explore" id="pcExplore">
     <div class="col">
       <div class="pc-ex-title">探索更多</div>
+      <!-- 過渡版標題區（Figma 4085-75332 Explore More Section_pc：H4 + Body-lg，gap 16） -->
+      <div class="pc-ex-head--tr"><div class="t">eSIM、SIM Card、WiFi 蛋</div><div class="d">KKday 特搜各國高速 eSIM、SIM Card、WiFi 蛋租借，特選商品提供即時訂購、機場急速取件服務！</div></div>
       <div class="pc-ex-body">
         <aside class="pc-ex-side">
           <!-- 目的地 / 領取地 / 出發日期：同款 filter date_pc 列（左 64 圖標格 + 分隔線 + 置中標籤）（Figma 3467-85809） -->

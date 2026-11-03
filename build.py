@@ -453,7 +453,8 @@ pc_subs = {
     "{{ORD_calendar16}}": pc_img("ord/calendar16.svg"),
     "{{ORD_plusSemibold20}}": file_img("assets/pc/ord/plusSemibold20.svg", recolor=("#13A3B6", "#13A3B6")),  # 新增常用旅客 ic_plus_line_semibold 20 #13A3B6（Figma 4026-63148）
     "{{DET_expandArrow16}}": file_img("assets/pc/det/expandArrow16.svg", recolor=("black", "#212121")),  # 基本資訊「展開」箭頭 16
-    "{{EX_crumbArrow14}}":  pc_img("explore/crumbArrow14.svg"),  # 麵包屑箭頭 ic_arrowRight_line 14 #9C9DA0（Figma 3710-148692）
+    "{{EX_crumbArrow14}}":  pc_img("explore/crumbArrow14.svg"),
+    "{{EX_crumbArrow16}}":  pc_img("explore/crumbArrow16.svg"),  # 過渡版麵包屑箭頭 ic_arrowRight_line 16 #727272（Figma 5202-65258）  # 麵包屑箭頭 ic_arrowRight_line 14 #9C9DA0（Figma 3710-148692）
     "{{EX_trusted}}":       pc_img("explore/trustedPartner.svg"),
     "{{PC_search20}}":      pc_img("imgIcSearchLineSemibold.svg"),  # 搜尋套餐按鈕 ic_search_line_semiblod 白（Figma 3636:98060）
     "{{PC_chevDown}}":      pc_img("imgIcArrowDownLineSemiboldLg.svg"),
