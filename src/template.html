@@ -2208,7 +2208,7 @@
       </div>
       <div class="pl-body">
         <!-- 麵包屑（與主題頁同樣式；層級對齊 PC 列表頁），置於裝置提示上方：首頁 › eSIM/WIFI › 搜尋結果頁 -->
-        <nav class="mcrumb mcrumb--list" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><a class="mcrumb-link" data-action="back-plans">eSIM/WIFI</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><span class="mcrumb-cur">搜尋結果頁</span></nav>
+        <nav class="mcrumb mcrumb--list" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><a class="mcrumb-link" data-action="back-plans">eSIM/WIFI</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><a class="mcrumb-link" data-action="back-plans" id="plCrumbDest">日本</a><span class="ic ic-14">{{IC_crumbArrow14}}</span><span class="mcrumb-cur">搜尋結果頁</span></nav>
         <!-- 列表頁裝置提示：沿用原行內樣式，改為資訊態 info icon + 提醒文案（不帶連結） -->
         <div class="pl-note"><span class="ic ic-16">{{IC_infoFill}}</span>購買前請確認你的裝置是否支援 eSIM</div>
         <div id="plList"></div>
@@ -4497,6 +4497,7 @@
     var tNum = document.getElementById('plTitleNum'), dNum = document.getElementById('destNum');
     tNum.hidden = dNum.hidden;
     tNum.textContent = dNum.textContent;
+    document.getElementById('plCrumbDest').textContent = fullTitle + (dNum.hidden ? '' : dNum.textContent);  // 麵包屑目的地層級（多國帶數量）
     // CSS ellipsis 的「…」畫在最後一個完整字後，被丟掉的字留下最多近一個字寬的空白，
     // 數量 (N) 會顯得離省略號很遠——改為 JS 截斷到剛好放下「…」，盒子收緊後 (N) 緊跟 8px
     requestAnimationFrame(function () {
