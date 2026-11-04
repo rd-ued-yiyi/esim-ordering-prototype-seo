@@ -239,12 +239,13 @@
   .pc-crumb a { color: var(--kk-primary-darker); cursor: pointer; }
   .pc-crumb .ic img { width: 14px; height: 14px; display: block; }
   .pc-crumb a:hover { text-decoration: underline; }
-  /* 長文字處理：單行不換行；首頁、箭頭、當前頁不縮（當前頁最寬 60%，超過才省略號），中間層級以省略號截斷吸收全部溢出 */
-  .pc-crumb { min-width: 0; white-space: nowrap; }
-  .pc-crumb > a, .pc-crumb > span:not(.ic) { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-  .pc-crumb > a { flex: 0 1 auto; }
-  .pc-crumb > span:not(.ic) { flex: 0 0 auto; max-width: 60%; }
-  .pc-crumb > a:first-child, .pc-crumb .ic { flex-shrink: 0; }
+  /* 長文字處理：單行不換行、各層以省略號截斷；寬度由 fitCrumb() 分配——短層級保留原寬，溢出由長層級均分（每層至少 3.5em） */
+  .pc-crumb { min-width: 0; white-space: nowrap; overflow: hidden; }
+  .pc-crumb > a, .pc-crumb > span:not(.ic) { flex: 0 0 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .pc-crumb .ic { flex-shrink: 0; }
+  .pc-crumb [hidden] { display: none !important; }
+  .pc-crumb a.cur { color: var(--kk-text-medium); cursor: default; }  /* 主題頁未選目的地：eSIM/WIFI 為當前層級 */
+  .pc-crumb a.cur:hover { text-decoration: none; }
 
   /* 首頁麵包屑（Figma 3467-85809 breadcrumb：高 68 垂直置中、gap 4、首頁 #068B9F、當前 #9C9DA0） */
   .pc-crumb--home { }
@@ -1573,7 +1574,7 @@
   </div>
 
   <!-- 面包屑 -->
-  <div class="col pc-crumb-wrap--home"><div class="pc-crumb pc-crumb--home"><a data-toast="pc">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><span>eSIM/WIFI</span></div></div>
+  <div class="col pc-crumb-wrap--home"><div class="pc-crumb pc-crumb--home"><a data-toast="pc">首頁</a><span class="ic ic-14">{{EX_crumbArrow14}}</span><a id="homeCrumbCat" class="cur">eSIM/WIFI</a><span class="ic ic-14" id="homeCrumbArrow" hidden>{{EX_crumbArrow14}}</span><span id="homeCrumbDest" hidden></span></div></div>
   <!-- 過渡版麵包屑（Figma 5202-65258 breadcrumb）：灰底通欄、三層 -->
   <div class="pc-tr-crumb"><div class="col"><div class="pc-crumb"><a data-toast="pc">首頁</a><span class="ic">{{EX_crumbArrow16}}</span><a data-toast="pc">eSIM/WIFI</a><span class="ic">{{EX_crumbArrow16}}</span><span class="cur">搜尋結果頁</span></div></div></div>
 
@@ -2115,6 +2116,7 @@
     if (sel.destType === 'country') histAdd(name);  // 多國/區域不進「最近選擇」（避免長字串 chip）
     updateDestPill('pcDestName', 'pcDestNum');
     document.getElementById('pcHero').setAttribute('data-state', 'sel');
+    syncHomeCrumb();  // 主題頁麵包屑加目的地層級
     closeDlg();
     renderFind(); renderPanelLoading('all');  // 換目的地：天數與流量都重新載入（skeleton）
     syncExploreDest(name);  // 選好即同步「探索更多」目的地（對齊 mweb finishSelect → exMapDest）
@@ -2128,6 +2130,42 @@
     }
   }
   document.getElementById('pcDestPill').addEventListener('click', function () { openDlg(); });
+  // 主題頁麵包屑：未選目的地 首頁 › eSIM/WIFI（當前）；已選 首頁 › eSIM/WIFI（可點，清除目的地回未選態）› 目的地（當前，多國帶數量）
+  function syncHomeCrumb() {
+    var on = !!sel.dest, d = document.getElementById('homeCrumbDest');
+    document.getElementById('homeCrumbCat').classList.toggle('cur', !on);
+    document.getElementById('homeCrumbArrow').hidden = !on; d.hidden = !on;
+    if (on) d.textContent = sel.dest + (sel.destType === 'multi' && sel.destCount > 1 ? '(' + sel.destCount + ')' : '');
+    fitCrumbs();
+  }
+  function clearDest() {
+    sel.dest = ''; sel.destType = 'country'; sel.destCount = 0; sel.touched = false;
+    document.getElementById('pcHero').setAttribute('data-state', 'empty');
+    renderFind(); syncExploreDest(''); syncHomeCrumb(); window.scrollTo(0, 0);
+  }
+  document.getElementById('homeCrumbCat').addEventListener('click', function () { if (sel.dest) clearDest(); });
+  // 麵包屑長文字分配：短層級保留原寬，溢出由長層級均分（各層至少 3.5em 以保留省略號可讀），不讓任何一層縮到消失
+  function fitCrumb(nav) {
+    if (!nav || !nav.clientWidth) return;
+    var kids = [].slice.call(nav.children), items = kids.filter(function (c) { return !c.classList.contains('ic') && !c.hidden; });
+    items.forEach(function (el) { el.style.maxWidth = ''; });
+    var gap = parseFloat(getComputedStyle(nav).gap) || 0, fixed = 0, n = 0;
+    kids.forEach(function (c) { if (c.hidden) return; n++; if (c.classList.contains('ic')) fixed += c.getBoundingClientRect().width; });
+    var avail = nav.clientWidth - fixed - gap * (n - 1);
+    var nat = items.map(function (el) { return el.getBoundingClientRect().width; });
+    if (nat.reduce(function (a, b) { return a + b; }, 0) <= avail + 0.5) return;
+    var idx = items.map(function (_, i) { return i; }), room = avail;
+    while (idx.length) {  // 公平分配：放得下的層級保留原寬並退出，剩餘空間重新均分給更長的層級
+      var share = room / idx.length, fit = idx.filter(function (i) { return nat[i] <= share; });
+      if (!fit.length) break;
+      fit.forEach(function (i) { room -= nat[i]; });
+      idx = idx.filter(function (i) { return nat[i] > share; });
+    }
+    var w = Math.max(parseFloat(getComputedStyle(nav).fontSize) * 3.5, idx.length ? room / idx.length : 0);
+    idx.forEach(function (i) { items[i].style.maxWidth = Math.floor(w) + 'px'; });
+  }
+  function fitCrumbs() { document.querySelectorAll('.pc-crumb').forEach(fitCrumb); }
+  window.addEventListener('resize', fitCrumbs);
 
   // 天數 / 流量面板
   // 面板載入態：which='all' 天數 + 流量都出 skeleton；'flow' 只流量。0.5s 後渲染，連續觸發只保留最後一次
@@ -3163,6 +3201,7 @@
     pn.hidden = !pm; if (pm) pn.textContent = '(' + sel.destCount + ')';
     var crumbDest = (sel.dest || '日本') + (pm ? '(' + sel.destCount + ')' : '');  // 麵包屑目的地層級（列表／訂單／付款共用，多國帶數量）
     ['plCrumbDest', 'ordCrumbDest', 'payCrumbDest'].forEach(function (id) { document.getElementById(id).textContent = crumbDest; });
+    requestAnimationFrame(fitCrumbs);
     document.getElementById('plDaysName').textContent = sel.days + '天';
     _plCenterSel = true; renderListChips(true); renderDaysDd(); renderPlCards();  // 換條件後，條帶以選中檔位為中心
   }
@@ -4327,7 +4366,7 @@
   document.getElementById('pcOrdConfirmOk').addEventListener('click', function () { var p = _confirmP; closeConfirmOrder(); if (p) enterOrder(p); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeConfirmOrder(); });
   function enterOrder(p) {
-    ordP = p; ordSt = newOrdState();
+    ordP = p; ordSt = newOrdState(); requestAnimationFrame(fitCrumbs);
     document.body.classList.add('order-mode');
     document.getElementById('pcOrderPage').hidden = false;
     renderOrder(); window.scrollTo(0, 0);
@@ -4428,7 +4467,7 @@
     document.getElementById('payCouponBtn').onclick = function () { toast('demo 未開發'); };
     document.getElementById('payConfirmBtn').onclick = function () { toast('demo 未開發'); };
   }
-  function enterPay() { payState = newPayState(); document.body.classList.remove('order-mode'); document.body.classList.add('pay-mode'); document.getElementById('pcOrderPage').hidden = true; document.getElementById('pcPayPage').hidden = false; renderPay(); window.scrollTo(0, 0); }
+  function enterPay() { payState = newPayState(); document.body.classList.remove('order-mode'); document.body.classList.add('pay-mode'); document.getElementById('pcOrderPage').hidden = true; document.getElementById('pcPayPage').hidden = false; renderPay(); window.scrollTo(0, 0); requestAnimationFrame(fitCrumbs); }
   function exitPay(toOrder) { document.body.classList.remove('pay-mode'); document.getElementById('pcPayPage').hidden = true; if (toOrder) { document.body.classList.add('order-mode'); document.getElementById('pcOrderPage').hidden = false; } window.scrollTo(0, 0); }
   document.getElementById('payCrumbHome').addEventListener('click', function () { exitPay(false); exitOrder(); exitList && exitList(); });
   document.getElementById('payCrumbCat').addEventListener('click', function () { exitPay(false); exitOrder(); exitList && exitList(); });

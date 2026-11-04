@@ -235,12 +235,10 @@
   .mcrumb .mcrumb-link { color: #068B9F; cursor: pointer; padding: 12px 0; margin: -12px 0; }
   .mcrumb .ic, .mcrumb .ic img { width: 14px; height: 14px; display: block; }
   .mcrumb--list { margin-bottom: 12px; }  /* 列表頁：麵包屑 → 第一張卡 12 */
-  /* 長文字處理：單行不換行；首頁、箭頭、當前頁不縮（當前頁最寬 60%，超過才省略號），中間層級以省略號截斷吸收全部溢出 */
-  .mcrumb { min-width: 0; white-space: nowrap; }
-  .mcrumb .mcrumb-link, .mcrumb .mcrumb-cur { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-  .mcrumb .mcrumb-link { flex: 0 1 auto; }
-  .mcrumb .mcrumb-cur { flex: 0 0 auto; max-width: 60%; }
-  .mcrumb > .mcrumb-link:first-child, .mcrumb .ic { flex-shrink: 0; }
+  /* 長文字處理：單行不換行、各層以省略號截斷；寬度由 fitCrumb() 分配——短層級保留原寬，溢出由長層級均分（每層至少 3.5em） */
+  .mcrumb { min-width: 0; white-space: nowrap; overflow: hidden; }
+  .mcrumb .mcrumb-link, .mcrumb .mcrumb-cur { flex: 0 0 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .mcrumb .ic { flex-shrink: 0; }
 
   .card {
     background: #fff; border-radius: var(--r-xl);
@@ -2192,7 +2190,7 @@
 
           <!-- 為什麼選擇 KKday（Figma 2326：兩列橫向滑動，每列 2 項） -->
           <!-- 麵包屑（Figma 2538-30531 / 5183-65220）：首頁 › eSIM/WIFI，14/20，gap 4，位於卡片與「為什麼選擇KKday」之間 -->
-          <nav class="mcrumb" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><span class="mcrumb-cur">eSIM/WIFI</span></nav>
+          <nav class="mcrumb" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><a class="mcrumb-link" data-action="crumb-cat">eSIM/WIFI</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><span class="mcrumb-cur" id="destCrumbDest">日本</span></nav>
           <div class="card card--pad-v">
             <div class="stack-20">
               <div class="t-h6 card-title">為什麼選擇KKday？</div>
@@ -2311,7 +2309,7 @@
       </div>
       <div class="pl-body">
         <!-- 麵包屑（與主題頁同樣式；層級對齊 PC 列表頁），置於裝置提示上方：首頁 › eSIM/WIFI › 搜尋結果頁 -->
-        <nav class="mcrumb mcrumb--list" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><a class="mcrumb-link" data-action="back-plans">eSIM/WIFI</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><a class="mcrumb-link" data-action="back-plans" id="plCrumbDest">日本</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><span class="mcrumb-cur">搜尋結果頁</span></nav>
+        <nav class="mcrumb mcrumb--list" aria-label="麵包屑"><a class="mcrumb-link" data-action="crumb-home">首頁</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><a class="mcrumb-link" data-action="crumb-cat">eSIM/WIFI</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><a class="mcrumb-link" data-action="back-plans" id="plCrumbDest">日本</a><span class="ic ic-14"><img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImljX2Fycm93UmlnaHRfbGluZSI+CjxwYXRoIGlkPSJWZWN0b3IgKFN0cm9rZSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOS4wNTkzNiA2LjY5MTM1QzkuMjMwMjEgNi44NjIyMSA5LjIzMDIxIDcuMTM5MjIgOS4wNTkzNiA3LjMxMDA3TDUuNTU5MzYgMTAuODEwMUM1LjM4ODUgMTAuOTgwOSA1LjExMTUgMTAuOTgwOSA0Ljk0MDY0IDEwLjgxMDFDNC43Njk3OSAxMC42MzkyIDQuNzY5NzkgMTAuMzYyMiA0Ljk0MDY0IDEwLjE5MTRMOC4xMzEyOCA3LjAwMDcxTDQuOTQwNjQgMy44MTAwN0M0Ljc2OTc5IDMuNjM5MjIgNC43Njk3OSAzLjM2MjIxIDQuOTQwNjQgMy4xOTEzNUM1LjExMTUgMy4wMjA1IDUuMzg4NSAzLjAyMDUgNS41NTkzNiAzLjE5MTM1TDkuMDU5MzYgNi42OTEzNVoiIGZpbGw9IiM5QzlEQTAiLz4KPC9nPgo8L3N2Zz4=" width="14" height="14"></span><span class="mcrumb-cur">搜尋結果頁</span></nav>
         <!-- 列表頁裝置提示：沿用原行內樣式，改為資訊態 info icon + 提醒文案（不帶連結） -->
         <div class="pl-note"><span class="ic ic-16"><img alt="" src="data:image/svg+xml;base64,PHN2ZyBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgMTMgMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik02LjUgMEM1LjIxNDQyIDAgMy45NTc3MiAwLjM4MTIxOCAyLjg4ODggMS4wOTU0NUMxLjgxOTg4IDEuODA5NjggMC45ODY3NTYgMi44MjQ4NCAwLjQ5NDc4NiA0LjAxMjU2QzAuMDAyODE2MzIgNS4yMDAyOCAtMC4xMjU5MDUgNi41MDcyMSAwLjEyNDg5OSA3Ljc2ODA5QzAuMzc1NzAzIDkuMDI4OTYgMC45OTQ3NjggMTAuMTg3MiAxLjkwMzgxIDExLjA5NjJDMi44MTI4NSAxMi4wMDUyIDMuOTcxMDQgMTIuNjI0MyA1LjIzMTkyIDEyLjg3NTFDNi40OTI3OSAxMy4xMjU5IDcuNzk5NzMgMTIuOTk3MiA4Ljk4NzQ0IDEyLjUwNTJDMTAuMTc1MiAxMi4wMTMyIDExLjE5MDMgMTEuMTgwMSAxMS45MDQ2IDEwLjExMTJDMTIuNjE4OCA5LjA0MjI5IDEzIDcuNzg1NTggMTMgNi41QzEyLjk5ODEgNC43NzY2OSAxMi4zMTI2IDMuMTI0NTIgMTEuMDk0IDEuOTA1OTZDOS44NzU0OCAwLjY4NzM5NiA4LjIyMzMxIDAuMDAxOTUwNDkgNi41IDBWMFpNNi4zNzUwNCAzLjAwMDAyQzYuNTIzMzcgMy4wMDAwMiA2LjY2ODM4IDMuMDQ0MDEgNi43OTE3MSAzLjEyNjQyQzYuOTE1MDUgMy4yMDg4MyA3LjAxMTE4IDMuMzI1OTcgNy4wNjc5NSAzLjQ2MzAxQzcuMTI0NzEgMy42MDAwNiA3LjEzOTU2IDMuNzUwODYgNy4xMTA2MyAzLjg5NjM0QzcuMDgxNjkgNC4wNDE4MyA3LjAxMDI2IDQuMTc1NDYgNi45MDUzNyA0LjI4MDM1QzYuODAwNDggNC4zODUyNCA2LjY2Njg0IDQuNDU2NjcgNi41MjEzNSA0LjQ4NTYxQzYuMzc1ODcgNC41MTQ1NSA2LjIyNTA3IDQuNDk5NyA2LjA4ODAyIDQuNDQyOTNDNS45NTA5OCA0LjM4NjE3IDUuODMzODUgNC4yOTAwNCA1Ljc1MTQ0IDQuMTY2N0M1LjY2OTAyIDQuMDQzMzYgNS42MjUwNCAzLjg5ODM2IDUuNjI1MDQgMy43NTAwMkM1LjYyNTA0IDMuNTUxMTEgNS43MDQwNSAzLjM2MDM1IDUuODQ0NzEgMy4yMTk2OUM1Ljk4NTM2IDMuMDc5MDQgNi4xNzYxMiAzLjAwMDAyIDYuMzc1MDQgMy4wMDAwMlYzLjAwMDAyWk03LjAwMDAxIDEwSDYuNTAwMDFDNi4zNjc0IDkuOTk5OTkgNi4yNDAyMyA5Ljk0NzMxIDYuMTQ2NDYgOS44NTM1NUM2LjA1MjY5IDkuNzU5NzggNi4wMDAwMSA5LjYzMjYxIDYuMDAwMDEgOS41VjYuNUM1Ljg2NzQgNi41IDUuNzQwMjIgNi40NDczMiA1LjY0NjQ1IDYuMzUzNTVDNS41NTI2OCA2LjI1OTc5IDUuNTAwMDEgNi4xMzI2MSA1LjUwMDAxIDZDNS41MDAwMSA1Ljg2NzM5IDUuNTUyNjggNS43NDAyMSA1LjY0NjQ1IDUuNjQ2NDVDNS43NDAyMiA1LjU1MjY4IDUuODY3NCA1LjUgNi4wMDAwMSA1LjVINi41MDAwMUM2LjYzMjYxIDUuNTAwMDEgNi43NTk3OSA1LjU1MjY5IDYuODUzNTUgNS42NDY0NUM2Ljk0NzMyIDUuNzQwMjIgNyA1Ljg2NzM5IDcuMDAwMDEgNlY5QzcuMTMyNjEgOSA3LjI1OTc5IDkuMDUyNjggNy4zNTM1NiA5LjE0NjQ1QzcuNDQ3MzMgOS4yNDAyMSA3LjUwMDAxIDkuMzY3MzkgNy41MDAwMSA5LjVDNy41MDAwMSA5LjYzMjYxIDcuNDQ3MzMgOS43NTk3OCA3LjM1MzU2IDkuODUzNTVDNy4yNTk3OSA5Ljk0NzMyIDcuMTMyNjEgMTAgNy4wMDAwMSAxMFoiIGZpbGw9IiMyRDg0RDYiLz4KPC9zdmc+" width="13.00" height="13.00"></span>購買前請確認你的裝置是否支援 eSIM</div>
         <div id="plList"></div>
@@ -3025,6 +3023,29 @@
 
   // ---------- 螢幕路由 ----------
   var current = 'home';  // 初始＝eSIM 主頁（模擬首頁已移除）
+  function destCrumbText() { var dn = document.getElementById('destName'), num = document.getElementById('destNum'); return dn.textContent.trim() + (num && !num.hidden ? num.textContent : ''); }
+  // 麵包屑長文字分配：短層級保留原寬，溢出由長層級均分（各層至少 3.5em 以保留省略號可讀），不讓任何一層縮到消失
+  function fitCrumb(nav) {
+    if (!nav || !nav.clientWidth) return;
+    var kids = [].slice.call(nav.children), items = kids.filter(function (c) { return !c.classList.contains('ic') && !c.hidden; });
+    items.forEach(function (el) { el.style.maxWidth = ''; });
+    var gap = parseFloat(getComputedStyle(nav).gap) || 0, fixed = 0, n = 0;
+    kids.forEach(function (c) { if (c.hidden) return; n++; if (c.classList.contains('ic')) fixed += c.getBoundingClientRect().width; });
+    var avail = nav.clientWidth - fixed - gap * (n - 1);
+    var nat = items.map(function (el) { return el.getBoundingClientRect().width; });
+    if (nat.reduce(function (a, b) { return a + b; }, 0) <= avail + 0.5) return;
+    var idx = items.map(function (_, i) { return i; }), room = avail;
+    while (idx.length) {  // 公平分配：放得下的層級保留原寬並退出，剩餘空間重新均分給更長的層級
+      var share = room / idx.length, fit = idx.filter(function (i) { return nat[i] <= share; });
+      if (!fit.length) break;
+      fit.forEach(function (i) { room -= nat[i]; });
+      idx = idx.filter(function (i) { return nat[i] > share; });
+    }
+    var w = Math.max(parseFloat(getComputedStyle(nav).fontSize) * 3.5, idx.length ? room / idx.length : 0);
+    idx.forEach(function (i) { items[i].style.maxWidth = Math.floor(w) + 'px'; });
+  }
+  function fitCrumbs() { document.querySelectorAll('.mcrumb').forEach(fitCrumb); }
+  window.addEventListener('resize', fitCrumbs);
   function go(name) {
     current = name;
     document.querySelectorAll('.screen').forEach(function (s) {
@@ -3035,6 +3056,8 @@
     document.getElementById('pageHeader').classList.toggle('on-home', name === 'home' || name === 'destination');  // 置頂 header 左鈕：主題頁與目的地頁皆漢堡（選了目的地後仍是同一主題頁）、其他頁返回
     window.scrollTo(0, 0);
     syncPhTitle();  // 置頂標題隨頁面切換（目的地頁＝已選目的地名）
+    if (name === 'destination') document.getElementById('destCrumbDest').textContent = destCrumbText();  // 已選目的地主題頁麵包屑：首頁 › eSIM/WIFI › 目的地
+    requestAnimationFrame(fitCrumbs);  // 螢幕切換後重新分配麵包屑寬度（隱藏態量不到尺寸）
     // 重新進入目的地頁（如從列表返回）時把選中流量檔、選中天數 chip 滾回可視區，避免選中項落在螢幕外
     if (name === 'destination') {
       renderOpts();  // 依當前方案(A/B)重建流量區塊（落地頁選過方案後才進目的地頁，需按新方案渲染）
@@ -3934,6 +3957,7 @@
       else if (a === 'back') { if (current === 'destination') go('home'); else if (current === 'plans') go('destination'); else toast('demo 未開發'); }
       else if (a === 'back-plans') go('destination');
       else if (a === 'crumb-home') toast('示意：返回 KKday 首頁');
+      else if (a === 'crumb-cat') go('home');  // 麵包屑 eSIM/WIFI → 未選目的地的主題頁
       else if (a === 'enter-esim') go('home');            // 首頁 eSIM 入口 → eSIM 主頁
       else if (a === 'kkh-demo') toast('demo 未開發');
       else if (a === 'menu') toast('demo 未開發');
