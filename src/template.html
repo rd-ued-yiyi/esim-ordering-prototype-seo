@@ -226,6 +226,12 @@
   .mcrumb .mcrumb-link { color: #068B9F; cursor: pointer; padding: 12px 0; margin: -12px 0; }
   .mcrumb .ic, .mcrumb .ic img { width: 14px; height: 14px; display: block; }
   .mcrumb--list { margin-bottom: 12px; }  /* 列表頁：麵包屑 → 第一張卡 12 */
+  /* 長文字處理：單行不換行；首頁、箭頭、當前頁不縮（當前頁最寬 60%，超過才省略號），中間層級以省略號截斷吸收全部溢出 */
+  .mcrumb { min-width: 0; white-space: nowrap; }
+  .mcrumb .mcrumb-link, .mcrumb .mcrumb-cur { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .mcrumb .mcrumb-link { flex: 0 1 auto; }
+  .mcrumb .mcrumb-cur { flex: 0 0 auto; max-width: 60%; }
+  .mcrumb > .mcrumb-link:first-child, .mcrumb .ic { flex-shrink: 0; }
 
   .card {
     background: #fff; border-radius: var(--r-xl);

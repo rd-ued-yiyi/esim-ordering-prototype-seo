@@ -239,6 +239,12 @@
   .pc-crumb a { color: var(--kk-primary-darker); cursor: pointer; }
   .pc-crumb .ic img { width: 14px; height: 14px; display: block; }
   .pc-crumb a:hover { text-decoration: underline; }
+  /* 長文字處理：單行不換行；首頁、箭頭、當前頁不縮（當前頁最寬 60%，超過才省略號），中間層級以省略號截斷吸收全部溢出 */
+  .pc-crumb { min-width: 0; white-space: nowrap; }
+  .pc-crumb > a, .pc-crumb > span:not(.ic) { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .pc-crumb > a { flex: 0 1 auto; }
+  .pc-crumb > span:not(.ic) { flex: 0 0 auto; max-width: 60%; }
+  .pc-crumb > a:first-child, .pc-crumb .ic { flex-shrink: 0; }
 
   /* 首頁麵包屑（Figma 3467-85809 breadcrumb：高 68 垂直置中、gap 4、首頁 #068B9F、當前 #9C9DA0） */
   .pc-crumb--home { }
