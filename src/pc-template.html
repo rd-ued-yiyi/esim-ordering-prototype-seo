@@ -241,7 +241,7 @@
   .pc-crumb a:hover { text-decoration: underline; }
   /* 長文字處理：單行不換行、各層以省略號截斷；寬度由 fitCrumb() 分配——短層級保留原寬，溢出由長層級均分（每層至少 3.5em） */
   .pc-crumb { min-width: 0; white-space: nowrap; overflow: hidden; }
-  .pc-crumb > a, .pc-crumb > span:not(.ic) { flex: 0 0 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .pc-crumb > a, .pc-crumb > span:not(.ic) { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }  /* 可收縮＝JS 未跑時也以省略號收縮兜底 */
   .pc-crumb .ic { flex-shrink: 0; }
   .pc-crumb [hidden] { display: none !important; }
   .pc-crumb a.cur { color: var(--kk-text-medium); cursor: default; }  /* 主題頁未選目的地：eSIM/WIFI 為當前層級 */
@@ -2152,7 +2152,7 @@
     var gap = parseFloat(getComputedStyle(nav).gap) || 0, fixed = 0, n = 0;
     kids.forEach(function (c) { if (c.hidden) return; n++; if (c.classList.contains('ic')) fixed += c.getBoundingClientRect().width; });
     var avail = nav.clientWidth - fixed - gap * (n - 1);
-    var nat = items.map(function (el) { return el.getBoundingClientRect().width; });
+    var nat = items.map(function (el) { return Math.max(el.scrollWidth, el.getBoundingClientRect().width); });  // scrollWidth＝未收縮的自然寬
     if (nat.reduce(function (a, b) { return a + b; }, 0) <= avail + 0.5) return;
     var idx = items.map(function (_, i) { return i; }), room = avail;
     while (idx.length) {  // 公平分配：放得下的層級保留原寬並退出，剩餘空間重新均分給更長的層級
@@ -2166,6 +2166,9 @@
   }
   function fitCrumbs() { document.querySelectorAll('.pc-crumb').forEach(fitCrumb); }
   window.addEventListener('resize', fitCrumbs);
+  document.querySelectorAll('.pc-crumb').forEach(function (nav) {  // 文字變動（換目的地等）即重算，不依賴呼叫端
+    new MutationObserver(function () { fitCrumb(nav); }).observe(nav, { childList: true, characterData: true, subtree: true });
+  });
 
   // 天數 / 流量面板
   // 面板載入態：which='all' 天數 + 流量都出 skeleton；'flow' 只流量。0.5s 後渲染，連續觸發只保留最後一次
