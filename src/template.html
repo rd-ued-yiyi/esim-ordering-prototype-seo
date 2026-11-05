@@ -226,9 +226,10 @@
   .mcrumb .mcrumb-link { color: #068B9F; cursor: pointer; padding: 12px 0; margin: -12px 0; }
   .mcrumb .ic, .mcrumb .ic img { width: 14px; height: 14px; display: block; }
   .mcrumb--list { margin-bottom: 12px; }  /* 列表頁：麵包屑 → 第一張卡 12 */
-  /* 長文字處理：單行不換行、各層以省略號截斷；寬度由 fitCrumb() 分配——短層級保留原寬，溢出由長層級均分（每層至少 3.5em） */
+  /* 長文字規則（Figma 2538-30531 注解，與 RD 定稿）：整條單行不換行、超出各層以省略號截斷；「首頁」完整顯示不壓縮；其餘層級按文字長度等比例壓縮（flex-shrink 依 basis 比例即為等比例）、每層最小 28px，本身比 28px 窄者右側留白補足；純 CSS，無 JS */
   .mcrumb { min-width: 0; white-space: nowrap; overflow: hidden; }
-  .mcrumb .mcrumb-link, .mcrumb .mcrumb-cur { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }  /* 可收縮＝JS 未跑時也以省略號收縮兜底 */
+  .mcrumb .mcrumb-link, .mcrumb .mcrumb-cur { flex: 0 1 auto; min-width: 28px; overflow: hidden; text-overflow: ellipsis; }
+  .mcrumb [data-action="crumb-home"] { flex-shrink: 0; }
   .mcrumb .ic { flex-shrink: 0; }
 
   .card {
@@ -2923,31 +2924,6 @@
   // ---------- 螢幕路由 ----------
   var current = 'home';  // 初始＝eSIM 主頁（模擬首頁已移除）
   function destCrumbText() { var dn = document.getElementById('destName'), num = document.getElementById('destNum'); return dn.textContent.trim() + (num && !num.hidden ? num.textContent : ''); }
-  // 麵包屑長文字分配：短層級保留原寬，溢出由長層級均分（各層至少 3.5em 以保留省略號可讀），不讓任何一層縮到消失
-  function fitCrumb(nav) {
-    if (!nav || !nav.clientWidth) return;
-    var kids = [].slice.call(nav.children), items = kids.filter(function (c) { return !c.classList.contains('ic') && !c.hidden; });
-    items.forEach(function (el) { el.style.maxWidth = ''; });
-    var gap = parseFloat(getComputedStyle(nav).gap) || 0, fixed = 0, n = 0;
-    kids.forEach(function (c) { if (c.hidden) return; n++; if (c.classList.contains('ic')) fixed += c.getBoundingClientRect().width; });
-    var avail = nav.clientWidth - fixed - gap * (n - 1);
-    var nat = items.map(function (el) { return Math.max(el.scrollWidth, el.getBoundingClientRect().width); });  // scrollWidth＝未收縮的自然寬
-    if (nat.reduce(function (a, b) { return a + b; }, 0) <= avail + 0.5) return;
-    var idx = items.map(function (_, i) { return i; }), room = avail;
-    while (idx.length) {  // 公平分配：放得下的層級保留原寬並退出，剩餘空間重新均分給更長的層級
-      var share = room / idx.length, fit = idx.filter(function (i) { return nat[i] <= share; });
-      if (!fit.length) break;
-      fit.forEach(function (i) { room -= nat[i]; });
-      idx = idx.filter(function (i) { return nat[i] > share; });
-    }
-    var w = Math.max(parseFloat(getComputedStyle(nav).fontSize) * 3.5, idx.length ? room / idx.length : 0);
-    idx.forEach(function (i) { items[i].style.maxWidth = Math.floor(w) + 'px'; });
-  }
-  function fitCrumbs() { document.querySelectorAll('.mcrumb').forEach(fitCrumb); }
-  window.addEventListener('resize', fitCrumbs);
-  document.querySelectorAll('.mcrumb').forEach(function (nav) {  // 文字變動（換目的地等）即重算，不依賴呼叫端
-    new MutationObserver(function () { fitCrumb(nav); }).observe(nav, { childList: true, characterData: true, subtree: true });
-  });
   function go(name) {
     current = name;
     document.querySelectorAll('.screen').forEach(function (s) {
@@ -2959,7 +2935,6 @@
     window.scrollTo(0, 0);
     syncPhTitle();  // 置頂標題隨頁面切換（目的地頁＝已選目的地名）
     if (name === 'destination') document.getElementById('destCrumbDest').textContent = destCrumbText();  // 已選目的地主題頁麵包屑：首頁 › eSIM/WIFI › 目的地
-    requestAnimationFrame(fitCrumbs);  // 螢幕切換後重新分配麵包屑寬度（隱藏態量不到尺寸）
     // 重新進入目的地頁（如從列表返回）時把選中流量檔、選中天數 chip 滾回可視區，避免選中項落在螢幕外
     if (name === 'destination') {
       renderOpts();  // 依當前方案(A/B)重建流量區塊（落地頁選過方案後才進目的地頁，需按新方案渲染）
