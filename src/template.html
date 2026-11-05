@@ -218,7 +218,7 @@
   .con { position: relative; z-index: 1; padding-bottom: 40px; }
   .title-block { padding: 8px 24px 0; color: #fff; }
   .title-block .t-h4 { font-size: 24px; line-height: 30px; }  /* 主題頁標題「全球上網」（Figma 2326-110720：Semibold 24/30） */
-  .title-block .sub { margin-top: 8px; }
+  .title-block .sub { margin-top: 8px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }  /* 說明最多 2 行，超出省略（Figma 2538-30531） */
 
   .page { display: flex; flex-direction: column; gap: 16px; padding: 20px 16px 0; }
   /* 麵包屑（Figma 2538-30531 / 5183-65220）：Body-md 14/20、gap 4、可點層級 #068B9F、當前層級 #9C9DA0、箭頭 ic_arrowRight_line 14；a 以上下 12 內距擴大命中區，不影響排版 */
